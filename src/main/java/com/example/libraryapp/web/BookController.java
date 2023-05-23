@@ -1,11 +1,14 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.book.BookDto;
+import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.BookService;
+import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,16 @@ public class BookController {
     @GetMapping("/books")
     public List<BookDto> getAllBooks() {
         return bookService.findAllBooks();
+    }
+
+    @PostMapping("/books")
+    public ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
+        BookDto savedBook = bookService.saveBook(book);
+        URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedBook.getId())
+                .toUri();
+        return ResponseEntity.created(savedBookUri).body(savedBook);
     }
 
     @GetMapping("/books/{id}")
