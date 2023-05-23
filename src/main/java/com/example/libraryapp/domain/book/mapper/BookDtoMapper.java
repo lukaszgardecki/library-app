@@ -17,4 +17,16 @@ public class BookDtoMapper {
         return dto;
     }
 
+    public static Book map(BookDto dto) {
+        Book book = new Book();
+        book.setId(dto.getId());
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
+        book.setPublisher(dto.getPublisher());
+        book.setRelease_year(dto.getRelease_year());
+        book.setPages(dto.getPages());
+        book.setIsbn(dto.getIsbn());
+        return book;
+    }
+
 }

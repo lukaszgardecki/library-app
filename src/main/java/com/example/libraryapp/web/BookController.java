@@ -48,6 +48,13 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/books/{id}")
+    ResponseEntity<?> replaceBook(@PathVariable Long id, @RequestBody BookDto book) {
+        return bookService.replaceBook(id, book)
+                .map(b -> ResponseEntity.noContent().build())
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> mismatchExceptionHandler() {
         return ResponseEntity.badRequest().body("Id must be a number.");
