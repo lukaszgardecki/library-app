@@ -1,11 +1,11 @@
-package com.example.libraryapp.domain.book;
+package com.example.libraryapp.domain.book.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BookDto {
+public class BookToSaveDto {
     private String title;
     private String author;
     private String publisher;

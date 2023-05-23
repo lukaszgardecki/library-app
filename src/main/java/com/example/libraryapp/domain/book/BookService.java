@@ -1,5 +1,9 @@
 package com.example.libraryapp.domain.book;
 
+import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
+import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,5 +27,11 @@ public class BookService {
     public Optional<BookDto> findBookById(Long id) {
         return bookRepository.findById(id)
                 .map(BookDtoMapper::map);
+    }
+
+    public BookDto saveBook(BookToSaveDto book) {
+        Book bookToSave = BookToSaveDtoMapper.map(book);
+        Book savedBook = bookRepository.save(bookToSave);
+        return BookDtoMapper.map(savedBook);
     }
 }
