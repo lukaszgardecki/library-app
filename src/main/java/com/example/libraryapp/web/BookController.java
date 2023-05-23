@@ -20,10 +20,9 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<BookDto> getBook(@PathVariable Long id) {
-        Optional<BookDto> bookById = bookService.findBookById(id);
-
-        return bookById.map(ResponseEntity::ok)
+    public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
+        return bookService.findBookById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
