@@ -3,10 +3,8 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookDto;
 import com.example.libraryapp.domain.book.BookService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
 
@@ -24,5 +22,10 @@ public class BookController {
         return bookService.findBookById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> mismatchExceptionHandler() {
+        return ResponseEntity.badRequest().body("Id must be a number.");
     }
 }
