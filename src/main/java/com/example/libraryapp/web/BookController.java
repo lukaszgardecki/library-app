@@ -3,15 +3,13 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookDto;
 import com.example.libraryapp.domain.book.BookService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class BookController {
     private final BookService bookService;
 
@@ -19,11 +17,20 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books/{id}")
-    public ResponseEntity<BookDto> getBook(@PathVariable Long id) {
-        Optional<BookDto> bookById = bookService.findBookById(id);
+    @GetMapping("/books")
+    public List<BookDto> getAllBooks() {
+        return bookService.findAllBooks();
+    }
 
-        return bookById.map(ResponseEntity::ok)
+    @GetMapping("/books/{id}")
+    public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
+        return bookService.findBookById(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> mismatchExceptionHandler() {
+        return ResponseEntity.badRequest().body("Id must be a number.");
     }
 }
