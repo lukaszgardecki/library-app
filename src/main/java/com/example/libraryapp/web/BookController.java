@@ -42,6 +42,12 @@ public class BookController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<?> deleteBookById(@PathVariable Long id) {
+        bookService.deleteBookById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> mismatchExceptionHandler() {
         return ResponseEntity.badRequest().body("Id must be a number.");
