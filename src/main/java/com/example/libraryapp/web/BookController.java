@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -15,6 +15,11 @@ public class BookController {
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/books")
+    public List<BookDto> getAllBooks() {
+        return bookService.findAllBooks();
     }
 
     @GetMapping("/books/{id}")
