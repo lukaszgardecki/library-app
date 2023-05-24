@@ -1,7 +1,7 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.BookService;
+import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -53,6 +54,16 @@ public class BookController {
         return bookService.replaceBook(id, book)
                 .map(b -> ResponseEntity.noContent().build())
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/books/{id}")
+    ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto book) {
+        try {
+            bookService.updateBook(id, book);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException | NullPointerException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
