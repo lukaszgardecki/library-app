@@ -61,8 +61,12 @@ public class BookController {
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable Long id) {
-        bookService.deleteBookById(id);
-        return ResponseEntity.noContent().build();
+        try {
+            bookService.deleteBookById(id);
+            return ResponseEntity.noContent().build();
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/books/{id}")
