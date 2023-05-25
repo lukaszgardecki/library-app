@@ -40,13 +40,15 @@ public class BookController {
     }
 
     @PostMapping("/books")
-    public ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
+    public ResponseEntity<EntityModel<BookDto>> addBook(@RequestBody BookToSaveDto book) {
         BookDto savedBook = bookService.saveBook(book);
+        EntityModel<BookDto> entityModel = bookModelAssembler.toModel(savedBook);
+
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedBook.getId())
                 .toUri();
-        return ResponseEntity.created(savedBookUri).body(savedBook);
+        return ResponseEntity.created(savedBookUri).body(entityModel);
     }
 
     @GetMapping("/books/{id}")
