@@ -3,6 +3,11 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.domain.config.BookModelAssembler;
+import com.example.libraryapp.domain.exception.BookNotFoundException;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -10,15 +15,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BookController {
     private final BookService bookService;
+    private final BookModelAssembler bookModelAssembler;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookModelAssembler bookModelAssembler) {
         this.bookService = bookService;
+        this.bookModelAssembler = bookModelAssembler;
     }
 
     @GetMapping("/books")
