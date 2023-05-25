@@ -4,11 +4,11 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
+import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -37,7 +37,8 @@ public class BookService {
         return BookDtoMapper.map(savedBook);
     }
 
-    public Optional<BookDto> replaceBook(Long id, BookDto book) {
+    public Optional<BookDto> replaceBook(BookDto book) {
+        Long id = book.getId();
         if (!bookRepository.existsById(id)) {
             return Optional.empty();
         }
@@ -48,9 +49,9 @@ public class BookService {
     }
 
     @Transactional
-    public void updateBook(Long id, BookDto book) {
+    public BookDto updateBook(Long id, BookDto book) {
         Book bookToUpdate = bookRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(BookNotFoundException::new);
 
         if (book != null) {
             if (book.getTitle() != null) bookToUpdate.setTitle(book.getTitle());
@@ -62,9 +63,13 @@ public class BookService {
         } else {
             throw new NullPointerException();
         }
+        return BookDtoMapper.map(bookToUpdate);
     }
 
     public void deleteBookById(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new BookNotFoundException();
+        }
         bookRepository.deleteById(id);
     }
 }
