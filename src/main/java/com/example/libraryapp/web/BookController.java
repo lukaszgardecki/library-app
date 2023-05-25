@@ -80,9 +80,10 @@ public class BookController {
     @PatchMapping("/books/{id}")
     ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto book) {
         try {
-            bookService.updateBook(id, book);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException | NullPointerException e) {
+            BookDto updatedBook = bookService.updateBook(id, book);
+            EntityModel<BookDto> entityModel = bookModelAssembler.toModel(updatedBook);
+            return ResponseEntity.ok(entityModel);
+        } catch (BookNotFoundException | NullPointerException e) {
             return ResponseEntity.notFound().build();
         }
     }

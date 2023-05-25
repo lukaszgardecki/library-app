@@ -49,7 +49,7 @@ public class BookService {
     }
 
     @Transactional
-    public void updateBook(Long id, BookDto book) {
+    public BookDto updateBook(Long id, BookDto book) {
         Book bookToUpdate = bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
 
@@ -63,6 +63,7 @@ public class BookService {
         } else {
             throw new NullPointerException();
         }
+        return BookDtoMapper.map(bookToUpdate);
     }
 
     public void deleteBookById(Long id) {
