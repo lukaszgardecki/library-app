@@ -37,7 +37,8 @@ public class BookService {
         return BookDtoMapper.map(savedBook);
     }
 
-    public Optional<BookDto> replaceBook(Long id, BookDto book) {
+    public Optional<BookDto> replaceBook(BookDto book) {
+        Long id = book.getId();
         if (!bookRepository.existsById(id)) {
             return Optional.empty();
         }

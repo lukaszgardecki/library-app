@@ -69,10 +69,11 @@ public class BookController {
         }
     }
 
-    @PutMapping("/books/{id}")
-    ResponseEntity<?> replaceBook(@PathVariable Long id, @RequestBody BookDto book) {
-        return bookService.replaceBook(id, book)
-                .map(b -> ResponseEntity.noContent().build())
+    @PutMapping("/books")
+    ResponseEntity<?> replaceBook(@RequestBody BookDto book) {
+        return bookService.replaceBook(book)
+                .map(bookModelAssembler::toModel)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
