@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config;
+package com.example.libraryapp.domain.config.assembler;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.web.BookController;
@@ -24,6 +24,8 @@ public class BookModelAssembler implements RepresentationModelAssembler<BookDto,
 
     @Override
     public CollectionModel<EntityModel<BookDto>> toCollectionModel(Iterable<? extends BookDto> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities);
+        CollectionModel<EntityModel<BookDto>> collectionModel = RepresentationModelAssembler.super.toCollectionModel(entities);
+        collectionModel.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
+        return collectionModel;
     }
 }

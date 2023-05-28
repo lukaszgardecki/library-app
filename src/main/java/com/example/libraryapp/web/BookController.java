@@ -3,7 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
-import com.example.libraryapp.domain.config.BookModelAssembler;
+import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
