@@ -20,4 +20,5 @@ public class Book {
     private Integer release_year;
     private Integer pages;
     private String isbn;
+    private Boolean availability;
 }
