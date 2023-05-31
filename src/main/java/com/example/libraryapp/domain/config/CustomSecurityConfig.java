@@ -29,6 +29,7 @@ public class CustomSecurityConfig {
                         .tokenValiditySeconds(60 * 60 * 24 * 30)
                 )
                 .csrf().disable()
+                .httpBasic()
         ;
         http.headers().frameOptions().sameOrigin();
         return http.build();
@@ -37,5 +38,10 @@ public class CustomSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
