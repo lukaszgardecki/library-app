@@ -1,6 +1,7 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.config.AuthenticationService;
+import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.user.dto.UserLoginDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +17,27 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/v1")
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final UserModelAssembler userModelAssembler;
 
-    public AuthController(AuthenticationService authenticationService) {
+    public AuthController(AuthenticationService authenticationService, UserModelAssembler userModelAssembler) {
         this.authenticationService = authenticationService;
+        this.userModelAssembler = userModelAssembler;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody UserLoginDto loginDto) {
+    public ResponseEntity<?> authenticateUser(@RequestBody UserLoginDto loginDto) {
         try {
-            authenticationService.authenticateUser(loginDto);
-        } catch (NoSuchElementException e) {
+            return authenticationService.authenticateUser(loginDto)
+                    .map(userModelAssembler::toModel)
+                    .map(ResponseEntity::ok)
+                    .get();
+        }
+
+        catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .header("Reason", "User with this email does not exist")
                     .body("Wrong email");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("User signed-in successfully!");
     }
 
     @PostMapping("/logout")
