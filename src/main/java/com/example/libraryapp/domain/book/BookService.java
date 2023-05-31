@@ -33,6 +33,7 @@ public class BookService {
 
     public BookDto saveBook(BookToSaveDto book) {
         Book bookToSave = BookToSaveDtoMapper.map(book);
+        bookToSave.setAvailability(Boolean.TRUE);
         Book savedBook = bookRepository.save(bookToSave);
         return BookDtoMapper.map(savedBook);
     }

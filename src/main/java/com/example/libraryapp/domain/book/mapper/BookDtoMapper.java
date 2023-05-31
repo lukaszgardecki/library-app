@@ -14,6 +14,7 @@ public class BookDtoMapper {
         dto.setRelease_year(book.getRelease_year());
         dto.setPages(book.getPages());
         dto.setIsbn(book.getIsbn());
+        dto.setAvailability(book.getAvailability());
         return dto;
     }
 
@@ -26,6 +27,7 @@ public class BookDtoMapper {
         book.setRelease_year(dto.getRelease_year());
         book.setPages(dto.getPages());
         book.setIsbn(dto.getIsbn());
+        book.setAvailability(dto.getAvailability());
         return book;
     }
 

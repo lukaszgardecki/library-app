@@ -13,4 +13,5 @@ public class BookDto {
     private Integer release_year;
     private Integer pages;
     private String isbn;
+    private Boolean availability;
 }
