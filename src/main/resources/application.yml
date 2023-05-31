@@ -6,7 +6,6 @@ spring:
       ddl-auto: validate
   profiles:
     default: dev
-    active: dev
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
