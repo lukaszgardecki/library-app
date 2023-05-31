@@ -162,7 +162,8 @@ Project is created with:
   }
   ```
 - Server responses:
-    - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
+  - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
+  - **406 Not Acceptable** - *a resource could not be accessed, the user with this email already exists*
 
 ### Log in an existing user account:
 - Request: `POST` `/api/v1/login`
