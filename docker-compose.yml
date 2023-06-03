@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    container_name: web
+    build: .
+    ports:
+      - "8111:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/libraryapp
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_USER: root
+    networks:
+      - springboot-net
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    links:
+      - mysqldb
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: libraryapp
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/libraryapp
+      MYSQL_ROOT_PASSWORD: admin
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "mysqldb", '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+      timeout: 5s
+      retries: 10
+    networks:
+      - springboot-net
+    ports:
+      - "3307:3306"
+    restart: always
+networks:
+  springboot-net:
