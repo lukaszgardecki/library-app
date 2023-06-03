@@ -19,7 +19,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="card_number" type="VARCHAR(8)">
                 <constraints unique="true"/>
             </column>
-            <column name="role_id" type="INT"/>
+            <column name="role_id" type="BIGINT"/>
         </createTable>
 
         <createTable tableName="user_role">

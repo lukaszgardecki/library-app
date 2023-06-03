@@ -24,6 +24,7 @@ Project is created with:
 
 ### Retrieve all books on the platform:
 - Request: `GET` `/api/v1/books`
+- Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -31,6 +32,7 @@ Project is created with:
 ### Retrieve a single book:
 - Request: `GET` `/api/v1/books/{id}`
 - Parameters: `{id}` - id of item to fetch
+- Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -48,6 +50,7 @@ Project is created with:
      "isbn": "123456789-X"
   }
   ```
+- Access: *ADMIN*
 - Server responses:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
 
@@ -65,6 +68,7 @@ Project is created with:
      "isbn": "123456789-X"
   }
   ```
+- Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -91,6 +95,7 @@ Project is created with:
      "isbn": "123456789-X"
   }
   ```
+- Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **400 Bad Request** - *a required attribute of the API request is missing*
@@ -99,12 +104,14 @@ Project is created with:
 ### Delete a single book:
 - Request: `DELETE` `/api/v1/books/{id}`
 - Parameters: `{id}` - id of item to delete
+- Access: *ADMIN*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all users on the platform:
 - Request: `GET` `/api/v1/users`
+- Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -112,6 +119,7 @@ Project is created with:
 ### Retrieve a single user:
 - Request: `GET` `/api/v1/users/{id}`
 - Parameters: `{id}` - id of user to fetch
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -138,6 +146,7 @@ Project is created with:
      "password": "easypass"
   }
   ```
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **400 Bad Request** - *a required attribute of the API request is missing*
@@ -146,6 +155,7 @@ Project is created with:
 ### Delete a single user:
 - Request: `DELETE` `/api/v1/users/{id}`
 - Parameters: `{id}` - id of user to delete
+- Access: *ADMIN, USER*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -161,8 +171,10 @@ Project is created with:
      "password": "hardpass"
   }
   ```
+- Access: *ALL*
 - Server responses:
-    - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
+  - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
+  - **406 Not Acceptable** - *a resource could not be accessed, the user with this email already exists*
 
 ### Log in an existing user account:
 - Request: `POST` `/api/v1/login`
@@ -173,17 +185,14 @@ Project is created with:
      "password": "hardpass"
   }
   ```
+- Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful*
   - **404 Not Found** - *a resource could not be accessed, e.g., a username or password for a resource could not be found*
 
-### Log out an existing user account:
-- Request: `POST` `/api/v1/logout`
-- Server responses:
-  - **200 OK** - *request was successful*
-
 ### Retrieve all reservations on the platform:
 - Request: `GET` `/api/v1/reservations`
+- Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -191,6 +200,7 @@ Project is created with:
 ### Retrieve all user's reservations:
 - Request: `GET` `/api/v1/reservations?userId={id}`
 - Parameters: `{id}` - id of a user
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -199,6 +209,7 @@ Project is created with:
 ### Retrieve a single reservation:
 - Request: `GET` `/api/v1/reservations/{id}`
 - Parameters: `{id}` - id of reservation to fetch
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -212,6 +223,7 @@ Project is created with:
      "bookId": 123
   }
   ```
+- Access: *ADMIN, USER*
 - Server responses:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
@@ -220,12 +232,14 @@ Project is created with:
 ### Delete a single reservation:
 - Request: `DELETE` `/api/v1/reservations/{id}`
 - Parameters: `{id}` - id of reservation to delete
+- Access: *ADMIN, USER*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all checkouts on the platform:
 - Request: `GET` `/api/v1/checkouts`
+- Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -233,6 +247,7 @@ Project is created with:
 ### Retrieve all user's checkouts:
 - Request: `GET` `/api/v1/checkouts?userId={id}`
 - Parameters: `{id}` - id of a user
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
@@ -247,6 +262,7 @@ Project is created with:
      "bookId": 123
   }
   ```
+- Access: *ADMIN, USER*
 - Server responses:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource or book's reservation could not be found*
@@ -255,6 +271,7 @@ Project is created with:
 ### Return a book:
 - Request: `PATCH` `/api/v1/checkouts/return?bookId={id}`
 - Parameters: `{id}` - id of the book to return
+- Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*

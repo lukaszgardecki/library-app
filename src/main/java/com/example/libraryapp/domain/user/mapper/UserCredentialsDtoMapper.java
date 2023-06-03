@@ -6,9 +6,10 @@ import com.example.libraryapp.domain.user.dto.UserCredentialsDto;
 public class UserCredentialsDtoMapper {
 
     public static UserCredentialsDto map(User user) {
+        Long userId = user.getId();
         String email = user.getEmail();
         String password = user.getPassword();
         String role = user.getRole().getName();
-        return new UserCredentialsDto(email, password, role);
+        return new UserCredentialsDto(userId, email, password, role);
     }
 }
