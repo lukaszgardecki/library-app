@@ -13,24 +13,43 @@ Project is created with:
 - [Maven](https://maven.apache.org/)
 - [Liquibase](https://www.liquibase.org/)
 - [H2](https://www.h2database.com/html/main.html)
+- [MySQL](https://www.mysql.com/)
 - [BCrypt](https://en.wikipedia.org/wiki/Bcrypt)
 - [Swagger](https://swagger.io/specification/)
+- [Docker](https://www.docker.com/)
 - [Lombok](https://projectlombok.org/)
+
+## Run with Docker
+1. [Install Docker Compose](https://docs.docker.com/compose/install/)
+
+2. Clone the project:
+```bash
+git clone https://github.com/lukaszgardecki/library-app.git
+```
+3. Go to the project directory:
+```bash
+cd library-app
+```
+4. Run all containers:
+```bash
+docker-compose up -d
+```
+5. Please be patient. It may take a while.
 
 ## API Endpoints
 
 ### Swagger
-- Swagger is available at `/swagger-ui/index.html` endpoint.
+- Swagger is available at `http://localhost:8080/swagger-ui/index.html`.
 
 ### Retrieve all books on the platform:
-- Request: `GET` `/api/v1/books`
+- Request: `GET` `http://localhost:8080/api/v1/books`
 - Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
 
 ### Retrieve a single book:
-- Request: `GET` `/api/v1/books/{id}`
+- Request: `GET` `http://localhost:8080/api/v1/books/{id}`
 - Parameters: `{id}` - id of item to fetch
 - Access: *ALL*
 - Server responses:
@@ -38,7 +57,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Create a new book:
-- Request: `POST` `/api/v1/books`
+- Request: `POST` `http://localhost:8080/api/v1/books`
 - Request body example:
   ```
   { 
@@ -55,7 +74,7 @@ Project is created with:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
 
 ### Edit a single book:
-- Request: `PUT` `/api/v1/books`
+- Request: `PUT` `http://localhost:8080/api/v1/books`
 - Request body example:
   ```
   { 
@@ -74,7 +93,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Edit the details of a single book:
-- Request: `PATCH` `/api/v1/books/{id}`
+- Request: `PATCH` `http://localhost:8080/api/v1/books/{id}`
 - Parameters: `{id}` - id of item to update
 - Request body template:
   ```
@@ -102,7 +121,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Delete a single book:
-- Request: `DELETE` `/api/v1/books/{id}`
+- Request: `DELETE` `http://localhost:8080/api/v1/books/{id}`
 - Parameters: `{id}` - id of item to delete
 - Access: *ADMIN*
 - Server responses:
@@ -110,14 +129,14 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all users on the platform:
-- Request: `GET` `/api/v1/users`
+- Request: `GET` `http://localhost:8080/api/v1/users`
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
 
 ### Retrieve a single user:
-- Request: `GET` `/api/v1/users/{id}`
+- Request: `GET` `http://localhost:8080/api/v1/users/{id}`
 - Parameters: `{id}` - id of user to fetch
 - Access: *ADMIN, USER*
 - Server responses:
@@ -125,7 +144,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Edit the details of a single user:
-- Request: `PATCH` `/api/v1/users/{id}`
+- Request: `PATCH` `http://localhost:8080/api/v1/users/{id}`
 - Parameters: `{id}` - id of user to update
 - Request body template:
   ```
@@ -153,7 +172,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Delete a single user:
-- Request: `DELETE` `/api/v1/users/{id}`
+- Request: `DELETE` `http://localhost:8080/api/v1/users/{id}`
 - Parameters: `{id}` - id of user to delete
 - Access: *ADMIN, USER*
 - Server responses:
@@ -161,7 +180,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Sign up a new user account:
-- Request: `POST` `/api/v1/register`
+- Request: `POST` `http://localhost:8080/api/v1/register`
 - Request body example:
   ```
   { 
@@ -177,7 +196,7 @@ Project is created with:
   - **406 Not Acceptable** - *a resource could not be accessed, the user with this email already exists*
 
 ### Log in an existing user account:
-- Request: `POST` `/api/v1/login`
+- Request: `POST` `http://localhost:8080/api/v1/login`
 - Request body example:
   ```
   { 
@@ -191,14 +210,14 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., a username or password for a resource could not be found*
 
 ### Retrieve all reservations on the platform:
-- Request: `GET` `/api/v1/reservations`
+- Request: `GET` `http://localhost:8080/api/v1/reservations`
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
 
 ### Retrieve all user's reservations:
-- Request: `GET` `/api/v1/reservations?userId={id}`
+- Request: `GET` `http://localhost:8080/api/v1/reservations?userId={id}`
 - Parameters: `{id}` - id of a user
 - Access: *ADMIN, USER*
 - Server responses:
@@ -207,7 +226,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve a single reservation:
-- Request: `GET` `/api/v1/reservations/{id}`
+- Request: `GET` `http://localhost:8080/api/v1/reservations/{id}`
 - Parameters: `{id}` - id of reservation to fetch
 - Access: *ADMIN, USER*
 - Server responses:
@@ -215,7 +234,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Create a new reservation:
-- Request: `POST` `/api/v1/reservations`
+- Request: `POST` `http://localhost:8080/api/v1/reservations`
 - Request body example:
   ```
   { 
@@ -230,7 +249,7 @@ Project is created with:
   - **406 Not Acceptable** - *a resource could not be accessed, the book is already reserved*
 
 ### Delete a single reservation:
-- Request: `DELETE` `/api/v1/reservations/{id}`
+- Request: `DELETE` `http://localhost:8080/api/v1/reservations/{id}`
 - Parameters: `{id}` - id of reservation to delete
 - Access: *ADMIN, USER*
 - Server responses:
@@ -238,14 +257,14 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all checkouts on the platform:
-- Request: `GET` `/api/v1/checkouts`
+- Request: `GET` `http://localhost:8080/api/v1/checkouts`
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **204 No Content** - *request was successful, the resource is empty*
 
 ### Retrieve all user's checkouts:
-- Request: `GET` `/api/v1/checkouts?userId={id}`
+- Request: `GET` `http://localhost:8080/api/v1/checkouts?userId={id}`
 - Parameters: `{id}` - id of a user
 - Access: *ADMIN, USER*
 - Server responses:
@@ -254,7 +273,7 @@ Project is created with:
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Create a new checkout:
-- Request: `POST` `/api/v1/checkouts`
+- Request: `POST` `http://localhost:8080/api/v1/checkouts`
 - Request body example:
   ```
   { 
@@ -269,7 +288,7 @@ Project is created with:
   - **406 Not Acceptable** - *a resource could not be accessed, the book is already reserved*
 
 ### Return a book:
-- Request: `PATCH` `/api/v1/checkouts/return?bookId={id}`
+- Request: `PATCH` `http://localhost:8080/api/v1/checkouts/return?bookId={id}`
 - Parameters: `{id}` - id of the book to return
 - Access: *ADMIN, USER*
 - Server responses:
