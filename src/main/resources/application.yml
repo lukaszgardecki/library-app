@@ -5,7 +5,7 @@ spring:
     hibernate:
       ddl-auto: validate
   profiles:
-    default: dev
+    default: prod
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
