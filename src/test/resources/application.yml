@@ -1,0 +1,12 @@
+spring:
+  liquibase:
+    change-log: db/changelog/master.xml
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  profiles:
+    default: dev
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
