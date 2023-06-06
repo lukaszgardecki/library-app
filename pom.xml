@@ -99,6 +99,6 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>library-app</finalName>
     </build>
-
 </project>

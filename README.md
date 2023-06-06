@@ -30,11 +30,15 @@ git clone https://github.com/lukaszgardecki/library-app.git
 ```bash
 cd library-app
 ```
-4. Run all containers:
+4. Build a project:
+```bash
+./mvnw install
+```
+5. Run all containers:
 ```bash
 docker-compose up -d
 ```
-5. Please be patient. It may take a while.
+6. Please be patient. It may take a while.
 
 ## API Endpoints
 
