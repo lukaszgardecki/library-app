@@ -86,6 +86,8 @@ public class ReservationController {
             return ResponseEntity.noContent().build();
         } catch (ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (ReservationCannotBeDeletedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

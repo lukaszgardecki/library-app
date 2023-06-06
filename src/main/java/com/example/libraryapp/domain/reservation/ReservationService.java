@@ -87,10 +87,14 @@ public class ReservationService {
 
     @Transactional
     public void removeAReservation(Long id) {
-        if (!reservationRepository.existsById(id)) {
-            throw new ReservationNotFoundException();
-        }
-        reservationRepository.deleteById(id);
+        Reservation reservation = reservationRepository.findById(id)
+                .orElseThrow(ReservationNotFoundException::new);
+        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == reservation.getUser().getId();
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+        if (requestFromOwner || requestFromAdmin) {
+            reservation.getBook().setAvailability(true);
+            reservationRepository.deleteById(id);
+        } else throw new ReservationCannotBeDeletedException();
     }
 
     private Reservation getReservationToSave(ReservationToSaveDto reservation) {
