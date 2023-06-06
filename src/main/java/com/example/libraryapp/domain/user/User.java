@@ -1,8 +1,12 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,4 +24,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private UserRole role;
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Checkout> checkouts;
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Reservation> reservations;
 }
