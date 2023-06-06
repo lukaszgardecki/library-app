@@ -1,10 +1,7 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
-import com.example.libraryapp.domain.exception.ReservationNotFoundException;
-import com.example.libraryapp.domain.exception.UserNotFoundException;
+import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
@@ -49,12 +46,8 @@ public class ReservationController {
                 collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
                 collectionModel.add(linkTo(ReservationController.class).slash("reservations").withSelfRel());
             }
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (allUsersReservations.isEmpty()) {
-            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(collectionModel);
     }
@@ -78,13 +71,11 @@ public class ReservationController {
                     .build();
         } catch (UserNotFoundException | BookNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (ReservationCannotBeCreatedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-
         EntityModel<ReservationDto> entityModel = reservationModelAssembler.toModel(savedReservation);
-        URI savedReservationUri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedReservation.getId())
-                .toUri();
+        URI savedReservationUri = createURI(savedReservation);
         return ResponseEntity.created(savedReservationUri).body(entityModel);
     }
 
@@ -95,6 +86,15 @@ public class ReservationController {
             return ResponseEntity.noContent().build();
         } catch (ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (ReservationCannotBeDeletedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    private URI createURI(ReservationDto savedReservation) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedReservation.getId())
+                .toUri();
     }
 }

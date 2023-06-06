@@ -12,21 +12,23 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class CustomSecurityConfig {
-    private static final String USER_ROLE = "USER";
-    private static final String ADMIN_ROLE = "ADMIN";
+    public static final String USER_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/admin/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.GET, "/api/v1/reservations").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.GET, "/api/v1/checkouts").hasRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole(ADMIN_ROLE)
+
                         .requestMatchers(HttpMethod.POST, "/api/v1/books/**").hasRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.PUT, "/api/v1/books/**").hasRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/books/**").hasRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/books/**").hasRole(ADMIN_ROLE)
+
+                        .requestMatchers(HttpMethod.POST, "/api/v1/checkouts/**").hasRole(ADMIN_ROLE)
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/checkouts/**").hasRole(ADMIN_ROLE)
                         .requestMatchers(
                                 "/api/v1/users/**",
                                 "/api/v1/checkouts/**",

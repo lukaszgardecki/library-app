@@ -4,9 +4,11 @@ import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
+import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +32,6 @@ public class BookController {
     @GetMapping("/books")
     public ResponseEntity<CollectionModel<EntityModel<BookDto>>> getAllBooks() {
         List<BookDto> allBooks = bookService.findAllBooks();
-
-        if (allBooks.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         CollectionModel<EntityModel<BookDto>> collectionModel = bookModelAssembler.toCollectionModel(allBooks);
         return ResponseEntity.ok(collectionModel);
     }
@@ -66,6 +63,10 @@ public class BookController {
             return ResponseEntity.noContent().build();
         } catch (BookNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (BookIsNotAvailableException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Reason", e.getMessage())
+                    .build();
         }
     }
 

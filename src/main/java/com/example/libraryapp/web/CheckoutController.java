@@ -3,10 +3,12 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.checkout.CheckoutDto;
 import com.example.libraryapp.domain.checkout.CheckoutService;
 import com.example.libraryapp.domain.checkout.CheckoutToSaveDto;
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.config.assembler.CheckoutModelAssembler;
 import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
+import com.example.libraryapp.domain.user.UserService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -25,13 +27,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CheckoutController {
     private final CheckoutService checkoutService;
     private final ReservationService reservationService;
+    private final UserService userService;
     private final CheckoutModelAssembler checkoutModelAssembler;
 
     public CheckoutController(CheckoutService checkoutService,
                               ReservationService reservationService,
+                              UserService userService,
                               CheckoutModelAssembler checkoutModelAssembler) {
         this.checkoutService = checkoutService;
         this.reservationService = reservationService;
+        this.userService = userService;
         this.checkoutModelAssembler = checkoutModelAssembler;
     }
 
@@ -52,22 +57,28 @@ public class CheckoutController {
                 collectionModel = checkoutModelAssembler.toCollectionModel(allUserCheckouts);
                 collectionModel.add(linkTo(CheckoutController.class).slash("checkouts").withSelfRel());
             }
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | CheckoutNotFoundException e) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (allUserCheckouts.isEmpty()) {
-            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/checkouts/{id}")
     public ResponseEntity<EntityModel<CheckoutDto>> getCheckoutById(@PathVariable Long id) {
-        return checkoutService.findCheckoutById(id)
-                .map(checkoutModelAssembler::toModel)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            EntityModel<CheckoutDto> checkoutDtoEntityModel = checkoutService.findCheckoutById(id)
+                    .map(checkoutModelAssembler::toModel)
+                    .orElseThrow(CheckoutNotFoundException::new);
+            boolean requestFromOwner = userService.getCurrentLoggedInUserId() == checkoutDtoEntityModel.getContent().getUserId();
+            boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+            if (requestFromOwner || requestFromAdmin) {
+                return ResponseEntity.ok(checkoutDtoEntityModel);
+            }
+            throw new CheckoutNotFoundException();
+        } catch (CheckoutNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/checkouts")
@@ -104,7 +115,7 @@ public class CheckoutController {
         }
     }
 
-    private static URI createURI(CheckoutDto savedCheckout) {
+    private URI createURI(CheckoutDto savedCheckout) {
         return ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCheckout.getId())

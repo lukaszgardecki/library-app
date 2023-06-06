@@ -1,13 +1,18 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
+import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.helper.CardNumGenerator;
+import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.user.dto.UserCredentialsDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserRegistrationDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.example.libraryapp.domain.user.mapper.UserCredentialsDtoMapper;
 import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,20 +65,34 @@ public class UserService {
                 .map(UserDtoMapper::map);
     }
 
+    public Optional<UserDto> findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserDtoMapper::map);
+    }
+
+    public Optional<String> findUserRoleByUserId(Long id) {
+        return userRepository.findById(id)
+                .map(user -> user.getRole().getName());
+    }
+
     @Transactional
     public UserDto updateUser(Long id, UserUpdateDto user) {
         User userToUpdate = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
+        boolean currentLoggedInUserRoleIsAdmin = getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
         if (user != null) {
             if (user.getFirstName() != null) userToUpdate.setFirstName(user.getFirstName());
             if (user.getLastName() != null) userToUpdate.setLastName(user.getLastName());
+            // TODO: 05.06.2023 Email must be unique!
             if (user.getEmail() != null) userToUpdate.setEmail(user.getEmail());
             if (user.getPassword() != null) {
                 userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-            if (user.getCardNumber() != null) userToUpdate.setCardNumber(user.getCardNumber());
-            if (user.getRole() != null)  {
+            // TODO: 05.06.2023 The new card number has to be generated
+            if (currentLoggedInUserRoleIsAdmin && user.getCardNumber() != null) userToUpdate.setCardNumber(user.getCardNumber());
+            if (currentLoggedInUserRoleIsAdmin && user.getRole() != null)  {
                 UserRole userRole = userRoleRepository.findByName(user.getRole()).orElseThrow();
                 userToUpdate.setRole(userRole);
             }
@@ -83,10 +102,38 @@ public class UserService {
         return UserDtoMapper.map(userToUpdate);
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException();
-        }
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        checkIfUserHasReturnedAllBooks(user);
+        setAvailabilityOfUsersReservedBooksToTrue(user);
         userRepository.deleteById(id);
+    }
+
+    public Long getCurrentLoggedInUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByEmail(username)
+                .orElseThrow(UserNotFoundException::new)
+                .getId();
+    }
+
+    public String getCurrentLoggedInUserRole() {
+        Long userId = getCurrentLoggedInUserId();
+        return findUserRoleByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private void checkIfUserHasReturnedAllBooks(User user) {
+        Optional<Checkout> notReturnedBooks = user.getCheckouts().stream()
+                .filter(ch -> !ch.getIsReturned())
+                .findAny();
+        if (notReturnedBooks.isPresent()) throw new UserHasNotReturnedBooksException();
+    }
+
+    private void setAvailabilityOfUsersReservedBooksToTrue(User user) {
+        user.getReservations().stream()
+                .map(Reservation::getBook)
+                .forEach(b -> b.setAvailability(true));
     }
 }

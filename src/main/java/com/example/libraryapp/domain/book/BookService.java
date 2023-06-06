@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
+import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,14 +40,15 @@ public class BookService {
     }
 
     public Optional<BookDto> replaceBook(BookDto book) {
-        Long id = book.getId();
-        if (!bookRepository.existsById(id)) {
-            return Optional.empty();
+        Optional<Book> bookToUpdate = bookRepository.findById(book.getId());
+
+        if (bookToUpdate.isPresent()) {
+            Book bookToSave = BookDtoMapper.map(book);
+            bookToSave.setCheckouts(bookToUpdate.get().getCheckouts());
+            Book savedBook = bookRepository.save(bookToSave);
+            return Optional.of(BookDtoMapper.map(savedBook));
         }
-        book.setId(id);
-        Book bookToUpdate = BookDtoMapper.map(book);
-        Book savedBook = bookRepository.save(bookToUpdate);
-        return Optional.of(BookDtoMapper.map(savedBook));
+        return Optional.empty();
     }
 
     @Transactional
@@ -68,8 +70,11 @@ public class BookService {
     }
 
     public void deleteBookById(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException();
+        Book book = bookRepository.findById(id)
+                .orElseThrow(BookNotFoundException::new);
+        boolean bookIsNotAvailable = !book.getAvailability();
+        if (bookIsNotAvailable) {
+            throw new BookIsNotAvailableException();
         }
         bookRepository.deleteById(id);
     }
