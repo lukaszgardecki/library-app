@@ -40,14 +40,15 @@ public class BookService {
     }
 
     public Optional<BookDto> replaceBook(BookDto book) {
-        Long id = book.getId();
-        if (!bookRepository.existsById(id)) {
-            return Optional.empty();
+        Optional<Book> bookToUpdate = bookRepository.findById(book.getId());
+
+        if (bookToUpdate.isPresent()) {
+            Book bookToSave = BookDtoMapper.map(book);
+            bookToSave.setCheckouts(bookToUpdate.get().getCheckouts());
+            Book savedBook = bookRepository.save(bookToSave);
+            return Optional.of(BookDtoMapper.map(savedBook));
         }
-        book.setId(id);
-        Book bookToUpdate = BookDtoMapper.map(book);
-        Book savedBook = bookRepository.save(bookToUpdate);
-        return Optional.of(BookDtoMapper.map(savedBook));
+        return Optional.empty();
     }
 
     @Transactional
