@@ -1,13 +1,18 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
+import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.helper.CardNumGenerator;
+import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.user.dto.UserCredentialsDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserRegistrationDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.example.libraryapp.domain.user.mapper.UserCredentialsDtoMapper;
 import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,5 +93,31 @@ public class UserService {
             throw new UserNotFoundException();
         }
         userRepository.deleteById(id);
+    }
+
+    public Long getCurrentLoggedInUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findUserByEmail(username)
+                .orElseThrow(UserNotFoundException::new)
+                .getId();
+    }
+
+    public String getCurrentLoggedInUserRole() {
+        Long userId = getCurrentLoggedInUserId();
+        return findUserRoleByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private void checkIfUserHasReturnedAllBooks(User user) {
+        Optional<Checkout> notReturnedBooks = user.getCheckouts().stream()
+                .filter(ch -> !ch.getIsReturned())
+                .findAny();
+        if (notReturnedBooks.isPresent()) throw new UserHasNotReturnedBooksException();
+    }
+
+    private void setAvailabilityOfUsersReservedBooksToTrue(User user) {
+        user.getReservations().stream()
+                .map(Reservation::getBook)
+                .forEach(b -> b.setAvailability(true));
     }
 }

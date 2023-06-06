@@ -33,10 +33,19 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<EntityModel<UserDto>> getUserById(@PathVariable Long id) {
-        return userService.findUserById(id)
-                .map(userModelAssembler::toModel)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            boolean requestFromOwner = userService.getCurrentLoggedInUserId() == id;
+            boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+            if (requestFromOwner || requestFromAdmin) {
+                return userService.findUserById(id)
+                        .map(userModelAssembler::toModel)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build());
+            } else throw new UserNotFoundException();
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/users/{id}")
