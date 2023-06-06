@@ -1,11 +1,11 @@
 package com.example.libraryapp.domain.book;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.libraryapp.domain.checkout.Checkout;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +21,6 @@ public class Book {
     private Integer pages;
     private String isbn;
     private Boolean availability;
+    @OneToMany(mappedBy = "book", orphanRemoval = true)
+    private List<Checkout> checkouts;
 }
