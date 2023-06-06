@@ -88,4 +88,11 @@ public class ReservationController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    private URI createURI(ReservationDto savedReservation) {
+        return ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedReservation.getId())
+                .toUri();
+    }
 }
