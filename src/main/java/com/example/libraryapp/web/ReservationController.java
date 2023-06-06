@@ -71,13 +71,11 @@ public class ReservationController {
                     .build();
         } catch (UserNotFoundException | BookNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (ReservationCannotBeCreatedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-
         EntityModel<ReservationDto> entityModel = reservationModelAssembler.toModel(savedReservation);
-        URI savedReservationUri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedReservation.getId())
-                .toUri();
+        URI savedReservationUri = createURI(savedReservation);
         return ResponseEntity.created(savedReservationUri).body(entityModel);
     }
 

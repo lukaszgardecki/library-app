@@ -68,16 +68,21 @@ public class ReservationService {
     public ReservationDto makeAReservation(ReservationToSaveDto reservation) {
         Book book = bookRepository.findById(reservation.getBookId())
                 .orElseThrow(BookNotFoundException::new);
-        boolean bookIsAvailable = book.getAvailability();
+        userRepository.findById(reservation.getUserId())
+                .orElseThrow(UserNotFoundException::new);
 
-        if (bookIsAvailable) {
+        boolean bookIsAvailable = book.getAvailability();
+        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == reservation.getUserId();
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+        if (bookIsAvailable && (requestFromOwner || requestFromAdmin)) {
             Reservation reservationToSave = getReservationToSave(reservation);
             Reservation savedReservation = reservationRepository.save(reservationToSave);
             book.setAvailability(Boolean.FALSE);
             return ReservationDtoMapper.map(savedReservation);
-        } else {
-            throw new BookIsNotAvailableException();
         }
+        else if (!bookIsAvailable) throw new BookIsNotAvailableException();
+        else throw new ReservationCannotBeCreatedException();
     }
 
     @Transactional
