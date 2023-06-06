@@ -12,8 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class CustomSecurityConfig {
-    private static final String USER_ROLE = "USER";
-    private static final String ADMIN_ROLE = "ADMIN";
+    public static final String USER_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

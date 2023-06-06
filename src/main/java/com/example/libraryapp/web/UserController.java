@@ -1,12 +1,16 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
+import com.example.libraryapp.domain.exception.CannotUpdateUserDataException;
+import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.user.UserService;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,11 +76,18 @@ public class UserController {
     @PatchMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateDto user) {
         try {
-            UserDto updatedUser = userService.updateUser(id, user);
-            EntityModel<UserDto> entityModel = userModelAssembler.toModel(updatedUser);
-            return ResponseEntity.ok(entityModel);
+            boolean isDataOwner = userService.getCurrentLoggedInUserId() == id;
+            boolean isAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+            if (isDataOwner || isAdmin) {
+                UserDto updatedUser = userService.updateUser(id, user);
+                EntityModel<UserDto> entityModel = userModelAssembler.toModel(updatedUser);
+                return ResponseEntity.ok(entityModel);
+            } else throw new CannotUpdateUserDataException();
         } catch (UserNotFoundException | NullPointerException e) {
             return ResponseEntity.notFound().build();
+        } catch (CannotUpdateUserDataException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }

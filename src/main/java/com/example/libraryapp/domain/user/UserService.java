@@ -65,20 +65,34 @@ public class UserService {
                 .map(UserDtoMapper::map);
     }
 
+    public Optional<UserDto> findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(UserDtoMapper::map);
+    }
+
+    public Optional<String> findUserRoleByUserId(Long id) {
+        return userRepository.findById(id)
+                .map(user -> user.getRole().getName());
+    }
+
     @Transactional
     public UserDto updateUser(Long id, UserUpdateDto user) {
         User userToUpdate = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
+        boolean currentLoggedInUserRoleIsAdmin = getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
         if (user != null) {
             if (user.getFirstName() != null) userToUpdate.setFirstName(user.getFirstName());
             if (user.getLastName() != null) userToUpdate.setLastName(user.getLastName());
+            // TODO: 05.06.2023 Email must be unique!
             if (user.getEmail() != null) userToUpdate.setEmail(user.getEmail());
             if (user.getPassword() != null) {
                 userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-            if (user.getCardNumber() != null) userToUpdate.setCardNumber(user.getCardNumber());
-            if (user.getRole() != null)  {
+            // TODO: 05.06.2023 The new card number has to be generated
+            if (currentLoggedInUserRoleIsAdmin && user.getCardNumber() != null) userToUpdate.setCardNumber(user.getCardNumber());
+            if (currentLoggedInUserRoleIsAdmin && user.getRole() != null)  {
                 UserRole userRole = userRoleRepository.findByName(user.getRole()).orElseThrow();
                 userToUpdate.setRole(userRole);
             }
