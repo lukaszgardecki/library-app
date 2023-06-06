@@ -27,9 +27,6 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<CollectionModel<EntityModel<UserDto>>> getAllUsers() {
         List<UserDto> allUsers = userService.findAllUsers();
-        if (allUsers.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         CollectionModel<EntityModel<UserDto>> collectionModel = userModelAssembler.toCollectionModel(allUsers);
         return ResponseEntity.ok(collectionModel);
     }
