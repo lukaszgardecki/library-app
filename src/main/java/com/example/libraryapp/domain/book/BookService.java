@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
+import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,8 +69,11 @@ public class BookService {
     }
 
     public void deleteBookById(Long id) {
-        if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException();
+        Book book = bookRepository.findById(id)
+                .orElseThrow(BookNotFoundException::new);
+        boolean bookIsNotAvailable = !book.getAvailability();
+        if (bookIsNotAvailable) {
+            throw new BookIsNotAvailableException();
         }
         bookRepository.deleteById(id);
     }
