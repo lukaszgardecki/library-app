@@ -2,12 +2,11 @@ package com.example.libraryapp.domain.reservation;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
-import com.example.libraryapp.domain.exception.ReservationNotFoundException;
-import com.example.libraryapp.domain.exception.UserNotFoundException;
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
+import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.user.User;
 import com.example.libraryapp.domain.user.UserRepository;
+import com.example.libraryapp.domain.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,27 +21,42 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public ReservationService(ReservationRepository reservationRepository, BookRepository bookRepository, UserRepository userRepository) {
+    public ReservationService(ReservationRepository reservationRepository,
+                              BookRepository bookRepository,
+                              UserRepository userRepository,
+                              UserService userService) {
         this.reservationRepository = reservationRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<ReservationDto> findAllReservations() {
-        return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
-                .map(ReservationDtoMapper::map)
-                .toList();
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+        if (requestFromAdmin) {
+            return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
+                    .map(ReservationDtoMapper::map)
+                    .toList();
+        }
+        throw new ReservationNotFoundException();
     }
 
     public List<ReservationDto> findReservationsByUserId(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
-                .filter(res -> res.getUser().getId() == userId)
-                .map(ReservationDtoMapper::map)
-                .toList();
+        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == userId;
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+        if (requestFromOwner || requestFromAdmin) {
+            return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
+                    .filter(res -> res.getUser().getId() == userId)
+                    .map(ReservationDtoMapper::map)
+                    .toList();
+        }
+        throw new ReservationNotFoundException();
     }
 
     public Optional<ReservationDto> findReservationById(Long id) {

@@ -1,10 +1,7 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
-import com.example.libraryapp.domain.exception.ReservationNotFoundException;
-import com.example.libraryapp.domain.exception.UserNotFoundException;
+import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
@@ -49,12 +46,8 @@ public class ReservationController {
                 collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
                 collectionModel.add(linkTo(ReservationController.class).slash("reservations").withSelfRel());
             }
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (allUsersReservations.isEmpty()) {
-            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(collectionModel);
     }
