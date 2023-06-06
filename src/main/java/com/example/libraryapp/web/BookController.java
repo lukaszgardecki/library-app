@@ -30,11 +30,6 @@ public class BookController {
     @GetMapping("/books")
     public ResponseEntity<CollectionModel<EntityModel<BookDto>>> getAllBooks() {
         List<BookDto> allBooks = bookService.findAllBooks();
-
-        if (allBooks.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         CollectionModel<EntityModel<BookDto>> collectionModel = bookModelAssembler.toCollectionModel(allBooks);
         return ResponseEntity.ok(collectionModel);
     }
