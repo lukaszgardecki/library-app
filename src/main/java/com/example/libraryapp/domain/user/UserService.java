@@ -88,10 +88,12 @@ public class UserService {
         return UserDtoMapper.map(userToUpdate);
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException();
-        }
+        User user = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+        checkIfUserHasReturnedAllBooks(user);
+        setAvailabilityOfUsersReservedBooksToTrue(user);
         userRepository.deleteById(id);
     }
 

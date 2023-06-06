@@ -51,10 +51,21 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
         try {
-            userService.deleteUserById(id);
-            return ResponseEntity.noContent().build();
+            boolean requestFromOwner = userService.getCurrentLoggedInUserId() == id;
+            boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+            if (requestFromOwner || requestFromAdmin) {
+                userService.deleteUserById(id);
+                return ResponseEntity.noContent().build();
+            } else throw new CannotUpdateUserDataException();
         } catch (UserNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (CannotUpdateUserDataException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (UserHasNotReturnedBooksException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Reason", "User's books are not returned.")
+                    .build();
         }
     }
 
