@@ -52,12 +52,8 @@ public class CheckoutController {
                 collectionModel = checkoutModelAssembler.toCollectionModel(allUserCheckouts);
                 collectionModel.add(linkTo(CheckoutController.class).slash("checkouts").withSelfRel());
             }
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException | CheckoutNotFoundException e) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (allUserCheckouts.isEmpty()) {
-            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(collectionModel);
     }
@@ -104,7 +100,7 @@ public class CheckoutController {
         }
     }
 
-    private static URI createURI(CheckoutDto savedCheckout) {
+    private URI createURI(CheckoutDto savedCheckout) {
         return ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCheckout.getId())

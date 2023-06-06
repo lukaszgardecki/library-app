@@ -2,11 +2,14 @@ package com.example.libraryapp.domain.checkout;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
+import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.exception.BookIsAlreadyReturnedException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
+import com.example.libraryapp.domain.exception.CheckoutNotFoundException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.user.User;
 import com.example.libraryapp.domain.user.UserRepository;
+import com.example.libraryapp.domain.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,27 +24,43 @@ public class CheckoutService {
     private final CheckoutRepository checkoutRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public CheckoutService(CheckoutRepository checkoutRepository, BookRepository bookRepository, UserRepository userRepository) {
+    public CheckoutService(CheckoutRepository checkoutRepository,
+                           BookRepository bookRepository,
+                           UserRepository userRepository,
+                           UserService userService) {
         this.checkoutRepository = checkoutRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public List<CheckoutDto> findAllCheckouts() {
-        return StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
-                .map(CheckoutDtoMapper::map)
-                .toList();
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+        if (requestFromAdmin) {
+            return StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
+                    .map(CheckoutDtoMapper::map)
+                    .toList();
+        }
+        throw new CheckoutNotFoundException();
     }
 
     public List<CheckoutDto> findCheckoutsByUserId(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        return StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
-                .filter(checkout -> checkout.getUser().getId() == userId)
-                .map(CheckoutDtoMapper::map)
-                .toList();
+        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == userId;
+        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+
+        if (requestFromOwner || requestFromAdmin) {
+            return StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
+                    .filter(checkout -> checkout.getUser().getId() == userId)
+                    .map(CheckoutDtoMapper::map)
+                    .toList();
+        }
+        throw new CheckoutNotFoundException();
     }
 
     public Optional<CheckoutDto> findCheckoutById(Long id) {
