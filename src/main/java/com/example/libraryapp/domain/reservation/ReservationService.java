@@ -2,7 +2,6 @@ package com.example.libraryapp.domain.reservation;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
-import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.user.User;
 import com.example.libraryapp.domain.user.UserRepository;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -34,9 +34,8 @@ public class ReservationService {
     }
 
     public List<ReservationDto> findAllReservations() {
-        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
-
-        if (requestFromAdmin) {
+        boolean currentLoggedInUserIsAdmin = userService.checkIfCurrentLoggedInUserIsAdmin();
+        if (currentLoggedInUserIsAdmin) {
             return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
                     .map(ReservationDtoMapper::map)
                     .toList();
@@ -48,11 +47,11 @@ public class ReservationService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == userId;
-        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
-        if (requestFromOwner || requestFromAdmin) {
+        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(userId);
+
+        if (userIsAdminOrDataOwner) {
             return StreamSupport.stream(reservationRepository.findAll().spliterator(), false)
-                    .filter(res -> res.getUser().getId() == userId)
+                    .filter(res -> Objects.equals(res.getUser().getId(), userId))
                     .map(ReservationDtoMapper::map)
                     .toList();
         }
@@ -61,6 +60,7 @@ public class ReservationService {
 
     public Optional<ReservationDto> findReservationById(Long id) {
         return reservationRepository.findById(id)
+                .filter(res -> userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(res.getUser().getId()))
                 .map(ReservationDtoMapper::map);
     }
 
@@ -72,10 +72,9 @@ public class ReservationService {
                 .orElseThrow(UserNotFoundException::new);
 
         boolean bookIsAvailable = book.getAvailability();
-        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == reservation.getUserId();
-        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(reservation.getUserId());
 
-        if (bookIsAvailable && (requestFromOwner || requestFromAdmin)) {
+        if (bookIsAvailable && userIsAdminOrDataOwner) {
             Reservation reservationToSave = getReservationToSave(reservation);
             Reservation savedReservation = reservationRepository.save(reservationToSave);
             book.setAvailability(Boolean.FALSE);
@@ -89,9 +88,8 @@ public class ReservationService {
     public void removeAReservation(Long id) {
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(ReservationNotFoundException::new);
-        boolean requestFromOwner = userService.getCurrentLoggedInUserId() == reservation.getUser().getId();
-        boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
-        if (requestFromOwner || requestFromAdmin) {
+        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(reservation.getUser().getId());
+        if (userIsAdminOrDataOwner) {
             reservation.getBook().setAvailability(true);
             reservationRepository.deleteById(id);
         } else throw new ReservationCannotBeDeletedException();

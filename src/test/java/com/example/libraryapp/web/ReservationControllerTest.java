@@ -10,12 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class ReservationControllerTest {
 
     @Autowired
@@ -87,6 +90,42 @@ public class ReservationControllerTest {
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "1, 5, 1",
+            "2, 23, 2",
+            "3, 12, 3",
+            "4, 7, 4",
+            "5, 25, 5",
+            "6, 16, 6"
+    })
+    void shouldReturnAnExistingReservationIfAdminRequested(Long userId, Long bookId, Long reservationId) {
+        UserDto user = findUserById(userId);
+        BookDto book = findBookById(bookId);
+
+        ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("admin@example.com", "adminpass")
+                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ReservationDto returnedReservation = getReservationFromResponse(getResponse);
+        assertThat(returnedReservation.getId()).isNotNull();
+        assertThat(returnedReservation.getStartTime()).isNotNull();
+        assertThat(returnedReservation.getEndTime()).isNotNull();
+        assertThat(returnedReservation.getUserId()).isEqualTo(user.getId());
+        assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
+        assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
+        assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
+        assertThat(returnedReservation.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
+        assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
+        assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
+        assertThat(returnedReservation.getBookPublisher()).isEqualTo(book.getPublisher());
+        assertThat(returnedReservation.getBookReleaseYear()).isEqualTo(book.getRelease_year());
+        assertThat(returnedReservation.getBookPages()).isEqualTo(book.getPages());
+        assertThat(returnedReservation.getBookIsbn()).isEqualTo(book.getIsbn());
+    }
+
     @Test
     void shouldReturnAnExistingReservationIfUserRequestedAndDoesOwnThisData() {
         UserDto user = findUserById(2L);
@@ -119,10 +158,10 @@ public class ReservationControllerTest {
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
-    void shouldNotReturnAnExistingReservationIfUserRequestedAndDoesNotOwnThisData(Long userId) {
+    void shouldNotReturnAnExistingReservationIfUserRequestedAndDoesNotOwnThisData(Long reservationId) {
         ResponseEntity<String> getResponse = restTemplate
                 .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts/" + userId, String.class);
+                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -149,6 +188,7 @@ public class ReservationControllerTest {
 
     @Test
     @DirtiesContext
+    @Transactional
     void shouldMakeAReservationIfUserIsAuthenticated() {
         ReservationToSaveDto reservationToSave = createPostRequestBody(2L, 67L);
         UserDto user = findUserById(2L);
@@ -235,6 +275,7 @@ public class ReservationControllerTest {
 
     @ParameterizedTest
     @DirtiesContext
+    @Transactional
     @CsvSource({
             "1, 5",
             "2, 23",
@@ -263,7 +304,8 @@ public class ReservationControllerTest {
 
     @Test
     @DirtiesContext
-    void shouldDeleteAReservationIfUserRequestedAndReservationIdBelongsToTheir() { //ok
+    @Transactional
+    void shouldDeleteAReservationIfUserRequestedAndReservationIdBelongsToTheir() {
         BookDto bookBefore = findBookById(23L);
         assertThat(bookBefore.getAvailability()).isEqualTo(false);
 
@@ -284,7 +326,7 @@ public class ReservationControllerTest {
     @Test
     void shouldNotDeleteAReservationIfUserRequestedAndReservationIdIsNotTheir() {
         ResponseEntity<String> getResponseBeforeDeleting = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
+                .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/reservations/1", String.class);
         assertThat(getResponseBeforeDeleting.getStatusCode()).isEqualTo(HttpStatus.OK);
         ReservationDto reservationBeforeDeleting = getReservationFromResponse(getResponseBeforeDeleting);
@@ -298,7 +340,7 @@ public class ReservationControllerTest {
         assertThat(bookAfter.getAvailability()).isEqualTo(false);
         
         ResponseEntity<String> getResponseAfterDeleting = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
+                .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/reservations/1", String.class);
         assertThat(getResponseAfterDeleting.getStatusCode()).isEqualTo(HttpStatus.OK);
         ReservationDto reservationAfterDeleting = getReservationFromResponse(getResponseAfterDeleting);
@@ -325,6 +367,14 @@ public class ReservationControllerTest {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/reservations/1", HttpMethod.DELETE, null, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    void shouldNotDeleteAReservationThatDoesNotExist() {
+        ResponseEntity<Void> deleteResponse = restTemplate
+                .withBasicAuth("admin@example.com", "adminpass")
+                .exchange("/api/v1/reservations/99999999", HttpMethod.DELETE, null, Void.class);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     private ReservationToSaveDto createPostRequestBody(Long userId, Long bookId) {
@@ -372,7 +422,6 @@ public class ReservationControllerTest {
 
     private BookDto findBookById(Long bookId) {
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/books/" + bookId, String.class);
 
         BookDto dto = new BookDto();
