@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset lukas:0003
 insert into
     checkout(start_time, end_time, book_id, user_id, is_returned)
 values

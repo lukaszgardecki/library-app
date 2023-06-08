@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset lukas:0004
 insert into
     reservation (start_time, end_time, book_id, user_id)
 values

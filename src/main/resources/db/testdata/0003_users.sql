@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset lukas:0002
 insert into
     users(first_name, last_name, email, password, card_number, role_id)
 values

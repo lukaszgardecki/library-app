@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset lukas:0001
 insert into book (title, author, publisher, release_year, pages, isbn, availability) values ('Born Rich', 'Olga Cannavan', 'Sharla Tetley', 2004, 555, '428112213-3', true);
 insert into book (title, author, publisher, release_year, pages, isbn, availability) values ('Sut (Milk)', 'Adlai Mapham', 'Stanford Meagh', 1997, 509, '684253542-5', true);
 insert into book (title, author, publisher, release_year, pages, isbn, availability) values ('Brothers of the Head', 'Dael Menichelli', 'Crichton Joerning', 1989, 10, '392072918-8', false);

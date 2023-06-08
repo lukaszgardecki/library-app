@@ -5,7 +5,7 @@ A library management system that allows you to store, retrieve, update and delet
 ## Technologies and libraries
 Project is created with:
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html)
-- [Spring Boot 6](https://spring.io/projects/spring-boot)
+- [Spring Boot 3.1](https://spring.io/projects/spring-boot)
 - [Spring Data JPA](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
 - [Spring HATEOAS](https://docs.spring.io/spring-hateoas/docs/current/reference/html/)
 - [Spring Security](https://spring.io/projects/spring-security)
