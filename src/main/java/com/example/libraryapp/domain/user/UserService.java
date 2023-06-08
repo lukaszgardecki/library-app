@@ -5,7 +5,6 @@ import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.helper.CardNumGenerator;
-import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.user.dto.UserCredentialsDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserRegistrationDto;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -54,10 +54,11 @@ public class UserService {
         return UserDtoMapper.map(user);
     }
 
-    public List<UserDto> findAllUsers() {
-        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
+    public Optional<List<UserDto>> findAllUsers() {
+        return Optional.of(StreamSupport.stream(userRepository.findAll().spliterator(), false)
+                .filter(user -> checkIfCurrentLoggedInUserIsAdminOrDataOwner(user.getId()))
                 .map(UserDtoMapper::map)
-                .toList();
+                .toList());
     }
 
     public Optional<UserDto> findUserById(Long id) {
@@ -107,18 +108,28 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
         checkIfUserHasReturnedAllBooks(user);
-        setAvailabilityOfUsersReservedBooksToTrue(user);
+        user.cancelAllReservations();
         userRepository.deleteById(id);
     }
 
-    public Long getCurrentLoggedInUserId() {
+    public boolean checkIfCurrentLoggedInUserIsAdmin() {
+         return checkIfCurrentLoggedInUserIsAdminOrDataOwner(null);
+    }
+
+    public boolean checkIfCurrentLoggedInUserIsAdminOrDataOwner(Long userId) {
+        boolean isOwner = Objects.equals(getCurrentLoggedInUserId(), userId);
+        boolean isAdmin = getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
+        return isOwner || isAdmin;
+    }
+
+    private Long getCurrentLoggedInUserId() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return findUserByEmail(username)
                 .orElseThrow(UserNotFoundException::new)
                 .getId();
     }
 
-    public String getCurrentLoggedInUserRole() {
+    private String getCurrentLoggedInUserRole() {
         Long userId = getCurrentLoggedInUserId();
         return findUserRoleByUserId(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -129,11 +140,5 @@ public class UserService {
                 .filter(ch -> !ch.getIsReturned())
                 .findAny();
         if (notReturnedBooks.isPresent()) throw new UserHasNotReturnedBooksException();
-    }
-
-    private void setAvailabilityOfUsersReservedBooksToTrue(User user) {
-        user.getReservations().stream()
-                .map(Reservation::getBook)
-                .forEach(b -> b.setAvailability(true));
     }
 }
