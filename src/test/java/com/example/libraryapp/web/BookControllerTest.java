@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
@@ -15,12 +16,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class BookControllerTest {
 
     @Autowired
@@ -37,7 +40,7 @@ public class BookControllerTest {
     }
 
     @Test
-    void shouldReturnABookWhenDataIsSaved() {
+    void shouldReturnAnExistingBook() {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/api/v1/books/1", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -66,6 +69,7 @@ public class BookControllerTest {
 
     @Test
     @DirtiesContext
+    @Transactional
     void shouldCreateANewBookIfAdminRequested() {
         BookToSaveDto bookToSaveDto = getBookToSaveDto();
         ResponseEntity<String> createResponse = restTemplate
@@ -100,7 +104,16 @@ public class BookControllerTest {
     }
 
     @Test
+    void shouldNotCreateANewBookIfUnauthenticatedUserRequested() {
+        BookToSaveDto bookToSaveDto = getBookToSaveDto();
+        ResponseEntity<String> createResponse = restTemplate
+                .postForEntity("/api/v1/books", bookToSaveDto, String.class);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
     @DirtiesContext
+    @Transactional
     void shouldUpdateAnExistingBookIfAdminRequested() {
         BookDto bookToUpdate = getBookDto();
         HttpEntity<BookDto> request = new HttpEntity<>(bookToUpdate);
@@ -135,6 +148,15 @@ public class BookControllerTest {
     }
 
     @Test
+    void shouldNotUpdateAnExistingBookIfUnauthenticatedUserRequested() {
+        BookDto bookToUpdate = getBookDto();
+        HttpEntity<BookDto> request = new HttpEntity<>(bookToUpdate);
+        ResponseEntity<String> putResponse = restTemplate
+                .exchange("/api/v1/books", HttpMethod.PUT, request, String.class);
+        assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
     void shouldNotUpdateABookThatDoesNotExist() {
         BookDto bookToUpdate = getBookDto();
         bookToUpdate.setId(999999L);
@@ -145,9 +167,9 @@ public class BookControllerTest {
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-
     @ParameterizedTest
     @DirtiesContext
+    @Transactional
     @CsvSource({
             "1", "2", "5", "10", "60", "123", "234", "345", "456"
     })
@@ -167,7 +189,6 @@ public class BookControllerTest {
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/books/" + bookId, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -198,6 +219,20 @@ public class BookControllerTest {
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "1", "2", "5", "10", "60", "123", "234", "345", "456"
+    })
+    void shouldNotPartiallyUpdateAnExistingBookIfUnauthorizedUserRequested(Long bookId) {
+        BookDto bookFieldsToUpdate = getBookDtoToPartialUpdate();
+        HttpEntity<BookDto> request = new HttpEntity<>(bookFieldsToUpdate);
+
+        ResponseEntity<Void> patchResponse = restTemplate
+                .getRestTemplate()
+                .exchange("/api/v1/books/" + bookId, HttpMethod.PATCH, request, Void.class);
+        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
     @Test
     void shouldNotPartiallyUpdateABookThatDoesNotExist() {
         BookDto bookFieldsToUpdate = getBookDtoToPartialUpdate();
@@ -212,6 +247,7 @@ public class BookControllerTest {
 
     @Test
     @DirtiesContext
+    @Transactional
     void shouldDeleteAnExistingBookIfAdminRequested() {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .withBasicAuth("admin@example.com", "adminpass")
@@ -219,7 +255,6 @@ public class BookControllerTest {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/books/1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -253,6 +288,14 @@ public class BookControllerTest {
                 .exchange("/api/v1/books/999999", HttpMethod.DELETE, null, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    void shouldNotDeleteBookIfUnauthenticatedUserRequested() {
+        ResponseEntity<Void> deleteResponse = restTemplate
+                .exchange("/api/v1/books/4", HttpMethod.DELETE, null, Void.class);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
 
     private BookToSaveDto getBookToSaveDto() {
         BookToSaveDto bookToSaveDto = new BookToSaveDto();
