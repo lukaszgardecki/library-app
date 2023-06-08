@@ -10,12 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 public class CheckoutControllerTest {
 
     @Autowired
@@ -77,6 +80,14 @@ public class CheckoutControllerTest {
     }
 
     @Test
+    void shouldNotReturnAllUsersCheckoutsIfUserIdDoesNotExist() {
+        ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("admin@example.com", "adminpass")
+                .getForEntity("/api/v1/checkouts?userId=99999999", String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
     void shouldNotReturnAllCheckoutsIfUserIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/checkouts", String.class);
@@ -85,6 +96,43 @@ public class CheckoutControllerTest {
         getResponse = restTemplate
                 .getForEntity("/api/v1/checkouts?userId=1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, 1, 1",
+            "2, 2, 2",
+            "1, 3, 3",
+            "4, 4, 4",
+            "1, 19, 5",
+            "6, 6, 6"
+    })
+    void shouldReturnAnExistingCheckoutIfAdminRequested(Long userId, Long bookId, Long checkoutId) {
+        UserDto user = findUserById(userId);
+        BookDto book = findBookById(bookId);
+
+        ResponseEntity<String> getResponse = restTemplate
+                .withBasicAuth("admin@example.com", "adminpass")
+                .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
+        assertThat(returnedCheckout.getId()).isNotNull();
+        assertThat(returnedCheckout.getStartTime()).isNotNull();
+        assertThat(returnedCheckout.getEndTime()).isNotNull();
+        assertThat(returnedCheckout.getUserId()).isEqualTo(user.getId());
+        assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
+        assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
+        assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
+        assertThat(returnedCheckout.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
+        assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
+        assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
+        assertThat(returnedCheckout.getBookPublisher()).isEqualTo(book.getPublisher());
+        assertThat(returnedCheckout.getBookReleaseYear()).isEqualTo(book.getRelease_year());
+        assertThat(returnedCheckout.getBookPages()).isEqualTo(book.getPages());
+        assertThat(returnedCheckout.getBookIsbn()).isEqualTo(book.getIsbn());
+        assertThat(returnedCheckout.getIsReturned()).isEqualTo(book.getAvailability());
     }
 
     @Test
@@ -150,6 +198,7 @@ public class CheckoutControllerTest {
 
     @ParameterizedTest
     @DirtiesContext
+    @Transactional
     @CsvSource({
             "1, 5, 1",
             "2, 23, 2",
@@ -267,6 +316,7 @@ public class CheckoutControllerTest {
 
     @ParameterizedTest
     @DirtiesContext
+    @Transactional
     @CsvSource({
             "3, 3",
             "4, 4",
