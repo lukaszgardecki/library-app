@@ -3,12 +3,13 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.checkout.CheckoutDto;
 import com.example.libraryapp.domain.checkout.CheckoutService;
 import com.example.libraryapp.domain.checkout.CheckoutToSaveDto;
-import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.config.assembler.CheckoutModelAssembler;
-import com.example.libraryapp.domain.exception.*;
+import com.example.libraryapp.domain.exception.BookIsAlreadyReturnedException;
+import com.example.libraryapp.domain.exception.BookNotFoundException;
+import com.example.libraryapp.domain.exception.ReservationNotFoundException;
+import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
-import com.example.libraryapp.domain.user.UserService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Objects;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -27,16 +28,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CheckoutController {
     private final CheckoutService checkoutService;
     private final ReservationService reservationService;
-    private final UserService userService;
     private final CheckoutModelAssembler checkoutModelAssembler;
 
     public CheckoutController(CheckoutService checkoutService,
                               ReservationService reservationService,
-                              UserService userService,
                               CheckoutModelAssembler checkoutModelAssembler) {
         this.checkoutService = checkoutService;
         this.reservationService = reservationService;
-        this.userService = userService;
         this.checkoutModelAssembler = checkoutModelAssembler;
     }
 
@@ -44,41 +42,27 @@ public class CheckoutController {
     @GetMapping("/checkouts")
     public ResponseEntity<CollectionModel<EntityModel<CheckoutDto>>> getAllCheckouts(
             @RequestParam(required = false) Long userId) {
-        List<CheckoutDto> allUserCheckouts;
-        CollectionModel<EntityModel<CheckoutDto>> collectionModel;
-
-        try {
-            if (userId != null) {
-                allUserCheckouts = checkoutService.findCheckoutsByUserId(userId);
-                collectionModel = checkoutModelAssembler.toCollectionModel(allUserCheckouts);
-                collectionModel.add(linkTo(methodOn(CheckoutController.class).getAllCheckouts(userId)).withSelfRel());
-            } else {
-                allUserCheckouts = checkoutService.findAllCheckouts();
-                collectionModel = checkoutModelAssembler.toCollectionModel(allUserCheckouts);
-                collectionModel.add(linkTo(CheckoutController.class).slash("checkouts").withSelfRel());
-            }
-        } catch (UserNotFoundException | CheckoutNotFoundException e) {
-            return ResponseEntity.notFound().build();
+        if (userId != null) {
+            return checkoutService.findCheckoutsByUserId(userId)
+                    .map(checkoutModelAssembler::toCollectionModel)
+                    .map(model -> model.add(linkTo(methodOn(CheckoutController.class).getAllCheckouts(userId)).withSelfRel()))
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } else {
+            return checkoutService.findAllCheckouts()
+                    .map(checkoutModelAssembler::toCollectionModel)
+                    .map(model -> model.add(linkTo(CheckoutController.class).slash("checkouts").withSelfRel()))
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
         }
-        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/checkouts/{id}")
     public ResponseEntity<EntityModel<CheckoutDto>> getCheckoutById(@PathVariable Long id) {
-        try {
-            EntityModel<CheckoutDto> checkoutDtoEntityModel = checkoutService.findCheckoutById(id)
-                    .map(checkoutModelAssembler::toModel)
-                    .orElseThrow(CheckoutNotFoundException::new);
-            boolean requestFromOwner = userService.getCurrentLoggedInUserId() == checkoutDtoEntityModel.getContent().getUserId();
-            boolean requestFromAdmin = userService.getCurrentLoggedInUserRole().equals(CustomSecurityConfig.ADMIN_ROLE);
-
-            if (requestFromOwner || requestFromAdmin) {
-                return ResponseEntity.ok(checkoutDtoEntityModel);
-            }
-            throw new CheckoutNotFoundException();
-        } catch (CheckoutNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return checkoutService.findCheckoutById(id)
+                .map(checkoutModelAssembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/checkouts")
@@ -88,10 +72,6 @@ public class CheckoutController {
             ReservationDto reservation = checkReservation(checkout);
             savedCheckout = checkoutService.borrowABook(checkout);
             reservationService.removeAReservation(reservation.getId());
-        } catch (BookIsNotAvailableException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .header("Reason", e.getMessage())
-                    .build();
         } catch (UserNotFoundException | BookNotFoundException | ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -124,7 +104,7 @@ public class CheckoutController {
 
     private ReservationDto checkReservation(CheckoutToSaveDto checkout) {
         return reservationService.findReservationsByUserId(checkout.getUserId()).stream()
-                .filter(res -> res.getBookId() == checkout.getBookId())
+                .filter(res -> Objects.equals(res.getBookId(), checkout.getBookId()))
                 .findFirst()
                 .orElseThrow(ReservationNotFoundException::new);
     }
