@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.checkout.Checkout;
 import com.example.libraryapp.domain.reservation.Reservation;
 import jakarta.persistence.*;
@@ -28,4 +29,8 @@ public class User {
     private List<Checkout> checkouts;
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Reservation> reservations;
+
+    public void cancelAllReservations() {
+        reservations.forEach(res -> res.getBook().setAvailability(true));
+    }
 }
