@@ -44,7 +44,7 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.notFound().build();
         }
-        return userService.findAllUsers().stream()
+        return userService.findAllUsers().get().stream()
                 .filter(u -> u.getEmail().equals(loginDto.getUsername()))
                 .map(userModelAssembler::toModel)
                 .map(ResponseEntity::ok)
