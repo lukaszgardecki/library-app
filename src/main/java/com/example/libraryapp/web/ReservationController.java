@@ -33,10 +33,9 @@ public class ReservationController {
     @GetMapping("/reservations")
     public ResponseEntity<CollectionModel<EntityModel<ReservationDto>>> getAllReservations(
             @RequestParam(required = false) Long userId) {
-        List<ReservationDto> allUsersReservations;
-        CollectionModel<EntityModel<ReservationDto>> collectionModel;
-
         try {
+            List<ReservationDto> allUsersReservations;
+            CollectionModel<EntityModel<ReservationDto>> collectionModel;
             if (userId != null) {
                 allUsersReservations = reservationService.findReservationsByUserId(userId);
                 collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
@@ -46,10 +45,10 @@ public class ReservationController {
                 collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
                 collectionModel.add(linkTo(ReservationController.class).slash("reservations").withSelfRel());
             }
+            return ResponseEntity.ok(collectionModel);
         } catch (UserNotFoundException | ReservationNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/reservations/{id}")
@@ -57,7 +56,7 @@ public class ReservationController {
         return reservationService.findReservationById(id)
                 .map(reservationModelAssembler::toModel)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/reservations")
