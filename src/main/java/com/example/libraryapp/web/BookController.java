@@ -53,7 +53,7 @@ public class BookController {
         return bookService.findBookById(id)
                 .map(bookModelAssembler::toModel)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/books/{id}")
