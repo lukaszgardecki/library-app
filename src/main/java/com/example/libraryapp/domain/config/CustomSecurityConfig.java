@@ -19,22 +19,16 @@ public class CustomSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/admin/**").hasRole(ADMIN_ROLE)
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole(ADMIN_ROLE)
-
-                        .requestMatchers(HttpMethod.POST, "/api/v1/books/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/books/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.PATCH, "/api/v1/books/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/books/**").hasRole(ADMIN_ROLE)
-
-                        .requestMatchers(HttpMethod.POST, "/api/v1/checkouts/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(HttpMethod.PATCH, "/api/v1/checkouts/**").hasRole(ADMIN_ROLE)
-                        .requestMatchers(
-                                "/api/v1/users/**",
-                                "/api/v1/checkouts/**",
-                                "/api/v1/reservations/**"
-                        ).authenticated()
-                        .anyRequest().permitAll())
+                        .requestMatchers(HttpMethod.GET, "/api/v1/books/**").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/checkouts/return").hasAnyRole(ADMIN_ROLE)
+                        .requestMatchers(HttpMethod.GET, "/api/v1/checkouts/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/checkouts").hasAnyRole(ADMIN_ROLE)
+                        .requestMatchers("/api/v1/users/**").authenticated()
+                        .requestMatchers("/api/v1/books/**").hasRole(ADMIN_ROLE)
+                        .requestMatchers("/api/v1/reservations/**").authenticated()
+                        .anyRequest().permitAll()
+                )
                 .rememberMe(remember -> remember
                         .key("aBcdeFgHijklMNopqRstUvwxYZ1234567890")
                         .tokenValiditySeconds(60 * 60 * 24 * 30)
