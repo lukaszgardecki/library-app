@@ -52,8 +52,8 @@ docker-compose up -d
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
 
 ### Retrieve a single book:
-- Request: `GET` `http://localhost:8080/api/v1/books/{id}`
-- Parameters: `{id}` - id of item to fetch
+- Request: `GET` `http://localhost:8080/api/v1/books/{bookId}`
+- Parameters: `{bookId}` - id of item to fetch
 - Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
@@ -100,12 +100,11 @@ docker-compose up -d
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Edit the details of a single book:
-- Request: `PATCH` `http://localhost:8080/api/v1/books/{id}`
-- Parameters: `{id}` - id of item to update
+- Request: `PATCH` `http://localhost:8080/api/v1/books/{bookId}`
+- Parameters: `{bookId}` - id of item to update
 - Request body template:
   ```
-  { 
-     "id": 25,
+  {
      "title": "Example title",
      "author": "Johny Bravo",
      "publisher": "John Smith",
@@ -130,15 +129,15 @@ docker-compose up -d
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Delete a single book:
-- Request: `DELETE` `http://localhost:8080/api/v1/books/{id}`
-- Parameters: `{id}` - id of item to delete
+- Request: `DELETE` `http://localhost:8080/api/v1/books/{bookId}`
+- Parameters: `{bookId}` - id of item to delete
 - Access: *ADMIN*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted*
   - **401 Unauthorized** - *the user is not authenticated*
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete a book*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
-  - **406 Not Acceptable** - *a resource could not be accessed, a books is not returned*
+  - **406 Not Acceptable** - *a resource could not be accessed, a books is reserved or not returned*
 
 ### Retrieve all users on the platform:
 - Request: `GET` `http://localhost:8080/api/v1/users`
@@ -149,18 +148,17 @@ docker-compose up -d
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve all users' data*
 
 ### Retrieve a single user:
-- Request: `GET` `http://localhost:8080/api/v1/users/{id}`
-- Parameters: `{id}` - id of user to fetch
+- Request: `GET` `http://localhost:8080/api/v1/users/{userId}`
+- Parameters: `{userId}` - id of user to fetch
 - Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve another user's data*
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. The user is not allowed to retrieve another user's data*
 
 ### Edit the details of a single user:
-- Request: `PATCH` `http://localhost:8080/api/v1/users/{id}`
-- Parameters: `{id}` - id of user to update
+- Request: `PATCH` `http://localhost:8080/api/v1/users/{userId}`
+- Parameters: `{userId}` - id of user to update
 - Request body template:
   ```
   { 
@@ -186,16 +184,16 @@ docker-compose up -d
   - **400 Bad Request** - *a required attribute of the API request is missing*
   - **401 Unauthorized** - *the user is not authenticated*
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to change another user's data*
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found or request body does not exist*
 
 ### Delete a single user:
-- Request: `DELETE` `http://localhost:8080/api/v1/users/{id}`
-- Parameters: `{id}` - id of user to delete
+- Request: `DELETE` `http://localhost:8080/api/v1/users/{userId}`
+- Parameters: `{userId}` - id of user to delete
 - Access: *ADMIN, USER*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their account only*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to change another user's data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another user's account*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, user's books are not returned*
 
@@ -227,33 +225,33 @@ docker-compose up -d
 - Access: *ALL*
 - Server responses:
   - **200 OK** - *request was successful*
-  - **404 Not Found** - *a resource could not be accessed, e.g., a username or password for a resource could not be found*
+  - **404 Not Found** - *a username or password could not be found*
 
 ### Retrieve all reservations on the platform:
 - Request: `GET` `http://localhost:8080/api/v1/reservations`
 - Access: *ADMIN*
 - Server responses:
-  - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., the user is not allowed to retrieve another users' data*
 
 ### Retrieve all user's reservations:
 - Request: `GET` `http://localhost:8080/api/v1/reservations?userId={id}`
 - Parameters: `{id}` - id of a user
 - Access: *ADMIN, USER*
 - Server responses:
-  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Retrieve a single reservation:
-- Request: `GET` `http://localhost:8080/api/v1/reservations/{id}`
-- Parameters: `{id}` - id of reservation to fetch
+- Request: `GET` `http://localhost:8080/api/v1/reservations/{reservationId}`
+- Parameters: `{reservationId}` - id of reservation to fetch
 - Access: *ADMIN, USER*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated* 
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Create a new reservation:
 - Request: `POST` `http://localhost:8080/api/v1/reservations`
@@ -270,16 +268,16 @@ docker-compose up -d
   - **401 Unauthorized** - *the user is not authenticated*
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make a reservation for another ones*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
-  - **406 Not Acceptable** - *a resource could not be accessed, the book is not available*
+  - **406 Not Acceptable** - *a resource could not be accessed, the book is reserved or borrowed already*
 
 ### Delete a single reservation:
-- Request: `DELETE` `http://localhost:8080/api/v1/reservations/{id}`
-- Parameters: `{id}` - id of reservation to delete
+- Request: `DELETE` `http://localhost:8080/api/v1/reservations/{reservationId}`
+- Parameters: `{reservationId}` - id of reservation to delete
 - Access: *ADMIN, USER*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their data only*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete reservations those are not their*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another users' data*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all checkouts on the platform:
@@ -295,9 +293,18 @@ docker-compose up -d
 - Parameters: `{id}` - id of a user
 - Access: *ADMIN, USER*
 - Server responses:
-  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
+  - 
+### Retrieve a single checkout:
+- Request: `GET` `http://localhost:8080/api/v1/checkouts/{checkoutId}`
+- Parameters: `{checkoutId}` - id of checkout to fetch
+- Access: *ADMIN, USER*
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
+  - **401 Unauthorized** - *the user is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Create a new checkout:
 - Request: `POST` `http://localhost:8080/api/v1/checkouts`
@@ -314,16 +321,17 @@ docker-compose up -d
   - **401 Unauthorized** - *the user is not authenticated*
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to create a data*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource or book's reservation could not be found*
-  - **406 Not Acceptable** - *a resource could not be accessed, the book is already reserved*
+
+[//]: # (  - **406 Not Acceptable** - *a resource could not be accessed, the book is already reserved*)
 
 ### Return a book:
 - Request: `PATCH` `http://localhost:8080/api/v1/checkouts/return?bookId={id}`
-- Parameters: `{id}` - id of the book to return
+- Parameters: `{id}` - id of the book to be returned
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to return a book*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make book returned*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, the book is already returned*
 
