@@ -1,13 +1,12 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.user.UserService;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +17,21 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class UserController {
     private static final String BOOKS_NOT_RETURNED_MSG = "User's books are not returned.";
     private final UserService userService;
-    private final UserModelAssembler userModelAssembler;
 
-    public UserController(UserService userService, UserModelAssembler userModelAssembler) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userModelAssembler = userModelAssembler;
     }
 
     @GetMapping("/users")
-    public ResponseEntity<CollectionModel<EntityModel<UserDto>>> getAllUsers() {
-        return userService.findAllUsers()
-            .map(userModelAssembler::toCollectionModel)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<PagedModel<UserDto>> getAllUsers(Pageable pageable) {
+        PagedModel<UserDto> collectionModel = userService.findAllUsers(pageable);
+        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<EntityModel<UserDto>> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return userService.findUserById(id)
                 .filter(user -> userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(user.getId()))
-                .map(userModelAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -66,8 +60,7 @@ public class UserController {
             boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(id);
             if (userIsAdminOrDataOwner) {
                 UserDto updatedUser = userService.updateUser(id, user);
-                EntityModel<UserDto> entityModel = userModelAssembler.toModel(updatedUser);
-                return ResponseEntity.ok(entityModel);
+                return ResponseEntity.ok(updatedUser);
             }
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
