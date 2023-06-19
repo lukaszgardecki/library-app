@@ -20,14 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final UserModelAssembler userModelAssembler;
 
     public AuthController(AuthenticationManager authenticationManager,
-                          UserService userService,
-                          UserModelAssembler userModelAssembler) {
+                          UserService userService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.userModelAssembler = userModelAssembler;
     }
 
     @PostMapping("/login")
@@ -43,8 +40,7 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             return ResponseEntity.notFound().build();
         }
-        return userService.findAllUsers(null)
-                .getContent().stream()
+        return userService.findAllUsers().get().stream()
                 .filter(u -> u.getEmail().equals(loginDto.getUsername()))
                 .map(ResponseEntity::ok)
                 .findFirst().orElseThrow();
