@@ -2,12 +2,13 @@ package com.example.libraryapp.domain.checkout;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CheckoutDto {
+public class CheckoutDto extends RepresentationModel<CheckoutDto> {
     private Long id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
