@@ -2,12 +2,13 @@ package com.example.libraryapp.domain.reservation;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ReservationDto {
+public class ReservationDto extends RepresentationModel<ReservationDto> {
     private Long id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

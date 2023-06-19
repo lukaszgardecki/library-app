@@ -1,49 +1,36 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
 import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1")
 public class ReservationController {
     private final ReservationService reservationService;
-    private final ReservationModelAssembler reservationModelAssembler;
 
-    public ReservationController(ReservationService reservationService,
-                                 ReservationModelAssembler reservationModelAssembler) {
+    public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
-        this.reservationModelAssembler = reservationModelAssembler;
     }
 
     @GetMapping("/reservations")
-    public ResponseEntity<CollectionModel<EntityModel<ReservationDto>>> getAllReservations(
-            @RequestParam(required = false) Long userId) {
+    public ResponseEntity<PagedModel<ReservationDto>> getAllReservations(
+            @RequestParam(required = false) Long userId, Pageable pageable) {
         try {
-            List<ReservationDto> allUsersReservations;
-            CollectionModel<EntityModel<ReservationDto>> collectionModel;
+            PagedModel<ReservationDto> collectionModel;
             if (userId != null) {
-                allUsersReservations = reservationService.findReservationsByUserId(userId);
-                collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
-                collectionModel.add(linkTo(methodOn(ReservationController.class).getAllReservations(userId)).withSelfRel());
+                collectionModel = reservationService.findReservationsByUserId(userId, pageable);
             } else {
-                allUsersReservations = reservationService.findAllReservations();
-                collectionModel = reservationModelAssembler.toCollectionModel(allUsersReservations);
-                collectionModel.add(linkTo(ReservationController.class).slash("reservations").withSelfRel());
+                collectionModel = reservationService.findAllReservations(pageable);
             }
             return ResponseEntity.ok(collectionModel);
         } catch (UserNotFoundException | ReservationNotFoundException e) {
@@ -52,9 +39,8 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations/{id}")
-    public ResponseEntity<EntityModel<ReservationDto>> getReservationById(@PathVariable Long id) {
+    public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
         return reservationService.findReservationById(id)
-                .map(reservationModelAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -73,9 +59,8 @@ public class ReservationController {
         } catch (ReservationCannotBeCreatedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        EntityModel<ReservationDto> entityModel = reservationModelAssembler.toModel(savedReservation);
         URI savedReservationUri = createURI(savedReservation);
-        return ResponseEntity.created(savedReservationUri).body(entityModel);
+        return ResponseEntity.created(savedReservationUri).body(savedReservation);
     }
 
     @DeleteMapping("/reservations/{id}")
