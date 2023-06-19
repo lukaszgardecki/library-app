@@ -36,7 +36,7 @@ public class BookControllerTest {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int bookListLength = documentContext.read("$._embedded.bookDtoList.length()");
-        assertThat(bookListLength).isEqualTo(500);
+        assertThat(bookListLength).isEqualTo(20);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.book;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,9 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JsonTest
 public class BookJsonTest {
     @Autowired
-    private JacksonTester<EntityModel<BookDto>> json;
+    private JacksonTester<BookDto> json;
     @Autowired
-    private JacksonTester<CollectionModel<EntityModel<BookDto>>> jsonList;
+    private JacksonTester<CollectionModel<BookDto>> jsonList;
     private final BookModelAssembler bookModelAssembler = new BookModelAssembler();
     private final BookDto[] books = createBookDtoArray(3);
     private final File jsonSingleFile = new File("src/test/resources/example/bookDto.json");
@@ -34,7 +34,7 @@ public class BookJsonTest {
     @Test
     @SneakyThrows
     void BookDtoSerializationTest() {
-        EntityModel<BookDto> entityModel = bookModelAssembler.toModel(books[0]);
+        BookDto entityModel = bookModelAssembler.toModel(BookDtoMapper.map(books[0]));
         String jsonFromFile = getJsonStringWithLinksFromFile(jsonSingleFile);
         String jsonFromObject = getJsonStringWithLinksFromBookDto(books[0]);
 
@@ -45,8 +45,8 @@ public class BookJsonTest {
     @Test
     @SneakyThrows
     void BookDtoDeserializationTest() {
-        BookDto object = json.parse(getJsonStringWithLinksFromFile(jsonSingleFile)).getObject().getContent();
-        EntityModel<BookDto> entityModel = bookModelAssembler.toModel(object);
+        BookDto object = json.parse(getJsonStringWithLinksFromFile(jsonSingleFile)).getObject();
+        BookDto entityModel = bookModelAssembler.toModel(BookDtoMapper.map(object));
 
         String jsonFromString = getJsonStringWithLinksFromBookDto(object);
         String jsonFromObject = getJsonStringWithLinksFromBookDto(books[0]);
@@ -63,7 +63,7 @@ public class BookJsonTest {
         assertThat(jsonStringListFromFile).isEqualTo(jsonStringListFromBookDto);
     }
 
-    private void assertThatJsonObjectHasAllFieldsCorrect(EntityModel<BookDto> entityModel) throws IOException {
+    private void assertThatJsonObjectHasAllFieldsCorrect(BookDto entityModel) throws IOException {
         assertThat(json.write(entityModel)).hasJsonPathNumberValue("$.id");
         assertThat(json.write(entityModel)).hasJsonPathStringValue("$.title");
         assertThat(json.write(entityModel)).hasJsonPathStringValue("$.author");
@@ -93,17 +93,19 @@ public class BookJsonTest {
     }
 
     private String getJsonStringWithLinksFromBookDto(BookDto book) throws IOException {
-        return json.write(bookModelAssembler.toModel(book)).getJson();
+        return json.write(bookModelAssembler.toModel(BookDtoMapper.map(book))).getJson();
     }
 
-    private String getJsonStringWithLinksListFromBookDto(BookDto[] books) throws IOException {
-        List<BookDto> entities = Arrays.stream(books).toList();
-        return jsonList.write(bookModelAssembler.toCollectionModel(entities)).getJson();
+    private String getJsonStringWithLinksListFromBookDto(BookDto[] bookDtos) throws IOException {
+        List<Book> books = Arrays.stream(bookDtos)
+                .map(BookDtoMapper::map)
+                .toList();
+        return jsonList.write(bookModelAssembler.toCollectionModel(books)).getJson();
     }
 
     private String getJsonStringWithLinksFromFile(File file) throws IOException {
-        BookDto bookFromFile = json.read(file).getObject().getContent();
-        EntityModel<BookDto> bookDtoEntityModel = bookModelAssembler.toModel(bookFromFile);
+        BookDto bookFromFile = json.read(file).getObject();
+        BookDto bookDtoEntityModel = bookModelAssembler.toModel(BookDtoMapper.map(bookFromFile));
         return json.write(bookDtoEntityModel).getJson();
     }
 
@@ -118,7 +120,7 @@ public class BookJsonTest {
         BookDto[] b = new BookDto[split.length];
         for (int i = 0; i < split.length; i++) {
             String jsonStr = "{" + split[i] + "}";
-            b[i] = json.parse(jsonStr).getObject().getContent();
+            b[i] = json.parse(jsonStr).getObject();
         }
         return b;
     }
