@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -64,12 +65,13 @@ public class UserService {
         return UserDtoMapper.map(user);
     }
 
-//    public Optional<List<UserDto>> findAllUsers() {
-//        return Optional.of(userRepository.findAll().stream()
-//                .filter(user -> checkIfCurrentLoggedInUserIsAdminOrDataOwner(user.getId()))
-//                .map(UserDtoMapper::map)
-//                .toList());
-//    }
+    public Optional<List<UserDto>> findAllUsers() {
+        return Optional.of(userRepository.findAll().stream()
+                .filter(user -> checkIfCurrentLoggedInUserIsAdminOrDataOwner(user.getId()))
+                .map(UserDtoMapper::map)
+                .toList());
+    }
+
     public PagedModel<UserDto> findAllUsers(Pageable pageable) {
         Page<User> userDtoPage =
                 pageable.isUnpaged() ? new PageImpl<>(userRepository.findAll()) : userRepository.findAll(pageable);
