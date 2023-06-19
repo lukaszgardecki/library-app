@@ -26,8 +26,8 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
         UserDto userDto = UserDtoMapper.map(user);
         userDto.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel());
         userDto.add(linkTo(methodOn(UserController.class).getAllUsers(null)).withRel(IanaLinkRelations.COLLECTION));
-        userDto.add(linkTo(methodOn(CheckoutController.class).getAllCheckouts(user.getId())).withRel("checkouts"));
-        userDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(user.getId())).withRel("reservations"));
+        userDto.add(linkTo(methodOn(CheckoutController.class).getAllCheckouts(user.getId(), null)).withRel("checkouts"));
+        userDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(user.getId(), null)).withRel("reservations"));
         return userDto;
     }
 
