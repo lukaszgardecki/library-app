@@ -53,6 +53,26 @@ public class CheckoutControllerTest {
     }
 
     @Test
+    void shouldReturnPageOf3CheckoutsIfAdminRequested() {
+        ResponseEntity<String> response = restTemplate
+                .withBasicAuth("admin@example.com", "adminpass")
+                .getForEntity("/api/v1/checkouts?page=1&size=3", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int bookListLength = documentContext.read("$._embedded.checkoutDtoList.length()");
+        assertThat(bookListLength).isEqualTo(3);
+        int sizeParam = documentContext.read("$.page.size");
+        assertThat(sizeParam).isEqualTo(3);
+        int totalElementsParam = documentContext.read("$.page.totalElements");
+        assertThat(totalElementsParam).isEqualTo(6);
+        int totalPagesParam = documentContext.read("$.page.totalPages");
+        assertThat(totalPagesParam).isEqualTo(2);
+        int numberParam = documentContext.read("$.page.number");
+        assertThat(numberParam).isEqualTo(1);
+    }
+
+    @Test
     void shouldReturnAllUsersCheckoutsIfUserRequestedAndDoesOwnThisData() {
         ResponseEntity<String> getResponse = restTemplate
                 .withBasicAuth("user@example.com", "userpass")

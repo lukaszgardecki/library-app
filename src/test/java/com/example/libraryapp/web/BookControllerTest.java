@@ -30,13 +30,31 @@ public class BookControllerTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void shouldReturnAllBooksWhenListIsRequested() {
+    void shouldReturnPageOf20BooksWhenListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/books", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int bookListLength = documentContext.read("$._embedded.bookDtoList.length()");
         assertThat(bookListLength).isEqualTo(20);
+    }
+
+    @Test
+    void shouldReturnPageOf3BooksWhenListIsRequested() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/books?page=5&size=3", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int bookListLength = documentContext.read("$._embedded.bookDtoList.length()");
+        assertThat(bookListLength).isEqualTo(3);
+        int sizeParam = documentContext.read("$.page.size");
+        assertThat(sizeParam).isEqualTo(3);
+        int totalElementsParam = documentContext.read("$.page.totalElements");
+        assertThat(totalElementsParam).isEqualTo(500);
+        int totalPagesParam = documentContext.read("$.page.totalPages");
+        assertThat(totalPagesParam).isEqualTo(167);
+        int numberParam = documentContext.read("$.page.number");
+        assertThat(numberParam).isEqualTo(5);
     }
 
     @Test
