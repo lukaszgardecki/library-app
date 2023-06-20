@@ -3,11 +3,10 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
-import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,42 +15,36 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BookController {
     private final BookService bookService;
-    private final BookModelAssembler bookModelAssembler;
 
-    public BookController(BookService bookService, BookModelAssembler bookModelAssembler) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.bookModelAssembler = bookModelAssembler;
     }
 
     @GetMapping("/books")
-    public ResponseEntity<CollectionModel<EntityModel<BookDto>>> getAllBooks() {
-        List<BookDto> allBooks = bookService.findAllBooks();
-        CollectionModel<EntityModel<BookDto>> collectionModel = bookModelAssembler.toCollectionModel(allBooks);
-        return ResponseEntity.ok(collectionModel);
+    public ResponseEntity<PagedModel<BookDto>> getAllBooks(Pageable pageable) {
+        PagedModel<BookDto> collectionModel = bookService.findAllBooks(pageable);
+        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
     @PostMapping("/books")
-    public ResponseEntity<EntityModel<BookDto>> addBook(@RequestBody BookToSaveDto book) {
+    public ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
         BookDto savedBook = bookService.saveBook(book);
-        EntityModel<BookDto> entityModel = bookModelAssembler.toModel(savedBook);
 
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedBook.getId())
                 .toUri();
-        return ResponseEntity.created(savedBookUri).body(entityModel);
+        return ResponseEntity.created(savedBookUri).body(savedBook);
     }
 
     @GetMapping("/books/{id}")
-    public ResponseEntity<EntityModel<BookDto>> getBookById(@PathVariable Long id) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
         return bookService.findBookById(id)
-                .map(bookModelAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -73,7 +66,6 @@ public class BookController {
     @PutMapping("/books")
     ResponseEntity<?> replaceBook(@RequestBody BookDto book) {
         return bookService.replaceBook(book)
-                .map(bookModelAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -82,8 +74,7 @@ public class BookController {
     ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto book) {
         try {
             BookDto updatedBook = bookService.updateBook(id, book);
-            EntityModel<BookDto> entityModel = bookModelAssembler.toModel(updatedBook);
-            return ResponseEntity.ok(entityModel);
+            return ResponseEntity.ok(updatedBook);
         } catch (BookNotFoundException | NullPointerException e) {
             return ResponseEntity.notFound().build();
         }

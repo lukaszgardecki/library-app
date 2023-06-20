@@ -4,39 +4,55 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
+import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
 import com.example.libraryapp.domain.exception.BookNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final BookModelAssembler bookModelAssembler;
+    private final PagedResourcesAssembler<Book> pagedResourcesAssembler;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository,
+                       BookModelAssembler bookModelAssembler,
+                       PagedResourcesAssembler<Book> pagedResourcesAssembler) {
         this.bookRepository = bookRepository;
+        this.bookModelAssembler = bookModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public List<BookDto> findAllBooks() {
-        return StreamSupport.stream(bookRepository.findAll().spliterator(), false)
-                .map(BookDtoMapper::map)
-                .toList();
+//    public List<BookDto> findAllBooks() {
+//        return bookRepository.findAll().stream()
+//                .map(BookDtoMapper::map)
+//                .toList();
+//    }
+
+    public PagedModel<BookDto> findAllBooks(Pageable pageable) {
+        Page<Book> bookDtoPage =
+                pageable.isUnpaged() ? new PageImpl<>(bookRepository.findAll()) : bookRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(bookDtoPage, bookModelAssembler);
     }
 
     public Optional<BookDto> findBookById(Long id) {
         return bookRepository.findById(id)
-                .map(BookDtoMapper::map);
+                .map(bookModelAssembler::toModel);
     }
 
     public BookDto saveBook(BookToSaveDto book) {
         Book bookToSave = BookToSaveDtoMapper.map(book);
         bookToSave.setAvailability(Boolean.TRUE);
         Book savedBook = bookRepository.save(bookToSave);
-        return BookDtoMapper.map(savedBook);
+        return bookModelAssembler.toModel(savedBook);
     }
 
     public Optional<BookDto> replaceBook(BookDto book) {
@@ -46,7 +62,7 @@ public class BookService {
             Book bookToSave = BookDtoMapper.map(book);
             bookToSave.setCheckouts(bookToUpdate.get().getCheckouts());
             Book savedBook = bookRepository.save(bookToSave);
-            return Optional.of(BookDtoMapper.map(savedBook));
+            return Optional.of(bookModelAssembler.toModel(savedBook));
         }
         return Optional.empty();
     }
@@ -66,7 +82,7 @@ public class BookService {
         } else {
             throw new NullPointerException();
         }
-        return BookDtoMapper.map(bookToUpdate);
+        return bookModelAssembler.toModel(bookToUpdate);
     }
 
     public void deleteBookById(Long id) {

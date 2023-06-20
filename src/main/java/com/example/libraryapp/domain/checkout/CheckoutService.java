@@ -2,20 +2,22 @@ package com.example.libraryapp.domain.checkout;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
-import com.example.libraryapp.domain.exception.BookIsAlreadyReturnedException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
-import com.example.libraryapp.domain.exception.UserNotFoundException;
+import com.example.libraryapp.domain.config.assembler.CheckoutModelAssembler;
+import com.example.libraryapp.domain.exception.*;
 import com.example.libraryapp.domain.user.User;
 import com.example.libraryapp.domain.user.UserRepository;
 import com.example.libraryapp.domain.user.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 public class CheckoutService {
@@ -24,49 +26,76 @@ public class CheckoutService {
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CheckoutModelAssembler checkoutModelAssembler;
+    private final PagedResourcesAssembler<Checkout> pagedResourcesAssembler;
 
     public CheckoutService(CheckoutRepository checkoutRepository,
                            BookRepository bookRepository,
                            UserRepository userRepository,
-                           UserService userService) {
+                           UserService userService,
+                           CheckoutModelAssembler checkoutModelAssembler,
+                           PagedResourcesAssembler<Checkout> pagedResourcesAssembler) {
         this.checkoutRepository = checkoutRepository;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.checkoutModelAssembler = checkoutModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public Optional<List<CheckoutDto>> findAllCheckouts() {
-        List<CheckoutDto> list = StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
-                .filter(checkout -> userService.checkIfCurrentLoggedInUserIsAdmin())
-                .map(CheckoutDtoMapper::map)
-                .toList();
-        return list.isEmpty() ? Optional.empty() : Optional.of(list);
+    public PagedModel<CheckoutDto> findAllCheckouts(Pageable pageable) {
+        boolean currentLoggedInUserIsAdmin = userService.checkIfCurrentLoggedInUserIsAdmin();
+        if (currentLoggedInUserIsAdmin) {
+
+            Page<Checkout> checkoutDtoPage =
+                    pageable.isUnpaged() ? new PageImpl<>(checkoutRepository.findAll()) : checkoutRepository.findAll(pageable);
+            return pagedResourcesAssembler.toModel(checkoutDtoPage, checkoutModelAssembler);
+        }
+        throw new CheckoutNotFoundException();
     }
 
-    public Optional<List<CheckoutDto>> findCheckoutsByUserId(Long userId) {
+    public PagedModel<CheckoutDto> findCheckoutsByUserId(Long userId, Pageable pageable) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException();
+        }
+        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(userId);
 
-        List<CheckoutDto> list = StreamSupport.stream(checkoutRepository.findAll().spliterator(), false)
-                .filter(checkout -> Objects.equals(checkout.getUser().getId(), userId))
-                .filter(checkout -> userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(checkout.getUser().getId()))
-                .map(CheckoutDtoMapper::map)
-                .toList();
-        return list.isEmpty() ? Optional.empty() : Optional.of(list);
+        if (userIsAdminOrDataOwner) {
+            List<Checkout> checkoutList = checkoutRepository.findAll()
+                    .stream()
+                    .filter(checkout -> checkout.getUser().getId().equals(userId))
+                    .toList();
+            Page<Checkout> checkoutDtoPage;
+            if (pageable.isUnpaged()) {
+                checkoutDtoPage = new PageImpl<>(checkoutList);
+            } else {
+                checkoutDtoPage = new PageImpl<>(checkoutList, pageable, checkoutList.size());
+            }
+            return pagedResourcesAssembler.toModel(checkoutDtoPage, checkoutModelAssembler);
+        }
+        throw new CheckoutNotFoundException();
     }
 
     public Optional<CheckoutDto> findCheckoutById(Long id) {
         return checkoutRepository.findById(id)
                 .filter(checkout -> userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(checkout.getUser().getId()))
-                .map(CheckoutDtoMapper::map);
+                .map(checkoutModelAssembler::toModel);
     }
 
     @Transactional
     public CheckoutDto borrowABook(CheckoutToSaveDto checkout) {
-        if (!bookRepository.existsById(checkout.getBookId())) {
-            throw new BookNotFoundException();
-        }
-        Checkout checkoutToSave = getCheckoutToSave(checkout);
-        Checkout savedCheckout = checkoutRepository.save(checkoutToSave);
-        return CheckoutDtoMapper.map(savedCheckout);
+        User user = userRepository.findById(checkout.getUserId())
+                .orElseThrow(UserNotFoundException::new);
+        Book book = bookRepository.findById(checkout.getBookId())
+                .orElseThrow(BookNotFoundException::new);
+
+        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(checkout.getUserId());
+
+        if (userIsAdminOrDataOwner) {
+            Checkout checkoutToSave = getCheckoutToSave(user, book);
+            Checkout savedCheckout = checkoutRepository.save(checkoutToSave);
+            return checkoutModelAssembler.toModel(savedCheckout);
+        } else throw new CheckoutCannotBeCreatedException();
     }
 
     @Transactional
@@ -80,15 +109,10 @@ public class CheckoutService {
                 .findFirst()
                 .orElseThrow(BookIsAlreadyReturnedException::new);
         checkoutToUpdate.setIsReturned(Boolean.TRUE);
-        return CheckoutDtoMapper.map(checkoutToUpdate);
+        return checkoutModelAssembler.toModel(checkoutToUpdate);
     }
 
-    private Checkout getCheckoutToSave(CheckoutToSaveDto checkout) {
-        User user = userRepository.findById(checkout.getUserId())
-                .orElseThrow(UserNotFoundException::new);
-        Book book = bookRepository.findById(checkout.getBookId())
-                .orElseThrow(BookNotFoundException::new);
-
+    private Checkout getCheckoutToSave(User user, Book book) {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusDays(CHECKOUT_EXP_TIME_IN_DAYS);
 

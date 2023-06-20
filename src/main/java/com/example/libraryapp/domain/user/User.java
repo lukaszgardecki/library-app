@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.user;
 
-import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.checkout.Checkout;
 import com.example.libraryapp.domain.reservation.Reservation;
 import jakarta.persistence.*;

@@ -4,7 +4,6 @@ import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.user.UserService;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserLoginDto;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,18 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final UserModelAssembler userModelAssembler;
 
     public AuthController(AuthenticationManager authenticationManager,
-                          UserService userService,
-                          UserModelAssembler userModelAssembler) {
+                          UserService userService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.userModelAssembler = userModelAssembler;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<EntityModel<UserDto>> authenticateUser(@RequestBody UserLoginDto loginDto) {
+    public ResponseEntity<UserDto> authenticateUser(@RequestBody UserLoginDto loginDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -46,7 +42,6 @@ public class AuthController {
         }
         return userService.findAllUsers().get().stream()
                 .filter(u -> u.getEmail().equals(loginDto.getUsername()))
-                .map(userModelAssembler::toModel)
                 .map(ResponseEntity::ok)
                 .findFirst().orElseThrow();
     }

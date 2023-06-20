@@ -1,31 +1,38 @@
 package com.example.libraryapp.domain.config.assembler;
 
+import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
 import com.example.libraryapp.web.BookController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Configuration
-public class BookModelAssembler implements RepresentationModelAssembler<BookDto, EntityModel<BookDto>> {
+public class BookModelAssembler extends RepresentationModelAssemblerSupport<Book, BookDto> {
 
-    @Override
-    public EntityModel<BookDto> toModel(BookDto book) {
-        EntityModel<BookDto> bookModel = EntityModel.of(book);
-        bookModel.add(linkTo(methodOn(BookController.class).getBookById(book.getId())).withSelfRel());
-        bookModel.add(linkTo(methodOn(BookController.class).getAllBooks()).withRel(IanaLinkRelations.COLLECTION));
-        return bookModel;
+    public BookModelAssembler() {
+        super(BookController.class, BookDto.class);
     }
 
     @Override
-    public CollectionModel<EntityModel<BookDto>> toCollectionModel(Iterable<? extends BookDto> entities) {
-        CollectionModel<EntityModel<BookDto>> collectionModel = RepresentationModelAssembler.super.toCollectionModel(entities);
-        collectionModel.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
+    public BookDto toModel(Book book) {
+        BookDto bookDto = BookDtoMapper.map(book);
+        bookDto.add(linkTo(methodOn(BookController.class).getBookById(book.getId())).withSelfRel());
+        bookDto.add(linkTo(methodOn(BookController.class).getAllBooks(null)).withRel(IanaLinkRelations.COLLECTION));
+        return bookDto;
+    }
+
+    @Override
+    public CollectionModel<BookDto> toCollectionModel(Iterable<? extends Book> entities) {
+        CollectionModel<BookDto> collectionModel = super.toCollectionModel(entities);
+        collectionModel.add(linkTo(methodOn(BookController.class).getAllBooks(null)).withSelfRel());
         return collectionModel;
     }
 }

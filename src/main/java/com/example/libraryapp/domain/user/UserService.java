@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.user;
 
 import com.example.libraryapp.domain.checkout.Checkout;
 import com.example.libraryapp.domain.config.CustomSecurityConfig;
+import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;
 import com.example.libraryapp.domain.helper.CardNumGenerator;
@@ -11,6 +12,11 @@ import com.example.libraryapp.domain.user.dto.UserRegistrationDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.example.libraryapp.domain.user.mapper.UserCredentialsDtoMapper;
 import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 public class UserService {
@@ -27,13 +32,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserModelAssembler userModelAssembler;
+    private final PagedResourcesAssembler<User> pagedResourcesAssembler;
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       UserModelAssembler userModelAssembler,
+                       PagedResourcesAssembler<User> pagedResourcesAssembler) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userModelAssembler = userModelAssembler;
+        this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
     public Optional<UserCredentialsDto> findCredentialsByEmail(String email) {
@@ -55,10 +66,16 @@ public class UserService {
     }
 
     public Optional<List<UserDto>> findAllUsers() {
-        return Optional.of(StreamSupport.stream(userRepository.findAll().spliterator(), false)
+        return Optional.of(userRepository.findAll().stream()
                 .filter(user -> checkIfCurrentLoggedInUserIsAdminOrDataOwner(user.getId()))
                 .map(UserDtoMapper::map)
                 .toList());
+    }
+
+    public PagedModel<UserDto> findAllUsers(Pageable pageable) {
+        Page<User> userDtoPage =
+                pageable.isUnpaged() ? new PageImpl<>(userRepository.findAll()) : userRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(userDtoPage, userModelAssembler);
     }
 
     public Optional<UserDto> findUserById(Long id) {
@@ -68,7 +85,7 @@ public class UserService {
 
     public Optional<UserDto> findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .map(UserDtoMapper::map);
+                .map(userModelAssembler::toModel);
     }
 
     public Optional<String> findUserRoleByUserId(Long id) {
@@ -100,7 +117,7 @@ public class UserService {
         } else {
             throw new NullPointerException();
         }
-        return UserDtoMapper.map(userToUpdate);
+        return userModelAssembler.toModel(userToUpdate);
     }
 
     @Transactional

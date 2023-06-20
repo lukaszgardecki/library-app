@@ -35,6 +35,15 @@ public class UserControllerTest {
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
         int userListLength = documentContext.read("$._embedded.userDtoList.length()");
         assertThat(userListLength).isEqualTo(8);
+
+        int sizeParam = documentContext.read("$.page.size");
+        assertThat(sizeParam).isEqualTo(20);
+        int totalElementsParam = documentContext.read("$.page.totalElements");
+        assertThat(totalElementsParam).isEqualTo(8);
+        int totalPagesParam = documentContext.read("$.page.totalPages");
+        assertThat(totalPagesParam).isEqualTo(1);
+        int numberParam = documentContext.read("$.page.number");
+        assertThat(numberParam).isEqualTo(0);
     }
 
     @Test
