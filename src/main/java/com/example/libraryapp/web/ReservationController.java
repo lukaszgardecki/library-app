@@ -1,12 +1,11 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.exception.*;
+import com.example.libraryapp.domain.exception.ReservationNotFoundException;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
