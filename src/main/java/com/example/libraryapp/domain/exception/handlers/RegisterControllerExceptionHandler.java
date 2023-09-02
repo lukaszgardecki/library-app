@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.exception.handler;
+package com.example.libraryapp.domain.exception.handlers;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

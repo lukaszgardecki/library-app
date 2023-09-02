@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.exception.handler;
+package com.example.libraryapp.domain.exception.handlers;
 
 import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.UserNotFoundException;

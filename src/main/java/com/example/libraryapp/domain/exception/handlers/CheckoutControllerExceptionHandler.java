@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.exception.handler;
+package com.example.libraryapp.domain.exception.handlers;
 
 import com.example.libraryapp.domain.exception.*;
 import org.springframework.http.HttpStatus;
