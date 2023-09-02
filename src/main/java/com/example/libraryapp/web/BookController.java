@@ -3,15 +3,12 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -51,16 +48,8 @@ public class BookController {
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<?> deleteBookById(@PathVariable Long id) {
-        try {
-            bookService.deleteBookById(id);
-            return ResponseEntity.noContent().build();
-        } catch (BookNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (BookIsNotAvailableException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .header("Reason", e.getMessage())
-                    .build();
-        }
+        bookService.deleteBookById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/books")
@@ -72,16 +61,7 @@ public class BookController {
 
     @PatchMapping("/books/{id}")
     ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto book) {
-        try {
-            BookDto updatedBook = bookService.updateBook(id, book);
-            return ResponseEntity.ok(updatedBook);
-        } catch (BookNotFoundException | NullPointerException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String> mismatchExceptionHandler() {
-        return ResponseEntity.badRequest().body("Id must be a number.");
+        BookDto updatedBook = bookService.updateBook(id, book);
+        return ResponseEntity.ok(updatedBook);
     }
 }
