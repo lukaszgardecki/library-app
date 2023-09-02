@@ -1,6 +1,6 @@
 # Library-app
 
-A library management system that allows you to store, retrieve, update and delete books' and users' data. The users can make reservations for books and than borrow them.
+A library management system that allows you to store, retrieve, update and delete books' and users' data. The users can make reservations for books and then borrow them.
 
 ## Technologies and libraries
 Project is created with:
@@ -150,7 +150,7 @@ docker-compose up -d
 ### Retrieve a single user:
 - Request: `GET` `http://localhost:8080/api/v1/users/{userId}`
 - Parameters: `{userId}` - id of user to fetch
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -178,7 +178,7 @@ docker-compose up -d
      "password": "easypass"
   }
   ```
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to update their data only*
   - **400 Bad Request** - *a required attribute of the API request is missing*
@@ -189,7 +189,7 @@ docker-compose up -d
 ### Delete a single user:
 - Request: `DELETE` `http://localhost:8080/api/v1/users/{userId}`
 - Parameters: `{userId}` - id of user to delete
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their account only*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -238,7 +238,7 @@ docker-compose up -d
 ### Retrieve all user's reservations:
 - Request: `GET` `http://localhost:8080/api/v1/reservations?userId={id}`
 - Parameters: `{id}` - id of a user
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -247,7 +247,7 @@ docker-compose up -d
 ### Retrieve a single reservation:
 - Request: `GET` `http://localhost:8080/api/v1/reservations/{reservationId}`
 - Parameters: `{reservationId}` - id of reservation to fetch
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated* 
@@ -262,7 +262,7 @@ docker-compose up -d
      "bookId": 123
   }
   ```
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -273,7 +273,7 @@ docker-compose up -d
 ### Delete a single reservation:
 - Request: `DELETE` `http://localhost:8080/api/v1/reservations/{reservationId}`
 - Parameters: `{reservationId}` - id of reservation to delete
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their data only*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -291,7 +291,7 @@ docker-compose up -d
 ### Retrieve all user's checkouts:
 - Request: `GET` `http://localhost:8080/api/v1/checkouts?userId={id}`
 - Parameters: `{id}` - id of a user
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
@@ -300,7 +300,7 @@ docker-compose up -d
 ### Retrieve a single checkout:
 - Request: `GET` `http://localhost:8080/api/v1/checkouts/{checkoutId}`
 - Parameters: `{checkoutId}` - id of checkout to fetch
-- Access: *ADMIN, USER*
+- Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **401 Unauthorized** - *the user is not authenticated*
