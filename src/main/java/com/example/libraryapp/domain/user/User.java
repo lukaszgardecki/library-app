@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.checkout.Checkout;
 import com.example.libraryapp.domain.reservation.Reservation;
 import jakarta.persistence.*;
@@ -20,7 +21,8 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private String cardNumber;
+    @OneToOne
+    private LibraryCard card;
     @ManyToOne
     @JoinColumn(name = "role_id")
     private UserRole role;

@@ -1,5 +1,7 @@
 package com.example.libraryapp.domain.user;
 
+import com.example.libraryapp.domain.card.LibraryCard;
+import com.example.libraryapp.domain.card.LibraryCardRepository;
 import com.example.libraryapp.domain.checkout.Checkout;
 import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,17 +37,20 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserModelAssembler userModelAssembler;
     private final PagedResourcesAssembler<User> pagedResourcesAssembler;
+    private final LibraryCardRepository cardRepository;
 
     public UserService(UserRepository userRepository,
                        UserRoleRepository userRoleRepository,
                        PasswordEncoder passwordEncoder,
                        UserModelAssembler userModelAssembler,
-                       PagedResourcesAssembler<User> pagedResourcesAssembler) {
+                       PagedResourcesAssembler<User> pagedResourcesAssembler,
+                       LibraryCardRepository cardRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userModelAssembler = userModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
+        this.cardRepository = cardRepository;
     }
 
     public Optional<UserCredentialsDto> findCredentialsByEmail(String email) {
@@ -61,7 +67,14 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
         user.setRole(defaultRole);
         User savedUser = userRepository.save(user);
-        user.setCardNumber(CardNumGenerator.generate(savedUser.getId()));
+
+        LibraryCard libraryCard = new LibraryCard();
+        libraryCard.setActive(true);
+        libraryCard.setBarcode(CardNumGenerator.generate(savedUser.getId()));
+        libraryCard.setIssuedAt(LocalDateTime.now());
+        cardRepository.save(libraryCard);
+
+        user.setCard(libraryCard);
         return UserDtoMapper.map(user);
     }
 
@@ -109,7 +122,7 @@ public class UserService {
                 userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
             }
             // TODO: 05.06.2023 The new card number has to be generated
-            if (currentLoggedInUserRoleIsAdmin && user.getCardNumber() != null) userToUpdate.setCardNumber(user.getCardNumber());
+            if (currentLoggedInUserRoleIsAdmin && user.getCard().isActive()) userToUpdate.setCard(user.getCard());
             if (currentLoggedInUserRoleIsAdmin && user.getRole() != null)  {
                 UserRole userRole = userRoleRepository.findByName(user.getRole()).orElseThrow();
                 userToUpdate.setRole(userRole);

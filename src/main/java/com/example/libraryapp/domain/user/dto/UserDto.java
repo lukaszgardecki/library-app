@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.user.dto;
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -11,5 +12,5 @@ public class UserDto extends RepresentationModel<UserDto> {
     private String firstName;
     private String lastName;
     private String email;
-    private String cardNumber;
+    private LibraryCard card;
 }
