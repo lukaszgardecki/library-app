@@ -11,7 +11,7 @@ public class CheckoutDtoMapper {
         dto.setUserFirstName(checkout.getUser().getFirstName());
         dto.setUserLastName(checkout.getUser().getLastName());
         dto.setUserEmail(checkout.getUser().getEmail());
-        dto.setUserCardNumber(checkout.getUser().getCardNumber());
+        dto.setUserCard(checkout.getUser().getCard());
         dto.setBookId(checkout.getBook().getId());
         dto.setBookTitle(checkout.getBook().getTitle());
         dto.setBookAuthor(checkout.getBook().getAuthor());
