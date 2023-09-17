@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.reservation;
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -16,7 +17,7 @@ public class ReservationDto extends RepresentationModel<ReservationDto> {
     private String userFirstName;
     private String userLastName;
     private String userEmail;
-    private String userCardNumber;
+    private LibraryCard userCard;
     private Long bookId;
     private String bookTitle;
     private String bookAuthor;

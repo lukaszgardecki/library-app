@@ -11,7 +11,7 @@ public class ReservationDtoMapper {
         dto.setUserFirstName(reservation.getUser().getFirstName());
         dto.setUserLastName(reservation.getUser().getLastName());
         dto.setUserEmail(reservation.getUser().getEmail());
-        dto.setUserCardNumber(reservation.getUser().getCardNumber());
+        dto.setUserCard(reservation.getUser().getCard());
         dto.setBookId(reservation.getBook().getId());
         dto.setBookTitle(reservation.getBook().getTitle());
         dto.setBookAuthor(reservation.getBook().getAuthor());
