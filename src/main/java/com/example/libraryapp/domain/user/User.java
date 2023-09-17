@@ -21,7 +21,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private LibraryCard card;
     @ManyToOne
     @JoinColumn(name = "role_id")
