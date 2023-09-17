@@ -1,6 +1,7 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
@@ -136,7 +137,7 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
         assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -164,7 +165,7 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
         assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -233,7 +234,7 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
         assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -372,7 +373,7 @@ public class ReservationControllerTest {
         assertThat(reservationBeforeDeleting.getUserFirstName()).isEqualTo(reservationAfterDeleting.getUserFirstName());
         assertThat(reservationBeforeDeleting.getUserLastName()).isEqualTo(reservationAfterDeleting.getUserLastName());
         assertThat(reservationBeforeDeleting.getUserEmail()).isEqualTo(reservationAfterDeleting.getUserEmail());
-        assertThat(reservationBeforeDeleting.getUserCardNumber()).isEqualTo(reservationAfterDeleting.getUserCardNumber());
+        assertThat(reservationBeforeDeleting.getUserCard().getId()).isEqualTo(reservationAfterDeleting.getUserCard().getId());
         assertThat(reservationBeforeDeleting.getBookId()).isEqualTo(reservationAfterDeleting.getBookId());
         assertThat(reservationBeforeDeleting.getBookTitle()).isEqualTo(reservationAfterDeleting.getBookTitle());
         assertThat(reservationBeforeDeleting.getBookAuthor()).isEqualTo(reservationAfterDeleting.getBookAuthor());
@@ -414,7 +415,14 @@ public class ReservationControllerTest {
         dto.setUserFirstName(documentContext.read("$.userFirstName"));
         dto.setUserLastName(documentContext.read("$.userLastName"));
         dto.setUserEmail(documentContext.read("$.userEmail"));
-        dto.setUserCardNumber(documentContext.read("$.userCardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.userCard.id")).longValue());
+        card.setBarcode(documentContext.read("$.userCard.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.userCard.issuedAt")));
+        card.setActive(documentContext.read("$.userCard.active"));
+
+        dto.setUserCard(card);
         dto.setBookId(((Number)documentContext.read("$.bookId")).longValue());
         dto.setBookTitle(documentContext.read("$.bookTitle"));
         dto.setBookAuthor(documentContext.read("$.bookAuthor"));
@@ -436,7 +444,14 @@ public class ReservationControllerTest {
         dto.setFirstName(documentContext.read("$.firstName"));
         dto.setLastName(documentContext.read("$.lastName"));
         dto.setEmail(documentContext.read("$.email"));
-        dto.setCardNumber(documentContext.read("$.cardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
+        card.setActive(documentContext.read("$.card.active"));
+
+        dto.setCard(card);
         return dto;
     }
 

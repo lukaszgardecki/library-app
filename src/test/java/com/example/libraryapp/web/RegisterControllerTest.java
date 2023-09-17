@@ -1,6 +1,7 @@
 package com.example.libraryapp.web;
 
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserRegistrationDto;
 import com.jayway.jsonpath.DocumentContext;
@@ -16,6 +17,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +46,7 @@ public class RegisterControllerTest {
 
         UserDto returnedUser = getUserDtoFromResponse(getResponse);
         assertThat(returnedUser.getId()).isNotNull();
-        assertThat(returnedUser.getCardNumber()).isNotNull();
+        assertThat(returnedUser.getCard()).isNotNull();
         assertThat(returnedUser.getEmail()).isEqualTo(userToSave.getEmail());
         assertThat(returnedUser.getFirstName()).isEqualTo(userToSave.getFirstName());
         assertThat(returnedUser.getLastName()).isEqualTo(userToSave.getLastName());
@@ -84,7 +87,14 @@ public class RegisterControllerTest {
         dto.setEmail(documentContext.read("$.email"));
         dto.setFirstName(documentContext.read("$.firstName"));
         dto.setLastName(documentContext.read("$.lastName"));
-        dto.setCardNumber(documentContext.read("$.cardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
+        card.setActive(documentContext.read("$.card.active"));
+
+        dto.setCard(card);
         return dto;
     }
 }

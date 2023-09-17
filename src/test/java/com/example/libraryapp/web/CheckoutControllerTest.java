@@ -1,6 +1,7 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.checkout.CheckoutDto;
 import com.example.libraryapp.domain.checkout.CheckoutToSaveDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
@@ -144,7 +145,7 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
         assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -173,7 +174,7 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
         assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -257,7 +258,7 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
         assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
         assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCardNumber()).isEqualTo(user.getCardNumber());
+        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
         assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
         assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
         assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
@@ -368,7 +369,7 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getUserFirstName()).isEqualTo(checkout.getUserFirstName());
         assertThat(returnedCheckout.getUserLastName()).isEqualTo(checkout.getUserLastName());
         assertThat(returnedCheckout.getUserEmail()).isEqualTo(checkout.getUserEmail());
-        assertThat(returnedCheckout.getUserCardNumber()).isEqualTo(checkout.getUserCardNumber());
+        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(checkout.getUserCard().getId());
         assertThat(returnedCheckout.getBookId()).isEqualTo(checkout.getBookId());
         assertThat(returnedCheckout.getBookTitle()).isEqualTo(checkout.getBookTitle());
         assertThat(returnedCheckout.getBookAuthor()).isEqualTo(checkout.getBookAuthor());
@@ -433,7 +434,14 @@ public class CheckoutControllerTest {
         dto.setUserFirstName(documentContext.read("$.userFirstName"));
         dto.setUserLastName(documentContext.read("$.userLastName"));
         dto.setUserEmail(documentContext.read("$.userEmail"));
-        dto.setUserCardNumber(documentContext.read("$.userCardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.userCard.id")).longValue());
+        card.setBarcode(documentContext.read("$.userCard.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.userCard.issuedAt")));
+        card.setActive(documentContext.read("$.userCard.active"));
+
+        dto.setUserCard(card);
         dto.setBookId(((Number)documentContext.read("$.bookId")).longValue());
         dto.setBookTitle(documentContext.read("$.bookTitle"));
         dto.setBookAuthor(documentContext.read("$.bookAuthor"));
@@ -456,7 +464,14 @@ public class CheckoutControllerTest {
         dto.setFirstName(documentContext.read("$.firstName"));
         dto.setLastName(documentContext.read("$.lastName"));
         dto.setEmail(documentContext.read("$.email"));
-        dto.setCardNumber(documentContext.read("$.cardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
+        card.setActive(documentContext.read("$.card.active"));
+
+        dto.setCard(card);
         return dto;
     }
 
