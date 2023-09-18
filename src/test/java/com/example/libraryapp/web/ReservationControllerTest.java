@@ -133,18 +133,8 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getId()).isNotNull();
         assertThat(returnedReservation.getStartTime()).isNotNull();
         assertThat(returnedReservation.getEndTime()).isNotNull();
-        assertThat(returnedReservation.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedReservation.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedReservation.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedReservation.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedReservation.getBookIsbn()).isEqualTo(book.getIsbn());
+        assertThat(returnedReservation.getUser()).isEqualTo(user);
+        assertThat(returnedReservation.getBook()).isEqualTo(book);
     }
 
     @Test
@@ -161,18 +151,8 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getId()).isNotNull();
         assertThat(returnedReservation.getStartTime()).isNotNull();
         assertThat(returnedReservation.getEndTime()).isNotNull();
-        assertThat(returnedReservation.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedReservation.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedReservation.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedReservation.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedReservation.getBookIsbn()).isEqualTo(book.getIsbn());
+        assertThat(returnedReservation.getUser()).isEqualTo(user);
+        assertThat(returnedReservation.getBook()).isEqualTo(book);
     }
 
     @ParameterizedTest
@@ -230,18 +210,8 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getId()).isNotNull();
         assertThat(returnedReservation.getStartTime()).isNotNull();
         assertThat(returnedReservation.getEndTime()).isNotNull();
-        assertThat(returnedReservation.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedReservation.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedReservation.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedReservation.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedReservation.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedReservation.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedReservation.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedReservation.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedReservation.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedReservation.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedReservation.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedReservation.getBookIsbn()).isEqualTo(book.getIsbn());
+        assertThat(returnedReservation.getUser()).isEqualTo(user);
+        assertThat(returnedReservation.getBook()).isEqualTo(book);
     }
 
     @Test
@@ -369,18 +339,8 @@ public class ReservationControllerTest {
         assertThat(reservationBeforeDeleting.getId()).isEqualTo(reservationAfterDeleting.getId());
         assertThat(reservationBeforeDeleting.getStartTime()).isEqualTo(reservationAfterDeleting.getStartTime());
         assertThat(reservationBeforeDeleting.getEndTime()).isEqualTo(reservationAfterDeleting.getEndTime());
-        assertThat(reservationBeforeDeleting.getUserId()).isEqualTo(reservationAfterDeleting.getUserId());
-        assertThat(reservationBeforeDeleting.getUserFirstName()).isEqualTo(reservationAfterDeleting.getUserFirstName());
-        assertThat(reservationBeforeDeleting.getUserLastName()).isEqualTo(reservationAfterDeleting.getUserLastName());
-        assertThat(reservationBeforeDeleting.getUserEmail()).isEqualTo(reservationAfterDeleting.getUserEmail());
-        assertThat(reservationBeforeDeleting.getUserCard().getId()).isEqualTo(reservationAfterDeleting.getUserCard().getId());
-        assertThat(reservationBeforeDeleting.getBookId()).isEqualTo(reservationAfterDeleting.getBookId());
-        assertThat(reservationBeforeDeleting.getBookTitle()).isEqualTo(reservationAfterDeleting.getBookTitle());
-        assertThat(reservationBeforeDeleting.getBookAuthor()).isEqualTo(reservationAfterDeleting.getBookAuthor());
-        assertThat(reservationBeforeDeleting.getBookPublisher()).isEqualTo(reservationAfterDeleting.getBookPublisher());
-        assertThat(reservationBeforeDeleting.getBookReleaseYear()).isEqualTo(reservationAfterDeleting.getBookReleaseYear());
-        assertThat(reservationBeforeDeleting.getBookPages()).isEqualTo(reservationAfterDeleting.getBookPages());
-        assertThat(reservationBeforeDeleting.getBookIsbn()).isEqualTo(reservationAfterDeleting.getBookIsbn());
+        assertThat(reservationBeforeDeleting.getUser()).isEqualTo(reservationAfterDeleting.getUser());
+        assertThat(reservationBeforeDeleting.getBook()).isEqualTo(reservationAfterDeleting.getBook());
     }
 
     @Test
@@ -411,25 +371,35 @@ public class ReservationControllerTest {
         dto.setId(((Number)documentContext.read("$.id")).longValue());
         dto.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
         dto.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
-        dto.setUserId(((Number)documentContext.read("$.userId")).longValue());
-        dto.setUserFirstName(documentContext.read("$.userFirstName"));
-        dto.setUserLastName(documentContext.read("$.userLastName"));
-        dto.setUserEmail(documentContext.read("$.userEmail"));
 
         LibraryCard card = new LibraryCard();
-        card.setId(((Number) documentContext.read("$.userCard.id")).longValue());
-        card.setBarcode(documentContext.read("$.userCard.barcode"));
-        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.userCard.issuedAt")));
-        card.setActive(documentContext.read("$.userCard.active"));
+        card.setId(((Number) documentContext.read("$.user.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.user.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.user.card.issuedAt")));
+        card.setActive(documentContext.read("$.user.card.active"));
 
-        dto.setUserCard(card);
-        dto.setBookId(((Number)documentContext.read("$.bookId")).longValue());
-        dto.setBookTitle(documentContext.read("$.bookTitle"));
-        dto.setBookAuthor(documentContext.read("$.bookAuthor"));
-        dto.setBookPublisher(documentContext.read("$.bookPublisher"));
-        dto.setBookReleaseYear(documentContext.read("$.bookReleaseYear"));
-        dto.setBookPages(documentContext.read("$.bookPages"));
-        dto.setBookIsbn(documentContext.read("$.bookIsbn"));
+        UserDto user = new UserDto();
+        user.setId(((Number)documentContext.read("$.user.id")).longValue());
+        user.setFirstName(documentContext.read("$.user.firstName"));
+        user.setLastName(documentContext.read("$.user.lastName"));
+        user.setEmail(documentContext.read("$.user.email"));
+        user.setCard(card);
+
+        dto.setUser(user);
+
+        BookDto book = new BookDto();
+
+//        dto.setUserCard(card);
+        book.setId(((Number)documentContext.read("$.book.id")).longValue());
+        book.setTitle(documentContext.read("$.book.title"));
+        book.setAuthor(documentContext.read("$.book.author"));
+        book.setPublisher(documentContext.read("$.book.publisher"));
+        book.setRelease_year(documentContext.read("$.book.release_year"));
+        book.setPages(documentContext.read("$.book.pages"));
+        book.setIsbn(documentContext.read("$.book.isbn"));
+
+        dto.setBook(book);
+
         return dto;
     }
 

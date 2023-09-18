@@ -1,5 +1,8 @@
 package com.example.libraryapp.domain.reservation;
 
+import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
+import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+
 public class ReservationDtoMapper {
 
     public static ReservationDto map(Reservation reservation) {
@@ -7,18 +10,8 @@ public class ReservationDtoMapper {
         dto.setId(reservation.getId());
         dto.setStartTime(reservation.getStartTime());
         dto.setEndTime(reservation.getEndTime());
-        dto.setUserId(reservation.getUser().getId());
-        dto.setUserFirstName(reservation.getUser().getFirstName());
-        dto.setUserLastName(reservation.getUser().getLastName());
-        dto.setUserEmail(reservation.getUser().getEmail());
-        dto.setUserCard(reservation.getUser().getCard());
-        dto.setBookId(reservation.getBook().getId());
-        dto.setBookTitle(reservation.getBook().getTitle());
-        dto.setBookAuthor(reservation.getBook().getAuthor());
-        dto.setBookPublisher(reservation.getBook().getPublisher());
-        dto.setBookReleaseYear(reservation.getBook().getRelease_year());
-        dto.setBookPages(reservation.getBook().getPages());
-        dto.setBookIsbn(reservation.getBook().getIsbn());
+        dto.setUser(UserDtoMapper.map(reservation.getUser()));
+        dto.setBook(BookDtoMapper.map(reservation.getBook()));
         return dto;
     }
 }
