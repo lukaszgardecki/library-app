@@ -1,5 +1,8 @@
 package com.example.libraryapp.domain.checkout;
 
+import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
+import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+
 public class CheckoutDtoMapper {
 
     public static CheckoutDto map(Checkout checkout) {
@@ -7,19 +10,8 @@ public class CheckoutDtoMapper {
         dto.setId(checkout.getId());
         dto.setStartTime(checkout.getStartTime());
         dto.setEndTime(checkout.getEndTime());
-        dto.setUserId(checkout.getUser().getId());
-        dto.setUserFirstName(checkout.getUser().getFirstName());
-        dto.setUserLastName(checkout.getUser().getLastName());
-        dto.setUserEmail(checkout.getUser().getEmail());
-        dto.setUserCard(checkout.getUser().getCard());
-        dto.setBookId(checkout.getBook().getId());
-        dto.setBookTitle(checkout.getBook().getTitle());
-        dto.setBookAuthor(checkout.getBook().getAuthor());
-        dto.setBookPublisher(checkout.getBook().getPublisher());
-        dto.setBookReleaseYear(checkout.getBook().getRelease_year());
-        dto.setBookPages(checkout.getBook().getPages());
-        dto.setBookIsbn(checkout.getBook().getIsbn());
-        dto.setIsReturned(checkout.getIsReturned());
+        dto.setUser(UserDtoMapper.map(checkout.getUser()));
+        dto.setBook(BookDtoMapper.map(checkout.getBook()));
         return dto;
     }
 }
