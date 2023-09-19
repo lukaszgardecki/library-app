@@ -1,5 +1,6 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.jayway.jsonpath.DocumentContext;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,7 +69,7 @@ public class UserControllerTest {
         assertThat(returnedUser.getFirstName()).isEqualTo("Adam");
         assertThat(returnedUser.getLastName()).isEqualTo("Mickiewicz");
         assertThat(returnedUser.getEmail()).isEqualTo("a.mickiewicz@gmail.com");
-        assertThat(returnedUser.getCardNumber()).isEqualTo("00000003");
+        assertThat(returnedUser.getCard().getBarcode()).isEqualTo("00000003");
     }
 
     @Test
@@ -81,7 +84,7 @@ public class UserControllerTest {
         assertThat(returnedUser.getFirstName()).isEqualTo("Kamil");
         assertThat(returnedUser.getLastName()).isEqualTo("Nielubi");
         assertThat(returnedUser.getEmail()).isEqualTo("user@example.com");
-        assertThat(returnedUser.getCardNumber()).isEqualTo("00000002");
+        assertThat(returnedUser.getCard().getBarcode()).isEqualTo("00000002");
     }
 
     @Test
@@ -146,7 +149,7 @@ public class UserControllerTest {
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
         assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
-        assertThat(userAfterUpdate.getCardNumber()).isNotEqualTo(userBeforeUpdate.getCardNumber());
+        assertThat(userAfterUpdate.getCard()).isNotEqualTo(userBeforeUpdate.getCard());
     }
 
     @Test
@@ -189,7 +192,7 @@ public class UserControllerTest {
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
         assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
-        assertThat(userAfterUpdate.getCardNumber()).isEqualTo(userBeforeUpdate.getCardNumber());
+        assertThat(userAfterUpdate.getCard().getId()).isEqualTo(userBeforeUpdate.getCard().getId());
     }
 
     @Test
@@ -306,17 +309,27 @@ public class UserControllerTest {
         dto.setFirstName(documentContext.read("$.firstName"));
         dto.setLastName(documentContext.read("$.lastName"));
         dto.setEmail(documentContext.read("$.email"));
-        dto.setCardNumber(documentContext.read("$.cardNumber"));
+
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
+        card.setActive(documentContext.read("$.card.active"));
+
+        dto.setCard(card);
         return dto;
     }
 
     private UserUpdateDto getUserDtoToPartialUpdate() {
+        LibraryCard libraryCard = new LibraryCard();
+        libraryCard.setBarcode("99999999");
+
         UserUpdateDto dto = new UserUpdateDto();
         dto.setFirstName("Kunegunda");
         dto.setLastName("Niewiadomska");
         dto.setEmail("xxxxxxxx@xxxxx.com");
         dto.setPassword("passss");
-        dto.setCardNumber("99999999");
+        dto.setCard(libraryCard);
         dto.setRole("ADMIN");
         return dto;
     }

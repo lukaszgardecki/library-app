@@ -73,8 +73,8 @@ public class CheckoutController {
     private ReservationDto checkReservation(CheckoutToSaveDto checkout) {
         return reservationService.findAllReservations()
                 .stream()
-                .filter(res -> Objects.equals(res.getUserId(), checkout.getUserId()))
-                .filter(res -> Objects.equals(res.getBookId(), checkout.getBookId()))
+                .filter(res -> Objects.equals(res.getUser().getId(), checkout.getUserId()))
+                .filter(res -> Objects.equals(res.getBook().getId(), checkout.getBookId()))
                 .findFirst()
                 .orElseThrow(ReservationNotFoundException::new);
     }

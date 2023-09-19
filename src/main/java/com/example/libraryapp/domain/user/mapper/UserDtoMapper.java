@@ -11,7 +11,7 @@ public class UserDtoMapper {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setEmail(user.getEmail());
-        dto.setCardNumber(user.getCardNumber());
+        dto.setCard(user.getCard());
         return dto;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.user.dto;
 
+import com.example.libraryapp.domain.card.LibraryCard;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,6 @@ public class UserUpdateDto {
     private String lastName;
     private String email;
     private String password;
-    private String cardNumber;
+    private LibraryCard card;
     private String role;
 }

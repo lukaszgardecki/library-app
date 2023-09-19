@@ -16,7 +16,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
                 <constraints unique="true"/>
             </column>
             <column name="password" type="VARCHAR(200)"/>
-            <column name="card_number" type="VARCHAR(8)">
+            <column name="card_id" type="BIGINT">
                 <constraints unique="true"/>
             </column>
             <column name="role_id" type="BIGINT"/>
