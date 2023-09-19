@@ -141,19 +141,8 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedCheckout.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedCheckout.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedCheckout.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedCheckout.getBookIsbn()).isEqualTo(book.getIsbn());
-        assertThat(returnedCheckout.getIsReturned()).isEqualTo(book.getAvailability());
+        assertThat(returnedCheckout.getUser()).isEqualTo(user);
+        assertThat(returnedCheckout.getBook()).isEqualTo(book);
     }
 
     @Test
@@ -170,19 +159,8 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedCheckout.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedCheckout.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedCheckout.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedCheckout.getBookIsbn()).isEqualTo(book.getIsbn());
-        assertThat(returnedCheckout.getIsReturned()).isEqualTo(true);
+        assertThat(returnedCheckout.getUser()).isEqualTo(user);
+        assertThat(returnedCheckout.getBook()).isEqualTo(book);
     }
 
     @ParameterizedTest
@@ -254,19 +232,8 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUserId()).isEqualTo(user.getId());
-        assertThat(returnedCheckout.getUserFirstName()).isEqualTo(user.getFirstName());
-        assertThat(returnedCheckout.getUserLastName()).isEqualTo(user.getLastName());
-        assertThat(returnedCheckout.getUserEmail()).isEqualTo(user.getEmail());
-        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(user.getCard().getId());
-        assertThat(returnedCheckout.getBookId()).isEqualTo(book.getId());
-        assertThat(returnedCheckout.getBookTitle()).isEqualTo(book.getTitle());
-        assertThat(returnedCheckout.getBookAuthor()).isEqualTo(book.getAuthor());
-        assertThat(returnedCheckout.getBookPublisher()).isEqualTo(book.getPublisher());
-        assertThat(returnedCheckout.getBookReleaseYear()).isEqualTo(book.getRelease_year());
-        assertThat(returnedCheckout.getBookPages()).isEqualTo(book.getPages());
-        assertThat(returnedCheckout.getBookIsbn()).isEqualTo(book.getIsbn());
-        assertThat(returnedCheckout.getIsReturned()).isEqualTo(false);
+        assertThat(returnedCheckout.getUser()).isEqualTo(user);
+        assertThat(returnedCheckout.getBook()).isEqualTo(book);
     }
 
     @ParameterizedTest
@@ -365,19 +332,8 @@ public class CheckoutControllerTest {
         assertThat(returnedCheckout.getId()).isEqualTo(checkout.getId());
         assertThat(returnedCheckout.getStartTime()).isEqualTo(checkout.getStartTime());
         assertThat(returnedCheckout.getEndTime()).isEqualTo(checkout.getEndTime());
-        assertThat(returnedCheckout.getUserId()).isEqualTo(checkout.getUserId());
-        assertThat(returnedCheckout.getUserFirstName()).isEqualTo(checkout.getUserFirstName());
-        assertThat(returnedCheckout.getUserLastName()).isEqualTo(checkout.getUserLastName());
-        assertThat(returnedCheckout.getUserEmail()).isEqualTo(checkout.getUserEmail());
-        assertThat(returnedCheckout.getUserCard().getId()).isEqualTo(checkout.getUserCard().getId());
-        assertThat(returnedCheckout.getBookId()).isEqualTo(checkout.getBookId());
-        assertThat(returnedCheckout.getBookTitle()).isEqualTo(checkout.getBookTitle());
-        assertThat(returnedCheckout.getBookAuthor()).isEqualTo(checkout.getBookAuthor());
-        assertThat(returnedCheckout.getBookPublisher()).isEqualTo(checkout.getBookPublisher());
-        assertThat(returnedCheckout.getBookReleaseYear()).isEqualTo(checkout.getBookReleaseYear());
-        assertThat(returnedCheckout.getBookPages()).isEqualTo(checkout.getBookPages());
-        assertThat(returnedCheckout.getBookIsbn()).isEqualTo(checkout.getBookIsbn());
-        assertThat(returnedCheckout.getIsReturned()).isEqualTo(true);
+        assertThat(returnedCheckout.getUser()).isEqualTo(checkout.getUser());
+        assertThat(returnedCheckout.getBook()).isEqualTo(checkout.getBook());
     }
 
     @ParameterizedTest
@@ -418,39 +374,53 @@ public class CheckoutControllerTest {
     }
 
     private CheckoutToSaveDto createPostRequestBody(Long userId, Long bookId) {
-        CheckoutToSaveDto dto = new CheckoutToSaveDto();
-        dto.setUserId(userId);
-        dto.setBookId(bookId);
-        return dto;
+        CheckoutToSaveDto checkoutToSave = new CheckoutToSaveDto();
+        checkoutToSave.setUserId(userId);
+        checkoutToSave.setBookId(bookId);
+        return checkoutToSave;
     }
 
     private CheckoutDto getCheckoutFromResponse(ResponseEntity<String> response) {
-        CheckoutDto dto = new CheckoutDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        dto.setId(((Number)documentContext.read("$.id")).longValue());
-        dto.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
-        dto.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
-        dto.setUserId(((Number)documentContext.read("$.userId")).longValue());
-        dto.setUserFirstName(documentContext.read("$.userFirstName"));
-        dto.setUserLastName(documentContext.read("$.userLastName"));
-        dto.setUserEmail(documentContext.read("$.userEmail"));
 
+        CheckoutDto checkout = new CheckoutDto();
+        UserDto user = parseUserDto(documentContext);
+        BookDto book = parseBookDto(documentContext);
+        checkout.setId(((Number)documentContext.read("$.id")).longValue());
+        checkout.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
+        checkout.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
+        checkout.setUser(user);
+        checkout.setBook(book);
+        return checkout;
+    }
+
+    private UserDto parseUserDto(DocumentContext documentContext) {
         LibraryCard card = new LibraryCard();
-        card.setId(((Number) documentContext.read("$.userCard.id")).longValue());
-        card.setBarcode(documentContext.read("$.userCard.barcode"));
-        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.userCard.issuedAt")));
-        card.setActive(documentContext.read("$.userCard.active"));
+        card.setId(((Number) documentContext.read("$.user.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.user.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.user.card.issuedAt")));
+        card.setActive(documentContext.read("$.user.card.active"));
 
-        dto.setUserCard(card);
-        dto.setBookId(((Number)documentContext.read("$.bookId")).longValue());
-        dto.setBookTitle(documentContext.read("$.bookTitle"));
-        dto.setBookAuthor(documentContext.read("$.bookAuthor"));
-        dto.setBookPublisher(documentContext.read("$.bookPublisher"));
-        dto.setBookReleaseYear(documentContext.read("$.bookReleaseYear"));
-        dto.setBookPages(documentContext.read("$.bookPages"));
-        dto.setBookIsbn(documentContext.read("$.bookIsbn"));
-        dto.setIsReturned(documentContext.read("$.isReturned"));
-        return dto;
+        UserDto user = new UserDto();
+        user.setId(((Number) documentContext.read("$.user.id")).longValue());
+        user.setFirstName(documentContext.read("$.user.firstName"));
+        user.setLastName(documentContext.read("$.user.lastName"));
+        user.setEmail(documentContext.read("$.user.email"));
+        user.setCard(card);
+        return user;
+    }
+
+    private BookDto parseBookDto(DocumentContext documentContext) {
+        BookDto book = new BookDto();
+        book.setId(((Number) documentContext.read("$.book.id")).longValue());
+        book.setTitle(documentContext.read("$.book.title"));
+        book.setAuthor(documentContext.read("$.book.author"));
+        book.setPublisher(documentContext.read("$.book.publisher"));
+        book.setRelease_year(documentContext.read("$.book.release_year"));
+        book.setPages(documentContext.read("$.book.pages"));
+        book.setIsbn(documentContext.read("$.book.isbn"));
+        book.setAvailability(documentContext.read("$.book.availability"));
+        return book;
     }
 
     private UserDto findUserById(Long userId) {
@@ -458,12 +428,13 @@ public class CheckoutControllerTest {
                 .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/users/" + userId, String.class);
 
-        UserDto dto = new UserDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        dto.setId(((Number) documentContext.read("$.id")).longValue());
-        dto.setFirstName(documentContext.read("$.firstName"));
-        dto.setLastName(documentContext.read("$.lastName"));
-        dto.setEmail(documentContext.read("$.email"));
+
+        UserDto user = new UserDto();
+        user.setId(((Number) documentContext.read("$.id")).longValue());
+        user.setFirstName(documentContext.read("$.firstName"));
+        user.setLastName(documentContext.read("$.lastName"));
+        user.setEmail(documentContext.read("$.email"));
 
         LibraryCard card = new LibraryCard();
         card.setId(((Number) documentContext.read("$.card.id")).longValue());
@@ -471,8 +442,8 @@ public class CheckoutControllerTest {
         card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
         card.setActive(documentContext.read("$.card.active"));
 
-        dto.setCard(card);
-        return dto;
+        user.setCard(card);
+        return user;
     }
 
     private BookDto findBookById(Long bookId) {

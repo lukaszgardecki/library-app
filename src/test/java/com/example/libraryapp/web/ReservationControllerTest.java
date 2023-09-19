@@ -359,19 +359,39 @@ public class ReservationControllerTest {
     }
 
     private ReservationToSaveDto createPostRequestBody(Long userId, Long bookId) {
-        ReservationToSaveDto dto = new ReservationToSaveDto();
-        dto.setUserId(userId);
-        dto.setBookId(bookId);
-        return dto;
+        ReservationToSaveDto reservationToSave = new ReservationToSaveDto();
+        reservationToSave.setUserId(userId);
+        reservationToSave.setBookId(bookId);
+        return reservationToSave;
     }
 
     private ReservationDto getReservationFromResponse(ResponseEntity<String> response) {
-        ReservationDto dto = new ReservationDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        dto.setId(((Number)documentContext.read("$.id")).longValue());
-        dto.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
-        dto.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
 
+        ReservationDto reservation = new ReservationDto();
+        UserDto user = parseUserDto(documentContext);
+        BookDto book = parseBookDto(documentContext);
+        reservation.setId(((Number)documentContext.read("$.id")).longValue());
+        reservation.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
+        reservation.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
+        reservation.setUser(user);
+        reservation.setBook(book);
+        return reservation;
+    }
+
+    private static BookDto parseBookDto(DocumentContext documentContext) {
+        BookDto book = new BookDto();
+        book.setId(((Number) documentContext.read("$.book.id")).longValue());
+        book.setTitle(documentContext.read("$.book.title"));
+        book.setAuthor(documentContext.read("$.book.author"));
+        book.setPublisher(documentContext.read("$.book.publisher"));
+        book.setRelease_year(documentContext.read("$.book.release_year"));
+        book.setPages(documentContext.read("$.book.pages"));
+        book.setIsbn(documentContext.read("$.book.isbn"));
+        return book;
+    }
+
+    private static UserDto parseUserDto(DocumentContext documentContext) {
         LibraryCard card = new LibraryCard();
         card.setId(((Number) documentContext.read("$.user.card.id")).longValue());
         card.setBarcode(documentContext.read("$.user.card.barcode"));
@@ -379,28 +399,12 @@ public class ReservationControllerTest {
         card.setActive(documentContext.read("$.user.card.active"));
 
         UserDto user = new UserDto();
-        user.setId(((Number)documentContext.read("$.user.id")).longValue());
+        user.setId(((Number) documentContext.read("$.user.id")).longValue());
         user.setFirstName(documentContext.read("$.user.firstName"));
         user.setLastName(documentContext.read("$.user.lastName"));
         user.setEmail(documentContext.read("$.user.email"));
         user.setCard(card);
-
-        dto.setUser(user);
-
-        BookDto book = new BookDto();
-
-//        dto.setUserCard(card);
-        book.setId(((Number)documentContext.read("$.book.id")).longValue());
-        book.setTitle(documentContext.read("$.book.title"));
-        book.setAuthor(documentContext.read("$.book.author"));
-        book.setPublisher(documentContext.read("$.book.publisher"));
-        book.setRelease_year(documentContext.read("$.book.release_year"));
-        book.setPages(documentContext.read("$.book.pages"));
-        book.setIsbn(documentContext.read("$.book.isbn"));
-
-        dto.setBook(book);
-
-        return dto;
+        return user;
     }
 
     private UserDto findUserById(Long userId) {
@@ -408,12 +412,12 @@ public class ReservationControllerTest {
                 .withBasicAuth("admin@example.com", "adminpass")
                 .getForEntity("/api/v1/users/" + userId, String.class);
 
-        UserDto dto = new UserDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        dto.setId(((Number) documentContext.read("$.id")).longValue());
-        dto.setFirstName(documentContext.read("$.firstName"));
-        dto.setLastName(documentContext.read("$.lastName"));
-        dto.setEmail(documentContext.read("$.email"));
+        UserDto user = new UserDto();
+        user.setId(((Number) documentContext.read("$.id")).longValue());
+        user.setFirstName(documentContext.read("$.firstName"));
+        user.setLastName(documentContext.read("$.lastName"));
+        user.setEmail(documentContext.read("$.email"));
 
         LibraryCard card = new LibraryCard();
         card.setId(((Number) documentContext.read("$.card.id")).longValue());
@@ -421,16 +425,16 @@ public class ReservationControllerTest {
         card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
         card.setActive(documentContext.read("$.card.active"));
 
-        dto.setCard(card);
-        return dto;
+        user.setCard(card);
+        return user;
     }
 
     private BookDto findBookById(Long bookId) {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/api/v1/books/" + bookId, String.class);
 
-        BookDto dto = new BookDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
+        BookDto dto = new BookDto();
         dto.setId(((Number) documentContext.read("$.id")).longValue());
         dto.setTitle(documentContext.read("$.title"));
         dto.setAuthor(documentContext.read("$.author"));
