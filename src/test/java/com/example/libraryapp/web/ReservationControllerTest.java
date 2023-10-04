@@ -1,5 +1,8 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.domain.auth.AuthenticationRequest;
+import com.example.libraryapp.domain.auth.AuthenticationResponse;
+import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.reservation.ReservationDto;
@@ -14,11 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -31,12 +31,16 @@ public class ReservationControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Test
+    @DirtiesContext
     void shouldReturnAllReservationsIfAdminRequested() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations", String.class);
+                .exchange("/api/v1/reservations", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
@@ -44,8 +48,7 @@ public class ReservationControllerTest {
         assertThat(allReservationsLength).isEqualTo(6);
 
         getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations?userId=5", String.class);
+                .exchange("/api/v1/reservations?userId=5", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         documentContext = JsonPath.parse(getResponse.getBody());
@@ -54,10 +57,12 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnPageOf3ReservationsIfAdminRequested() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations?page=1&size=3", String.class);
+                .exchange("/api/v1/reservations?page=1&size=3", HttpMethod.GET, request, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -74,29 +79,35 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnAllUsersReservationsIfUserRequestedAndDoesOwnThisData() {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations?userId=2", String.class);
+                .exchange("/api/v1/reservations?userId=2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
     void shouldNotReturnAllUsersReservationsIfUserRequestedAndDoesNotOwnThisData(Long userId) {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations?userId=" + userId, String.class);
+                .exchange("/api/v1/reservations?userId=" + userId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotReturnAllUsersReservationsIfUserRequested() {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations", String.class);
+                .exchange("/api/v1/reservations", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -104,14 +115,15 @@ public class ReservationControllerTest {
     void shouldNotReturnAllReservationsIfUserIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/reservations", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         getResponse = restTemplate
                 .getForEntity("/api/v1/reservations?userId=1", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1, 5, 1",
             "2, 23, 2",
@@ -121,12 +133,13 @@ public class ReservationControllerTest {
             "6, 16, 6"
     })
     void shouldReturnAnExistingReservationIfAdminRequested(Long userId, Long bookId, Long reservationId) {
-        UserDto user = findUserById(userId);
+        HttpEntity<Object> request = createAdminRequest();
+
+        UserDto user = findUserById(userId, request);
         BookDto book = findBookById(bookId);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ReservationDto returnedReservation = getReservationFromResponse(getResponse);
@@ -138,13 +151,15 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnAnExistingReservationIfUserRequestedAndDoesOwnThisData() {
-        UserDto user = findUserById(2L);
+        HttpEntity<Object> adminRequest = createAdminRequest();
+        HttpEntity<Object> userRequest = createUserRequest();
+        UserDto user = findUserById(2L, adminRequest);
         BookDto book = findBookById(23L);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations/2", String.class);
+                .exchange("/api/v1/reservations/2", HttpMethod.GET, userRequest, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ReservationDto returnedReservation = getReservationFromResponse(getResponse);
@@ -156,24 +171,28 @@ public class ReservationControllerTest {
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
     void shouldNotReturnAnExistingReservationIfUserRequestedAndDoesNotOwnThisData(Long reservationId) {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "7", "10", "99999"
     })
     void shouldNotReturnReservationThatDoesNotExist(Long reservationId) {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -184,26 +203,25 @@ public class ReservationControllerTest {
     void shouldNotReturnAnExistingReservationIfUserIsNotAuthenticated(Long reservationId) {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/reservations/" + reservationId, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     @DirtiesContext
-    @Transactional
     void shouldMakeAReservationIfUserIsAuthenticated() {
         ReservationToSaveDto reservationToSave = createPostRequestBody(2L, 67L);
-        UserDto user = findUserById(2L);
+        HttpEntity<Object> adminRequest = createAdminRequest();
+        HttpEntity<Object> userRequest = createUserRequest(reservationToSave);
+        UserDto user = findUserById(2L, adminRequest);
         BookDto book = findBookById(67L);
 
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/reservations",reservationToSave, String.class);
+                .postForEntity("/api/v1/reservations",userRequest, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         URI newlyCreatedReservationLocation = createResponse.getHeaders().getLocation();
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity(newlyCreatedReservationLocation, String.class);
+                .exchange(newlyCreatedReservationLocation, HttpMethod.GET, userRequest, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ReservationDto returnedReservation = getReservationFromResponse(getResponse);
@@ -215,58 +233,66 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldNotMakeAReservationIfUserIsAuthenticatedAndBookIdDoesNotExist() {
         ReservationToSaveDto reservationToSave = createPostRequestBody(2L, 99999999L);
+        HttpEntity<Object> request = createUserRequest(reservationToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/reservations",reservationToSave, String.class);
+                .postForEntity("/api/v1/reservations",request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotMakeAReservationIfUserIsAuthenticatedAndUserIdDoesNotExist() {
         ReservationToSaveDto reservationToSave = createPostRequestBody(99999999L, 20L);
+        HttpEntity<Object> request = createUserRequest(reservationToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/reservations",reservationToSave, String.class);
+                .postForEntity("/api/v1/reservations",request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
     void shouldNotMakeAReservationIfUserIsAuthenticatedButUserIdIsNotTheir(Long userId) {
         ReservationToSaveDto reservationToSave = createPostRequestBody(userId, 20L);
+        HttpEntity<Object> request = createUserRequest(reservationToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/reservations",reservationToSave, String.class);
+                .postForEntity("/api/v1/reservations",request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "3", "4", "5", "7", "12", "16", "19", "23", "25"
     })
     void shouldNotMakeAReservationIfUserIsAuthenticatedAndBookIsNotAvailable(Long bookId) {
         ReservationToSaveDto reservationToSave = createPostRequestBody(2L, bookId);
+        HttpEntity<Object> request = createUserRequest(reservationToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/reservations",reservationToSave, String.class);
+                .postForEntity("/api/v1/reservations",request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotMakeAReservationIfUserIsNotAuthenticated() {
         ReservationToSaveDto reservationToSave = createPostRequestBody(2L, 1L);
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/reservations",reservationToSave, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
     @DirtiesContext
-    @Transactional
     @CsvSource({
             "1, 5",
             "2, 23",
@@ -276,17 +302,17 @@ public class ReservationControllerTest {
             "6, 16"
     })
     void shouldDeleteAReservationIfAdminRequested(Long reservationId, Long bookId) {
+        HttpEntity<Object> request = createAdminRequest();
+
         BookDto bookBefore = findBookById(bookId);
         assertThat(bookBefore.getAvailability()).isEqualTo(false);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.DELETE, null, Void.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         BookDto bookAfter = findBookById(bookId);
@@ -295,19 +321,18 @@ public class ReservationControllerTest {
 
     @Test
     @DirtiesContext
-    @Transactional
     void shouldDeleteAReservationIfUserRequestedAndReservationIdBelongsToTheir() {
+        HttpEntity<Object> request = createUserRequest();
+
         BookDto bookBefore = findBookById(23L);
         assertThat(bookBefore.getAvailability()).isEqualTo(false);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .exchange("/api/v1/reservations/2", HttpMethod.DELETE, null, Void.class);
+                .exchange("/api/v1/reservations/2", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/reservations/2", String.class);
+                .exchange("/api/v1/reservations/2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         BookDto bookAfter = findBookById(23L);
@@ -315,24 +340,25 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldNotDeleteAReservationIfUserRequestedAndReservationIdIsNotTheir() {
+        HttpEntity<Object> adminRequest = createAdminRequest();
+        HttpEntity<Object> userRequest = createUserRequest();
+
         ResponseEntity<String> getResponseBeforeDeleting = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/1", String.class);
+                .exchange("/api/v1/reservations/1", HttpMethod.GET, adminRequest, String.class);
         assertThat(getResponseBeforeDeleting.getStatusCode()).isEqualTo(HttpStatus.OK);
         ReservationDto reservationBeforeDeleting = getReservationFromResponse(getResponseBeforeDeleting);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .exchange("/api/v1/reservations/1", HttpMethod.DELETE, null, Void.class);
+                .exchange("/api/v1/reservations/1", HttpMethod.DELETE, userRequest, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
         
         BookDto bookAfter = findBookById(5L);
         assertThat(bookAfter.getAvailability()).isEqualTo(false);
         
         ResponseEntity<String> getResponseAfterDeleting = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/1", String.class);
+                .exchange("/api/v1/reservations/1", HttpMethod.GET, adminRequest, String.class);
         assertThat(getResponseAfterDeleting.getStatusCode()).isEqualTo(HttpStatus.OK);
         ReservationDto reservationAfterDeleting = getReservationFromResponse(getResponseAfterDeleting);
 
@@ -344,17 +370,20 @@ public class ReservationControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldNotDeleteAReservationIfUserIsNotAuthenticated() {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/reservations/1", HttpMethod.DELETE, null, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotDeleteAReservationThatDoesNotExist() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<Void> deleteResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .exchange("/api/v1/reservations/99999999", HttpMethod.DELETE, null, Void.class);
+                .exchange("/api/v1/reservations/99999999", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -407,10 +436,9 @@ public class ReservationControllerTest {
         return user;
     }
 
-    private UserDto findUserById(Long userId) {
+    private UserDto findUserById(Long userId, HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/users/" + userId, String.class);
+                .exchange("/api/v1/users/" + userId, HttpMethod.GET, request, String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         UserDto user = new UserDto();
@@ -446,4 +474,39 @@ public class ReservationControllerTest {
         return dto;
     }
 
+    private HttpEntity<Object> createAdminRequest() {
+        AuthenticationRequest admin = new AuthenticationRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(admin);
+        return new HttpEntity<>(headers);
+    }
+
+    private HttpEntity<Object> createUserRequest() {
+        AuthenticationRequest user = new AuthenticationRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(user);
+        return new HttpEntity<>(headers);
+    }
+
+    private HttpEntity<Object> createUserRequest(Object requestBody) {
+        AuthenticationRequest user = new AuthenticationRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(user);
+        return new HttpEntity<>(requestBody, headers);
+    }
+
+    private HttpHeaders createHeaderWithTokenFor(AuthenticationRequest user) {
+        AuthenticationResponse response = authenticationService.authenticate(user);
+        String token = response.getToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        return headers;
+    }
 }

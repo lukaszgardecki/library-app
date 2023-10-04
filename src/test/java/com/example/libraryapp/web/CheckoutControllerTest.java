@@ -1,5 +1,8 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.domain.auth.AuthenticationRequest;
+import com.example.libraryapp.domain.auth.AuthenticationResponse;
+import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.checkout.CheckoutDto;
@@ -14,11 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -27,16 +27,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class CheckoutControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Test
+    @DirtiesContext
     void shouldReturnAllCheckoutsIfAdminRequested() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts", String.class);
+                .exchange("/api/v1/checkouts", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
@@ -44,8 +49,7 @@ public class CheckoutControllerTest {
         assertThat(allCheckoutsLength).isEqualTo(6);
 
         getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts?userId=1", String.class);
+                .exchange("/api/v1/checkouts?userId=1", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         documentContext = JsonPath.parse(getResponse.getBody());
@@ -54,10 +58,12 @@ public class CheckoutControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnPageOf3CheckoutsIfAdminRequested() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts?page=1&size=3", String.class);
+                .exchange("/api/v1/checkouts?page=1&size=3", HttpMethod.GET, request, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -75,36 +81,43 @@ public class CheckoutControllerTest {
 
     @Test
     void shouldReturnAllUsersCheckoutsIfUserRequestedAndDoesOwnThisData() {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts?userId=2", String.class);
+                .exchange("/api/v1/checkouts?userId=2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
     void shouldNotReturnAllUsersCheckoutsIfUserRequestedAndDoesNotOwnThisData(Long userId) {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts?userId=" + userId, String.class);
+                .exchange("/api/v1/checkouts?userId=" + userId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotReturnAllUsersCheckoutsIfUserRequested() {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts", String.class);
+                .exchange("/api/v1/checkouts", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotReturnAllUsersCheckoutsIfUserIdDoesNotExist() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts?userId=99999999", String.class);
+                .exchange("/api/v1/checkouts?userId=99999999", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -112,14 +125,15 @@ public class CheckoutControllerTest {
     void shouldNotReturnAllCheckoutsIfUserIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/checkouts", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         getResponse = restTemplate
                 .getForEntity("/api/v1/checkouts?userId=1", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1, 1, 1",
             "2, 2, 2",
@@ -129,12 +143,12 @@ public class CheckoutControllerTest {
             "6, 6, 6"
     })
     void shouldReturnAnExistingCheckoutIfAdminRequested(Long userId, Long bookId, Long checkoutId) {
-        UserDto user = findUserById(userId);
-        BookDto book = findBookById(bookId);
+        HttpEntity<Object> request = createAdminRequest();
+        UserDto user = findUserById(userId, request);
+        BookDto book = findBookById(bookId, request);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
+                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
@@ -146,13 +160,15 @@ public class CheckoutControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void shouldReturnAnExistingCheckoutIfUserRequestedAndDoesOwnThisData() {
-        UserDto user = findUserById(2L);
-        BookDto book = findBookById(2L);
+        HttpEntity<Object> userRequest = createUserRequest();
+        HttpEntity<Object> adminRequest = createAdminRequest();
+        UserDto user = findUserById(2L, adminRequest);
+        BookDto book = findBookById(2L, adminRequest);
 
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts/2", String.class);
+                .exchange("/api/v1/checkouts/2", HttpMethod.GET, userRequest, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
@@ -164,24 +180,28 @@ public class CheckoutControllerTest {
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
     void shouldNotReturnAnExistingCheckoutIfUserRequestedAndDoesNotOwnThisData(Long userId) {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getForEntity("/api/v1/checkouts/" + userId, String.class);
+                .exchange("/api/v1/checkouts?userId=" + userId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "7", "10", "99999"
     })
     void shouldNotReturnCheckoutThatDoesNotExist(Long checkoutId) {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
+                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -192,12 +212,11 @@ public class CheckoutControllerTest {
     void shouldNotReturnAnExistingCheckoutIfUserIsNotAuthenticated(Long checkoutId) {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
     @DirtiesContext
-    @Transactional
     @CsvSource({
             "1, 5, 1",
             "2, 23, 2",
@@ -208,24 +227,21 @@ public class CheckoutControllerTest {
     })
     void shouldBorrowABookIfAdminRequestedAndUserHasReservedABookEarlier(Long userId, Long bookId, Long reservationId) {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
-        UserDto user = findUserById(userId);
-        BookDto book = findBookById(bookId);
-
+        HttpEntity<Object> request = createAdminRequest(checkoutToSave);
+        UserDto user = findUserById(userId, request);
+        BookDto book = findBookById(bookId, request);
 
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         URI newlyCreatedCheckoutLocation = createResponse.getHeaders().getLocation();
         ResponseEntity<String> getResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity(newlyCreatedCheckoutLocation, String.class);
+                .exchange(newlyCreatedCheckoutLocation, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getReservationResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/reservations/" + reservationId, String.class);
+                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getReservationResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
@@ -237,6 +253,7 @@ public class CheckoutControllerTest {
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1, 10",
             "2, 24",
@@ -247,13 +264,15 @@ public class CheckoutControllerTest {
     })
     void shouldNotBorrowABookIfAdminRequestedButUserHasNotReservedABookEarlier(Long userId, Long bookId) {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
+        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1, 3",
             "1, 19",
@@ -261,66 +280,72 @@ public class CheckoutControllerTest {
     })
     void shouldNotBorrowABookIfAdminRequestedAndUserHasNotReturnedOneYet(Long userId, Long bookId) {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
+        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotBorrowABookIfAdminRequestedAndBookIdDoesNotExist() {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 99999999L);
+        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotBorrowABookIfAdminRequestedAndUserIdDoesNotExist() {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(99999999L, 20L);
+        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotBorrowABookIfUserRequested() {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
+        HttpEntity<?> request = createUserRequest(checkoutToSave);
+
         ResponseEntity<String> createResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
+                .postForEntity("/api/v1/checkouts", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotBorrowABookIfUserIsNotAuthenticated() {
         CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts",checkoutToSave, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+                .postForEntity("/api/v1/checkouts", checkoutToSave, String.class);
+        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
     @DirtiesContext
-    @Transactional
     @CsvSource({
             "3, 3",
             "4, 4",
             "19, 5"
     })
     void shouldAllowToReturnABookIfAdminRequestedAndBookIsBorrowedAlready(Long bookId, Long checkoutId) {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> getCheckoutResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
+                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getCheckoutResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         CheckoutDto checkout = getCheckoutFromResponse(getCheckoutResponse);
 
         ResponseEntity<String> patchResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getRestTemplate()
-                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, null, String.class);
+                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getReturnedBookResponse = restTemplate.getForEntity("/api/v1/books/" + bookId, String.class);
@@ -337,40 +362,44 @@ public class CheckoutControllerTest {
     }
 
     @ParameterizedTest
+    @DirtiesContext
     @CsvSource({
             "1", "2", "6", "100", "200", "250", "300", "400"
     })
     void shouldNotAllowToReturnABookIfAdminRequestedAndBokIsReturnedAlready(Long bookId) {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> patchResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getRestTemplate()
-                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, null, String.class);
+                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotAllowToReturnABookIfAdminRequestedAndBookIdIsDoesNotExist() {
+        HttpEntity<Object> request = createAdminRequest();
+
         ResponseEntity<String> patchResponse = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getRestTemplate()
-                .exchange("/api/v1/checkouts/return?bookId=99999999", HttpMethod.PATCH, null, String.class);
+                .exchange("/api/v1/checkouts/return?bookId=99999999", HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotAllowToReturnABookIfUserRequested() {
+        HttpEntity<Object> request = createUserRequest();
+
         ResponseEntity<String> patchResponse = restTemplate
-                .withBasicAuth("user@example.com", "userpass")
-                .getRestTemplate()
-                .exchange("/api/v1/checkouts/return?bookId=3", HttpMethod.PATCH, null, String.class);
+                .exchange("/api/v1/checkouts/return?bookId=3", HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
+    @DirtiesContext
     void shouldNotAllowToReturnABookIfUserIsNotAuthenticated() {
         ResponseEntity<String> patchResponse = restTemplate
                 .exchange("/api/v1/checkouts/return?bookId=3", HttpMethod.PATCH, null, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     private CheckoutToSaveDto createPostRequestBody(Long userId, Long bookId) {
@@ -386,8 +415,8 @@ public class CheckoutControllerTest {
         CheckoutDto checkout = new CheckoutDto();
         UserDto user = parseUserDto(documentContext);
         BookDto book = parseBookDto(documentContext);
-        checkout.setId(((Number)documentContext.read("$.id")).longValue());
-        checkout.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")) );
+        checkout.setId(((Number) documentContext.read("$.id")).longValue());
+        checkout.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")));
         checkout.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
         checkout.setUser(user);
         checkout.setBook(book);
@@ -423,10 +452,9 @@ public class CheckoutControllerTest {
         return book;
     }
 
-    private UserDto findUserById(Long userId) {
+    private UserDto findUserById(Long userId, HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/users/" + userId, String.class);
+                .exchange("/api/v1/users/" + userId, HttpMethod.GET, request, String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
@@ -446,10 +474,9 @@ public class CheckoutControllerTest {
         return user;
     }
 
-    private BookDto findBookById(Long bookId) {
+    private BookDto findBookById(Long bookId, HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate
-                .withBasicAuth("admin@example.com", "adminpass")
-                .getForEntity("/api/v1/books/" + bookId, String.class);
+                .exchange("/api/v1/books/" + bookId, HttpMethod.GET, request, String.class);
 
         BookDto dto = new BookDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -462,5 +489,50 @@ public class CheckoutControllerTest {
         dto.setIsbn(documentContext.read("$.isbn"));
         dto.setAvailability(documentContext.read("$.availability"));
         return dto;
+    }
+
+    private HttpEntity<Object> createAdminRequest() {
+        AuthenticationRequest admin = new AuthenticationRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(admin);
+        return new HttpEntity<>(headers);
+    }
+
+    private HttpEntity<Object> createAdminRequest(Object requestBody) {
+        AuthenticationRequest admin = new AuthenticationRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(admin);
+        return new HttpEntity<>(requestBody, headers);
+    }
+
+    private HttpEntity<Object> createUserRequest() {
+        AuthenticationRequest user = new AuthenticationRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(user);
+        return new HttpEntity<>(headers);
+    }
+
+    private HttpEntity<Object> createUserRequest(Object requestBody) {
+        AuthenticationRequest user = new AuthenticationRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+
+        HttpHeaders headers = createHeaderWithTokenFor(user);
+        return new HttpEntity<>(requestBody, headers);
+    }
+
+    private HttpHeaders createHeaderWithTokenFor(AuthenticationRequest user) {
+        AuthenticationResponse response = authenticationService.authenticate(user);
+        String token = response.getToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        return headers;
     }
 }

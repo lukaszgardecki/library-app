@@ -7,9 +7,11 @@ import com.example.libraryapp.domain.exception.CheckoutNotFoundException;
 import com.example.libraryapp.domain.exception.ReservationNotFoundException;
 import com.example.libraryapp.domain.reservation.ReservationDto;
 import com.example.libraryapp.domain.reservation.ReservationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,18 +20,13 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class CheckoutController {
     private final CheckoutService checkoutService;
     private final ReservationService reservationService;
 
-    public CheckoutController(CheckoutService checkoutService,
-                              ReservationService reservationService) {
-        this.checkoutService = checkoutService;
-        this.reservationService = reservationService;
-    }
-
-
     @GetMapping("/checkouts")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PagedModel<CheckoutDto>> getAllCheckouts(
             @RequestParam(required = false) Long userId, Pageable pageable) {
         PagedModel<CheckoutDto> collectionModel;
@@ -42,6 +39,7 @@ public class CheckoutController {
     }
 
     @GetMapping("/checkouts/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CheckoutDto> getCheckoutById(@PathVariable Long id) {
         return checkoutService.findCheckoutById(id)
                 .map(ResponseEntity::ok)
@@ -49,6 +47,7 @@ public class CheckoutController {
     }
 
     @PostMapping("/checkouts")
+    @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> borrowABook(@RequestBody CheckoutToSaveDto checkout) {
         ReservationDto reservation = checkReservation(checkout);
         CheckoutDto savedCheckout = checkoutService.borrowABook(checkout);
@@ -58,6 +57,7 @@ public class CheckoutController {
     }
 
     @PatchMapping("/checkouts/return")
+    @PreAuthorize("hasAuthority('admin:update')")
     public ResponseEntity<?> returnABook(@RequestParam Long bookId) {
         CheckoutDto returnedBook = checkoutService.returnABook(bookId);
         return ResponseEntity.ok(returnedBook);
