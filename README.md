@@ -74,9 +74,8 @@ docker-compose up -d
   ```
 - Access: *ADMIN*
 - Server responses:
-  - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON* 
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to create a book*
+  - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to create a book or is not authenticated*
 
 ### Edit a single book:
 - Request: `PUT` `http://localhost:8080/api/v1/books`
@@ -95,8 +94,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to update a book*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to update a book or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Edit the details of a single book:
@@ -124,8 +122,7 @@ docker-compose up -d
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
   - **400 Bad Request** - *a required attribute of the API request is missing*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to update a book*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to update a book or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Delete a single book:
@@ -134,8 +131,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete a book*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete a book or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, a books is reserved or not returned*
 
@@ -144,8 +140,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve all users' data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve all users' data or is not authenticated*
 
 ### Retrieve a single user:
 - Request: `GET` `http://localhost:8080/api/v1/users/{userId}`
@@ -153,7 +148,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
-  - **401 Unauthorized** - *the user is not authenticated*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve all users' data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. The user is not allowed to retrieve another user's data*
 
 ### Edit the details of a single user:
@@ -182,8 +177,7 @@ docker-compose up -d
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to update their data only*
   - **400 Bad Request** - *a required attribute of the API request is missing*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to change another user's data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to change another user's data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found or request body does not exist*
 
 ### Delete a single user:
@@ -192,8 +186,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their account only*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another user's account*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another user's account or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, user's books are not returned*
 
@@ -232,7 +225,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., the user is not allowed to retrieve another users' data*
 
 ### Retrieve all user's reservations:
@@ -241,7 +234,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
-  - **401 Unauthorized** - *the user is not authenticated*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Retrieve a single reservation:
@@ -250,7 +243,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
-  - **401 Unauthorized** - *the user is not authenticated* 
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Create a new reservation:
@@ -265,8 +258,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make a reservation for another ones*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make a reservation for another ones or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, the book is reserved or borrowed already*
 
@@ -276,8 +268,7 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **204 No Content** - *request was successful, the resource is successfully deleted. User is allowed to delete their data only*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another users' data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to delete another users' data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ### Retrieve all checkouts on the platform:
@@ -285,8 +276,8 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Retrieve all user's checkouts:
 - Request: `GET` `http://localhost:8080/api/v1/checkouts?userId={id}`
@@ -294,16 +285,15 @@ docker-compose up -d
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
-  - **401 Unauthorized** - *the user is not authenticated*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
-  - 
+
 ### Retrieve a single checkout:
 - Request: `GET` `http://localhost:8080/api/v1/checkouts/{checkoutId}`
 - Parameters: `{checkoutId}` - id of checkout to fetch
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
-  - **401 Unauthorized** - *the user is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
 ### Create a new checkout:
@@ -318,8 +308,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
     - **201 Created** - *request was successful, the resource is successfully created and return the newly created resource as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to create a data*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to create a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource or book's reservation could not be found*
 
 [//]: # (  - **406 Not Acceptable** - *a resource could not be accessed, the book is already reserved*)
@@ -330,8 +319,7 @@ docker-compose up -d
 - Access: *ADMIN*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON*
-  - **401 Unauthorized** - *the user is not authenticated*
-  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make book returned*
+  - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to make book returned or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
   - **406 Not Acceptable** - *a resource could not be accessed, the book is already returned*
 
