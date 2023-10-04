@@ -19,17 +19,9 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="card_id" type="BIGINT">
                 <constraints unique="true"/>
             </column>
-            <column name="role_id" type="BIGINT"/>
+            <column name="role" type="VARCHAR(20)"/>
         </createTable>
 
-        <createTable tableName="user_role">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="name" type="VARCHAR(100)">
-                <constraints unique="true"/>
-            </column>
-        </createTable>
         <modifySql dbms="mysql">
             <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
         </modifySql>
