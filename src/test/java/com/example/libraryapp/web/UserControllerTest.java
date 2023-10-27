@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -239,7 +238,7 @@ public class UserControllerTest {
         assertThat(getUsersReservationsResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         ResponseEntity<String> getUsersCheckoutsResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=2", HttpMethod.GET, request, String.class);
         assertThat(getUsersCheckoutsResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         ResponseEntity<String> getUsersReservedBooksResponse= restTemplate

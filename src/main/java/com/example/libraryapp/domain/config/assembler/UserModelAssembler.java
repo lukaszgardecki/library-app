@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.config.assembler;
 import com.example.libraryapp.domain.user.User;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
-import com.example.libraryapp.web.CheckoutController;
+import com.example.libraryapp.web.LendingController;
 import com.example.libraryapp.web.ReservationController;
 import com.example.libraryapp.web.UserController;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
         UserDto userDto = UserDtoMapper.map(user);
         userDto.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel());
         userDto.add(linkTo(methodOn(UserController.class).getAllUsers(null)).withRel(IanaLinkRelations.COLLECTION));
-        userDto.add(linkTo(methodOn(CheckoutController.class).getAllCheckouts(user.getId(), null)).withRel("checkouts"));
+        userDto.add(linkTo(methodOn(LendingController.class).getAllCheckouts(user.getId(), null)).withRel("checkouts"));
         userDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(user.getId(), null)).withRel("reservations"));
         return userDto;
     }

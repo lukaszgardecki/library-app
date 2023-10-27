@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class CheckoutControllerExceptionHandler {
+public class LendingControllerExceptionHandler {
 
     @ExceptionHandler(value = {
             UserNotFoundException.class,
-            CheckoutNotFoundException.class,
+            LendingNotFoundException.class,
             BookNotFoundException.class,
             ReservationNotFoundException.class
 
@@ -20,7 +20,7 @@ public class CheckoutControllerExceptionHandler {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler(value = CheckoutCannotBeCreatedException.class)
+    @ExceptionHandler(value = LendingCannotBeCreatedException.class)
     public ResponseEntity<String> sourceCannotBeCreated() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }

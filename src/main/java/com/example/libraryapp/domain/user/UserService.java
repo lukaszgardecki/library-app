@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.user;
 
-import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.lending.Lending;
 import com.example.libraryapp.domain.config.CustomSecurityConfig;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
@@ -112,7 +112,7 @@ public class UserService {
     }
 
     private void checkIfUserHasReturnedAllBooks(User user) {
-        Optional<Checkout> notReturnedBooks = user.getCheckouts().stream()
+        Optional<Lending> notReturnedBooks = user.getLendings().stream()
                 .filter(ch -> !ch.getIsReturned())
                 .findAny();
         if (notReturnedBooks.isPresent()) throw new UserHasNotReturnedBooksException();

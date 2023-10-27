@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset lukas:0003
 insert into
-    checkout(start_time, end_time, book_id, user_id, is_returned)
+    lending(start_time, end_time, book_id, user_id, is_returned)
 values
     ('2023-05-21 21:17:57', '2023-05-22 21:17:57', 1, 1, true),
     ('2023-05-22 21:17:57', '2023-05-23 21:17:57', 2, 2, true),

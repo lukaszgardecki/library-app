@@ -5,8 +5,8 @@ import com.example.libraryapp.domain.auth.AuthenticationResponse;
 import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.card.LibraryCard;
-import com.example.libraryapp.domain.checkout.CheckoutDto;
-import com.example.libraryapp.domain.checkout.CheckoutToSaveDto;
+import com.example.libraryapp.domain.lending.LendingDto;
+import com.example.libraryapp.domain.lending.LendingToSaveDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class CheckoutControllerTest {
+public class LendingControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -41,19 +41,19 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
-        int allCheckoutsLength = documentContext.read("$._embedded.checkoutDtoList.length()");
+        int allCheckoutsLength = documentContext.read("$._embedded.lendingDtoList.length()");
         assertThat(allCheckoutsLength).isEqualTo(6);
 
         getResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=1", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=1", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         documentContext = JsonPath.parse(getResponse.getBody());
-        int usersCheckoutsLength = documentContext.read("$._embedded.checkoutDtoList.length()");
+        int usersCheckoutsLength = documentContext.read("$._embedded.lendingDtoList.length()");
         assertThat(usersCheckoutsLength).isEqualTo(3);
     }
 
@@ -63,11 +63,11 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/checkouts?page=1&size=3", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?page=1&size=3", HttpMethod.GET, request, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int bookListLength = documentContext.read("$._embedded.checkoutDtoList.length()");
+        int bookListLength = documentContext.read("$._embedded.lendingDtoList.length()");
         assertThat(bookListLength).isEqualTo(3);
         int sizeParam = documentContext.read("$.page.size");
         assertThat(sizeParam).isEqualTo(3);
@@ -84,7 +84,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createUserRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -97,7 +97,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createUserRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=" + userId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=" + userId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -107,7 +107,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createUserRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -117,18 +117,18 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=99999999", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=99999999", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     void shouldNotReturnAllCheckoutsIfUserIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
-                .getForEntity("/api/v1/checkouts", String.class);
+                .getForEntity("/api/v1/lendings", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         getResponse = restTemplate
-                .getForEntity("/api/v1/checkouts?userId=1", String.class);
+                .getForEntity("/api/v1/lendings?userId=1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -148,10 +148,10 @@ public class CheckoutControllerTest {
         BookDto book = findBookById(bookId, request);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
+        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
@@ -168,10 +168,10 @@ public class CheckoutControllerTest {
         BookDto book = findBookById(2L, adminRequest);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts/2", HttpMethod.GET, userRequest, String.class);
+                .exchange("/api/v1/lendings/2", HttpMethod.GET, userRequest, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
+        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
@@ -188,7 +188,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createUserRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts?userId=" + userId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?userId=" + userId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -201,7 +201,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -211,7 +211,7 @@ public class CheckoutControllerTest {
     })
     void shouldNotReturnAnExistingCheckoutIfUserIsNotAuthenticated(Long checkoutId) {
         ResponseEntity<String> getResponse = restTemplate
-                .getForEntity("/api/v1/checkouts/" + checkoutId, String.class);
+                .getForEntity("/api/v1/lendings/" + checkoutId, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -226,13 +226,13 @@ public class CheckoutControllerTest {
             "6, 16, 6",
     })
     void shouldBorrowABookIfAdminRequestedAndUserHasReservedABookEarlier(Long userId, Long bookId, Long reservationId) {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
         HttpEntity<Object> request = createAdminRequest(checkoutToSave);
         UserDto user = findUserById(userId, request);
         BookDto book = findBookById(bookId, request);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         URI newlyCreatedCheckoutLocation = createResponse.getHeaders().getLocation();
@@ -244,7 +244,7 @@ public class CheckoutControllerTest {
                 .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
         assertThat(getReservationResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        CheckoutDto returnedCheckout = getCheckoutFromResponse(getResponse);
+        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
         assertThat(returnedCheckout.getId()).isNotNull();
         assertThat(returnedCheckout.getStartTime()).isNotNull();
         assertThat(returnedCheckout.getEndTime()).isNotNull();
@@ -263,11 +263,11 @@ public class CheckoutControllerTest {
             "6, 483",
     })
     void shouldNotBorrowABookIfAdminRequestedButUserHasNotReservedABookEarlier(Long userId, Long bookId) {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
         HttpEntity<?> request = createAdminRequest(checkoutToSave);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -279,53 +279,53 @@ public class CheckoutControllerTest {
             "4, 4"
     })
     void shouldNotBorrowABookIfAdminRequestedAndUserHasNotReturnedOneYet(Long userId, Long bookId) {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
         HttpEntity<?> request = createAdminRequest(checkoutToSave);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @DirtiesContext
     void shouldNotBorrowABookIfAdminRequestedAndBookIdDoesNotExist() {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 99999999L);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 99999999L);
         HttpEntity<?> request = createAdminRequest(checkoutToSave);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @DirtiesContext
     void shouldNotBorrowABookIfAdminRequestedAndUserIdDoesNotExist() {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(99999999L, 20L);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(99999999L, 20L);
         HttpEntity<?> request = createAdminRequest(checkoutToSave);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @DirtiesContext
     void shouldNotBorrowABookIfUserRequested() {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
         HttpEntity<?> request = createUserRequest(checkoutToSave);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", request, String.class);
+                .postForEntity("/api/v1/lendings", request, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     @DirtiesContext
     void shouldNotBorrowABookIfUserIsNotAuthenticated() {
-        CheckoutToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
+        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/checkouts", checkoutToSave, String.class);
+                .postForEntity("/api/v1/lendings", checkoutToSave, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -340,12 +340,12 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> getCheckoutResponse = restTemplate
-                .exchange("/api/v1/checkouts/" + checkoutId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
         assertThat(getCheckoutResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        CheckoutDto checkout = getCheckoutFromResponse(getCheckoutResponse);
+        LendingDto checkout = getCheckoutFromResponse(getCheckoutResponse);
 
         ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
+                .exchange("/api/v1/lendings/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getReturnedBookResponse = restTemplate.getForEntity("/api/v1/books/" + bookId, String.class);
@@ -353,7 +353,7 @@ public class CheckoutControllerTest {
         assertThat(getReturnedBookResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat((boolean) documentContext.read("$.availability")).isEqualTo(true);
 
-        CheckoutDto returnedCheckout = getCheckoutFromResponse(patchResponse);
+        LendingDto returnedCheckout = getCheckoutFromResponse(patchResponse);
         assertThat(returnedCheckout.getId()).isEqualTo(checkout.getId());
         assertThat(returnedCheckout.getStartTime()).isEqualTo(checkout.getStartTime());
         assertThat(returnedCheckout.getEndTime()).isEqualTo(checkout.getEndTime());
@@ -370,7 +370,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/checkouts/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
+                .exchange("/api/v1/lendings/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
     }
 
@@ -380,7 +380,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/checkouts/return?bookId=99999999", HttpMethod.PATCH, request, String.class);
+                .exchange("/api/v1/lendings/return?bookId=99999999", HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -390,7 +390,7 @@ public class CheckoutControllerTest {
         HttpEntity<Object> request = createUserRequest();
 
         ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/checkouts/return?bookId=3", HttpMethod.PATCH, request, String.class);
+                .exchange("/api/v1/lendings/return?bookId=3", HttpMethod.PATCH, request, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -398,21 +398,21 @@ public class CheckoutControllerTest {
     @DirtiesContext
     void shouldNotAllowToReturnABookIfUserIsNotAuthenticated() {
         ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/checkouts/return?bookId=3", HttpMethod.PATCH, null, String.class);
+                .exchange("/api/v1/lendings/return?bookId=3", HttpMethod.PATCH, null, String.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
-    private CheckoutToSaveDto createPostRequestBody(Long userId, Long bookId) {
-        CheckoutToSaveDto checkoutToSave = new CheckoutToSaveDto();
+    private LendingToSaveDto createPostRequestBody(Long userId, Long bookId) {
+        LendingToSaveDto checkoutToSave = new LendingToSaveDto();
         checkoutToSave.setUserId(userId);
         checkoutToSave.setBookId(bookId);
         return checkoutToSave;
     }
 
-    private CheckoutDto getCheckoutFromResponse(ResponseEntity<String> response) {
+    private LendingDto getCheckoutFromResponse(ResponseEntity<String> response) {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-        CheckoutDto checkout = new CheckoutDto();
+        LendingDto checkout = new LendingDto();
         UserDto user = parseUserDto(documentContext);
         BookDto book = parseBookDto(documentContext);
         checkout.setId(((Number) documentContext.read("$.id")).longValue());

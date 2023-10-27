@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.user;
 
 import com.example.libraryapp.domain.card.LibraryCard;
-import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.lending.Lending;
 import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.token.Token;
 import jakarta.persistence.*;
@@ -35,7 +35,7 @@ public class User implements UserDetails {
     private UserRole role;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Checkout> checkouts;
+    private List<Lending> lendings;
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Reservation> reservations;
 

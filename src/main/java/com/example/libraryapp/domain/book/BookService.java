@@ -60,7 +60,7 @@ public class BookService {
 
         if (bookToUpdate.isPresent()) {
             Book bookToSave = BookDtoMapper.map(book);
-            bookToSave.setCheckouts(bookToUpdate.get().getCheckouts());
+            bookToSave.setLendings(bookToUpdate.get().getLendings());
             Book savedBook = bookRepository.save(bookToSave);
             return Optional.of(bookModelAssembler.toModel(savedBook));
         }

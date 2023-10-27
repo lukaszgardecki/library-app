@@ -1,11 +1,11 @@
-package com.example.libraryapp.domain.checkout;
+package com.example.libraryapp.domain.lending;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckoutToSaveDto {
+public class LendingToSaveDto {
     private Long userId;
     private Long bookId;
 }

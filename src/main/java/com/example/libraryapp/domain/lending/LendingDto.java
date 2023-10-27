@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.checkout;
+package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CheckoutDto extends RepresentationModel<CheckoutDto> {
+public class LendingDto extends RepresentationModel<LendingDto> {
     private Long id;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

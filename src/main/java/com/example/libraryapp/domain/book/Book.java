@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.book;
 
-import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.lending.Lending;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +22,5 @@ public class Book {
     private String isbn;
     private Boolean availability;
     @OneToMany(mappedBy = "book", orphanRemoval = true)
-    private List<Checkout> checkouts;
+    private List<Lending> lendings;
 }

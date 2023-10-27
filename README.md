@@ -288,15 +288,15 @@ docker-compose up -d
   - **403 Forbidden** - *the request is not allowed, e.g., the user is not allowed to retrieve a data or is not authenticated*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
-### Retrieve a single checkout:
+### Retrieve a single lending:
 - Request: `GET` `http://localhost:8080/api/v1/checkouts/{checkoutId}`
-- Parameters: `{checkoutId}` - id of checkout to fetch
+- Parameters: `{checkoutId}` - id of lending to fetch
 - Access: *ADMIN, USER (data owner)*
 - Server responses:
   - **200 OK** - *request was successful, the resource itself is returned as JSON. User is allowed to retrieve their data only*
   - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found. User is not allowed to retrieve another users' data*
 
-### Create a new checkout:
+### Create a new lending:
 - Request: `POST` `http://localhost:8080/api/v1/checkouts`
 - Request body example:
   ```

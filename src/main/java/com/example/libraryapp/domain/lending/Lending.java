@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.checkout;
+package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.user.User;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Checkout {
+public class Lending {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
