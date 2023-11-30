@@ -1,11 +1,11 @@
-package com.example.libraryapp.domain.user.dto;
+package com.example.libraryapp.domain.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserCredentialsDto {
+public class MemberCredentialsDto {
     private final Long userId;
     private final String email;
     private final String password;

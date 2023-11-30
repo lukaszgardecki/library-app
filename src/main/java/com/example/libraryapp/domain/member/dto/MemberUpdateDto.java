@@ -1,11 +1,11 @@
-package com.example.libraryapp.domain.auth;
+package com.example.libraryapp.domain.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterRequest {
+public class MemberUpdateDto {
     private String firstName;
     private String lastName;
     private String email;
