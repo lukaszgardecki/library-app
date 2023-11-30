@@ -1,27 +1,48 @@
 package com.example.libraryapp.domain.lending;
 
-import com.example.libraryapp.domain.book.Book;
-import com.example.libraryapp.domain.user.User;
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.example.libraryapp.domain.member.Member;
+import com.example.libraryapp.management.Constants;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lending {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate creationDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+
+    @Enumerated(EnumType.STRING)
+    private LendingStatus status;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
+
     @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Book book;
-    private Boolean isReturned;
+    @JoinColumn(name = "book_item_id", referencedColumnName = "id")
+    private BookItem bookItem;
+
+    public boolean isAfterDueDate() {
+        return LocalDate.now().isAfter(dueDate);
+    }
+
+    public void updateAfterRenewing() {
+        this.dueDate = LocalDate.now().plusDays(Constants.MAX_LENDING_DAYS);
+    }
+
+    public void updateAfterReturning() {
+        this.returnDate = LocalDate.now();
+        this.status = LendingStatus.COMPLETED;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.user;
+package com.example.libraryapp.domain.member;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public enum UserRole {
+public enum Role {
 
     USER(Collections.emptySet()),
     ADMIN(Set.of(

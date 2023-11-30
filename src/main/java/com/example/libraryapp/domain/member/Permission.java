@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.user;
+package com.example.libraryapp.domain.member;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,26 +1,39 @@
 package com.example.libraryapp.domain.reservation;
 
-import com.example.libraryapp.domain.book.Book;
-import com.example.libraryapp.domain.user.User;
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.example.libraryapp.domain.member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate creationDate;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
+
     @OneToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Book book;
+    @JoinColumn(name = "book_item_id", referencedColumnName = "id")
+    private BookItem bookItem;
+
+    public void updateAfterCancelling() {
+        status = ReservationStatus.CANCELED;
+    }
+    public void updateAfterLending() {
+        status = ReservationStatus.COMPLETED;
+    }
 }
