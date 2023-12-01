@@ -1,6 +1,11 @@
 package com.example.libraryapp.domain.exception.handlers;
 
-import com.example.libraryapp.domain.exception.*;
+import com.example.libraryapp.domain.exception.bookItem.BookIsAlreadyReturnedException;
+import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.lending.LendingCannotBeCreatedException;
+import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
+import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class LendingControllerExceptionHandler {
 
     @ExceptionHandler(value = {
-            UserNotFoundException.class,
+            MemberNotFoundException.class,
             LendingNotFoundException.class,
             BookNotFoundException.class,
             ReservationNotFoundException.class

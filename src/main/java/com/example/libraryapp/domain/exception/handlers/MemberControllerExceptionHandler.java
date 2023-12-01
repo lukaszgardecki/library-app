@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.exception.handlers;
 
-import com.example.libraryapp.domain.exception.UserHasNotReturnedBooksException;
-import com.example.libraryapp.domain.exception.UserNotFoundException;
+import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
+import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
-public class UserControllerExceptionHandler {
+public class MemberControllerExceptionHandler {
 
     @ExceptionHandler(value = {
-            UserNotFoundException.class,
+            MemberNotFoundException.class,
             NullPointerException.class
     })
     public ResponseEntity<String> sourceDoNotExist() {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler(UserHasNotReturnedBooksException.class)
+    @ExceptionHandler(MemberHasNotReturnedBooksException.class)
     public ResponseEntity<String> userHasNotReturnedBook() {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .header("Reason", "User's books are not returned.")

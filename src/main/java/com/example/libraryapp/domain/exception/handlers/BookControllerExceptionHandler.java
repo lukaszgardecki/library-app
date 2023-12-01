@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.exception.handlers;
 
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
+import com.example.libraryapp.domain.exception.bookItem.BookIsNotAvailableException;
+import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
