@@ -1,40 +1,43 @@
 package com.example.libraryapp.domain.config.assembler;
 
-import com.example.libraryapp.domain.user.User;
-import com.example.libraryapp.domain.user.dto.UserDto;
-import com.example.libraryapp.domain.user.mapper.UserDtoMapper;
+import com.example.libraryapp.domain.member.Member;
+import com.example.libraryapp.domain.member.dto.MemberDto;
+import com.example.libraryapp.domain.member.mapper.MemberDtoMapper;
 import com.example.libraryapp.web.LendingController;
 import com.example.libraryapp.web.ReservationController;
-import com.example.libraryapp.web.UserController;
+import com.example.libraryapp.web.MemberController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.lang.NonNull;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Configuration
-public class UserModelAssembler extends RepresentationModelAssemblerSupport<User, UserDto> {
+public class UserModelAssembler extends RepresentationModelAssemblerSupport<Member, MemberDto> {
 
     public UserModelAssembler() {
-        super(UserController.class, UserDto.class);
+        super(MemberController.class, MemberDto.class);
     }
 
     @Override
-    public UserDto toModel(User user) {
-        UserDto userDto = UserDtoMapper.map(user);
-        userDto.add(linkTo(methodOn(UserController.class).getUserById(user.getId())).withSelfRel());
-        userDto.add(linkTo(methodOn(UserController.class).getAllUsers(null)).withRel(IanaLinkRelations.COLLECTION));
-        userDto.add(linkTo(methodOn(LendingController.class).getAllCheckouts(user.getId(), null)).withRel("checkouts"));
-        userDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(user.getId(), null)).withRel("reservations"));
-        return userDto;
+    @NonNull
+    public MemberDto toModel(@NonNull Member member) {
+        MemberDto memberDto = MemberDtoMapper.map(member);
+        memberDto.add(linkTo(methodOn(MemberController.class).getUserById(member.getId())).withSelfRel());
+        memberDto.add(linkTo(methodOn(MemberController.class).getAllUsers(null)).withRel(IanaLinkRelations.COLLECTION));
+        memberDto.add(linkTo(methodOn(LendingController.class).getAllCheckouts(member.getId(), null)).withRel("checkouts"));
+        memberDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(member.getId(), null)).withRel("reservations"));
+        return memberDto;
     }
 
     @Override
-    public CollectionModel<UserDto> toCollectionModel(Iterable<? extends User> entities) {
-        CollectionModel<UserDto> entityModel = super.toCollectionModel(entities);
-        entityModel.add(linkTo(methodOn(UserController.class).getAllUsers(null)).withSelfRel());
+    @NonNull
+    public CollectionModel<MemberDto> toCollectionModel(@NonNull Iterable<? extends Member> entities) {
+        CollectionModel<MemberDto> entityModel = super.toCollectionModel(entities);
+        entityModel.add(linkTo(methodOn(MemberController.class).getAllUsers(null)).withSelfRel());
         return entityModel;
     }
 }
