@@ -1,12 +1,18 @@
 package com.example.libraryapp.domain.reservation;
 
-import com.example.libraryapp.domain.book.Book;
-import com.example.libraryapp.domain.book.BookRepository;
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.example.libraryapp.domain.bookItem.BookItemRepository;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
-import com.example.libraryapp.domain.exception.*;
-import com.example.libraryapp.domain.user.User;
-import com.example.libraryapp.domain.user.UserRepository;
-import com.example.libraryapp.domain.user.UserService;
+import com.example.libraryapp.domain.exception.bookItem.BookLimitException;
+import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
+import com.example.libraryapp.domain.exception.reservation.ResevationException;
+import com.example.libraryapp.domain.member.Member;
+import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
+import com.example.libraryapp.management.Constants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,119 +21,130 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class ReservationService {
-    private static final int RESERVATION_EXP_TIME_IN_DAYS = 4;
     private final ReservationRepository reservationRepository;
-    private final BookRepository bookRepository;
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private final BookItemRepository bookItemRepository;
+    private final MemberRepository memberRepository;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
 
     public ReservationService(ReservationRepository reservationRepository,
-                              BookRepository bookRepository,
-                              UserRepository userRepository,
-                              UserService userService,
+                              BookItemRepository bookItemRepository,
+                              MemberRepository memberRepository,
                               ReservationModelAssembler reservationModelAssembler,
                               PagedResourcesAssembler<Reservation> pagedResourcesAssembler) {
         this.reservationRepository = reservationRepository;
-        this.bookRepository = bookRepository;
-        this.userRepository = userRepository;
-        this.userService = userService;
+        this.bookItemRepository = bookItemRepository;
+        this.memberRepository = memberRepository;
         this.reservationModelAssembler = reservationModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public List<ReservationDto> findAllReservations() {
-        return reservationRepository.findAll().stream()
-                .map(ReservationDtoMapper::map)
-                .toList();
+    public PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
+        Page<Reservation> reservationPage =
+                pageable.isUnpaged() ? new PageImpl<>(reservationRepository.findAll()) : reservationRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
-    public PagedModel<ReservationDto> findAllReservations(Pageable pageable) {
-        boolean currentLoggedInUserIsAdmin = userService.checkIfCurrentLoggedInUserIsAdmin();
-        if (currentLoggedInUserIsAdmin) {
-
-            Page<Reservation> reservationDtoPage =
-                    pageable.isUnpaged() ? new PageImpl<>(reservationRepository.findAll()) : reservationRepository.findAll(pageable);
-            return pagedResourcesAssembler.toModel(reservationDtoPage, reservationModelAssembler);
+    public PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberNotFoundException();
         }
-        throw new ReservationNotFoundException();
+
+        List<Reservation> reservationList = reservationRepository.findAllByMemberId(memberId);
+        Page<Reservation> reservationPage;
+        if (pageable.isUnpaged()) {
+            reservationPage = new PageImpl<>(reservationList);
+        } else {
+            reservationPage = new PageImpl<>(reservationList, pageable, reservationList.size());
+        }
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
-    public PagedModel<ReservationDto> findReservationsByUserId(Long userId, Pageable pageable) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException();
-        }
-        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(userId);
-
-        if (userIsAdminOrDataOwner) {
-            List<Reservation> reservationList = reservationRepository.findAll()
-                    .stream()
-                    .filter(res -> res.getUser().getId().equals(userId))
-                    .toList();
-            Page<Reservation> reservationDtoPage;
-            if (pageable.isUnpaged()) {
-                reservationDtoPage = new PageImpl<>(reservationList);
-            } else {
-                reservationDtoPage = new PageImpl<>(reservationList, pageable, reservationList.size());
-            }
-            return pagedResourcesAssembler.toModel(reservationDtoPage, reservationModelAssembler);
-        }
-        throw new ReservationNotFoundException();
-    }
-
-    public Optional<ReservationDto> findReservationById(Long id) {
+    public Optional<ReservationResponse> findReservationById(Long id) {
         return reservationRepository.findById(id)
-                .filter(res -> userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(res.getUser().getId()))
                 .map(reservationModelAssembler::toModel);
     }
 
     @Transactional
-    public ReservationDto makeAReservation(ReservationToSaveDto reservation) {
-        User user = userRepository.findById(reservation.getUserId())
-                .orElseThrow(UserNotFoundException::new);
-        Book book = bookRepository.findById(reservation.getBookId())
-                .orElseThrow(BookNotFoundException::new);
-
-        boolean bookIsAvailable = book.getAvailability();
-        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(reservation.getUserId());
-
-        if (bookIsAvailable && userIsAdminOrDataOwner) {
-            Reservation reservationToSave = prepareReservationToSave(user, book);
-            Reservation savedReservation = reservationRepository.save(reservationToSave);
-            book.setAvailability(Boolean.FALSE);
-            return reservationModelAssembler.toModel(savedReservation);
-        }
-        else if (!bookIsAvailable) throw new BookIsNotAvailableException();
-        else throw new ReservationCannotBeCreatedException();
+    public ReservationResponse makeAReservation(Long memberId, String bookBarcode) {
+        BookItem book = findBookByBarcode(bookBarcode);
+        Member member = findMemberById(memberId);
+        checkMemberReservationLimit(member);
+        checkIfBookIsNotLost(book);
+        checkIfReservationAlreadyExist(memberId, bookBarcode);
+        Reservation reservationToSave = prepareNewReservation(member, book);
+        Reservation savedReservation = reservationRepository.save(reservationToSave);
+        member.updateAfterReservation();
+        book.updateAfterReservation();
+        return reservationModelAssembler.toModel(savedReservation);
     }
 
     @Transactional
-    public void removeAReservation(Long id) {
-        Reservation reservation = reservationRepository.findById(id)
-                .orElseThrow(ReservationNotFoundException::new);
-        boolean userIsAdminOrDataOwner = userService.checkIfCurrentLoggedInUserIsAdminOrDataOwner(reservation.getUser().getId());
-        if (userIsAdminOrDataOwner) {
-            reservation.getBook().setAvailability(true);
-            reservationRepository.deleteById(id);
-        } else throw new ReservationCannotBeDeletedException();
+    public void cancelAReservation(Long memberId, String bookBarcode) {
+        Reservation reservation = findReservation(memberId, bookBarcode);
+        BookItem book = reservation.getBookItem();
+        Member member = reservation.getMember();
+        boolean isBookReserved = isBookReserved(book.getId());
+        reservation.updateAfterCancelling();
+        book.updateAfterReservationCancelling(isBookReserved);
+        member.updateAfterReservationCancelling();
     }
 
-    private Reservation prepareReservationToSave(User user, Book book) {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusDays(RESERVATION_EXP_TIME_IN_DAYS);
+    private Reservation findReservation(Long memberId, String bookBarcode) {
+        return reservationRepository.findAllByMemberId(memberId)
+                .stream()
+                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
+                .filter(res -> res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.READY)
+                .findAny()
+                .orElseThrow(ReservationNotFoundException::new);
+    }
 
-        Reservation reservationToSave = new Reservation();
-        reservationToSave.setUser(user);
-        reservationToSave.setBook(book);
-        reservationToSave.setStartTime(startTime);
-        reservationToSave.setEndTime(endTime);
-        return  reservationToSave;
+    private BookItem findBookByBarcode(String bookBarcode) {
+        return bookItemRepository.findByBarcode(bookBarcode)
+                .orElseThrow(BookNotFoundException::new);
+    }
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private void checkIfReservationAlreadyExist(Long memberId, String bookBarcode) {
+        Optional<Reservation> reservation = reservationRepository.findAllByMemberId(memberId)
+                .stream()
+                .filter(res -> Objects.equals(res.getMember().getId(), memberId))
+                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
+                .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
+                .findAny();
+        if (reservation.isPresent()) throw new ResevationException("The reservation has already been created.");
+    }
+
+    private void checkMemberReservationLimit(Member member) {
+        if (member.getTotalBooksReserved() >= Constants.MAX_BOOKS_RESERVED_BY_USER) {
+            throw new BookLimitException("The user has already reserved maximum number of books");
+        }
+    }
+
+    private void checkIfBookIsNotLost(BookItem book) {
+        if (book.getStatus() == BookItemStatus.LOST) throw new ResevationException("Book cannot be reserved");
+    }
+
+    private boolean isBookReserved(Long bookItemId) {
+        return reservationRepository.findAllPendingReservations(bookItemId).size() > 0;
+    }
+
+    private Reservation prepareNewReservation(Member member, BookItem book) {
+        return Reservation.builder()
+                .creationDate(LocalDate.now())
+                .status(ReservationStatus.PENDING)
+                .bookItem(book)
+                .member(member)
+                .build();
     }
 }

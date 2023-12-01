@@ -2,26 +2,26 @@ package com.example.libraryapp.domain.auth;
 
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.card.LibraryCardRepository;
-import com.example.libraryapp.domain.helper.CardNumGenerator;
+import com.example.libraryapp.domain.helper.LibraryGenerator;
+import com.example.libraryapp.domain.member.*;
 import com.example.libraryapp.domain.token.JwtService;
 import com.example.libraryapp.domain.token.Token;
 import com.example.libraryapp.domain.token.TokenRepository;
 import com.example.libraryapp.domain.token.TokenType;
-import com.example.libraryapp.domain.user.User;
-import com.example.libraryapp.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -29,21 +29,15 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
-
-        User savedUser = userRepository.save(user);
-        String jwtToken = jwtService.generateToken(user);
-        saveUserLibraryCard(savedUser);
-        saveUserToken(savedUser, jwtToken);
-        AuthenticationResponse response = createAuthResponse(savedUser, jwtToken);
+        Member member = createMemberWithUserRole(request);
+        Member savedMember = memberRepository.save(member);
+        String jwtToken = jwtService.generateToken(member);
+        saveMemberLibraryCard(savedMember);
+        saveMemberToken(savedMember, jwtToken);
+        AuthenticationResponse response = createAuthResponse(savedMember, jwtToken);
         return response;
     }
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -52,18 +46,19 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(request.getUsername())
+        Member member = memberRepository.findByEmail(request.getUsername())
                 .orElseThrow();
-        String jwtToken = jwtService.generateToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
-        AuthenticationResponse response = createAuthResponse(user, jwtToken);
+        String jwtToken = jwtService.generateToken(member);
+        revokeAllUserTokens(member);
+        saveMemberToken(member, jwtToken);
+        AuthenticationResponse response = createAuthResponse(member, jwtToken);
         return response;
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+
+    private void saveMemberToken(Member member, String jwtToken) {
         Token token = Token.builder()
-                .user(user)
+                .member(member)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
@@ -72,19 +67,19 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    private void saveUserLibraryCard(User user) {
+    private void saveMemberLibraryCard(Member member) {
         LibraryCard libraryCard = LibraryCard.builder()
                 .active(true)
-                .barcode(CardNumGenerator.generate(user.getId()))
+                .barcode(LibraryGenerator.generateCardNum(member.getId()))
                 .issuedAt(LocalDateTime.now())
                 .build();
         cardRepository.save(libraryCard);
 
-        user.setCard(libraryCard);
+        member.setCard(libraryCard);
     }
 
-    private void revokeAllUserTokens(User user) {
-        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+    private void revokeAllUserTokens(Member member) {
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(member.getId());
 
         if (validUserTokens.isEmpty()) return;
 
@@ -95,13 +90,44 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    private AuthenticationResponse createAuthResponse(User user, String token) {
+    private Member createMemberWithUserRole(RegisterRequest request) {
+        Address address = createAddressFromRequest(request);
+        Person person = createPersonFromRequest(request);
+        person.setAddress(address);
+        Member member = new Member();
+        member.setPerson(person);
+        member.setDateOfMembership(LocalDate.now());
+        member.setEmail(request.getEmail());
+        member.setPassword(passwordEncoder.encode(request.getPassword()));
+        member.setRole(Role.USER);
+        return member;
+    }
+
+    private Address createAddressFromRequest(RegisterRequest request) {
+        return Address.builder()
+                .streetAddress(request.getStreetAddress())
+                .zipCode(request.getZipCode())
+                .city(request.getCity())
+                .state(request.getState())
+                .country(request.getCountry())
+                .build();
+    }
+
+    private Person createPersonFromRequest(RegisterRequest request) {
+        return Person.builder()
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phone(request.getPhone())
+                .build();
+    }
+
+    private AuthenticationResponse createAuthResponse(Member member, String token) {
         return AuthenticationResponse.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .card(user.getCard())
+                .id(member.getId())
+                .firstName(member.getPerson().getFirstName())
+                .lastName(member.getPerson().getLastName())
+                .email(member.getEmail())
+                .card(member.getCard())
                 .token(token)
                 .build();
     }

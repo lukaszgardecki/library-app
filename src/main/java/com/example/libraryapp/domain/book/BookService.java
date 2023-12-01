@@ -1,12 +1,8 @@
 package com.example.libraryapp.domain.book;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
-import com.example.libraryapp.domain.book.dto.BookToSaveDto;
-import com.example.libraryapp.domain.book.mapper.BookDtoMapper;
-import com.example.libraryapp.domain.book.mapper.BookToSaveDtoMapper;
+import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
-import com.example.libraryapp.domain.exception.BookIsNotAvailableException;
-import com.example.libraryapp.domain.exception.BookNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,16 +27,11 @@ public class BookService {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-//    public List<BookDto> findAllBooks() {
-//        return bookRepository.findAll().stream()
-//                .map(BookDtoMapper::map)
-//                .toList();
-//    }
 
-    public PagedModel<BookDto> findAllBooks(Pageable pageable) {
-        Page<Book> bookDtoPage =
+    public PagedModel<BookDto> findAllBook(Pageable pageable) {
+        Page<Book> bookPage =
                 pageable.isUnpaged() ? new PageImpl<>(bookRepository.findAll()) : bookRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(bookDtoPage, bookModelAssembler);
+        return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
     }
 
     public Optional<BookDto> findBookById(Long id) {
@@ -48,19 +39,17 @@ public class BookService {
                 .map(bookModelAssembler::toModel);
     }
 
-    public BookDto saveBook(BookToSaveDto book) {
-        Book bookToSave = BookToSaveDtoMapper.map(book);
-        bookToSave.setAvailability(Boolean.TRUE);
+    public BookDto saveBook(BookDto book) {
+        Book bookToSave = BookMapper.map(book);
         Book savedBook = bookRepository.save(bookToSave);
         return bookModelAssembler.toModel(savedBook);
     }
 
-    public Optional<BookDto> replaceBook(BookDto book) {
-        Optional<Book> bookToUpdate = bookRepository.findById(book.getId());
-
-        if (bookToUpdate.isPresent()) {
-            Book bookToSave = BookDtoMapper.map(book);
-            bookToSave.setLendings(bookToUpdate.get().getLendings());
+    public Optional<BookDto> replaceBook(Long bookId, BookDto book) {
+        Optional<Book> optToReplace = bookRepository.findById(bookId);
+        if (optToReplace.isPresent()) {
+            Book bookToSave = BookMapper.map(book);
+            bookToSave.setId(bookId);
             Book savedBook = bookRepository.save(bookToSave);
             return Optional.of(bookModelAssembler.toModel(savedBook));
         }
@@ -68,30 +57,28 @@ public class BookService {
     }
 
     @Transactional
-    public BookDto updateBook(Long id, BookDto book) {
-        Book bookToUpdate = bookRepository.findById(id)
-                .orElseThrow(BookNotFoundException::new);
-
-        if (book != null) {
+    public Optional<BookDto> updateBook(Long bookId, BookDto book) {
+        Optional<Book> optToUpdate = bookRepository.findById(bookId);
+        if (optToUpdate.isPresent()) {
+            Book bookToUpdate = optToUpdate.get();
             if (book.getTitle() != null) bookToUpdate.setTitle(book.getTitle());
-            if (book.getAuthor() != null) bookToUpdate.setAuthor(book.getAuthor());
+            if (book.getSubject() != null) bookToUpdate.setSubject(book.getSubject());
             if (book.getPublisher() != null) bookToUpdate.setPublisher(book.getPublisher());
-            if (book.getRelease_year() != null) bookToUpdate.setRelease_year(book.getRelease_year());
+            if (book.getISBN() != null) bookToUpdate.setISBN(book.getISBN());
+            if (book.getLanguage() != null) bookToUpdate.setLanguage(book.getLanguage());
             if (book.getPages() != null) bookToUpdate.setPages(book.getPages());
-            if (book.getIsbn() != null) bookToUpdate.setIsbn(book.getIsbn());
-        } else {
-            throw new NullPointerException();
+            if (book.getBookItems() != null) bookToUpdate.setBookItems(book.getBookItems());
+            return Optional.of(bookModelAssembler.toModel(bookToUpdate));
         }
-        return bookModelAssembler.toModel(bookToUpdate);
+        return Optional.empty();
     }
 
-    public void deleteBookById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(BookNotFoundException::new);
-        boolean bookIsNotAvailable = !book.getAvailability();
-        if (bookIsNotAvailable) {
-            throw new BookIsNotAvailableException();
+    public boolean deleteBook(Long bookId) {
+        Optional<Book> optToDelete = bookRepository.findById(bookId);
+        if (optToDelete.isPresent()) {
+            bookRepository.deleteById(bookId);
+            return true;
         }
-        bookRepository.deleteById(id);
+        return false;
     }
 }
