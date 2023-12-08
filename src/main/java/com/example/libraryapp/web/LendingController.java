@@ -1,6 +1,5 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.lending.LendingService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.MemberService;
@@ -14,52 +13,43 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/lendings")
 @RequiredArgsConstructor
 public class LendingController {
     private final LendingService lendingService;
     private final MemberService memberService;
     private final NotificationService notificationService;
 
-    @GetMapping("/lendings")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PagedModel<LendingDto>> getAllCheckouts(
-            @RequestParam(required = false) Long memberId, Pageable pageable) {
-        PagedModel<LendingDto> collectionModel = null;
-        if (memberId != null) {
-            memberService.checkIfAdminOrDataOwnerRequested(memberId);
-            collectionModel = lendingService.findLendingsByMemberId(memberId, pageable);
-        } else if (memberService.checkIfCurrentLoggedInUserIsAdmin()) {
-            collectionModel = lendingService.findAllCheckouts(pageable);
-        }
+            @RequestParam(required = false) Long memberId, Pageable pageable
+    ) {
+        memberService.checkIfAdminOrDataOwnerRequested(memberId);
+        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, pageable);
         return ResponseEntity.ok(collectionModel);
     }
 
-    @GetMapping("/lendings/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<LendingDto> getCheckoutById(@PathVariable Long id) {
-        Optional<LendingDto> lending = lendingService.findLendingById(id);
-        lending.ifPresent(len -> memberService.checkIfAdminOrDataOwnerRequested(len.getMemberId()));
-        return lending
-                .map(ResponseEntity::ok)
-                .orElseThrow(LendingNotFoundException::new);
+    public ResponseEntity<LendingDto> getLendingById(@PathVariable Long id) {
+        LendingDto lending = lendingService.findLendingById(id);
+        memberService.checkIfAdminOrDataOwnerRequested(lending.getMemberId());
+        return ResponseEntity.ok(lending);
     }
 
-    @PostMapping("/lendings")
+    @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> borrowABook(Long memberId, String bookBarcode) {
-        // TODO: 29.11.2023 czy sprawdzanie admin or data owner jest konieczne? tutaj może wejść ponoć tylko admin?
-        memberService.checkIfAdminOrDataOwnerRequested(memberId);
         LendingDto savedCheckout = lendingService.borrowABook(memberId, bookBarcode);
         URI savedCheckoutUri = createURI(savedCheckout);
         notificationService.send(NotificationService.BOOK_BORROWED);
         return ResponseEntity.created(savedCheckoutUri).body(savedCheckout);
     }
 
-    @PostMapping("/lendings/renew")
+    @PostMapping("/renew")
     @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> renewABook(String bookBarcode) {
         LendingDto renewedLending = lendingService.renewABook(bookBarcode);
@@ -68,7 +58,7 @@ public class LendingController {
         return ResponseEntity.created(savedLendingUri).body(renewedLending);
     }
 
-    @PatchMapping("/lendings/return")
+    @PatchMapping("/return")
     @PreAuthorize("hasAuthority('admin:update')")
     public ResponseEntity<?> returnABook(@RequestParam String bookBarcode) {
         LendingDto returnedBook = lendingService.returnABook(bookBarcode);

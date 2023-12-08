@@ -2,10 +2,8 @@ package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.config.assembler.LendingModelAssembler;
-import com.example.libraryapp.domain.exception.bookItem.BookLimitException;
 import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
-import com.example.libraryapp.domain.exception.lending.LendingCannotBeRenewedException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
@@ -17,6 +15,7 @@ import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.Constants;
+import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -53,33 +52,20 @@ public class LendingService {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public PagedModel<LendingDto> findAllCheckouts(Pageable pageable) {
-        Page<Lending> checkoutDtoPage =
-                pageable.isUnpaged() ? new PageImpl<>(lendingRepository.findAll()) : lendingRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
-    }
-
-    public PagedModel<LendingDto> findLendingsByMemberId(Long memberId, Pageable pageable) {
-        if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException();
-        }
-
-        List<Lending> lendingList = lendingRepository.findAll()
-                .stream()
-                .filter(checkout -> checkout.getMember().getId().equals(memberId))
-                .toList();
-        Page<Lending> checkoutDtoPage;
-        if (pageable.isUnpaged()) {
-            checkoutDtoPage = new PageImpl<>(lendingList);
+    public PagedModel<LendingDto> findLendings(Long memberId, Pageable pageable) {
+        Optional<Member> optMember = memberRepository.findById(memberId);
+        PagedModel<LendingDto> collectionModel;
+        if (optMember.isPresent()) {
+            collectionModel = findLendingsByMemberId(memberId, pageable);
         } else {
-            checkoutDtoPage = new PageImpl<>(lendingList, pageable, lendingList.size());
+            collectionModel = findAllCheckouts(pageable);
         }
-        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
+        return collectionModel;
     }
 
-    public Optional<LendingDto> findLendingById(Long id) {
-        return lendingRepository.findById(id)
-                .map(lendingModelAssembler::toModel);
+    public LendingDto findLendingById(Long id) {
+        Lending lending = findLending(id);
+        return lendingModelAssembler.toModel(lending);
     }
 
     @Transactional
@@ -88,7 +74,6 @@ public class LendingService {
         Member member = reservation.getMember();
         BookItem book = reservation.getBookItem();
         checkIfMemberCanBorrowABook(member);
-        checkIfBookCanBeBorrowed(book);
         Lending lendingToSave = createLendingToSave(reservation);
         Lending savedLending = lendingRepository.save(lendingToSave);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
@@ -117,9 +102,33 @@ public class LendingService {
         return lendingModelAssembler.toModel(lending);
     }
 
+    private PagedModel<LendingDto> findAllCheckouts(Pageable pageable) {
+        Page<Lending> checkoutDtoPage =
+                pageable.isUnpaged() ? new PageImpl<>(lendingRepository.findAll()) : lendingRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
+    }
+
+    private PagedModel<LendingDto> findLendingsByMemberId(Long memberId, Pageable pageable) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberNotFoundException();
+        }
+
+        List<Lending> lendingList = lendingRepository.findAll()
+                .stream()
+                .filter(checkout -> checkout.getMember().getId().equals(memberId))
+                .toList();
+        Page<Lending> checkoutDtoPage;
+        if (pageable.isUnpaged()) {
+            checkoutDtoPage = new PageImpl<>(lendingList);
+        } else {
+            checkoutDtoPage = new PageImpl<>(lendingList, pageable, lendingList.size());
+        }
+        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
+    }
+
     private Lending findLendingByBookBarcode(String bookBarcode) {
         return lendingRepository.findCurrentLendingByBarcode(bookBarcode)
-                .orElseThrow(LendingNotFoundException::new);
+                .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
     private Reservation findReservation(Long memberId, String bookBarcode) {
@@ -131,29 +140,28 @@ public class LendingService {
                 .orElseThrow(ReservationNotFoundException::new);
     }
 
+    private Lending findLending(Long id) {
+        return lendingRepository.findById(id)
+                .orElseThrow(() -> new LendingNotFoundException(id));
+    }
+
     private boolean isBookReserved(Long bookItemId) {
         return reservationRepository.findAllPendingReservations(bookItemId).size() > 0;
     }
 
     private void checkIfMemberCanBorrowABook(Member member) {
         if (member.hasCharges()) {
-            throw new UnsettledFineException("Charges: %szł".formatted(member.getCharge()));
+            throw new UnsettledFineException();
         }
         if (member.getTotalBooksBorrowed() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
-            throw new BookLimitException("The maximum number of books has been issued to the user");
-        }
-    }
-
-    private void checkIfBookCanBeBorrowed(BookItem book) {
-        if(book.getIsReferenceOnly()) {
-            throw new CheckoutException("This book is Reference only and can't be issued");
+            throw new CheckoutException(Message.LENDING_LIMIT_EXCEEDED);
         }
     }
 
     private void checkIfLendingCanBeRenewed(Lending lending) {
         boolean bookIsReserved = isBookReserved(lending.getBookItem().getId());
         if (bookIsReserved || lending.isAfterDueDate()) {
-            throw new LendingCannotBeRenewedException("The lending cannot be renewed.");
+            throw new CheckoutException(Message.LENDING_CANNOT_BE_RENEWED);
         }
     }
 
