@@ -3,8 +3,10 @@ package com.example.libraryapp.domain.bookItem;
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
 import com.example.libraryapp.domain.config.assembler.BookItemModelAssembler;
+import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
 import com.example.libraryapp.domain.helper.LibraryGenerator;
 import org.springframework.data.domain.Page;
@@ -14,8 +16,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class BookItemService {
@@ -34,66 +34,72 @@ public class BookItemService {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public PagedModel<BookItemDto> findAllBookItems(Long bookId, Pageable pageable) {
+    public PagedModel<BookItemDto> findAllBookItems(Pageable pageable) {
         Page<BookItem> bookItemPage =
-                pageable.isUnpaged() ? new PageImpl<>(bookItemRepository.findByBookId(bookId)) : bookItemRepository.findByBookId(bookId, pageable);
+                pageable.isUnpaged() ? new PageImpl<>(bookItemRepository.findAll()) : bookItemRepository.findAll(pageable);
         return pagedResourcesAssembler.toModel(bookItemPage, bookItemModelAssembler);
     }
 
-    public Optional<BookItemDto> findBookItemByIdAndBookId(Long itemId, Long bookId) {
-        return bookItemRepository.findByIdAndBookId(itemId, bookId)
-                .map(bookItemModelAssembler::toModel);
+    public BookItemDto findBookItemById(Long itemId) {
+        BookItem bookItem = findBookItem(itemId);
+        return bookItemModelAssembler.toModel(bookItem);
     }
 
-    public BookItemDto addBookItem(Long bookId, BookItemDto item) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(BookNotFoundException::new);
+    public BookItemDto addBookItem(BookItemToSaveDto item) {
+        Book book = findBook(item.getBookId());
         BookItem bookItemToSave = BookItemMapper.map(item);
         bookItemToSave.setStatus(BookItemStatus.AVAILABLE);
-        bookItemToSave.setBarcode(LibraryGenerator.generateBarcode(bookId));
+        bookItemToSave.setBarcode(LibraryGenerator.generateBarcode(item.getBookId()));
         bookItemToSave.setBook(book);
         BookItem savedBookItem = bookItemRepository.save(bookItemToSave);
         book.addBookItem(bookItemToSave);
         return bookItemModelAssembler.toModel(savedBookItem);
     }
 
-    public Optional<BookItemDto> replaceBookItem(Long bookItemId, BookItemDto bookItem) {
-        Optional<BookItem> bookItemToReplace = bookItemRepository.findById(bookItemId);
-        if (bookItemToReplace.isPresent()) {
-            BookItem bookItemToSave = BookItemMapper.map(bookItem);
-            bookItemToSave.setId(bookItemId);
-            BookItem savedBookItem = bookItemRepository.save(bookItemToSave);
-            return Optional.of(bookItemModelAssembler.toModel(savedBookItem));
-        }
-        return Optional.empty();
+    @Transactional
+    public BookItemDto replaceBookItem(Long bookItemId, BookItemDto bookItem) {
+        BookItem bookToSave = findBookItem(bookItemId);
+        bookToSave.setBarcode(bookItem.getBarcode());
+        bookToSave.setIsReferenceOnly(bookItem.getIsReferenceOnly());
+        bookToSave.setBorrowed(bookItem.getBorrowed());
+        bookToSave.setDueDate(bookItem.getDueDate());
+        bookToSave.setPrice(bookItem.getPrice());
+        bookToSave.setFormat(bookItem.getFormat());
+        bookToSave.setStatus(bookItem.getStatus());
+        bookToSave.setDateOfPurchase(bookItem.getDateOfPurchase());
+        bookToSave.setPublicationDate(bookItem.getPublicationDate());
+        bookToSave.setBook(bookItem.getBook());
+        return bookItemModelAssembler.toModel(bookToSave);
     }
 
     @Transactional
-    public Optional<BookItemDto> updateBookItem(Long bookItemId, BookItemDto bookItem) {
-        Optional<BookItem> optToUpdate = bookItemRepository.findById(bookItemId);
-        if (optToUpdate.isPresent()) {
-            BookItem bookToUpdate = optToUpdate.get();
-            if (bookItem.getBarcode() != null) bookToUpdate.setBarcode(bookItem.getBarcode());
-            if (bookItem.getIsReferenceOnly() != null) bookToUpdate.setIsReferenceOnly(bookItem.getIsReferenceOnly());
-            if (bookItem.getBorrowed() != null) bookToUpdate.setBorrowed(bookItem.getBorrowed());
-            if (bookItem.getDueDate() != null) bookToUpdate.setDueDate(bookItem.getDueDate());
-            if (bookItem.getPrice() != null) bookToUpdate.setPrice(bookItem.getPrice());
-            if (bookItem.getFormat() != null) bookToUpdate.setFormat(bookItem.getFormat());
-            if (bookItem.getStatus() != null) bookToUpdate.setStatus(bookItem.getStatus());
-            if (bookItem.getDateOfPurchase() != null) bookToUpdate.setDateOfPurchase(bookItem.getDateOfPurchase());
-            if (bookItem.getPublicationDate() != null) bookToUpdate.setPublicationDate(bookItem.getPublicationDate());
-            if (bookItem.getBook() != null) bookToUpdate.setBook(bookItem.getBook());
-            return Optional.of(bookItemModelAssembler.toModel(bookToUpdate));
-        }
-        return Optional.empty();
+    public BookItemDto updateBookItem(Long bookItemId, BookItemDto bookItem) {
+        BookItem bookToUpdate = findBookItem(bookItemId);
+        if (bookItem.getBarcode() != null) bookToUpdate.setBarcode(bookItem.getBarcode());
+        if (bookItem.getIsReferenceOnly() != null) bookToUpdate.setIsReferenceOnly(bookItem.getIsReferenceOnly());
+        if (bookItem.getBorrowed() != null) bookToUpdate.setBorrowed(bookItem.getBorrowed());
+        if (bookItem.getDueDate() != null) bookToUpdate.setDueDate(bookItem.getDueDate());
+        if (bookItem.getPrice() != null) bookToUpdate.setPrice(bookItem.getPrice());
+        if (bookItem.getFormat() != null) bookToUpdate.setFormat(bookItem.getFormat());
+        if (bookItem.getStatus() != null) bookToUpdate.setStatus(bookItem.getStatus());
+        if (bookItem.getDateOfPurchase() != null) bookToUpdate.setDateOfPurchase(bookItem.getDateOfPurchase());
+        if (bookItem.getPublicationDate() != null) bookToUpdate.setPublicationDate(bookItem.getPublicationDate());
+        if (bookItem.getBook() != null) bookToUpdate.setBook(bookItem.getBook());
+        return bookItemModelAssembler.toModel(bookToUpdate);
     }
 
-    public boolean deleteBookItemById(Long bookItemId) {
-        Optional<BookItem> optToDelete = bookItemRepository.findById(bookItemId);
-        if (optToDelete.isPresent()) {
-            bookRepository.deleteById(bookItemId);
-            return true;
-        }
-        return false;
+    public void deleteBookItemById(Long bookItemId) {
+        BookItem bookItem = findBookItem(bookItemId);
+        bookItemRepository.delete(bookItem);
+    }
+
+    private BookItem findBookItem(Long id) {
+        return bookItemRepository.findById(id)
+                .orElseThrow(() -> new BookItemNotFoundException(id));
+    }
+
+    private Book findBook(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 }

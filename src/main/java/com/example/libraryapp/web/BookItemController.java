@@ -2,6 +2,7 @@ package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.bookItem.BookItemService;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -15,34 +16,27 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/api/v1/books/{bookId}/items", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/book-items", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class BookItemController {
     private final BookItemService bookItemService;
 
     @GetMapping
-    public ResponseEntity<PagedModel<BookItemDto>> getAllBookItems(@PathVariable Long bookId, Pageable pageable) {
-        PagedModel<BookItemDto> collectionModel = bookItemService.findAllBookItems(bookId, pageable);
+    public ResponseEntity<PagedModel<BookItemDto>> getAllBookItems(Pageable pageable) {
+        PagedModel<BookItemDto> collectionModel = bookItemService.findAllBookItems(pageable);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
-    @GetMapping("/{bookItemId}")
-    public ResponseEntity<BookItemDto> getBookItemByIdAndBookId(
-            @PathVariable Long bookId,
-            @PathVariable Long bookItemId
-    ) {
-        return bookItemService.findBookItemByIdAndBookId(bookItemId, bookId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ResponseEntity<BookItemDto> getBookItemById(@PathVariable Long id) {
+        BookItemDto bookItem = bookItemService.findBookItemById(id);
+        return ResponseEntity.ok(bookItem);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<BookItemDto> addBookItem(
-            @PathVariable Long bookId,
-            @RequestBody BookItemDto bookItem
-    ) {
-        BookItemDto savedBook = bookItemService.addBookItem(bookId, bookItem);
+    public ResponseEntity<BookItemDto> addBookItem(@RequestBody BookItemToSaveDto bookItem) {
+        BookItemDto savedBook = bookItemService.addBookItem(bookItem);
 
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -51,36 +45,24 @@ public class BookItemController {
         return ResponseEntity.created(savedBookUri).body(savedBook);
     }
 
-    @PutMapping("/{bookItemId}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    ResponseEntity<?> replaceBookItem(
-            @PathVariable Long bookItemId,
-            @RequestBody BookItemDto bookItem
-    ) {
-        return bookItemService.replaceBookItem(bookItemId, bookItem)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    ResponseEntity<BookItemDto> replaceBookItem(@PathVariable Long id, @RequestBody BookItemDto bookItem) {
+        BookItemDto replacedBookItem = bookItemService.replaceBookItem(id, bookItem);
+        return ResponseEntity.ok(replacedBookItem);
     }
 
-    @PatchMapping("/{bookItemId}")
+    @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    ResponseEntity<?> updateBookItem(
-            @PathVariable Long bookItemId,
-            @RequestBody BookItemDto bookItem
-    ) {
-        return bookItemService.updateBookItem(bookItemId, bookItem)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    ResponseEntity<BookItemDto> updateBookItem(@PathVariable Long id, @RequestBody BookItemDto bookItem) {
+        BookItemDto updatedBookItem = bookItemService.updateBookItem(id, bookItem);
+        return ResponseEntity.ok(updatedBookItem);
     }
 
-    @DeleteMapping("/{bookItemId}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:delete')")
-    public ResponseEntity<?> deleteBookItemById(@PathVariable Long bookItemId) {
-        boolean deletionSuccessful = bookItemService.deleteBookItemById(bookItemId);
-        if (deletionSuccessful) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> deleteBookItemById(@PathVariable Long id) {
+        bookItemService.deleteBookItemById(id);
+        return ResponseEntity.noContent().build();
     }
 }

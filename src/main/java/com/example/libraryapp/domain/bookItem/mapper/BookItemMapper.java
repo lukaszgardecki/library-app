@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.bookItem.mapper;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 
 public class BookItemMapper {
 
@@ -19,6 +20,18 @@ public class BookItemMapper {
                 .publicationDate(bookItem.getPublicationDate())
                 .book(bookItem.getBook())
                 .build();
+    }
+
+    public static BookItem map(BookItemToSaveDto dto) {
+        BookItem bookItem = new BookItem();
+        bookItem.setIsReferenceOnly(dto.getIsReferenceOnly());
+        bookItem.setBorrowed(dto.getBorrowed());
+        bookItem.setDueDate(dto.getDueDate());
+        bookItem.setPrice(dto.getPrice());
+        bookItem.setFormat(dto.getFormat());
+        bookItem.setDateOfPurchase(dto.getDateOfPurchase());
+        bookItem.setPublicationDate(dto.getPublicationDate());
+        return bookItem;
     }
 
     public static BookItem map(BookItemDto dto) {

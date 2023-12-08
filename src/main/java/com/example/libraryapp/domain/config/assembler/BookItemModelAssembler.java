@@ -24,8 +24,8 @@ public class BookItemModelAssembler extends RepresentationModelAssemblerSupport<
     @NonNull
     public BookItemDto toModel(@NonNull BookItem bookItem) {
         BookItemDto bookDto = BookItemMapper.map(bookItem);
-        bookDto.add(linkTo(methodOn(BookItemController.class).getBookItemByIdAndBookId(bookItem.getBook().getId(), bookItem.getId())).withSelfRel());
-        bookDto.add(linkTo(methodOn(BookItemController.class).getAllBookItems(bookItem.getBook().getId(),null)).withRel(IanaLinkRelations.COLLECTION));
+        bookDto.add(linkTo(methodOn(BookItemController.class).getBookItemById(bookItem.getId())).withSelfRel());
+        bookDto.add(linkTo(methodOn(BookItemController.class).getAllBookItems(null)).withRel(IanaLinkRelations.COLLECTION));
         return bookDto;
     }
 
@@ -33,7 +33,7 @@ public class BookItemModelAssembler extends RepresentationModelAssemblerSupport<
     @NonNull
     public CollectionModel<BookItemDto> toCollectionModel(@NonNull Iterable<? extends BookItem> entities) {
         CollectionModel<BookItemDto> collectionModel = super.toCollectionModel(entities);
-        collectionModel.add(linkTo(methodOn(BookItemController.class).getAllBookItems(null,null)).withSelfRel());
+        collectionModel.add(linkTo(methodOn(BookItemController.class).getAllBookItems(null)).withSelfRel());
         return collectionModel;
     }
 }
