@@ -28,9 +28,8 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
-        return bookService.findBookById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        BookDto book = bookService.findBookById(id);
+        return ResponseEntity.ok(book);
     }
 
     @PostMapping
@@ -48,27 +47,21 @@ public class BookController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
     ResponseEntity<BookDto> replaceBook(@PathVariable Long id, @RequestBody BookDto book) {
-        return bookService.replaceBook(id, book)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        BookDto replacedBook = bookService.replaceBook(id, book);
+        return ResponseEntity.ok(replacedBook);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
     ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookDto book) {
-        return bookService.updateBook(id, book)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        BookDto updatedBook = bookService.updateBook(id, book);
+        return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:delete')")
     ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        boolean deletionSuccessful = bookService.deleteBook(id);
-        if (deletionSuccessful) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        bookService.deleteBook(id);
+        return ResponseEntity.noContent().build();
     }
 }

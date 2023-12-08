@@ -3,6 +3,7 @@ package com.example.libraryapp.domain.book;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
+import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -10,8 +11,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -34,9 +33,9 @@ public class BookService {
         return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
     }
 
-    public Optional<BookDto> findBookById(Long id) {
-        return bookRepository.findById(id)
-                .map(bookModelAssembler::toModel);
+    public BookDto findBookById(Long id) {
+        Book book = findBook(id);
+        return bookModelAssembler.toModel(book);
     }
 
     public BookDto saveBook(BookDto book) {
@@ -45,40 +44,39 @@ public class BookService {
         return bookModelAssembler.toModel(savedBook);
     }
 
-    public Optional<BookDto> replaceBook(Long bookId, BookDto book) {
-        Optional<Book> optToReplace = bookRepository.findById(bookId);
-        if (optToReplace.isPresent()) {
-            Book bookToSave = BookMapper.map(book);
-            bookToSave.setId(bookId);
-            Book savedBook = bookRepository.save(bookToSave);
-            return Optional.of(bookModelAssembler.toModel(savedBook));
-        }
-        return Optional.empty();
+    public BookDto replaceBook(Long bookId, BookDto book) {
+        Book bookToReplace = findBook(bookId);
+        bookToReplace.setTitle(book.getTitle());
+        bookToReplace.setSubject(book.getSubject());
+        bookToReplace.setPublisher(book.getPublisher());
+        bookToReplace.setISBN(book.getISBN());
+        bookToReplace.setLanguage(book.getLanguage());
+        bookToReplace.setPages(book.getPages());
+        Book savedBook = bookRepository.save(bookToReplace);
+        return bookModelAssembler.toModel(savedBook);
+
     }
 
     @Transactional
-    public Optional<BookDto> updateBook(Long bookId, BookDto book) {
-        Optional<Book> optToUpdate = bookRepository.findById(bookId);
-        if (optToUpdate.isPresent()) {
-            Book bookToUpdate = optToUpdate.get();
-            if (book.getTitle() != null) bookToUpdate.setTitle(book.getTitle());
-            if (book.getSubject() != null) bookToUpdate.setSubject(book.getSubject());
-            if (book.getPublisher() != null) bookToUpdate.setPublisher(book.getPublisher());
-            if (book.getISBN() != null) bookToUpdate.setISBN(book.getISBN());
-            if (book.getLanguage() != null) bookToUpdate.setLanguage(book.getLanguage());
-            if (book.getPages() != null) bookToUpdate.setPages(book.getPages());
-            if (book.getBookItems() != null) bookToUpdate.setBookItems(book.getBookItems());
-            return Optional.of(bookModelAssembler.toModel(bookToUpdate));
-        }
-        return Optional.empty();
+    public BookDto updateBook(Long bookId, BookDto book) {
+        Book bookToUpdate = findBook(bookId);
+        if (book.getTitle() != null) bookToUpdate.setTitle(book.getTitle());
+        if (book.getSubject() != null) bookToUpdate.setSubject(book.getSubject());
+        if (book.getPublisher() != null) bookToUpdate.setPublisher(book.getPublisher());
+        if (book.getISBN() != null) bookToUpdate.setISBN(book.getISBN());
+        if (book.getLanguage() != null) bookToUpdate.setLanguage(book.getLanguage());
+        if (book.getPages() != null) bookToUpdate.setPages(book.getPages());
+        if (book.getBookItems() != null) bookToUpdate.setBookItems(book.getBookItems());
+        return bookModelAssembler.toModel(bookToUpdate);
     }
 
-    public boolean deleteBook(Long bookId) {
-        Optional<Book> optToDelete = bookRepository.findById(bookId);
-        if (optToDelete.isPresent()) {
-            bookRepository.deleteById(bookId);
-            return true;
-        }
-        return false;
+    public void deleteBook(Long bookId) {
+        Book bookToDelete = findBook(bookId);
+        bookRepository.delete(bookToDelete);
+    }
+
+    private Book findBook(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 }
