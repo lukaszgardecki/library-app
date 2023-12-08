@@ -2,17 +2,16 @@ package com.example.libraryapp.domain.reservation;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
-import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
-import com.example.libraryapp.domain.exception.bookItem.BookLimitException;
-import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
-import com.example.libraryapp.domain.exception.reservation.ResevationException;
+import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.Constants;
+import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -46,30 +45,20 @@ public class ReservationService {
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 
-    public PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
-        Page<Reservation> reservationPage =
-                pageable.isUnpaged() ? new PageImpl<>(reservationRepository.findAll()) : reservationRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
-    }
-
-    public PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
-        if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException();
-        }
-
-        List<Reservation> reservationList = reservationRepository.findAllByMemberId(memberId);
-        Page<Reservation> reservationPage;
-        if (pageable.isUnpaged()) {
-            reservationPage = new PageImpl<>(reservationList);
+    public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
+        Optional<Member> optMember = memberRepository.findById(memberId);
+        PagedModel<ReservationResponse> collectionModel;
+        if (optMember.isPresent()) {
+            collectionModel = findReservationsByUserId(memberId, pageable);
         } else {
-            reservationPage = new PageImpl<>(reservationList, pageable, reservationList.size());
+            collectionModel = findAllReservations(pageable);
         }
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
+        return collectionModel;
     }
 
-    public Optional<ReservationResponse> findReservationById(Long id) {
-        return reservationRepository.findById(id)
-                .map(reservationModelAssembler::toModel);
+    public ReservationResponse findReservationById(Long id) {
+        Reservation reservation = findReservation(id);
+        return reservationModelAssembler.toModel(reservation);
     }
 
     @Transactional
@@ -77,7 +66,6 @@ public class ReservationService {
         BookItem book = findBookByBarcode(bookBarcode);
         Member member = findMemberById(memberId);
         checkMemberReservationLimit(member);
-        checkIfBookIsNotLost(book);
         checkIfReservationAlreadyExist(memberId, bookBarcode);
         Reservation reservationToSave = prepareNewReservation(member, book);
         Reservation savedReservation = reservationRepository.save(reservationToSave);
@@ -97,6 +85,36 @@ public class ReservationService {
         member.updateAfterReservationCancelling();
     }
 
+    private PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
+        Page<Reservation> reservationPage = reservationRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
+    }
+
+    private PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
+        List<Reservation> reservationList = reservationRepository.findAllByMemberId(memberId);
+        Page<Reservation> reservationPage;
+        if (pageable.isUnpaged()) {
+            reservationPage = new PageImpl<>(reservationList);
+        } else {
+            reservationPage = new PageImpl<>(reservationList, pageable, reservationList.size());
+        }
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
+    }
+
+    private BookItem findBookByBarcode(String bookBarcode) {
+        return bookItemRepository.findByBarcode(bookBarcode)
+                .orElseThrow(() -> new BookItemNotFoundException(bookBarcode));
+    }
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    private Reservation findReservation(Long id) {
+        return reservationRepository.findById(id)
+                .orElseThrow(() -> new ReservationNotFoundException(id));
+    }
+
     private Reservation findReservation(Long memberId, String bookBarcode) {
         return reservationRepository.findAllByMemberId(memberId)
                 .stream()
@@ -106,15 +124,6 @@ public class ReservationService {
                 .orElseThrow(ReservationNotFoundException::new);
     }
 
-    private BookItem findBookByBarcode(String bookBarcode) {
-        return bookItemRepository.findByBarcode(bookBarcode)
-                .orElseThrow(BookNotFoundException::new);
-    }
-    private Member findMemberById(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
-    }
-
     private void checkIfReservationAlreadyExist(Long memberId, String bookBarcode) {
         Optional<Reservation> reservation = reservationRepository.findAllByMemberId(memberId)
                 .stream()
@@ -122,17 +131,13 @@ public class ReservationService {
                 .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
                 .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
                 .findAny();
-        if (reservation.isPresent()) throw new ResevationException("The reservation has already been created.");
+        if (reservation.isPresent()) throw new ReservationException(Message.RESERVATION_ALREADY_CREATED);
     }
 
     private void checkMemberReservationLimit(Member member) {
         if (member.getTotalBooksReserved() >= Constants.MAX_BOOKS_RESERVED_BY_USER) {
-            throw new BookLimitException("The user has already reserved maximum number of books");
+            throw new ReservationException(Message.RESERVATION_LIMIT_EXCEEDED);
         }
-    }
-
-    private void checkIfBookIsNotLost(BookItem book) {
-        if (book.getStatus() == BookItemStatus.LOST) throw new ResevationException("Book cannot be reserved");
     }
 
     private boolean isBookReserved(Long bookItemId) {

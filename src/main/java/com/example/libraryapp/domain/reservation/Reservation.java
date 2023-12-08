@@ -19,6 +19,8 @@ public class Reservation {
     private Long id;
     private LocalDate creationDate;
 
+    // TODO: 05.12.2023 dodać dueDate...
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
