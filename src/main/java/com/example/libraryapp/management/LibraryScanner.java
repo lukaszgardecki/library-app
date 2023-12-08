@@ -1,7 +1,6 @@
 package com.example.libraryapp.management;
 
-import com.example.libraryapp.domain.exception.libraryscanner.InvalidBarcodeException;
-import com.example.libraryapp.domain.exception.libraryscanner.InvalidCardNumberException;
+import com.example.libraryapp.domain.exception.libraryscanner.LibraryScannerException;
 
 public class LibraryScanner {
 
@@ -10,7 +9,7 @@ public class LibraryScanner {
         if (bookBarcode.startsWith(startValue)) {
             return bookBarcode;
         }
-        else throw new InvalidBarcodeException("Invalid Barcode.");
+        else throw new LibraryScannerException(Message.BAD_BOOK_BARCODE);
     }
 
     public String scanCard(String cardNum) {
@@ -18,6 +17,6 @@ public class LibraryScanner {
         if (cardNum.startsWith(startValue)) {
             return cardNum;
         }
-        else throw new InvalidCardNumberException("Invalid card number.");
+        else throw new LibraryScannerException(Message.BAD_CARD_NUMBER);
     }
 }
