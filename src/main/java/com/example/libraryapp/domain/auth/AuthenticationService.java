@@ -7,8 +7,10 @@ import com.example.libraryapp.domain.token.JwtService;
 import com.example.libraryapp.domain.token.Token;
 import com.example.libraryapp.domain.token.TokenRepository;
 import com.example.libraryapp.domain.token.TokenType;
+import com.example.libraryapp.management.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public LoginResponse register(RegisterRequest request) {
+        checkIfEmailIsUnique(request);
         Member member = createMemberWithUserRole(request);
         Member savedMember = memberRepository.saveAndFlush(member);
         LibraryCard card = createMemberLibraryCard(savedMember);
@@ -47,7 +51,7 @@ public class AuthenticationService {
                 )
         );
         Member member = memberRepository.findByEmail(request.getUsername())
-                .orElseThrow();
+                .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
         String jwtToken = jwtService.generateToken(member);
         revokeAllUserTokens(member);
         saveMemberToken(member, jwtToken);
@@ -116,5 +120,12 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
                 .build();
+    }
+
+    private void checkIfEmailIsUnique(RegisterRequest request) {
+        Optional<Member> memberWithSameEmail = memberRepository.findAll().stream()
+                .filter(member -> member.getEmail().equals(request.getEmail()))
+                .findAny();
+        if (memberWithSameEmail.isPresent()) throw new BadCredentialsException(Message.BAD_EMAIL);
     }
 }

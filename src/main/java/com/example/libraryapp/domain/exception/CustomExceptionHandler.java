@@ -11,6 +11,7 @@ import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -19,9 +20,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class ExceptionHandler {
+public class CustomExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler({
+    @ExceptionHandler({
             MemberNotFoundException.class,
             BookNotFoundException.class,
             BookItemNotFoundException.class,
@@ -33,7 +34,7 @@ public class ExceptionHandler {
         return createErrorMessage(HttpStatus.NOT_FOUND,ex, request);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler({
+    @ExceptionHandler({
             UnsettledFineException.class,
             MemberHasNotReturnedBooksException.class,
             ReservationException.class,
@@ -45,13 +46,13 @@ public class ExceptionHandler {
         return createErrorMessage(HttpStatus.CONFLICT,ex, request);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorMessage userHasNoAccessToData(RuntimeException ex, WebRequest request) {
         return createErrorMessage(HttpStatus.FORBIDDEN,ex, request);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage mismatchExceptionHandler(RuntimeException ex, WebRequest request) {
         return createErrorMessage(HttpStatus.BAD_REQUEST, ex, request);

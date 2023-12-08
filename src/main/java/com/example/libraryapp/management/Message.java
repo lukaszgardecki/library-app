@@ -24,4 +24,6 @@ public class Message {
 
     public static final String BAD_BOOK_BARCODE = "Invalid Barcode";
     public static final String BAD_CARD_NUMBER = "Invalid card number";
+    public static final String BAD_EMAIL = "Email must be unique";
+    public static final String BAD_CREDENTIALS = "Bad credentials";
 }
