@@ -49,7 +49,7 @@ public class FineService {
     }
 
     private void validateTotalFee(double totalFee) {
-        if (totalFee > 0.0) throw new UnsettledFineException("Fee: " + totalFee);
+        if (totalFee > 0.0) throw new UnsettledFineException();
     }
 
     private long getDaysBetween(LocalDate dueDate, LocalDate now) {

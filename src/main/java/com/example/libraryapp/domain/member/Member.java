@@ -27,7 +27,7 @@ public class Member extends Account {
     private int totalBooksReserved;
     private BigDecimal charge;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "library_card_id")
     private LibraryCard card;
 

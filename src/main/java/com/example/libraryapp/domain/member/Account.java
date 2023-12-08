@@ -18,7 +18,7 @@ public abstract class Account implements UserDetails {
     private String email;
 //    private AccountStatus status;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Person person;
 
     @Enumerated(EnumType.STRING)
