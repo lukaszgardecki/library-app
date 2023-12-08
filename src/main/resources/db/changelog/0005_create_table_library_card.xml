@@ -10,7 +10,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="barcode" type="VARCHAR(10)"/>
+            <column name="barcode" type="VARCHAR(20)"/>
             <column name="issued_at" type="TIMESTAMP"/>
             <column name="active" type="BOOLEAN"/>
         </createTable>
