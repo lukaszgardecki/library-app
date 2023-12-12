@@ -11,8 +11,8 @@ public class ReservationDtoMapper {
         dto.setId(reservation.getId());
         dto.setCreationDate(reservation.getCreationDate());
         dto.setStatus(reservation.getStatus());
-        dto.setMember(MemberDtoMapper.map(reservation.getMember()));
-        dto.setBook(BookMapper.map(reservation.getBookItem().getBook()));
+        dto.setMember(reservation.getMember() != null ? MemberDtoMapper.map(reservation.getMember()) : null);
+        dto.setBook(reservation.getBookItem() != null ? BookMapper.map(reservation.getBookItem().getBook()) : null);
         return dto;
     }
 }

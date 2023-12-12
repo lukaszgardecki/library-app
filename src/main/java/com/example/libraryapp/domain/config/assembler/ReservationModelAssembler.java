@@ -1,8 +1,8 @@
 package com.example.libraryapp.domain.config.assembler;
 
 import com.example.libraryapp.domain.reservation.Reservation;
-import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.web.ReservationController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.CollectionModel;
@@ -26,7 +26,9 @@ public class ReservationModelAssembler extends RepresentationModelAssemblerSuppo
     public ReservationResponse toModel(@NonNull Reservation entity) {
         ReservationResponse reservationResponse = ReservationDtoMapper.map(entity);
         reservationResponse.add(linkTo(methodOn(ReservationController.class).getReservationById(entity.getId())).withSelfRel());
-        reservationResponse.add(linkTo(methodOn(ReservationController.class).getAllReservations(entity.getMember().getId(), null)).withRel(IanaLinkRelations.COLLECTION));
+        if (entity.getMember() != null) {
+            reservationResponse.add(linkTo(methodOn(ReservationController.class).getAllReservations(entity.getMember().getId(), null)).withRel(IanaLinkRelations.COLLECTION));
+        }
         return reservationResponse;
     }
 

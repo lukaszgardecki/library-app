@@ -18,4 +18,4 @@ values
 --     password: userpass5
     ('{bcrypt}$2a$10$qmsW4vMJ1lmaX5YlAfU/2ug0DQaxC1h9hzqXBzMwqLw9VzbqeLjjq', 'm.zul@gmail.com',	7, 'USER', '2023-05-27', 0, 0, 0, 7),
 --     password: userpass6
-    ('{bcrypt}$2a$10$FX8zhJB3Cky9.4iDP1M9R.Ip6ziJLq2GuP17.af9SzVchngLsbu1m', 'o.mateusz@gmail.com',	8, 'USER', '2023-05-28', 0, 0, 0, 8);
+    ('{bcrypt}$2a$10$FX8zhJB3Cky9.4iDP1M9R.Ip6ziJLq2GuP17.af9SzVchngLsbu1m', 'o.mateusz@gmail.com',	8, 'USER', '2023-05-28', 0, 0, 1.23, 8);

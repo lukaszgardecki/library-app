@@ -1,8 +1,10 @@
 package com.example.libraryapp.domain.bookItem;
 
 import com.example.libraryapp.domain.book.Book;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,6 +34,7 @@ public class BookItem {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @JsonManagedReference
     private Book book;
     //    private Rack placedAt;
 
@@ -39,7 +42,8 @@ public class BookItem {
         if (status == BookItemStatus.AVAILABLE) status = BookItemStatus.RESERVED;
     }
     public void updateAfterReservationCancelling(boolean isBookReserved) {
-        if (isBookReserved) {
+        boolean bookIsNotReserved = !isBookReserved;
+        if (bookIsNotReserved) {
             this.status = BookItemStatus.AVAILABLE;
         }
     }

@@ -1,11 +1,14 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.auth.AuthenticationRequest;
-import com.example.libraryapp.domain.auth.AuthenticationResponse;
 import com.example.libraryapp.domain.auth.AuthenticationService;
+import com.example.libraryapp.domain.auth.LoginRequest;
+import com.example.libraryapp.domain.auth.LoginResponse;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
-import com.example.libraryapp.domain.user.dto.UserDto;
-import com.example.libraryapp.domain.user.dto.UserUpdateDto;
+import com.example.libraryapp.domain.member.dto.MemberDto;
+import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
+import com.example.libraryapp.domain.reservation.ReservationStatus;
+import com.example.libraryapp.management.Constants;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
@@ -22,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class UserControllerTest {
+public class MemberControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -39,7 +42,7 @@ public class UserControllerTest {
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
-        int userListLength = documentContext.read("$._embedded.userDtoList.length()");
+        int userListLength = documentContext.read("$._embedded.memberDtoList.length()");
         assertThat(userListLength).isEqualTo(8);
 
         int sizeParam = documentContext.read("$.page.size");
@@ -63,6 +66,13 @@ public class UserControllerTest {
     }
 
     @Test
+    void shouldNotReturnAllUsersWhenRequestIsNotAuthenticated() {
+        ResponseEntity<String> getResponse = restTemplate
+                .exchange("/api/v1/users", HttpMethod.GET, HttpEntity.EMPTY, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
     @DirtiesContext
     void shouldReturnAnExistingUserDataIfAdminRequested() {
         HttpEntity<Object> request = createAdminRequest();
@@ -71,12 +81,12 @@ public class UserControllerTest {
                 .exchange("/api/v1/users/3", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        UserDto returnedUser = getUserDtoFromResponse(getResponse);
+        MemberDto returnedUser = getUserDtoFromResponse(getResponse);
         assertThat(returnedUser.getId()).isEqualTo(3);
         assertThat(returnedUser.getFirstName()).isEqualTo("Adam");
         assertThat(returnedUser.getLastName()).isEqualTo("Mickiewicz");
         assertThat(returnedUser.getEmail()).isEqualTo("a.mickiewicz@gmail.com");
-        assertThat(returnedUser.getCard().getBarcode()).isEqualTo("00000003");
+        assertThat(returnedUser.getCard().getBarcode()).isEqualTo(Constants.LIBRARY_NUM + Constants.CARD_START_CODE + "00000003");
     }
 
     @Test
@@ -88,12 +98,12 @@ public class UserControllerTest {
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        UserDto returnedUser = getUserDtoFromResponse(getResponse);
+        MemberDto returnedUser = getUserDtoFromResponse(getResponse);
         assertThat(returnedUser.getId()).isEqualTo(2);
         assertThat(returnedUser.getFirstName()).isEqualTo("Kamil");
         assertThat(returnedUser.getLastName()).isEqualTo("Nielubi");
         assertThat(returnedUser.getEmail()).isEqualTo("user@example.com");
-        assertThat(returnedUser.getCard().getBarcode()).isEqualTo("00000002");
+        assertThat(returnedUser.getCard().getBarcode()).isEqualTo(Constants.LIBRARY_NUM + Constants.CARD_START_CODE + "00000002");
     }
 
     @Test
@@ -102,19 +112,14 @@ public class UserControllerTest {
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     void shouldNotReturnUserDataThatDoesNotExist() {
-        HttpEntity<Object> request = createUserRequest();
+        HttpEntity<Object> request = createAdminRequest();
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/999999", HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-        request = createAdminRequest();
-        getResponse = restTemplate
                 .exchange("/api/v1/users/999999", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -126,21 +131,18 @@ public class UserControllerTest {
 
         getResponse = restTemplate.getForEntity("/api/v1/users/9999999", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-
-        getResponse = restTemplate.getForEntity("/api/v1/users", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
     @DirtiesContext
     void shouldPartiallyUpdateAnExistingUserDataIfAdminRequested() {
-        UserUpdateDto userFieldsToUpdate = getUserDtoToPartialUpdate();
+        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<Object> request = createAdminRequest(userFieldsToUpdate);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
+        MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/2", HttpMethod.PATCH, request, Void.class);
@@ -150,19 +152,18 @@ public class UserControllerTest {
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        UserDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
+        MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
         assertThat(userAfterUpdate.getId()).isNotNull();
         assertThat(userAfterUpdate.getId()).isEqualTo(userBeforeUpdate.getId());
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
         assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
-        assertThat(userAfterUpdate.getCard()).isNotEqualTo(userBeforeUpdate.getCard());
     }
 
     @Test
     @DirtiesContext
     void shouldNotPartiallyUpdateAnExistingUserDataIfUserRequestedAndDoesNotOwnThisData() {
-        UserUpdateDto userFieldsToUpdate = getUserDtoToPartialUpdate();
+        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<Object> request = createUserRequest(userFieldsToUpdate);
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/3", HttpMethod.PATCH, request, Void.class);
@@ -172,13 +173,13 @@ public class UserControllerTest {
     @Test
     @DirtiesContext
     void shouldPartiallyUpdateAnExistingUserDataIfUserRequestedAndDoesOwnThisData() {
-        UserUpdateDto userFieldsToUpdate = getUserDtoToPartialUpdate();
+        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<Object> request = createUserRequest(userFieldsToUpdate);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
+        MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/2", HttpMethod.PATCH, request, Void.class);
@@ -189,19 +190,18 @@ public class UserControllerTest {
                 .exchange("/api/v1/users/2", HttpMethod.GET, userAfterPartiallyUpdateRequest, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        UserDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
+        MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
         assertThat(userAfterUpdate.getId()).isNotNull();
         assertThat(userAfterUpdate.getId()).isEqualTo(userBeforeUpdate.getId());
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
         assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
-        assertThat(userAfterUpdate.getCard().getId()).isEqualTo(userBeforeUpdate.getCard().getId());
     }
 
     @Test
     @DirtiesContext
     void shouldNotPartiallyUpdateUserDataThatDoesNotExist() {
-        UserUpdateDto userFieldsToUpdate = getUserDtoToPartialUpdate();
+        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<Object> request = createAdminRequest(userFieldsToUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
@@ -212,8 +212,8 @@ public class UserControllerTest {
     @Test
     @DirtiesContext
     void shouldNotPartiallyUpdateUserDataIfRequestIsNotAuthenticated() {
-        UserUpdateDto userFieldsToUpdate = getUserDtoToPartialUpdate();
-        HttpEntity<UserUpdateDto> request = new HttpEntity<>(userFieldsToUpdate);
+        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
+        HttpEntity<MemberUpdateDto> request = new HttpEntity<>(userFieldsToUpdate);
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/999999", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -233,21 +233,24 @@ public class UserControllerTest {
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        ResponseEntity<String> getUsersReservationsResponse = restTemplate
-                .exchange("/api/v1/reservations?userId=2", HttpMethod.GET, request, String.class);
-        assertThat(getUsersReservationsResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        ResponseEntity<String> reservationResponse = restTemplate
+                .exchange("/api/v1/reservations/8", HttpMethod.GET, request, String.class);
+        DocumentContext documentContext = JsonPath.parse(reservationResponse.getBody());
+        ReservationStatus status = ReservationStatus.valueOf(documentContext.read("$.status"));
+        assertThat(status).isEqualTo(ReservationStatus.CANCELED);
 
-        ResponseEntity<String> getUsersCheckoutsResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=2", HttpMethod.GET, request, String.class);
-        assertThat(getUsersCheckoutsResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        ResponseEntity<String> bookItem1 = restTemplate
+                .exchange("/api/v1/book-items/5", HttpMethod.GET, request, String.class);
+        DocumentContext bookItem1JSON = JsonPath.parse(bookItem1.getBody());
+        BookItemStatus bookItem1Status = BookItemStatus.valueOf(bookItem1JSON.read("$.status"));
+        assertThat(bookItem1Status).isEqualTo(BookItemStatus.AVAILABLE);
 
-        ResponseEntity<String> getUsersReservedBooksResponse= restTemplate
-                .exchange("/api/v1/books/23", HttpMethod.GET, request, String.class);
-        assertThat(getUsersReservedBooksResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        ResponseEntity<String> bookItem2 = restTemplate
+                .exchange("/api/v1/book-items/4", HttpMethod.GET, request, String.class);
+        DocumentContext bookItem2JSON = JsonPath.parse(bookItem2.getBody());
+        BookItemStatus bookItem2Status = BookItemStatus.valueOf(bookItem2JSON.read("$.status"));
+        assertThat(bookItem2Status).isEqualTo(BookItemStatus.LOANED);
 
-        DocumentContext documentContext = JsonPath.parse(getUsersReservedBooksResponse.getBody());
-        boolean booksAvailability = documentContext.read("$.availability");
-        assertThat(booksAvailability).isEqualTo(true);
     }
 
     @Test
@@ -257,11 +260,21 @@ public class UserControllerTest {
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 
         deleteResponse = restTemplate
                 .exchange("/api/v1/users/4", HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    }
+
+    @Test
+    @DirtiesContext
+    void shouldNotDeleteAnExistingUserIfTheyHaveUnsettledFine() {
+        HttpEntity<Object> request = createAdminRequest();
+
+        ResponseEntity<Void> deleteResponse = restTemplate
+                .exchange("/api/v1/users/8", HttpMethod.DELETE, request, Void.class);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
 
     @Test
@@ -307,8 +320,8 @@ public class UserControllerTest {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
-    private UserDto getUserDtoFromResponse(ResponseEntity<String> response) {
-        UserDto dto = new UserDto();
+    private MemberDto getUserDtoFromResponse(ResponseEntity<String> response) {
+        MemberDto dto = new MemberDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         dto.setId(((Number) documentContext.read("$.id")).longValue());
         dto.setFirstName(documentContext.read("$.firstName"));
@@ -325,22 +338,17 @@ public class UserControllerTest {
         return dto;
     }
 
-    private UserUpdateDto getUserDtoToPartialUpdate() {
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setBarcode("99999999");
-
-        UserUpdateDto dto = new UserUpdateDto();
+    private MemberUpdateDto getMemberDtoToPartialUpdate() {
+        MemberUpdateDto dto = new MemberUpdateDto();
         dto.setFirstName("Kunegunda");
         dto.setLastName("Niewiadomska");
         dto.setEmail("xxxxxxxx@xxxxx.com");
         dto.setPassword("passss");
-        dto.setCard(libraryCard);
-        dto.setRole("ADMIN");
         return dto;
     }
 
     private HttpEntity<Object> createAdminRequest() {
-        AuthenticationRequest admin = new AuthenticationRequest();
+        LoginRequest admin = new LoginRequest();
         admin.setUsername("admin@example.com");
         admin.setPassword("adminpass");
 
@@ -349,7 +357,7 @@ public class UserControllerTest {
     }
 
     private HttpEntity<Object> createAdminRequest(Object requestBody) {
-        AuthenticationRequest admin = new AuthenticationRequest();
+        LoginRequest admin = new LoginRequest();
         admin.setUsername("admin@example.com");
         admin.setPassword("adminpass");
 
@@ -358,7 +366,7 @@ public class UserControllerTest {
     }
 
     private HttpEntity<Object> createUserRequest() {
-        AuthenticationRequest user = new AuthenticationRequest();
+        LoginRequest user = new LoginRequest();
         user.setUsername("user@example.com");
         user.setPassword("userpass");
 
@@ -367,7 +375,7 @@ public class UserControllerTest {
     }
 
     private HttpEntity<Object> createUserRequest(Object requestBody) {
-        AuthenticationRequest user = new AuthenticationRequest();
+        LoginRequest user = new LoginRequest();
         user.setUsername("user@example.com");
         user.setPassword("userpass");
 
@@ -376,7 +384,7 @@ public class UserControllerTest {
     }
 
     private HttpEntity<Object> createUserAfterPartiallyUpdateRequest() {
-        AuthenticationRequest user = new AuthenticationRequest();
+        LoginRequest user = new LoginRequest();
         user.setUsername("xxxxxxxx@xxxxx.com");
         user.setPassword("passss");
 
@@ -384,8 +392,8 @@ public class UserControllerTest {
         return new HttpEntity<>(headers);
     }
 
-    private HttpHeaders createHeaderWithTokenFor(AuthenticationRequest user) {
-        AuthenticationResponse response = authenticationService.authenticate(user);
+    private HttpHeaders createHeaderWithTokenFor(LoginRequest user) {
+        LoginResponse response = authenticationService.authenticate(user);
         String token = response.getToken();
 
         HttpHeaders headers = new HttpHeaders();

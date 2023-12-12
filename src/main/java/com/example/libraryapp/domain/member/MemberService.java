@@ -1,5 +1,7 @@
 package com.example.libraryapp.domain.member;
 
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
 import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
@@ -89,11 +91,18 @@ public class MemberService {
         checkIfUserHasReturnedAllBooks(member);
         checkIfUserHasAnyCharges(member);
         cancelAllReservations(member);
+        updateBookItemsStatus(member);
         memberRepository.deleteById(id);
     }
 
     public boolean checkIfCurrentLoggedInUserIsAdmin() {
          return getCurrentLoggedInUserRole().equals(Role.ADMIN.name());
+    }
+
+    public void checkIfAdminRequested() {
+        boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
+        boolean isNotAdmin = !isAdmin;
+        if (isNotAdmin) throw new AccessDeniedException(Message.ACCESS_DENIED);
     }
 
     public void checkIfAdminOrDataOwnerRequested(Long userId) {
@@ -120,7 +129,7 @@ public class MemberService {
     private String getCurrentLoggedInUserRole() {
         Long userId = getCurrentLoggedInUserId();
         return findMemberRoleByUserId(userId)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new MemberNotFoundException(userId));
     }
 
     private void checkIfUserHasReturnedAllBooks(Member member) {
@@ -140,5 +149,17 @@ public class MemberService {
                 .stream()
                 .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
                 .forEach(Reservation::updateAfterCancelling);
+    }
+
+    private void updateBookItemsStatus(Member member) {
+        reservationRepository.findAllByMemberId(member.getId())
+                .forEach(res -> {
+                    BookItem bookItem = res.getBookItem();
+                    boolean bookIsNotReserved = reservationRepository.findAllPendingReservations(bookItem.getId()).size() == 0;
+                    boolean bookIsNotLoaned = bookItem.getStatus() != BookItemStatus.RESERVED;
+                    if (bookIsNotReserved && bookIsNotLoaned) {
+                        bookItem.updateAfterReservationCancelling(false);
+                    }
+                });
     }
 }

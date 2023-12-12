@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.book;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,8 @@ public class Book {
     private String language;
     private int pages;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<BookItem> bookItems;
     //    private List<Author> authors;
 

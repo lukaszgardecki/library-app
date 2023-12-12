@@ -110,7 +110,7 @@ public class LendingService {
 
     private PagedModel<LendingDto> findLendingsByMemberId(Long memberId, Pageable pageable) {
         if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException();
+            throw new MemberNotFoundException(memberId);
         }
 
         List<Lending> lendingList = lendingRepository.findAll()

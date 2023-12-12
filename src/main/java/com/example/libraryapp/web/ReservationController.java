@@ -36,7 +36,11 @@ public class ReservationController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ReservationResponse> getReservationById(@PathVariable Long id) {
         ReservationResponse reservation = reservationService.findReservationById(id);
-        memberService.checkIfAdminOrDataOwnerRequested(reservation.getMember().getId());
+        if (reservation.getMember() != null) {
+            memberService.checkIfAdminOrDataOwnerRequested(reservation.getMember().getId());
+        } else {
+            memberService.checkIfAdminRequested();
+        }
         return ResponseEntity.ok(reservation);
     }
 
