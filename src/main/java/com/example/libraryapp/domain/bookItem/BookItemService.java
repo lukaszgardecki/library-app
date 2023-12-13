@@ -2,13 +2,16 @@ package com.example.libraryapp.domain.bookItem;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.BookRepository;
+import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
 import com.example.libraryapp.domain.config.assembler.BookItemModelAssembler;
+import com.example.libraryapp.domain.exception.bookItem.BookItemException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
-import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.helper.LibraryGenerator;
+import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -57,18 +60,19 @@ public class BookItemService {
     }
 
     @Transactional
-    public BookItemDto replaceBookItem(Long bookItemId, BookItemDto bookItem) {
+    public BookItemDto replaceBookItem(Long bookItemId, BookItemToSaveDto bookItem) {
+        Book book = findBook(bookItem.getBookId());
         BookItem bookToSave = findBookItem(bookItemId);
-        bookToSave.setBarcode(bookItem.getBarcode());
+//        bookToSave.setBarcode(bookItem.getBarcode());
         bookToSave.setIsReferenceOnly(bookItem.getIsReferenceOnly());
         bookToSave.setBorrowed(bookItem.getBorrowed());
         bookToSave.setDueDate(bookItem.getDueDate());
         bookToSave.setPrice(bookItem.getPrice());
         bookToSave.setFormat(bookItem.getFormat());
-        bookToSave.setStatus(bookItem.getStatus());
+//        bookToSave.setStatus(bookItem.getStatus());
         bookToSave.setDateOfPurchase(bookItem.getDateOfPurchase());
         bookToSave.setPublicationDate(bookItem.getPublicationDate());
-        bookToSave.setBook(bookItem.getBook());
+        bookToSave.setBook(book);
         return bookItemModelAssembler.toModel(bookToSave);
     }
 
@@ -84,12 +88,18 @@ public class BookItemService {
         if (bookItem.getStatus() != null) bookToUpdate.setStatus(bookItem.getStatus());
         if (bookItem.getDateOfPurchase() != null) bookToUpdate.setDateOfPurchase(bookItem.getDateOfPurchase());
         if (bookItem.getPublicationDate() != null) bookToUpdate.setPublicationDate(bookItem.getPublicationDate());
-        if (bookItem.getBook() != null) bookToUpdate.setBook(bookItem.getBook());
+        if (bookItem.getBook() != null) {
+            Book book = BookMapper.map(bookItem.getBook());
+            bookToUpdate.setBook(book);
+        }
         return bookItemModelAssembler.toModel(bookToUpdate);
     }
 
     public void deleteBookItemById(Long bookItemId) {
         BookItem bookItem = findBookItem(bookItemId);
+        if (bookItem.getStatus() == BookItemStatus.LOANED || bookItem.getStatus() == BookItemStatus.RESERVED) {
+            throw new BookItemException(Message.BOOK_ITEM_CANNOT_BE_DELETED);
+        }
         bookItemRepository.delete(bookItem);
     }
 

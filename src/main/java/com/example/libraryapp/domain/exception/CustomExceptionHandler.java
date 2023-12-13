@@ -1,7 +1,8 @@
 package com.example.libraryapp.domain.exception;
 
+import com.example.libraryapp.domain.exception.bookItem.BookItemException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
-import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
@@ -38,11 +39,11 @@ public class CustomExceptionHandler {
             UnsettledFineException.class,
             MemberHasNotReturnedBooksException.class,
             ReservationException.class,
-            CheckoutException.class
+            CheckoutException.class,
+            BookItemException.class
     })
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage sourceDoesNotEklxist(RuntimeException ex, WebRequest request) {
-        // TODO: 06.12.2023 zmienić nazwę metody
+    public ErrorMessage activityMustBeInterrupted(RuntimeException ex, WebRequest request) {
         return createErrorMessage(HttpStatus.CONFLICT,ex, request);
     }
 

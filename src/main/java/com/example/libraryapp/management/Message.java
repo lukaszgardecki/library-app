@@ -11,6 +11,7 @@ public class Message {
 
     public static final String BOOK_ITEM_NOT_FOUND_BY_ID = "No book item with id: %s";
     public static final String BOOK_ITEM_NOT_FOUND_BY_BARCODE = "No book item with barcode: %s";
+    public static final String BOOK_ITEM_CANNOT_BE_DELETED = "Book item cannot be deleted";
 
     public static final String LENDING_NOT_FOUND = "No lending with id: %s";
     public static final String LENDING_NOT_FOUND_BY_BARCODE = "No lending with book's barcode: %s";

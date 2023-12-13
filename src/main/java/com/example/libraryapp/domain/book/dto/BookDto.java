@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.book.dto;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -19,5 +20,6 @@ public class BookDto extends RepresentationModel<BookDto> {
     private String ISBN;
     private String language;
     private Integer pages;
+    @JsonIgnore
     private List<BookItem> bookItems;
 }

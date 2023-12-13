@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.bookItem.dto;
 
-import com.example.libraryapp.domain.book.Book;
+import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.bookItem.BookItemFormat;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import lombok.*;
@@ -25,5 +25,5 @@ public class BookItemDto extends RepresentationModel<BookItemDto> {
     private BookItemStatus status;
     private LocalDate dateOfPurchase;
     private LocalDate publicationDate;
-    private Book book;
+    private BookDto book;
 }

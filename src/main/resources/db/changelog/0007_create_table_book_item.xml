@@ -14,7 +14,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="is_reference_only" type="BOOLEAN"/>
             <column name="borrowed" type="DATE"/>
             <column name="due_date" type="DATE"/>
-            <column name="price" type="NUMERIC"/>
+            <column name="price" type="DECIMAL(10,2)"/>
 
             <column name="format" type="VARCHAR(50)"/>
             <column name="status" type="VARCHAR(50)"/>

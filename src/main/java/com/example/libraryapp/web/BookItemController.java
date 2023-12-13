@@ -47,7 +47,7 @@ public class BookItemController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    ResponseEntity<BookItemDto> replaceBookItem(@PathVariable Long id, @RequestBody BookItemDto bookItem) {
+    ResponseEntity<BookItemDto> replaceBookItem(@PathVariable Long id, @RequestBody BookItemToSaveDto bookItem) {
         BookItemDto replacedBookItem = bookItemService.replaceBookItem(id, bookItem);
         return ResponseEntity.ok(replacedBookItem);
     }

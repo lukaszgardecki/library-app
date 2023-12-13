@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.book;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
-import com.example.libraryapp.domain.exception.bookItem.BookNotFoundException;
+import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

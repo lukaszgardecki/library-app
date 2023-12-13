@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.exception.bookItem;
+package com.example.libraryapp.domain.exception.book;
 
 import com.example.libraryapp.management.Message;
 
