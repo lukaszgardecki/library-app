@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.book.mapper;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,17 @@ public class BookMapper {
                 .language(book.getLanguage())
                 .pages(book.getPages())
                 .bookItems(book.getBookItems())
+                .build();
+    }
+
+    public static Book map(BookToSaveDto book) {
+        return Book.builder()
+                .title(book.getTitle())
+                .subject(book.getSubject())
+                .publisher(book.getPublisher())
+                .ISBN(book.getISBN())
+                .language(book.getLanguage())
+                .pages(book.getPages())
                 .build();
     }
 

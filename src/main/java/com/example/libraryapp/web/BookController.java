@@ -2,6 +2,7 @@ package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -34,7 +35,7 @@ public class BookController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<BookDto> addBook(@RequestBody BookDto book) {
+    public ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
         BookDto savedBook = bookService.saveBook(book);
 
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
