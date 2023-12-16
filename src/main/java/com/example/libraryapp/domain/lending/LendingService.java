@@ -146,7 +146,7 @@ public class LendingService {
     }
 
     private boolean isBookReserved(Long bookItemId) {
-        return reservationRepository.findAllPendingReservations(bookItemId).size() > 0;
+        return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
     }
 
     private void checkIfMemberCanBorrowABook(Member member) {
