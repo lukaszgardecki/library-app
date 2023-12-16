@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.reservation.dto;
 
-import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.member.dto.MemberDto;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import lombok.*;
@@ -18,5 +18,5 @@ public class ReservationResponse extends RepresentationModel<ReservationResponse
     private LocalDate creationDate;
     private ReservationStatus status;
     private MemberDto member;
-    private BookDto book;
+    private BookItemDto bookItem;
 }
