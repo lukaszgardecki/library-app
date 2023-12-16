@@ -90,8 +90,8 @@ public class MemberService {
         Member member = findMember(id);
         checkIfUserHasReturnedAllBooks(member);
         checkIfUserHasAnyCharges(member);
-        cancelAllReservations(member);
         updateBookItemsStatus(member);
+        cancelAllReservations(member);
         memberRepository.deleteById(id);
     }
 
@@ -152,13 +152,15 @@ public class MemberService {
     }
 
     private void updateBookItemsStatus(Member member) {
-        reservationRepository.findAllByMemberId(member.getId())
-                .forEach(res -> {
-                    BookItem bookItem = res.getBookItem();
-                    boolean bookIsNotReserved = reservationRepository.findAllPendingReservations(bookItem.getId()).size() == 0;
-                    boolean bookIsNotLoaned = bookItem.getStatus() != BookItemStatus.RESERVED;
-                    if (bookIsNotReserved && bookIsNotLoaned) {
-                        bookItem.updateAfterReservationCancelling(false);
+        reservationRepository.findAllCurrentReservationsByMemberId(member.getId())
+                .forEach(reservation ->  {
+                    BookItem bookItem = reservation.getBookItem();
+                    if (bookItem.getStatus() != BookItemStatus.LOANED) {
+                        boolean isBookReserved =
+                                reservationRepository.findAllCurrentReservationsByBookItemId(bookItem.getId())
+                                        .stream()
+                                        .anyMatch(res -> !Objects.equals(res.getMember().getId(), member.getId()));
+                        bookItem.updateAfterReservationCancelling(isBookReserved);
                     }
                 });
     }
