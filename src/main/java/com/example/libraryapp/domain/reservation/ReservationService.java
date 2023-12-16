@@ -2,11 +2,13 @@ package com.example.libraryapp.domain.reservation;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationException;
+import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
@@ -105,6 +107,7 @@ public class ReservationService {
         return bookItemRepository.findByBarcode(bookBarcode)
                 .orElseThrow(() -> new BookItemNotFoundException(bookBarcode));
     }
+
     private Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
@@ -140,8 +143,10 @@ public class ReservationService {
         }
     }
 
-    private boolean isBookReserved(Long bookItemId) {
-        return reservationRepository.findAllPendingReservations(bookItemId).size() > 0;
+    private void checkIfBookItemIsNotLost(BookItem book) {
+        if (book.getStatus() == BookItemStatus.LOST) {
+            throw new ReservationException(Message.RESERVATION_BOOK_ITEM_LOST);
+        }
     }
 
     private Reservation prepareNewReservation(Member member, BookItem book) {

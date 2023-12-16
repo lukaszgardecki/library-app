@@ -22,6 +22,7 @@ public class Message {
     public static final String RESERVATION_NOT_FOUND_BY_ID = "No reservation with id: %s";
     public static final String RESERVATION_ALREADY_CREATED = "The reservation has already been created.";
     public static final String RESERVATION_LIMIT_EXCEEDED = "The user has already reserved maximum number of books";
+    public static final String RESERVATION_BOOK_ITEM_LOST = "The reservation cannot be created because book item is lost";
 
     public static final String BAD_BOOK_BARCODE = "Invalid Barcode";
     public static final String BAD_CARD_NUMBER = "Invalid card number";
