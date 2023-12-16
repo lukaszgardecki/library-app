@@ -11,31 +11,67 @@ import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.Constants;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance( TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles("test")
 public class MemberControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
     private AuthenticationService authenticationService;
+    private HttpHeaders adminHeader;
+    private HttpHeaders userHeader;
+
+    @BeforeAll
+    void authenticate() {
+        LoginRequest admin = new LoginRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+        LoginResponse adminLoginResponse = authenticationService.authenticate(admin);
+        String adminToken = adminLoginResponse.getToken();
+
+        HttpHeaders adminHeader = new HttpHeaders();
+        adminHeader.setBearerAuth(adminToken);
+        adminHeader.setContentType(MediaType.APPLICATION_JSON);
+        this.adminHeader = adminHeader;
+
+        LoginRequest user = new LoginRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+        LoginResponse userLoginResponse = authenticationService.authenticate(user);
+        String userToken = userLoginResponse.getToken();
+
+        HttpHeaders userHeader = new HttpHeaders();
+        userHeader.setBearerAuth(userToken);
+        userHeader.setContentType(MediaType.APPLICATION_JSON);
+        this.userHeader = userHeader;
+    }
+
 
     @Test
-    @DirtiesContext
+    @Order(1)
     void shouldReturnAllUsersWhenAdminRequested() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users", HttpMethod.GET, request, String.class);
@@ -56,9 +92,9 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(2)
     void shouldNotReturnAllUsersWhenUserRequested() {
-        HttpEntity<Object> request = createUserRequest();
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users", HttpMethod.GET, request, String.class);
@@ -66,6 +102,7 @@ public class MemberControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldNotReturnAllUsersWhenRequestIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users", HttpMethod.GET, HttpEntity.EMPTY, String.class);
@@ -73,9 +110,9 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(4)
     void shouldReturnAnExistingUserDataIfAdminRequested() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users/3", HttpMethod.GET, request, String.class);
@@ -86,13 +123,17 @@ public class MemberControllerTest {
         assertThat(returnedUser.getFirstName()).isEqualTo("Adam");
         assertThat(returnedUser.getLastName()).isEqualTo("Mickiewicz");
         assertThat(returnedUser.getEmail()).isEqualTo("a.mickiewicz@gmail.com");
+        assertThat(returnedUser.getDateOfMembership()).isEqualTo("2023-05-23");
+        assertThat(returnedUser.getTotalBooksBorrowed()).isEqualTo(0);
+        assertThat(returnedUser.getTotalBooksReserved()).isEqualTo(2);
+        assertThat(returnedUser.getCharge()).isEqualTo(BigDecimal.valueOf(0.0));
         assertThat(returnedUser.getCard().getBarcode()).isEqualTo(Constants.LIBRARY_NUM + Constants.CARD_START_CODE + "00000003");
     }
 
     @Test
-    @DirtiesContext
+    @Order(5)
     void shouldReturnAnExistingUserDataIfUserRequestedAndDoesOwnThisData() {
-        HttpEntity<Object> request = createUserRequest();
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
@@ -103,12 +144,17 @@ public class MemberControllerTest {
         assertThat(returnedUser.getFirstName()).isEqualTo("Kamil");
         assertThat(returnedUser.getLastName()).isEqualTo("Nielubi");
         assertThat(returnedUser.getEmail()).isEqualTo("user@example.com");
+        assertThat(returnedUser.getDateOfMembership()).isEqualTo("2023-05-22");
+        assertThat(returnedUser.getTotalBooksBorrowed()).isEqualTo(0);
+        assertThat(returnedUser.getTotalBooksReserved()).isEqualTo(2);
+        assertThat(returnedUser.getCharge()).isEqualTo(BigDecimal.valueOf(0.0));
         assertThat(returnedUser.getCard().getBarcode()).isEqualTo(Constants.LIBRARY_NUM + Constants.CARD_START_CODE + "00000002");
     }
 
     @Test
+    @Order(6)
     void shouldNotReturnAnExistingUserDataIfUserRequestedAndDoesNotOwnThisData() {
-        HttpEntity<Object> request = createUserRequest();
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.GET, request, String.class);
@@ -116,8 +162,9 @@ public class MemberControllerTest {
     }
 
     @Test
+    @Order(7)
     void shouldNotReturnUserDataThatDoesNotExist() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/users/999999", HttpMethod.GET, request, String.class);
@@ -125,6 +172,7 @@ public class MemberControllerTest {
     }
 
     @Test
+    @Order(8)
     void shouldNotReturnUserDataIfRequestIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v1/users/1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -134,22 +182,23 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(17)
     void shouldPartiallyUpdateAnExistingUserDataIfAdminRequested() {
+        long memberIdToUpdate = 2L;
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
-        HttpEntity<Object> request = createAdminRequest(userFieldsToUpdate);
+        HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, adminHeader);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
         MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getResponseAfterUpdate = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
@@ -157,52 +206,72 @@ public class MemberControllerTest {
         assertThat(userAfterUpdate.getId()).isEqualTo(userBeforeUpdate.getId());
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
-        assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
+        assertThat(userAfterUpdate.getEmail()).isEqualTo(userBeforeUpdate.getEmail());
+        assertThat(userAfterUpdate.getDateOfMembership()).isEqualTo(userBeforeUpdate.getDateOfMembership());
+        assertThat(userAfterUpdate.getTotalBooksBorrowed()).isEqualTo(userBeforeUpdate.getTotalBooksBorrowed());
+        assertThat(userAfterUpdate.getTotalBooksReserved()).isEqualTo(userBeforeUpdate.getTotalBooksReserved());
+        assertThat(userAfterUpdate.getCharge()).isEqualTo(userBeforeUpdate.getCharge());
+
+        assertThat(userAfterUpdate.getCard().getId()).isEqualTo(userBeforeUpdate.getCard().getId());
+        assertThat(userAfterUpdate.getCard().getIssuedAt()).isEqualTo(userBeforeUpdate.getCard().getIssuedAt());
+        assertThat(userAfterUpdate.getCard().getBarcode()).isEqualTo(userBeforeUpdate.getCard().getBarcode());
     }
 
     @Test
-    @DirtiesContext
+    @Order(9)
     void shouldNotPartiallyUpdateAnExistingUserDataIfUserRequestedAndDoesNotOwnThisData() {
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
-        HttpEntity<Object> request = createUserRequest(userFieldsToUpdate);
+        HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, userHeader);
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/3", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
-    @DirtiesContext
+    @Order(18)
     void shouldPartiallyUpdateAnExistingUserDataIfUserRequestedAndDoesOwnThisData() {
-        MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
-        HttpEntity<Object> request = createUserRequest(userFieldsToUpdate);
+        long memberIdToUpdate = 2L;
+        MemberUpdateDto userFieldsToUpdate = new MemberUpdateDto();
+        userFieldsToUpdate.setFirstName("Testimie");
+        userFieldsToUpdate.setLastName("Testnazwisko");
+
+        HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, userHeader);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
         MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        HttpEntity<Object> userAfterPartiallyUpdateRequest = createUserAfterPartiallyUpdateRequest();
+        HttpEntity<Object> userAfterPartiallyUpdateRequest = new HttpEntity<>(userHeader);
         ResponseEntity<String> getResponseAfterUpdate = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, userAfterPartiallyUpdateRequest, String.class);
+                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, userAfterPartiallyUpdateRequest, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
-        assertThat(userAfterUpdate.getId()).isNotNull();
-        assertThat(userAfterUpdate.getId()).isEqualTo(userBeforeUpdate.getId());
         assertThat(userAfterUpdate.getFirstName()).isNotEqualTo(userBeforeUpdate.getFirstName());
         assertThat(userAfterUpdate.getLastName()).isNotEqualTo(userBeforeUpdate.getLastName());
-        assertThat(userAfterUpdate.getEmail()).isNotEqualTo(userBeforeUpdate.getEmail());
+
+        assertThat(userAfterUpdate.getId()).isEqualTo(userBeforeUpdate.getId());
+        assertThat(userAfterUpdate.getEmail()).isEqualTo(userBeforeUpdate.getEmail());
+        assertThat(userAfterUpdate.getDateOfMembership()).isEqualTo(userBeforeUpdate.getDateOfMembership());
+        assertThat(userAfterUpdate.getTotalBooksBorrowed()).isEqualTo(userBeforeUpdate.getTotalBooksBorrowed());
+        assertThat(userAfterUpdate.getTotalBooksReserved()).isEqualTo(userBeforeUpdate.getTotalBooksReserved());
+        assertThat(userAfterUpdate.getCharge()).isEqualTo(userBeforeUpdate.getCharge());
+
+        assertThat(userAfterUpdate.getCard().getId()).isEqualTo(userBeforeUpdate.getCard().getId());
+        assertThat(userAfterUpdate.getCard().getIssuedAt()).isEqualTo(userBeforeUpdate.getCard().getIssuedAt());
+        assertThat(userAfterUpdate.getCard().getBarcode()).isEqualTo(userBeforeUpdate.getCard().getBarcode());
     }
 
     @Test
-    @DirtiesContext
+    @Order(10)
     void shouldNotPartiallyUpdateUserDataThatDoesNotExist() {
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
-        HttpEntity<Object> request = createAdminRequest(userFieldsToUpdate);
+        HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, adminHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .exchange("/api/v1/users/999999", HttpMethod.PATCH, request, Void.class);
@@ -210,7 +279,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(11)
     void shouldNotPartiallyUpdateUserDataIfRequestIsNotAuthenticated() {
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<MemberUpdateDto> request = new HttpEntity<>(userFieldsToUpdate);
@@ -220,27 +289,33 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
-//    @Transactional
+    @Order(19)
     void shouldDeleteAnExistingUserIfAdminRequested() {
-        HttpEntity<Object> request = createAdminRequest();
+        long memberIdToDelete = 3L;
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        ResponseEntity<String> reservationResponse = restTemplate
-                .exchange("/api/v1/reservations/8", HttpMethod.GET, request, String.class);
-        DocumentContext documentContext = JsonPath.parse(reservationResponse.getBody());
-        ReservationStatus status = ReservationStatus.valueOf(documentContext.read("$.status"));
-        assertThat(status).isEqualTo(ReservationStatus.CANCELED);
+        ResponseEntity<String> reservation1Response = restTemplate
+                .exchange("/api/v1/reservations/10", HttpMethod.GET, request, String.class);
+        DocumentContext document1Context = JsonPath.parse(reservation1Response.getBody());
+        ReservationStatus reservation1Status = ReservationStatus.valueOf(document1Context.read("$.status"));
+        assertThat(reservation1Status).isEqualTo(ReservationStatus.CANCELED);
+
+        ResponseEntity<String> reservation2Response = restTemplate
+                .exchange("/api/v1/reservations/11", HttpMethod.GET, request, String.class);
+        DocumentContext document2Context = JsonPath.parse(reservation2Response.getBody());
+        ReservationStatus reservation2Status = ReservationStatus.valueOf(document2Context.read("$.status"));
+        assertThat(reservation2Status).isEqualTo(ReservationStatus.CANCELED);
 
         ResponseEntity<String> bookItem1 = restTemplate
-                .exchange("/api/v1/book-items/5", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/book-items/7", HttpMethod.GET, request, String.class);
         DocumentContext bookItem1JSON = JsonPath.parse(bookItem1.getBody());
         BookItemStatus bookItem1Status = BookItemStatus.valueOf(bookItem1JSON.read("$.status"));
         assertThat(bookItem1Status).isEqualTo(BookItemStatus.AVAILABLE);
@@ -250,13 +325,12 @@ public class MemberControllerTest {
         DocumentContext bookItem2JSON = JsonPath.parse(bookItem2.getBody());
         BookItemStatus bookItem2Status = BookItemStatus.valueOf(bookItem2JSON.read("$.status"));
         assertThat(bookItem2Status).isEqualTo(BookItemStatus.LOANED);
-
     }
 
     @Test
-    @DirtiesContext
+    @Order(12)
     void shouldNotDeleteAnExistingUserWhichHasNotReturnedTheBooks() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.DELETE, request, Void.class);
@@ -268,9 +342,9 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(13)
     void shouldNotDeleteAnExistingUserIfTheyHaveUnsettledFine() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/8", HttpMethod.DELETE, request, Void.class);
@@ -278,9 +352,9 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(14)
     void shouldNotDeleteAnExistingUserIfUserRequestedAndDoesNotOwnThisData() {
-        HttpEntity<Object> request = createUserRequest();
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.DELETE, request, Void.class);
@@ -288,24 +362,49 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(20)
     void shouldDeleteAnExistingUserIfUserRequestedAndDoesOwnThisData() {
-        HttpEntity<Object> request = createUserRequest();
+        long memberIdToDelete = 2L;
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
-        request = createAdminRequest();
+        request = new HttpEntity<>(adminHeader);
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+        ResponseEntity<String> reservation1Response = restTemplate
+                .exchange("/api/v1/reservations/8", HttpMethod.GET, request, String.class);
+        DocumentContext document1Context = JsonPath.parse(reservation1Response.getBody());
+        ReservationStatus reservation1Status = ReservationStatus.valueOf(document1Context.read("$.status"));
+        assertThat(reservation1Status).isEqualTo(ReservationStatus.CANCELED);
+
+        ResponseEntity<String> reservation2Response = restTemplate
+                .exchange("/api/v1/reservations/9", HttpMethod.GET, request, String.class);
+        DocumentContext document2Context = JsonPath.parse(reservation2Response.getBody());
+        ReservationStatus reservation2Status = ReservationStatus.valueOf(document2Context.read("$.status"));
+        assertThat(reservation2Status).isEqualTo(ReservationStatus.CANCELED);
+
+        ResponseEntity<String> bookItem1 = restTemplate
+                .exchange("/api/v1/book-items/3", HttpMethod.GET, request, String.class);
+        DocumentContext bookItem1JSON = JsonPath.parse(bookItem1.getBody());
+        BookItemStatus bookItem1Status = BookItemStatus.valueOf(bookItem1JSON.read("$.status"));
+        assertThat(bookItem1Status).isEqualTo(BookItemStatus.LOANED);
+
+        ResponseEntity<String> bookItem2 = restTemplate
+                .exchange("/api/v1/book-items/4", HttpMethod.GET, request, String.class);
+        DocumentContext bookItem2JSON = JsonPath.parse(bookItem2.getBody());
+        BookItemStatus bookItem2Status = BookItemStatus.valueOf(bookItem2JSON.read("$.status"));
+        assertThat(bookItem2Status).isEqualTo(BookItemStatus.LOANED);
     }
 
     @Test
-    @DirtiesContext
+    @Order(15)
     void shouldNotDeleteUserThatDoesNotExist() {
-        HttpEntity<Object> request = createAdminRequest();
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/999999", HttpMethod.DELETE, request, Void.class);
@@ -313,7 +412,7 @@ public class MemberControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(16)
     void shouldNotDeleteUserIfRequestIsNotAuthenticated() {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/users/1", HttpMethod.DELETE, null, Void.class);
@@ -327,6 +426,10 @@ public class MemberControllerTest {
         dto.setFirstName(documentContext.read("$.firstName"));
         dto.setLastName(documentContext.read("$.lastName"));
         dto.setEmail(documentContext.read("$.email"));
+        dto.setDateOfMembership(LocalDate.parse(documentContext.read("$.dateOfMembership"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setTotalBooksBorrowed(documentContext.read("$.totalBooksBorrowed"));
+        dto.setTotalBooksReserved(documentContext.read("$.totalBooksReserved"));
+        dto.setCharge(BigDecimal.valueOf(((Number) documentContext.read("$.charge")).doubleValue()));
 
         LibraryCard card = new LibraryCard();
         card.setId(((Number) documentContext.read("$.card.id")).longValue());
@@ -342,62 +445,7 @@ public class MemberControllerTest {
         MemberUpdateDto dto = new MemberUpdateDto();
         dto.setFirstName("Kunegunda");
         dto.setLastName("Niewiadomska");
-        dto.setEmail("xxxxxxxx@xxxxx.com");
         dto.setPassword("passss");
         return dto;
-    }
-
-    private HttpEntity<Object> createAdminRequest() {
-        LoginRequest admin = new LoginRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createAdminRequest(Object requestBody) {
-        LoginRequest admin = new LoginRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpEntity<Object> createUserRequest() {
-        LoginRequest user = new LoginRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createUserRequest(Object requestBody) {
-        LoginRequest user = new LoginRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpEntity<Object> createUserAfterPartiallyUpdateRequest() {
-        LoginRequest user = new LoginRequest();
-        user.setUsername("xxxxxxxx@xxxxx.com");
-        user.setPassword("passss");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpHeaders createHeaderWithTokenFor(LoginRequest user) {
-        LoginResponse response = authenticationService.authenticate(user);
-        String token = response.getToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        return headers;
     }
 }
