@@ -4,4 +4,4 @@ spring:
   jpa:
     show-sql: true
   liquibase:
-    contexts: dev
+    contexts: test
