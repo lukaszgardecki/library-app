@@ -12,6 +12,10 @@ public class MemberDtoMapper {
         dto.setLastName(member.getPerson().getLastName());
         dto.setEmail(member.getEmail());
         dto.setCard(member.getCard());
+        dto.setDateOfMembership(member.getDateOfMembership());
+        dto.setTotalBooksBorrowed(member.getTotalBooksBorrowed());
+        dto.setTotalBooksReserved(member.getTotalBooksReserved());
+        dto.setCharge(member.getCharge());
         return dto;
     }
 }
