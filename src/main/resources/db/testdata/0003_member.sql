@@ -6,9 +6,9 @@ values
 --     password: adminpass
     ('{bcrypt}$2a$10$mbU0nK/DUpHgy1ncyAEUN.m8QE9gIXLP6DwYb9/WaFUVZy86/zIJ6','admin@example.com', 1, 'ADMIN', '2023-05-21', 0, 0, 0, 1),
 --     password: userpass
-    ('{bcrypt}$2a$10$rOZ4x9b/F.Pu7L9awPKaB.c.11kk7.1IVvsjn9BsITGiXZCHIouC6', 'user@example.com',  2, 'USER', '2023-05-22', 0, 0, 0, 2),
+    ('{bcrypt}$2a$10$rOZ4x9b/F.Pu7L9awPKaB.c.11kk7.1IVvsjn9BsITGiXZCHIouC6', 'user@example.com',  2, 'USER', '2023-05-22', 0, 2, 0, 2),
 --     password: userpass1
-    ('{bcrypt}$2a$10$ueasyNGh50WvWh11FiO5x.MATQKR/qcg.K3PqFclm7GPlh7UmWAoS', 'a.mickiewicz@gmail.com', 3, 'USER', '2023-05-23', 0, 0, 0, 3),
+    ('{bcrypt}$2a$10$ueasyNGh50WvWh11FiO5x.MATQKR/qcg.K3PqFclm7GPlh7UmWAoS', 'a.mickiewicz@gmail.com', 3, 'USER', '2023-05-23', 0, 2, 0, 3),
 --     password: userpass2
     ('{bcrypt}$2a$10$B12U9HtWsrEEIijV295i6u0UNDrUprO6ueg6IHC7pYXi/5tRCFPf2', 'a.kleks@gmail.com', 4, 'USER', '2023-05-24', 0, 0, 0, 4),
 --     password: userpass3
