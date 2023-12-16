@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.member.MemberService;
 import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
+import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -46,12 +47,9 @@ public class ReservationController {
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> makeAReservation(
-            @RequestBody Long memberId,
-            @RequestBody String bookBarcode
-    ) {
-        memberService.checkIfAdminOrDataOwnerRequested(memberId);
-        ReservationResponse savedReservation = reservationService.makeAReservation(memberId, bookBarcode);
+    public ResponseEntity<?> makeAReservation(@RequestBody ActionRequest request) {
+        memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        ReservationResponse savedReservation = reservationService.makeAReservation(request);
         URI savedReservationUri = createURI(savedReservation);
         notificationService.send(NotificationService.RESERVATION_CREATED);
         return ResponseEntity.created(savedReservationUri).body(savedReservation);
@@ -59,9 +57,9 @@ public class ReservationController {
 
     @DeleteMapping
     @PreAuthorize("isAuthenticated()")
-    ResponseEntity<?> cancelAReservation(Long memberId, String bookBarcode) {
-        memberService.checkIfAdminOrDataOwnerRequested(memberId);
-        reservationService.cancelAReservation(memberId, bookBarcode);
+    ResponseEntity<?> cancelAReservation(@RequestBody ActionRequest request) {
+        memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        reservationService.cancelAReservation(request);
         notificationService.send(NotificationService.RESERVATION_DELETED);
         return ResponseEntity.noContent().build();
     }

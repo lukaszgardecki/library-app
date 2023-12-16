@@ -6,12 +6,12 @@ import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
-import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
+import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
@@ -48,9 +48,8 @@ public class ReservationService {
     }
 
     public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
-        Optional<Member> optMember = memberRepository.findById(memberId);
         PagedModel<ReservationResponse> collectionModel;
-        if (optMember.isPresent()) {
+        if (memberId != null) {
             collectionModel = findReservationsByUserId(memberId, pageable);
         } else {
             collectionModel = findAllReservations(pageable);
@@ -64,11 +63,12 @@ public class ReservationService {
     }
 
     @Transactional
-    public ReservationResponse makeAReservation(Long memberId, String bookBarcode) {
-        BookItem book = findBookByBarcode(bookBarcode);
-        Member member = findMemberById(memberId);
+    public ReservationResponse makeAReservation(ActionRequest request) {
+        BookItem book = findBookByBarcode(request.getBookBarcode());
+        Member member = findMemberById(request.getMemberId());
         checkMemberReservationLimit(member);
-        checkIfReservationAlreadyExist(memberId, bookBarcode);
+        checkIfReservationAlreadyExist(member.getId(), book.getBarcode());
+        checkIfBookItemIsNotLost(book);
         Reservation reservationToSave = prepareNewReservation(member, book);
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
@@ -77,11 +77,13 @@ public class ReservationService {
     }
 
     @Transactional
-    public void cancelAReservation(Long memberId, String bookBarcode) {
-        Reservation reservation = findReservation(memberId, bookBarcode);
+    public void cancelAReservation(ActionRequest request) {
+        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
         BookItem book = reservation.getBookItem();
         Member member = reservation.getMember();
-        boolean isBookReserved = isBookReserved(book.getId());
+        boolean isBookReserved = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId())
+                .stream()
+                .anyMatch(res -> !Objects.equals(res.getMember().getId(), member.getId()));
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
@@ -93,7 +95,8 @@ public class ReservationService {
     }
 
     private PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
-        List<Reservation> reservationList = reservationRepository.findAllByMemberId(memberId);
+        Member member = findMemberById(memberId);
+        List<Reservation> reservationList = reservationRepository.findAllByMemberId(member.getId());
         Page<Reservation> reservationPage;
         if (pageable.isUnpaged()) {
             reservationPage = new PageImpl<>(reservationList);
