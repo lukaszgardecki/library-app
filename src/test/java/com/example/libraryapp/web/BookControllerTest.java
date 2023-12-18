@@ -7,7 +7,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +16,54 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance( TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles("test")
 public class BookControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
     private AuthenticationService authenticationService;
+    private HttpHeaders adminHeader;
+    private HttpHeaders userHeader;
+
+    @BeforeAll
+    void authenticate() {
+        LoginRequest admin = new LoginRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+        LoginResponse adminLoginResponse = authenticationService.authenticate(admin);
+        String adminToken = adminLoginResponse.getToken();
+
+        HttpHeaders adminHeader = new HttpHeaders();
+        adminHeader.setBearerAuth(adminToken);
+        adminHeader.setContentType(MediaType.APPLICATION_JSON);
+        this.adminHeader = adminHeader;
+
+        LoginRequest user = new LoginRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+        LoginResponse userLoginResponse = authenticationService.authenticate(user);
+        String userToken = userLoginResponse.getToken();
+
+        HttpHeaders userHeader = new HttpHeaders();
+        userHeader.setBearerAuth(userToken);
+        userHeader.setContentType(MediaType.APPLICATION_JSON);
+        this.userHeader = userHeader;
+    }
 
     @Test
+    @Order(1)
     void shouldReturnPageOf20BooksWhenListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/books", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -42,6 +74,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(2)
     void shouldReturnPageOf3BooksWhenListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/books?page=0&size=3", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -60,6 +93,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(3)
     void shouldReturnAnExistingBook() {
         ResponseEntity<String> response = restTemplate
                 .getForEntity("/api/v1/books/1", String.class);
@@ -76,16 +110,17 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(4)
     void shouldNotReturnABookThatDoesNotExist() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/books/9999999", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @DirtiesContext
+    @Order(16)
     void shouldCreateANewBookIfAdminRequested() {
         BookToSaveDto bookToSaveDto = getBookToSaveDto();
-        HttpEntity<?> request = createAdminRequest(bookToSaveDto);
+        HttpEntity<?> request = new HttpEntity<>(bookToSaveDto, adminHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/books", request, String.class);
@@ -108,9 +143,10 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(5)
     void shouldNotCreateANewBookIfUserRequested() {
         BookToSaveDto bookToSaveDto = getBookToSaveDto();
-        HttpEntity<?> request = createUserRequest(bookToSaveDto);
+        HttpEntity<?> request = new HttpEntity<>(bookToSaveDto, userHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/books", request, String.class);
@@ -118,6 +154,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(6)
     void shouldNotCreateANewBookIfUnauthenticatedUserRequested() {
         BookToSaveDto bookToSaveDto = getBookToSaveDto();
         ResponseEntity<String> createResponse = restTemplate
@@ -126,10 +163,10 @@ public class BookControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(17)
     void shouldUpdateAnExistingBookIfAdminRequested() {
         BookToSaveDto bookToReplace = getBookToSaveDto();
-        HttpEntity<?> request = createAdminRequest(bookToReplace);
+        HttpEntity<?> request = new HttpEntity<>(bookToReplace, adminHeader);
 
         ResponseEntity<String> responseBefore = restTemplate
                 .exchange("/api/v1/books/3", HttpMethod.GET, request, String.class);
@@ -151,15 +188,17 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(7)
     void shouldNotUpdateAnExistingBookIfUserRequested() {
         BookToSaveDto bookToUpdate = getBookToSaveDto();
-        HttpEntity<?> request = createUserRequest(bookToUpdate);
+        HttpEntity<?> request = new HttpEntity<>(bookToUpdate, userHeader);
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/books/3", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
+    @Order(8)
     void shouldNotUpdateAnExistingBookIfUnauthenticatedUserRequested() {
         BookToSaveDto bookToUpdate = getBookToSaveDto();
         HttpEntity<BookToSaveDto> request = new HttpEntity<>(bookToUpdate);
@@ -169,17 +208,17 @@ public class BookControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(9)
     void shouldNotUpdateABookThatDoesNotExist() {
         BookToSaveDto bookToUpdate = getBookToSaveDto();
-        HttpEntity<?> request = createAdminRequest(bookToUpdate);
+        HttpEntity<?> request = new HttpEntity<>(bookToUpdate, adminHeader);
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/books/999999999", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(18)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
@@ -190,7 +229,7 @@ public class BookControllerTest {
         BookDto bookBeforeUpdate = getBookDtoFromResponse(getResponseBeforeUpdate);
 
         BookDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<Object> request = createAdminRequest(bookFieldsToUpdate);
+        HttpEntity<Object> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
 
         ResponseEntity<String> patchResponse = restTemplate
                 .exchange("/api/v1/books/" + bookId, HttpMethod.PATCH, request, String.class);
@@ -212,14 +251,13 @@ public class BookControllerTest {
     }
 
     @ParameterizedTest
-    @DirtiesContext
-    @Transactional
+    @Order(10)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotPartiallyUpdateAnExistingBookIfUserRequested(Long bookId) {
         BookDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<?> request = createUserRequest(bookFieldsToUpdate);
+        HttpEntity<?> request = new HttpEntity<>(bookFieldsToUpdate, userHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .getRestTemplate()
@@ -228,7 +266,7 @@ public class BookControllerTest {
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(11)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
@@ -243,10 +281,10 @@ public class BookControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(12)
     void shouldNotPartiallyUpdateABookThatDoesNotExist() {
         BookDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<?> request = createAdminRequest(bookFieldsToUpdate);
+        HttpEntity<?> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .getRestTemplate()
@@ -255,9 +293,9 @@ public class BookControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(19)
     void shouldDeleteAnExistingBookIfAdminRequested() {
-        HttpEntity<?> request = createAdminRequest();
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/books/1", HttpMethod.DELETE, request, Void.class);
@@ -269,12 +307,12 @@ public class BookControllerTest {
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(13)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotDeleteAnExistingBookIfUserRequested(Long bookId) {
-        HttpEntity<?> request = createUserRequest();
+        HttpEntity<?> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/books/" + bookId, HttpMethod.DELETE, request, Void.class);
@@ -282,9 +320,9 @@ public class BookControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(14)
     void shouldNotDeleteBookThatDoesNotExist() {
-        HttpEntity<?> request = createAdminRequest();
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/books/999999", HttpMethod.DELETE, request, Void.class);
@@ -292,58 +330,12 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(15)
     void shouldNotDeleteBookIfUnauthenticatedUserRequested() {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/books/4", HttpMethod.DELETE, null, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
-
-    private HttpEntity<Object> createAdminRequest() {
-        LoginRequest admin = new LoginRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createAdminRequest(Object requestBody) {
-        LoginRequest admin = new LoginRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpEntity<Object> createUserRequest() {
-        LoginRequest user = new LoginRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createUserRequest(Object requestBody) {
-        LoginRequest user = new LoginRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpHeaders createHeaderWithTokenFor(LoginRequest user) {
-        LoginResponse response = authenticationService.authenticate(user);
-        String token = response.getToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
-    }
-
 
     private BookToSaveDto getBookToSaveDto() {
         BookToSaveDto bookToSaveDto = new BookToSaveDto();
