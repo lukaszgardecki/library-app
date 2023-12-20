@@ -9,16 +9,14 @@ import java.util.Optional;
 
 public interface LendingRepository extends JpaRepository<Lending, Long> {
 
-//    List<Lending> findCheckoutsByBook_Id(Long bookId);
-
     List<Lending> findAllByMemberId(Long memberId);
 
     @Query(value =
             """
             select * from Lending
-            where book_barcode = :bookBarcode
+            where book_item_id = :bookItemId
             and status = 'CURRENT'
             """
             , nativeQuery = true)
-    Optional<Lending> findCurrentLendingByBarcode(@Param(value = "bookBarcode") String bookBarcode);
+    Optional<Lending> findCurrentLendingByBookItemId(@Param(value = "bookItemId") Long bookItemId);
 }

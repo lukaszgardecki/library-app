@@ -42,7 +42,6 @@ public class Lending {
     }
 
     public void updateAfterReturning() {
-        this.returnDate = LocalDate.now();
         this.status = LendingStatus.COMPLETED;
     }
 }

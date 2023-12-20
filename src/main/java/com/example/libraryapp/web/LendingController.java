@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.lending.LendingService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.MemberService;
 import com.example.libraryapp.domain.notification.NotificationService;
+import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -36,14 +37,14 @@ public class LendingController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<LendingDto> getLendingById(@PathVariable Long id) {
         LendingDto lending = lendingService.findLendingById(id);
-        memberService.checkIfAdminOrDataOwnerRequested(lending.getMemberId());
+        memberService.checkIfAdminOrDataOwnerRequested(lending.getMember().getId());
         return ResponseEntity.ok(lending);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> borrowABook(Long memberId, String bookBarcode) {
-        LendingDto savedCheckout = lendingService.borrowABook(memberId, bookBarcode);
+    public ResponseEntity<?> borrowABook(@RequestBody ActionRequest request) {
+        LendingDto savedCheckout = lendingService.borrowABook(request);
         URI savedCheckoutUri = createURI(savedCheckout);
         notificationService.send(NotificationService.BOOK_BORROWED);
         return ResponseEntity.created(savedCheckoutUri).body(savedCheckout);
@@ -51,11 +52,10 @@ public class LendingController {
 
     @PostMapping("/renew")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> renewABook(String bookBarcode) {
+    public ResponseEntity<?> renewABook(@RequestParam String bookBarcode) {
         LendingDto renewedLending = lendingService.renewABook(bookBarcode);
-        URI savedLendingUri = createURI(renewedLending);
         notificationService.send(NotificationService.BOOK_EXTENDED);
-        return ResponseEntity.created(savedLendingUri).body(renewedLending);
+        return ResponseEntity.ok(renewedLending);
     }
 
     @PatchMapping("/return")

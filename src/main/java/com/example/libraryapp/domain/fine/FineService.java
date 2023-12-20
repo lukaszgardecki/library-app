@@ -44,7 +44,12 @@ public class FineService {
 //    }
 
     public BigDecimal countFine(LocalDate dueDate, LocalDate now) {
-        BigDecimal diffDays = BigDecimal.valueOf(getDaysBetween(dueDate, now));
+        BigDecimal diffDays;
+        if (now.isAfter(dueDate)) {
+            diffDays = BigDecimal.valueOf(getDaysBetween(dueDate, now));
+        } else {
+            diffDays = BigDecimal.ZERO;
+        }
         return diffDays.multiply(DAY_FINE);
     }
 

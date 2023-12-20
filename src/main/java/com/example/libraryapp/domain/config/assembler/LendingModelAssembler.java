@@ -1,8 +1,8 @@
 package com.example.libraryapp.domain.config.assembler;
 
 import com.example.libraryapp.domain.lending.Lending;
-import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.lending.LendingDtoMapper;
+import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.web.LendingController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -24,7 +24,7 @@ public class LendingModelAssembler extends RepresentationModelAssemblerSupport<L
     public LendingDto toModel(@NonNull Lending lending) {
         LendingDto checkoutModel = LendingDtoMapper.map(lending);
         checkoutModel.add(linkTo(methodOn(LendingController.class).getLendingById(lending.getId())).withSelfRel());
-        checkoutModel.add(linkTo(LendingController.class).slash("checkouts").withRel(IanaLinkRelations.COLLECTION));
+        checkoutModel.add(linkTo(methodOn(LendingController.class).getAllCheckouts(lending.getMember().getId(), null)).withRel(IanaLinkRelations.COLLECTION));
         return checkoutModel;
     }
 }

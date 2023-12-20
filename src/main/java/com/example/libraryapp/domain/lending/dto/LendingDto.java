@@ -1,6 +1,8 @@
 package com.example.libraryapp.domain.lending.dto;
 
+import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.lending.LendingStatus;
+import com.example.libraryapp.domain.member.dto.MemberDto;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -17,6 +19,6 @@ public class LendingDto extends RepresentationModel<LendingDto> {
     private LocalDate dueDate;
     private LocalDate returnDate;
     private LendingStatus status;
-    private Long memberId;
-    private String bookBarcode;
+    private MemberDto member;
+    private BookItemDto bookItem;
 }

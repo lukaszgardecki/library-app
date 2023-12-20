@@ -1,16 +1,24 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.auth.AuthenticationRequest;
-import com.example.libraryapp.domain.auth.AuthenticationResponse;
 import com.example.libraryapp.domain.auth.AuthenticationService;
-import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.auth.LoginRequest;
+import com.example.libraryapp.domain.auth.LoginResponse;
+import com.example.libraryapp.domain.book.Book;
+import com.example.libraryapp.domain.book.mapper.BookMapper;
+import com.example.libraryapp.domain.bookItem.BookItemFormat;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
+import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.card.LibraryCard;
-import com.example.libraryapp.domain.lending.LendingDto;
-import com.example.libraryapp.domain.lending.LendingToSaveDto;
-import com.example.libraryapp.domain.user.dto.UserDto;
+import com.example.libraryapp.domain.lending.LendingStatus;
+import com.example.libraryapp.domain.lending.dto.LendingDto;
+import com.example.libraryapp.domain.member.dto.MemberDto;
+import com.example.libraryapp.domain.reservation.ReservationStatus;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
+import com.example.libraryapp.management.ActionRequest;
+import com.example.libraryapp.management.Constants;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,48 +27,76 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 
+import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance( TestInstance.Lifecycle.PER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@ActiveProfiles("test")
 public class LendingControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
     private AuthenticationService authenticationService;
+    private HttpHeaders adminHeader;
+    private HttpHeaders userHeader;
+    private HttpHeaders user5Header;
+
+    @BeforeAll
+    void authenticate() {
+        LoginRequest admin = new LoginRequest();
+        admin.setUsername("admin@example.com");
+        admin.setPassword("adminpass");
+        this.adminHeader = authenticate(admin);
+
+        LoginRequest user = new LoginRequest();
+        user.setUsername("user@example.com");
+        user.setPassword("userpass");
+        this.userHeader = authenticate(user);
+
+        LoginRequest user5 = new LoginRequest();
+        user5.setUsername("p.smerf@gmail.com");
+        user5.setPassword("userpass3");
+        this.user5Header = authenticate(user5);
+    }
 
     @Test
-    @DirtiesContext
-    void shouldReturnAllCheckoutsIfAdminRequested() {
-        HttpEntity<Object> request = createAdminRequest();
+    @Order(1)
+    void shouldReturnAllLendingsIfAdminRequested() {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/lendings", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
-        int allCheckoutsLength = documentContext.read("$._embedded.lendingDtoList.length()");
-        assertThat(allCheckoutsLength).isEqualTo(6);
+        int allLendingsLength = documentContext.read("$._embedded.lendingDtoList.length()");
+        assertThat(allLendingsLength).isEqualTo(6);
 
         getResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=1", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?memberId=1", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         documentContext = JsonPath.parse(getResponse.getBody());
-        int usersCheckoutsLength = documentContext.read("$._embedded.lendingDtoList.length()");
-        assertThat(usersCheckoutsLength).isEqualTo(3);
+        int memberLendingsLength = documentContext.read("$._embedded.lendingDtoList.length()");
+        assertThat(memberLendingsLength).isEqualTo(3);
     }
 
     @Test
-    @DirtiesContext
-    void shouldReturnPageOf3CheckoutsIfAdminRequested() {
-        HttpEntity<Object> request = createAdminRequest();
+    @Order(2)
+    void shouldReturnPageOf3LendingsIfAdminRequested() {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> response = restTemplate
                 .exchange("/api/v1/lendings?page=1&size=3", HttpMethod.GET, request, String.class);
@@ -80,191 +116,216 @@ public class LendingControllerTest {
     }
 
     @Test
-    void shouldReturnAllUsersCheckoutsIfUserRequestedAndDoesOwnThisData() {
-        HttpEntity<Object> request = createUserRequest();
+    @Order(3)
+    void shouldReturnAllUsersLendingsIfUserRequestedAndDoesOwnThisData() {
+        HttpEntity<Object> request = new HttpEntity<>(user5Header);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings?memberId=5", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+        int memberLendingsLength = documentContext.read("$._embedded.lendingDtoList.length()");
+        assertThat(memberLendingsLength).isEqualTo(1);
+    }
+
+    @Test
+    @Order(4)
+    void shouldNotReturnAllUsersLendingsIfUserIdDoesNotExist() {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
+
+        ResponseEntity<String> getResponse = restTemplate
+                .exchange("/api/v1/lendings?memberId=99999999", HttpMethod.GET, request, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+        getResponse = restTemplate
+                .exchange("/api/v1/lendings?memberId=badrequest", HttpMethod.GET, request, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(5)
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
-    void shouldNotReturnAllUsersCheckoutsIfUserRequestedAndDoesNotOwnThisData(Long userId) {
-        HttpEntity<Object> request = createUserRequest();
+    void shouldNotReturnAllUsersLendingsIfUserRequestedAndDoesNotOwnThisData(Long memberId) {
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=" + userId, HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+                .exchange("/api/v1/lendings?memberId=" + memberId, HttpMethod.GET, request, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
-    @DirtiesContext
-    void shouldNotReturnAllUsersCheckoutsIfUserRequested() {
-        HttpEntity<Object> request = createUserRequest();
+    @Order(6)
+    void shouldNotReturnAllUsersLendingsIfUserRequested() {
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/lendings", HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @Test
-    @DirtiesContext
-    void shouldNotReturnAllUsersCheckoutsIfUserIdDoesNotExist() {
-        HttpEntity<Object> request = createAdminRequest();
-
-        ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=99999999", HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }
-
-    @Test
+    @Order(7)
     void shouldNotReturnAllCheckoutsIfUserIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/lendings", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         getResponse = restTemplate
-                .getForEntity("/api/v1/lendings?userId=1", String.class);
+                .getForEntity("/api/v1/lendings?memberId=1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(8)
     @CsvSource({
             "1, 1, 1",
-            "2, 2, 2",
-            "1, 3, 3",
-            "4, 4, 4",
-            "1, 19, 5",
+            "3, 1, 3",
             "6, 6, 6"
     })
-    void shouldReturnAnExistingCheckoutIfAdminRequested(Long userId, Long bookId, Long checkoutId) {
-        HttpEntity<Object> request = createAdminRequest();
-        UserDto user = findUserById(userId, request);
-        BookDto book = findBookById(bookId, request);
+    void shouldReturnAnExistingLendingIfAdminRequested(Long lendingId, Long memberId, Long bookItemId) {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/lendings/" + lendingId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
-        assertThat(returnedCheckout.getId()).isNotNull();
-        assertThat(returnedCheckout.getStartTime()).isNotNull();
-        assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUser()).isEqualTo(user);
-        assertThat(returnedCheckout.getBook()).isEqualTo(book);
+        LendingDto returnedLending = getLendingFromResponse(getResponse);
+        MemberDto user = findMemberById(memberId, request);
+        BookItemDto book = findBookItemById(bookItemId);
+
+        assertThat(returnedLending.getId()).isNotNull();
+        assertThat(returnedLending.getCreationDate()).isNotNull();
+        assertThat(returnedLending.getDueDate()).isEqualTo(returnedLending.getCreationDate().plusDays(Constants.MAX_LENDING_DAYS));
+        assertThat(returnedLending.getStatus()).isNotNull();
+        assertThat(returnedLending.getMember()).isEqualTo(user);
+        assertThat(returnedLending.getBookItem()).isEqualTo(book);
     }
 
     @Test
-    @DirtiesContext
-    void shouldReturnAnExistingCheckoutIfUserRequestedAndDoesOwnThisData() {
-        HttpEntity<Object> userRequest = createUserRequest();
-        HttpEntity<Object> adminRequest = createAdminRequest();
-        UserDto user = findUserById(2L, adminRequest);
-        BookDto book = findBookById(2L, adminRequest);
+    @Order(9)
+    void shouldReturnAnExistingLendingIfUserRequestedAndDoesOwnThisData() {
+        HttpEntity<Object> adminRequest = new HttpEntity<>(adminHeader);
+        HttpEntity<Object> userRequest = new HttpEntity<>(user5Header);
+        MemberDto member = findMemberById(5L, adminRequest);
+        BookItemDto book = findBookItemById(2L);
 
         ResponseEntity<String> getResponse = restTemplate
                 .exchange("/api/v1/lendings/2", HttpMethod.GET, userRequest, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
-        assertThat(returnedCheckout.getId()).isNotNull();
-        assertThat(returnedCheckout.getStartTime()).isNotNull();
-        assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUser()).isEqualTo(user);
-        assertThat(returnedCheckout.getBook()).isEqualTo(book);
+        LendingDto returnedLending = getLendingFromResponse(getResponse);
+        assertThat(returnedLending.getId()).isEqualTo(2L);
+        assertThat(returnedLending.getCreationDate()).isEqualTo(LocalDate.parse("2023-05-22", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        assertThat(returnedLending.getDueDate()).isEqualTo(LocalDate.parse("2123-06-21", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        assertThat(returnedLending.getReturnDate()).isNull();
+        assertThat(returnedLending.getStatus()).isEqualTo(LendingStatus.CURRENT);
+        assertThat(returnedLending.getMember()).isEqualTo(member);
+        assertThat(returnedLending.getBookItem()).isEqualTo(book);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(10)
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
-    void shouldNotReturnAnExistingCheckoutIfUserRequestedAndDoesNotOwnThisData(Long userId) {
-        HttpEntity<Object> request = createUserRequest();
+    void shouldNotReturnAnExistingLendingIfUserRequestedAndDoesNotOwnThisData(Long lendingId) {
+        HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings?userId=" + userId, HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }
-
-    @ParameterizedTest
-    @DirtiesContext
-    @CsvSource({
-            "7", "10", "99999"
-    })
-    void shouldNotReturnCheckoutThatDoesNotExist(Long checkoutId) {
-        HttpEntity<Object> request = createAdminRequest();
-
-        ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-            "1", "2", "3", "4", "5", "6"
-    })
-    void shouldNotReturnAnExistingCheckoutIfUserIsNotAuthenticated(Long checkoutId) {
-        ResponseEntity<String> getResponse = restTemplate
-                .getForEntity("/api/v1/lendings/" + checkoutId, String.class);
+                .exchange("/api/v1/lendings/" + lendingId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(11)
     @CsvSource({
-            "1, 5, 1",
-            "2, 23, 2",
-            "3, 12, 3",
-            "4, 7, 4",
-            "5, 25, 5",
-            "6, 16, 6",
+            "7", "10", "99999"
     })
-    void shouldBorrowABookIfAdminRequestedAndUserHasReservedABookEarlier(Long userId, Long bookId, Long reservationId) {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
-        HttpEntity<Object> request = createAdminRequest(checkoutToSave);
-        UserDto user = findUserById(userId, request);
-        BookDto book = findBookById(bookId, request);
+    void shouldNotReturnLendingThatDoesNotExist(Long lendingId) {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
+
+        ResponseEntity<String> getResponse = restTemplate
+                .exchange("/api/v1/lendings/" + lendingId, HttpMethod.GET, request, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @ParameterizedTest
+    @Order(12)
+    @CsvSource({
+            "1", "2", "3", "4", "5", "6"
+    })
+    void shouldNotReturnAnExistingLendingIfUserIsNotAuthenticated(Long lendingId) {
+        ResponseEntity<String> getResponse = restTemplate
+                .getForEntity("/api/v1/lendings/" + lendingId, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    @Order(32)
+    void shouldBorrowABookIfAdminRequestedAndMemberHasReservedABookEarlier() {
+        ActionRequest lendingToSave = createRequestBody(2L, "540200000001");
+        HttpEntity<Object> adminRequest = new HttpEntity<>(lendingToSave, adminHeader);
+        MemberDto memberBefore = findMemberById(2L, adminRequest);
+        BookItemDto bookItemBefore = findBookItemById(1L);
 
         ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/lendings", request, String.class);
+                .postForEntity("/api/v1/lendings", adminRequest, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        URI newlyCreatedCheckoutLocation = createResponse.getHeaders().getLocation();
-        ResponseEntity<String> getResponse = restTemplate
-                .exchange(newlyCreatedCheckoutLocation, HttpMethod.GET, request, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        URI newlyCreatedLendingLocation = createResponse.getHeaders().getLocation();
+        ResponseEntity<String> getLendingResponse = restTemplate
+                .exchange(newlyCreatedLendingLocation, HttpMethod.GET, adminRequest, String.class);
+        assertThat(getLendingResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getReservationResponse = restTemplate
-                .exchange("/api/v1/reservations/" + reservationId, HttpMethod.GET, request, String.class);
-        assertThat(getReservationResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+                .exchange("/api/v1/reservations/9", HttpMethod.GET, adminRequest, String.class);
+        ReservationResponse reservation = getReservationFromResponse(getReservationResponse);
+        assertThat(getReservationResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.COMPLETED);
 
-        LendingDto returnedCheckout = getCheckoutFromResponse(getResponse);
-        assertThat(returnedCheckout.getId()).isNotNull();
-        assertThat(returnedCheckout.getStartTime()).isNotNull();
-        assertThat(returnedCheckout.getEndTime()).isNotNull();
-        assertThat(returnedCheckout.getUser()).isEqualTo(user);
-        assertThat(returnedCheckout.getBook()).isEqualTo(book);
+        MemberDto memberAfter = findMemberById(2L, adminRequest);
+        assertThat(memberAfter.getTotalBooksBorrowed()).isEqualTo(memberBefore.getTotalBooksBorrowed() + 1);
+        assertThat(memberAfter.getTotalBooksReserved()).isEqualTo(memberBefore.getTotalBooksReserved() - 1);
+
+        LendingDto returnedLending = getLendingFromResponse(getLendingResponse);
+        assertThat(returnedLending.getId()).isNotNull();
+        assertThat(returnedLending.getCreationDate()).isNotNull();
+        assertThat(returnedLending.getDueDate()).isEqualTo(returnedLending.getCreationDate().plusDays(Constants.MAX_LENDING_DAYS));
+        assertThat(returnedLending.getReturnDate()).isNull();
+        assertThat(returnedLending.getStatus()).isEqualTo(LendingStatus.CURRENT);
+        assertThat(returnedLending.getMember()).isEqualTo(memberBefore);
+        assertThat(returnedLending.getBookItem()).isEqualTo(bookItemBefore);
+
+        BookItemDto bookItemAfter = findBookItemById(1L);
+        assertThat(bookItemAfter.getBorrowed()).isEqualTo(returnedLending.getCreationDate());
+        assertThat(bookItemAfter.getDueDate()).isEqualTo(returnedLending.getDueDate());
+        assertThat(bookItemAfter.getStatus()).isEqualTo(BookItemStatus.LOANED);
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(13)
     @CsvSource({
-            "1, 10",
-            "2, 24",
-            "3, 51",
-            "4, 123",
-            "5, 245",
-            "6, 483",
+            "1, 540200000002",
+            "1, 540200000100",
+            "2, 540200000005",
+            "3, 540200000004",
+            "3, 540200000005",
+            "3, 540200000007",
+            "4, 540200000001",
+            "4, 540200000008",
+            "5, 540200000004",
+            "5, 540200000007",
+            "6, 540200000005",
+            "6, 540200000001",
+            "7, 540200000006",
+            "7, 540200000004"
     })
-    void shouldNotBorrowABookIfAdminRequestedButUserHasNotReservedABookEarlier(Long userId, Long bookId) {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
-        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+    void shouldNotBorrowABookIfAdminRequestedButUserHasNotReservedABookEarlier(Long memberId, String bookBarcode) {
+        ActionRequest checkoutToSave = createRequestBody(memberId, bookBarcode);
+        HttpEntity<?> request = new HttpEntity<>(checkoutToSave, adminHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", request, String.class);
@@ -272,15 +333,15 @@ public class LendingControllerTest {
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(14)
     @CsvSource({
-            "1, 3",
-            "1, 19",
-            "4, 4"
+            "1, 540200000002",
+            "1, 540200000003",
+            "4, 540200000004"
     })
-    void shouldNotBorrowABookIfAdminRequestedAndUserHasNotReturnedOneYet(Long userId, Long bookId) {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(userId, bookId);
-        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+    void shouldNotBorrowABookIfAdminRequestedAndUserHasNotReturnedOneYet(Long memberId, String bookBarcode) {
+        ActionRequest lendingToSave = createRequestBody(memberId, bookBarcode);
+        HttpEntity<?> request = new HttpEntity<>(lendingToSave, adminHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", request, String.class);
@@ -288,10 +349,10 @@ public class LendingControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(15)
     void shouldNotBorrowABookIfAdminRequestedAndBookIdDoesNotExist() {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 99999999L);
-        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+        ActionRequest lendingToSave = createRequestBody(2L, "540200099999");
+        HttpEntity<?> request = new HttpEntity<>(lendingToSave, adminHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", request, String.class);
@@ -299,10 +360,10 @@ public class LendingControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(16)
     void shouldNotBorrowABookIfAdminRequestedAndUserIdDoesNotExist() {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(99999999L, 20L);
-        HttpEntity<?> request = createAdminRequest(checkoutToSave);
+        ActionRequest checkoutToSave = createRequestBody(99999999L, "540200000002");
+        HttpEntity<?> request = new HttpEntity<>(checkoutToSave, adminHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", request, String.class);
@@ -310,10 +371,10 @@ public class LendingControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(17)
     void shouldNotBorrowABookIfUserRequested() {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
-        HttpEntity<?> request = createUserRequest(checkoutToSave);
+        ActionRequest lendingToSave = createRequestBody(2L, "540200000001");
+        HttpEntity<?> request = new HttpEntity<>(lendingToSave, userHeader);
 
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", request, String.class);
@@ -321,218 +382,330 @@ public class LendingControllerTest {
     }
 
     @Test
-    @DirtiesContext
+    @Order(18)
     void shouldNotBorrowABookIfUserIsNotAuthenticated() {
-        LendingToSaveDto checkoutToSave = createPostRequestBody(3L, 30L);
+        ActionRequest checkoutToSave = createRequestBody(2L, "540200000001");
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/lendings", checkoutToSave, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
+    @Test
+    @Order(33)
+    void shouldRenewABookIfAdminRequestedAndBookIsNotReservedAndDateIsOK() {
+        String bookBarcode = "540200000002";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+
+        ResponseEntity<String> lendingResponseBefore = restTemplate
+                .exchange("/api/v1/lendings/2", HttpMethod.GET, request, String.class);
+        LendingDto lendingBefore = getLendingFromResponse(lendingResponseBefore);
+
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<String> lendingResponseAfter = restTemplate
+                .exchange("/api/v1/lendings/2", HttpMethod.GET, request, String.class);
+        LendingDto lendingAfter = getLendingFromResponse(lendingResponseAfter);
+
+        assertThat(lendingBefore.getDueDate()).isNotEqualTo(lendingAfter.getDueDate());
+    }
+
+    @Test
+    @Order(19)
+    void shouldNotRenewABookIfAdminRequestedAndBookIsReserved() {
+        String bookBarcode = "540200000007";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    }
+
+    @Test
+    @Order(20)
+    void shouldNotRenewABookIfAdminRequestedAndDateIsNotOK() {
+        String bookBarcode = "540200000003";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    }
+
+    @Test
+    @Order(22)
+    void shouldNotRenewABookIfAdminRequestedAndBookItemDoesNotExist() {
+        String bookBarcode = "540299999999";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(23)
+    void shouldNotRenewABookIfAdminRequestedAndLendingDoesNotExist() {
+        String bookBarcode = "540200000006";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(24)
+    void shouldNotRenewABookIfUserRequested() {
+        String bookBarcode = "540200000004";
+        HttpEntity<?> request = new HttpEntity<>(userHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    @Order(25)
+    void shouldNotRenewABookIfUserIsNotAuthenticated() {
+        String bookBarcode = "540200000004";
+        ResponseEntity<String> renewResponse = restTemplate
+                .postForEntity("/api/v1/lendings/renew?bookBarcode=" + bookBarcode, HttpEntity.EMPTY, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
     @ParameterizedTest
-    @DirtiesContext
+    @Order(34)
     @CsvSource({
-            "3, 3",
-            "4, 4",
-            "19, 5"
+            "5, 540200000002, 2, 2, false",
+            "1, 540200000003, 3, 3, true",
+            "4, 540200000004, 4, 4, false",
+            "1, 540200000007, 5, 7, false"
     })
-    void shouldAllowToReturnABookIfAdminRequestedAndBookIsBorrowedAlready(Long bookId, Long checkoutId) {
-        HttpEntity<Object> request = createAdminRequest();
+    void shouldAllowToReturnABookIfAdminRequestedAndBookItemIsBorrowedAlready(
+            Long memberId,
+            String bookBarcode,
+            Long lendingId,
+            Long bookItemId,
+            boolean isAfterDate
+    ) {
+        HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
-        ResponseEntity<String> getCheckoutResponse = restTemplate
-                .exchange("/api/v1/lendings/" + checkoutId, HttpMethod.GET, request, String.class);
-        assertThat(getCheckoutResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        LendingDto checkout = getCheckoutFromResponse(getCheckoutResponse);
+        MemberDto memberBefore = findMemberById(memberId, request);
 
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/lendings/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookItemDto bookItemBefore = findBookItemById(bookItemId);
+        assertThat(bookItemBefore.getStatus()).isEqualTo(BookItemStatus.LOANED);
 
-        ResponseEntity<String> getReturnedBookResponse = restTemplate.getForEntity("/api/v1/books/" + bookId, String.class);
-        DocumentContext documentContext = JsonPath.parse(getReturnedBookResponse.getBody());
-        assertThat(getReturnedBookResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat((boolean) documentContext.read("$.availability")).isEqualTo(true);
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        LendingDto returnedCheckout = getCheckoutFromResponse(patchResponse);
-        assertThat(returnedCheckout.getId()).isEqualTo(checkout.getId());
-        assertThat(returnedCheckout.getStartTime()).isEqualTo(checkout.getStartTime());
-        assertThat(returnedCheckout.getEndTime()).isEqualTo(checkout.getEndTime());
-        assertThat(returnedCheckout.getUser()).isEqualTo(checkout.getUser());
-        assertThat(returnedCheckout.getBook()).isEqualTo(checkout.getBook());
+        ResponseEntity<String> lendingResponse = restTemplate
+                .exchange("/api/v1/lendings/" + lendingId, HttpMethod.GET, request, String.class);
+        assertThat(lendingResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        LendingDto lending = getLendingFromResponse(lendingResponse);
+        assertThat(lending.getStatus()).isEqualTo(LendingStatus.COMPLETED);
+        assertThat(lending.getReturnDate()).isNotNull();
+
+        BookItemDto bookItemAfter = findBookItemById(bookItemId);
+        assertThat(bookItemAfter.getStatus()).isIn(BookItemStatus.AVAILABLE, BookItemStatus.RESERVED);
+        assertThat(bookItemAfter.getDueDate()).isEqualTo(lending.getReturnDate());
+
+        MemberDto memberAfter = findMemberById(memberId, request);
+        assertThat(memberAfter.getTotalBooksBorrowed()).isEqualTo(memberBefore.getTotalBooksBorrowed() - 1);
+        if (isAfterDate) {
+            assertThat(memberAfter.getCharge()).isGreaterThan(memberBefore.getCharge());
+        } else {
+            assertThat(memberAfter.getCharge()).isEqualTo(memberBefore.getCharge());
+        }
     }
 
     @ParameterizedTest
-    @DirtiesContext
+    @Order(26)
     @CsvSource({
-            "1", "2", "6", "100", "200", "250", "300", "400"
+            "1, 540200000001",
+            "6, 540200000006"
     })
-    void shouldNotAllowToReturnABookIfAdminRequestedAndBokIsReturnedAlready(Long bookId) {
-        HttpEntity<Object> request = createAdminRequest();
-
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/lendings/return?bookId=" + bookId, HttpMethod.PATCH, request, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_ACCEPTABLE);
+    void shouldNotAllowToReturnABookIfAdminRequestedAndBookItemIsReturnedAlready(Long memberId, String bookBarcode) {
+        ActionRequest lendingToSave = createRequestBody(memberId, bookBarcode);
+        HttpEntity<?> request = new HttpEntity<>(lendingToSave, adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @DirtiesContext
-    void shouldNotAllowToReturnABookIfAdminRequestedAndBookIdIsDoesNotExist() {
-        HttpEntity<Object> request = createAdminRequest();
-
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/lendings/return?bookId=99999999", HttpMethod.PATCH, request, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    @Order(28)
+    void shouldNotAllowToReturnABookIfAdminRequestedAndBookItemIdIsDoesNotExist() {
+        String bookBarcode = "540299999999";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @DirtiesContext
-    void shouldNotAllowToReturnABookIfUserRequested() {
-        HttpEntity<Object> request = createUserRequest();
-
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/lendings/return?bookId=3", HttpMethod.PATCH, request, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    @Order(29)
+    void shouldNotReturnABookIfAdminRequestedAndLendingDoesNotExist() {
+        String bookBarcode = "540200000006";
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @DirtiesContext
-    void shouldNotAllowToReturnABookIfUserIsNotAuthenticated() {
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/lendings/return?bookId=3", HttpMethod.PATCH, null, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    @Order(30)
+    void shouldNotAllowToReturnABookItemIfUserRequested() {
+        String bookBarcode = "540200000004";
+        HttpEntity<?> request = new HttpEntity<>(userHeader);
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, request, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
-    private LendingToSaveDto createPostRequestBody(Long userId, Long bookId) {
-        LendingToSaveDto checkoutToSave = new LendingToSaveDto();
-        checkoutToSave.setUserId(userId);
-        checkoutToSave.setBookId(bookId);
-        return checkoutToSave;
+    @Test
+    @Order(31)
+    void shouldNotAllowToReturnABookItemIfUserIsNotAuthenticated() {
+        String bookBarcode = "540200000004";
+        ResponseEntity<String> renewResponse = restTemplate
+                .exchange("/api/v1/lendings/return?bookBarcode=" + bookBarcode, HttpMethod.PATCH, HttpEntity.EMPTY, String.class);
+        assertThat(renewResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
-    private LendingDto getCheckoutFromResponse(ResponseEntity<String> response) {
+    private ActionRequest createRequestBody(Long userId, String bookBarcode) {
+        return new ActionRequest(userId, bookBarcode);
+    }
+
+    private ReservationResponse getReservationFromResponse(ResponseEntity<String> response) {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-        LendingDto checkout = new LendingDto();
-        UserDto user = parseUserDto(documentContext);
-        BookDto book = parseBookDto(documentContext);
-        checkout.setId(((Number) documentContext.read("$.id")).longValue());
-        checkout.setStartTime(LocalDateTime.parse(documentContext.read("$.startTime")));
-        checkout.setEndTime(LocalDateTime.parse(documentContext.read("$.endTime")));
-        checkout.setUser(user);
-        checkout.setBook(book);
-        return checkout;
+        ReservationResponse reservation = new ReservationResponse();
+        MemberDto user = parseMemberDto(documentContext);
+        BookItemDto book = parseBookItemDto(documentContext);
+        reservation.setId(((Number)documentContext.read("$.id")).longValue());
+        reservation.setCreationDate(LocalDate.parse(documentContext.read("$.creationDate")) );
+        reservation.setStatus(ReservationStatus.valueOf(documentContext.read("$.status")));
+        reservation.setMember(user);
+        reservation.setBookItem(book);
+        return reservation;
     }
 
-    private UserDto parseUserDto(DocumentContext documentContext) {
-        LibraryCard card = new LibraryCard();
-        card.setId(((Number) documentContext.read("$.user.card.id")).longValue());
-        card.setBarcode(documentContext.read("$.user.card.barcode"));
-        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.user.card.issuedAt")));
-        card.setActive(documentContext.read("$.user.card.active"));
+    private LendingDto getLendingFromResponse(ResponseEntity<String> response) {
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-        UserDto user = new UserDto();
-        user.setId(((Number) documentContext.read("$.user.id")).longValue());
-        user.setFirstName(documentContext.read("$.user.firstName"));
-        user.setLastName(documentContext.read("$.user.lastName"));
-        user.setEmail(documentContext.read("$.user.email"));
+        LendingDto lending = new LendingDto();
+        MemberDto user = parseMemberDto(documentContext);
+        BookItemDto book = parseBookItemDto(documentContext);
+        lending.setId(((Number) documentContext.read("$.id")).longValue());
+        lending.setCreationDate(LocalDate.parse(documentContext.read("$.creationDate")) );
+        lending.setDueDate(LocalDate.parse(documentContext.read("$.dueDate")) );
+        lending.setReturnDate(documentContext.read("$.returnDate") != null ? LocalDate.parse(documentContext.read("$.returnDate")) : null);
+        lending.setStatus(LendingStatus.valueOf(documentContext.read("$.status")));
+        lending.setMember(user);
+        lending.setBookItem(book);
+        return lending;
+    }
+
+    private static BookItemDto parseBookItemDto(DocumentContext documentContext) {
+        BookItemDto dto = new BookItemDto();
+        dto.setId(((Number) documentContext.read("$.bookItem.id")).longValue());
+        dto.setBarcode(documentContext.read("$.bookItem.barcode"));
+        dto.setIsReferenceOnly(documentContext.read("$.bookItem.isReferenceOnly"));
+        dto.setBorrowed(LocalDate.parse(documentContext.read("$.bookItem.borrowed"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setDueDate(LocalDate.parse(documentContext.read("$.bookItem.dueDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setPrice(BigDecimal.valueOf(((Number) documentContext.read("$.bookItem.price")).doubleValue()));
+        dto.setFormat(BookItemFormat.valueOf(documentContext.read("$.bookItem.format")));
+        dto.setStatus(BookItemStatus.valueOf(documentContext.read("$.bookItem.status")));
+        dto.setDateOfPurchase(LocalDate.parse(documentContext.read("$.bookItem.dateOfPurchase"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setPublicationDate(LocalDate.parse(documentContext.read("$.bookItem.publicationDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        Book book = new Book();
+        book.setId(((Number) documentContext.read("$.bookItem.book.id")).longValue());
+        book.setTitle(documentContext.read("$.bookItem.book.title"));
+        book.setSubject(documentContext.read("$.bookItem.book.subject"));
+        book.setPublisher(documentContext.read("$.bookItem.book.publisher"));
+        book.setLanguage(documentContext.read("$.bookItem.book.language"));
+        book.setPages(documentContext.read("$.bookItem.book.pages"));
+        book.setISBN(documentContext.read("$.bookItem.book.isbn"));
+
+        dto.setBook(BookMapper.map(book));
+        return dto;
+    }
+
+    private static MemberDto parseMemberDto(DocumentContext documentContext) {
+        LibraryCard card = new LibraryCard();
+        card.setId(((Number) documentContext.read("$.member.card.id")).longValue());
+        card.setBarcode(documentContext.read("$.member.card.barcode"));
+        card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.member.card.issuedAt")));
+        card.setActive(documentContext.read("$.member.card.active"));
+
+        MemberDto user = new MemberDto();
+        user.setId(((Number) documentContext.read("$.member.id")).longValue());
+        user.setFirstName(documentContext.read("$.member.firstName"));
+        user.setLastName(documentContext.read("$.member.lastName"));
+        user.setEmail(documentContext.read("$.member.email"));
         user.setCard(card);
         return user;
     }
 
-    private BookDto parseBookDto(DocumentContext documentContext) {
-        BookDto book = new BookDto();
-        book.setId(((Number) documentContext.read("$.book.id")).longValue());
-        book.setTitle(documentContext.read("$.book.title"));
-        book.setAuthor(documentContext.read("$.book.author"));
-        book.setPublisher(documentContext.read("$.book.publisher"));
-        book.setRelease_year(documentContext.read("$.book.release_year"));
-        book.setPages(documentContext.read("$.book.pages"));
-        book.setIsbn(documentContext.read("$.book.isbn"));
-        book.setAvailability(documentContext.read("$.book.availability"));
-        return book;
-    }
-
-    private UserDto findUserById(Long userId, HttpEntity<Object> request) {
+    private MemberDto findMemberById(Long memberId, HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/users/" + userId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/users/" + memberId, HttpMethod.GET, request, String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-
-        UserDto user = new UserDto();
-        user.setId(((Number) documentContext.read("$.id")).longValue());
-        user.setFirstName(documentContext.read("$.firstName"));
-        user.setLastName(documentContext.read("$.lastName"));
-        user.setEmail(documentContext.read("$.email"));
-
         LibraryCard card = new LibraryCard();
         card.setId(((Number) documentContext.read("$.card.id")).longValue());
         card.setBarcode(documentContext.read("$.card.barcode"));
         card.setIssuedAt(LocalDateTime.parse(documentContext.read("$.card.issuedAt")));
         card.setActive(documentContext.read("$.card.active"));
 
+        MemberDto user = new MemberDto();
+        user.setId(((Number) documentContext.read("$.id")).longValue());
+        user.setFirstName(documentContext.read("$.firstName"));
+        user.setLastName(documentContext.read("$.lastName"));
+        user.setEmail(documentContext.read("$.email"));
         user.setCard(card);
+        user.setDateOfMembership(LocalDate.parse(documentContext.read("$.dateOfMembership"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        user.setTotalBooksBorrowed(documentContext.read("$.totalBooksBorrowed"));
+        user.setTotalBooksReserved(documentContext.read("$.totalBooksReserved"));
+        user.setCharge(BigDecimal.valueOf(((Number) documentContext.read("$.charge")).doubleValue()));
         return user;
     }
 
-    private BookDto findBookById(Long bookId, HttpEntity<Object> request) {
+    private BookItemDto findBookItemById(Long bookId) {
         ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/books/" + bookId, HttpMethod.GET, request, String.class);
+                .getForEntity("/api/v1/book-items/" + bookId, String.class);
 
-        BookDto dto = new BookDto();
         DocumentContext documentContext = JsonPath.parse(response.getBody());
+        BookItemDto dto = new BookItemDto();
         dto.setId(((Number) documentContext.read("$.id")).longValue());
-        dto.setTitle(documentContext.read("$.title"));
-        dto.setAuthor(documentContext.read("$.author"));
-        dto.setPublisher(documentContext.read("$.publisher"));
-        dto.setRelease_year(documentContext.read("$.release_year"));
-        dto.setPages(documentContext.read("$.pages"));
-        dto.setIsbn(documentContext.read("$.isbn"));
-        dto.setAvailability(documentContext.read("$.availability"));
+        dto.setBarcode(documentContext.read("$.barcode"));
+        dto.setIsReferenceOnly(documentContext.read("$.isReferenceOnly"));
+        dto.setBorrowed(LocalDate.parse(documentContext.read("$.borrowed"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setDueDate(LocalDate.parse(documentContext.read("$.dueDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setPrice(BigDecimal.valueOf(((Number) documentContext.read("$.price")).doubleValue()));
+        dto.setFormat(BookItemFormat.valueOf(documentContext.read("$.format")));
+        dto.setStatus(BookItemStatus.valueOf(documentContext.read("$.status")));
+        dto.setDateOfPurchase(LocalDate.parse(documentContext.read("$.dateOfPurchase"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        dto.setPublicationDate(LocalDate.parse(documentContext.read("$.publicationDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        Book book = new Book();
+        book.setId(((Number) documentContext.read("$.book.id")).longValue());
+        book.setTitle(documentContext.read("$.book.title"));
+        book.setSubject(documentContext.read("$.book.subject"));
+        book.setPublisher(documentContext.read("$.book.publisher"));
+        book.setLanguage(documentContext.read("$.book.language"));
+        book.setPages(documentContext.read("$.book.pages"));
+        book.setISBN(documentContext.read("$.book.isbn"));
+
+        dto.setBook(BookMapper.map(book));
         return dto;
     }
 
-    private HttpEntity<Object> createAdminRequest() {
-        AuthenticationRequest admin = new AuthenticationRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
+    private HttpHeaders authenticate(LoginRequest user) {
+        LoginResponse userLoginResponse = authenticationService.authenticate(user);
+        String userToken = userLoginResponse.getToken();
 
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createAdminRequest(Object requestBody) {
-        AuthenticationRequest admin = new AuthenticationRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(admin);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpEntity<Object> createUserRequest() {
-        AuthenticationRequest user = new AuthenticationRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(headers);
-    }
-
-    private HttpEntity<Object> createUserRequest(Object requestBody) {
-        AuthenticationRequest user = new AuthenticationRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-
-        HttpHeaders headers = createHeaderWithTokenFor(user);
-        return new HttpEntity<>(requestBody, headers);
-    }
-
-    private HttpHeaders createHeaderWithTokenFor(AuthenticationRequest user) {
-        AuthenticationResponse response = authenticationService.authenticate(user);
-        String token = response.getToken();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        return headers;
+        HttpHeaders userHeader = new HttpHeaders();
+        userHeader.setBearerAuth(userToken);
+        userHeader.setContentType(MediaType.APPLICATION_JSON);
+        return userHeader;
     }
 }

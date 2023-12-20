@@ -93,8 +93,8 @@ public class ReservationControllerTest {
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         documentContext = JsonPath.parse(getResponse.getBody());
-        int usersReservationsLength = documentContext.read("$._embedded.reservationResponseList.length()");
-        assertThat(usersReservationsLength).isEqualTo(3);
+        int memberReservationsLength = documentContext.read("$._embedded.reservationResponseList.length()");
+        assertThat(memberReservationsLength).isEqualTo(3);
     }
 
     @Test
@@ -151,11 +151,11 @@ public class ReservationControllerTest {
     @CsvSource({
             "1", "3", "4", "5", "6"
     })
-    void shouldNotReturnAllUsersReservationsIfUserRequestedAndDoesNotOwnThisData(Long userId) {
+    void shouldNotReturnAllUsersReservationsIfUserRequestedAndDoesNotOwnThisData(Long memberId) {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/reservations?memberId=" + userId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/reservations?memberId=" + memberId, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -219,7 +219,7 @@ public class ReservationControllerTest {
     void shouldReturnAnExistingReservationIfUserRequestedAndDoesOwnThisData() {
         HttpEntity<Object> adminRequest = new HttpEntity<>(adminHeader);
         HttpEntity<Object> userRequest = new HttpEntity<>(userHeader);
-        MemberDto user = findMemberById(2L, adminRequest);
+        MemberDto member = findMemberById(2L, adminRequest);
         BookItemDto book = findBookItemById(4L);
 
         ResponseEntity<String> getResponse = restTemplate
@@ -230,7 +230,7 @@ public class ReservationControllerTest {
         assertThat(returnedReservation.getId()).isEqualTo(2L);
         assertThat(returnedReservation.getCreationDate()).isEqualTo(LocalDate.parse("2023-05-21", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         assertThat(returnedReservation.getStatus()).isEqualTo(ReservationStatus.COMPLETED);
-        assertThat(returnedReservation.getMember()).isEqualTo(user);
+        assertThat(returnedReservation.getMember()).isEqualTo(member);
         assertThat(returnedReservation.getBookItem()).isEqualTo(book);
     }
 
@@ -396,7 +396,7 @@ public class ReservationControllerTest {
     @Order(23)
     @CsvSource({
             "8, 2, 4, 540200000004, false",
-            "9, 2, 3, 540200000003, false"
+            "9, 2, 1, 540200000001, false"
     })
     void shouldCancelAReservationIfUserRequestedAndReservationBelongsToTheir(
             Long reservationId,

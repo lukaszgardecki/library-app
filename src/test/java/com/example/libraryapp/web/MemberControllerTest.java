@@ -318,7 +318,7 @@ public class MemberControllerTest {
                 .exchange("/api/v1/book-items/7", HttpMethod.GET, request, String.class);
         DocumentContext bookItem1JSON = JsonPath.parse(bookItem1.getBody());
         BookItemStatus bookItem1Status = BookItemStatus.valueOf(bookItem1JSON.read("$.status"));
-        assertThat(bookItem1Status).isEqualTo(BookItemStatus.AVAILABLE);
+        assertThat(bookItem1Status).isEqualTo(BookItemStatus.LOANED);
 
         ResponseEntity<String> bookItem2 = restTemplate
                 .exchange("/api/v1/book-items/4", HttpMethod.GET, request, String.class);

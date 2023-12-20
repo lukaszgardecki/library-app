@@ -1,7 +1,9 @@
 package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
+import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.config.assembler.LendingModelAssembler;
+import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
@@ -14,6 +16,7 @@ import com.example.libraryapp.domain.member.MemberRepository;
 import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
+import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
@@ -27,12 +30,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LendingService {
     private final LendingRepository lendingRepository;
     private final MemberRepository memberRepository;
+    private final BookItemRepository bookItemRepository;
     private final ReservationRepository reservationRepository;
     private final FineService fineService;
     private final LendingModelAssembler lendingModelAssembler;
@@ -40,12 +43,14 @@ public class LendingService {
 
     public LendingService(LendingRepository lendingRepository,
                           MemberRepository memberRepository,
+                          BookItemRepository bookItemRepository,
                           ReservationRepository reservationRepository,
                           FineService fineService,
                           LendingModelAssembler lendingModelAssembler,
                           PagedResourcesAssembler<Lending> pagedResourcesAssembler) {
         this.lendingRepository = lendingRepository;
         this.memberRepository = memberRepository;
+        this.bookItemRepository = bookItemRepository;
         this.reservationRepository = reservationRepository;
         this.fineService = fineService;
         this.lendingModelAssembler = lendingModelAssembler;
@@ -53,9 +58,8 @@ public class LendingService {
     }
 
     public PagedModel<LendingDto> findLendings(Long memberId, Pageable pageable) {
-        Optional<Member> optMember = memberRepository.findById(memberId);
         PagedModel<LendingDto> collectionModel;
-        if (optMember.isPresent()) {
+        if (memberId != null) {
             collectionModel = findLendingsByMemberId(memberId, pageable);
         } else {
             collectionModel = findAllCheckouts(pageable);
@@ -69,8 +73,8 @@ public class LendingService {
     }
 
     @Transactional
-    public LendingDto borrowABook(Long memberId, String bookBarcode) {
-        Reservation reservation = findReservation(memberId, bookBarcode);
+    public LendingDto borrowABook(ActionRequest request) {
+        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
         Member member = reservation.getMember();
         BookItem book = reservation.getBookItem();
         checkIfMemberCanBorrowABook(member);
@@ -93,6 +97,7 @@ public class LendingService {
     @Transactional
     public LendingDto returnABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
@@ -127,7 +132,10 @@ public class LendingService {
     }
 
     private Lending findLendingByBookBarcode(String bookBarcode) {
-        return lendingRepository.findCurrentLendingByBarcode(bookBarcode)
+        BookItem bookItem = bookItemRepository.findByBarcode(bookBarcode)
+                .orElseThrow(() -> new BookItemNotFoundException(bookBarcode));
+
+        return lendingRepository.findCurrentLendingByBookItemId(bookItem.getId())
                 .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
