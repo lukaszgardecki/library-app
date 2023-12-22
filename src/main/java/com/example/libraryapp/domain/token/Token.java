@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.token;
 
-import com.example.libraryapp.domain.user.User;
+import com.example.libraryapp.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,6 @@ public class Token {
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 }

@@ -1,9 +1,10 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.exception.ReservationNotFoundException;
-import com.example.libraryapp.domain.reservation.ReservationDto;
+import com.example.libraryapp.domain.member.MemberService;
+import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.ReservationService;
-import com.example.libraryapp.domain.reservation.ReservationToSaveDto;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
+import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -15,48 +16,55 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
     private final ReservationService reservationService;
+    private final MemberService memberService;
+    private final NotificationService notificationService;
 
-    @GetMapping("/reservations")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PagedModel<ReservationDto>> getAllReservations(
-            @RequestParam(required = false) Long userId, Pageable pageable) {
-        PagedModel<ReservationDto> collectionModel;
-        if (userId != null) {
-            collectionModel = reservationService.findReservationsByUserId(userId, pageable);
-        } else {
-            collectionModel = reservationService.findAllReservations(pageable);
-        }
+    public ResponseEntity<PagedModel<ReservationResponse>> getAllReservations(
+            @RequestParam(required = false) Long memberId, Pageable pageable
+    ) {
+        memberService.checkIfAdminOrDataOwnerRequested(memberId);
+        PagedModel<ReservationResponse> collectionModel = reservationService.findReservations(memberId, pageable);
         return ResponseEntity.ok(collectionModel);
     }
 
-    @GetMapping("/reservations/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
-        return reservationService.findReservationById(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(ReservationNotFoundException::new);
+    public ResponseEntity<ReservationResponse> getReservationById(@PathVariable Long id) {
+        ReservationResponse reservation = reservationService.findReservationById(id);
+        if (reservation.getMember() != null) {
+            memberService.checkIfAdminOrDataOwnerRequested(reservation.getMember().getId());
+        } else {
+            memberService.checkIfAdminRequested();
+        }
+        return ResponseEntity.ok(reservation);
     }
 
-    @PostMapping("/reservations")
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> makeAReservation(@RequestBody ReservationToSaveDto reservation) {
-        ReservationDto savedReservation = reservationService.makeAReservation(reservation);
+    public ResponseEntity<?> makeAReservation(@RequestBody ActionRequest request) {
+        memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        ReservationResponse savedReservation = reservationService.makeAReservation(request);
         URI savedReservationUri = createURI(savedReservation);
+        notificationService.send(NotificationService.RESERVATION_CREATED);
         return ResponseEntity.created(savedReservationUri).body(savedReservation);
     }
 
-    @DeleteMapping("/reservations/{id}")
+    @DeleteMapping
     @PreAuthorize("isAuthenticated()")
-    ResponseEntity<?> deleteAReservation(@PathVariable Long id) {
-        reservationService.removeAReservation(id);
+    ResponseEntity<?> cancelAReservation(@RequestBody ActionRequest request) {
+        memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        reservationService.cancelAReservation(request);
+        notificationService.send(NotificationService.RESERVATION_DELETED);
         return ResponseEntity.noContent().build();
     }
 
-    private URI createURI(ReservationDto savedReservation) {
+    private URI createURI(ReservationResponse savedReservation) {
         return ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedReservation.getId())

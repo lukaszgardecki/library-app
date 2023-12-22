@@ -1,18 +1,25 @@
 package com.example.libraryapp.domain.book.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto extends RepresentationModel<BookDto> {
     private Long id;
     private String title;
-    private String author;
+    private String subject;
     private String publisher;
-    private Integer release_year;
+    private String ISBN;
+    private String language;
     private Integer pages;
-    private String isbn;
-    private Boolean availability;
+    @JsonIgnore
+    private List<BookItem> bookItems;
 }

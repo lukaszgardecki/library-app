@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.auth;
 
-import com.example.libraryapp.domain.user.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +10,12 @@ public class RegisterRequest {
     private String lastName;
     private String email;
     private String password;
-    private UserRole role;
+
+    private String streetAddress;
+    private String zipCode;
+    private String city;
+    private String state;
+    private String country;
+
+    private String phone;
 }

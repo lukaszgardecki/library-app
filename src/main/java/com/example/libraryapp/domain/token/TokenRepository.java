@@ -10,8 +10,8 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 
     @Query("""
         select t from Token t
-        inner join User u
-        on t.user.id = u.id
+        inner join Member u
+        on t.member.id = u.id
         where u.id = :userId
         and (t.expired = false or t.revoked = false)
         """)

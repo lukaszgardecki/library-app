@@ -1,26 +1,37 @@
 package com.example.libraryapp.domain.book;
 
-import com.example.libraryapp.domain.checkout.Checkout;
+import com.example.libraryapp.domain.bookItem.BookItem;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String author;
+    private String subject;
     private String publisher;
-    private Integer release_year;
-    private Integer pages;
-    private String isbn;
-    private Boolean availability;
-    @OneToMany(mappedBy = "book", orphanRemoval = true)
-    private List<Checkout> checkouts;
+    private String ISBN;
+    private String language;
+    private int pages;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<BookItem> bookItems;
+    //    private List<Author> authors;
+
+    public void addBookItem(BookItem item) {
+        bookItems.add(item);
+    }
 }
+
