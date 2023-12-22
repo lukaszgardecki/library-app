@@ -74,7 +74,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
@@ -97,7 +97,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -105,7 +105,7 @@ public class MemberControllerTest {
     @Order(3)
     void shouldNotReturnAllUsersWhenRequestIsNotAuthenticated() {
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users", HttpMethod.GET, HttpEntity.EMPTY, String.class);
+                .exchange("/api/v1/members", HttpMethod.GET, HttpEntity.EMPTY, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -115,7 +115,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/3", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/3", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto returnedUser = getUserDtoFromResponse(getResponse);
@@ -136,7 +136,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/2", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/2", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto returnedUser = getUserDtoFromResponse(getResponse);
@@ -157,7 +157,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/1", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/1", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -167,17 +167,17 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/999999", HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/999999", HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @Order(8)
     void shouldNotReturnUserDataIfRequestIsNotAuthenticated() {
-        ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v1/users/1", String.class);
+        ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v1/members/1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
-        getResponse = restTemplate.getForEntity("/api/v1/users/9999999", String.class);
+        getResponse = restTemplate.getForEntity("/api/v1/members/9999999", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -189,16 +189,16 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, adminHeader);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
         MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         ResponseEntity<String> getResponseAfterUpdate = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
@@ -223,7 +223,7 @@ public class MemberControllerTest {
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, userHeader);
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/3", HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/members/3", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -238,17 +238,17 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, userHeader);
 
         ResponseEntity<String> getResponseBeforeUpdate = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.GET, request, String.class);
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
         MemberDto userBeforeUpdate = getUserDtoFromResponse(getResponseBeforeUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         HttpEntity<Object> userAfterPartiallyUpdateRequest = new HttpEntity<>(userHeader);
         ResponseEntity<String> getResponseAfterUpdate = restTemplate
-                .exchange("/api/v1/users/" + memberIdToUpdate, HttpMethod.GET, userAfterPartiallyUpdateRequest, String.class);
+                .exchange("/api/v1/members/" + memberIdToUpdate, HttpMethod.GET, userAfterPartiallyUpdateRequest, String.class);
         assertThat(getResponseAfterUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         MemberDto userAfterUpdate = getUserDtoFromResponse(getResponseAfterUpdate);
@@ -274,7 +274,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userFieldsToUpdate, adminHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/999999", HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/members/999999", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -284,7 +284,7 @@ public class MemberControllerTest {
         MemberUpdateDto userFieldsToUpdate = getMemberDtoToPartialUpdate();
         HttpEntity<MemberUpdateDto> request = new HttpEntity<>(userFieldsToUpdate);
         ResponseEntity<Void> patchResponse = restTemplate
-                .exchange("/api/v1/users/999999", HttpMethod.PATCH, request, Void.class);
+                .exchange("/api/v1/members/999999", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -295,11 +295,11 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberIdToDelete, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         ResponseEntity<String> reservation1Response = restTemplate
@@ -333,11 +333,11 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/1", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/1", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 
         deleteResponse = restTemplate
-                .exchange("/api/v1/users/4", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/4", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
 
@@ -347,7 +347,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/8", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/8", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
 
@@ -357,7 +357,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/1", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/1", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
@@ -368,12 +368,12 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(userHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/" + memberIdToDelete, HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
         request = new HttpEntity<>(adminHeader);
         ResponseEntity<String> getResponse = restTemplate
-                .exchange("/api/v1/users/" + memberIdToDelete, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberIdToDelete, HttpMethod.GET, request, String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         ResponseEntity<String> reservation1Response = restTemplate
@@ -407,7 +407,7 @@ public class MemberControllerTest {
         HttpEntity<Object> request = new HttpEntity<>(adminHeader);
 
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/999999", HttpMethod.DELETE, request, Void.class);
+                .exchange("/api/v1/members/999999", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
@@ -415,7 +415,7 @@ public class MemberControllerTest {
     @Order(16)
     void shouldNotDeleteUserIfRequestIsNotAuthenticated() {
         ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/users/1", HttpMethod.DELETE, null, Void.class);
+                .exchange("/api/v1/members/1", HttpMethod.DELETE, null, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 

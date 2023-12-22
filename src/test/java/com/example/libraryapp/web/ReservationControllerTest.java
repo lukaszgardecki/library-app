@@ -561,7 +561,7 @@ public class ReservationControllerTest {
 
     private MemberDto findMemberById(Long memberId, HttpEntity<Object> request) {
         ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/users/" + memberId, HttpMethod.GET, request, String.class);
+                .exchange("/api/v1/members/" + memberId, HttpMethod.GET, request, String.class);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         LibraryCard card = new LibraryCard();
