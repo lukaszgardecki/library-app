@@ -26,8 +26,6 @@ public class BookItemMapper {
     public static BookItem map(BookItemToSaveDto dto) {
         BookItem bookItem = new BookItem();
         bookItem.setIsReferenceOnly(dto.getIsReferenceOnly());
-        bookItem.setBorrowed(dto.getBorrowed());
-        bookItem.setDueDate(dto.getDueDate());
         bookItem.setPrice(dto.getPrice());
         bookItem.setFormat(dto.getFormat());
         bookItem.setDateOfPurchase(dto.getDateOfPurchase());

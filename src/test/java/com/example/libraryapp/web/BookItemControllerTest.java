@@ -9,6 +9,7 @@ import com.example.libraryapp.domain.bookItem.BookItemFormat;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemToUpdateDto;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.*;
@@ -189,8 +190,8 @@ public class BookItemControllerTest {
 
     @Test
     void shouldUpdateAnExistingBookItemIfAdminRequested() {
-        BookItemToSaveDto bookItemToReplace = getBookToSaveDto();
-        HttpEntity<?> request = new HttpEntity<>(bookItemToReplace, adminHeader);
+        BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
 
         ResponseEntity<String> responseBefore = restTemplate
                 .exchange("/api/v1/book-items/3", HttpMethod.GET, request, String.class);
@@ -204,8 +205,8 @@ public class BookItemControllerTest {
         BookItemDto bookItemAfter = getBookItemDtoFromResponse(responseAfter);
         assertThat(bookItemAfter.getId()).isEqualTo(bookItemBefore.getId());
         assertThat(bookItemAfter.getBarcode()).isEqualTo(bookItemBefore.getBarcode());
-        assertThat(bookItemAfter.getStatus()).isEqualTo(bookItemBefore.getStatus());
 
+        assertThat(bookItemAfter.getStatus()).isEqualTo(bookItemToReplace.getStatus());
         assertThat(bookItemAfter.getIsReferenceOnly()).isEqualTo(bookItemToReplace.getIsReferenceOnly());
         assertThat(bookItemAfter.getPrice()).isEqualTo(bookItemToReplace.getPrice());
         assertThat(bookItemAfter.getFormat()).isEqualTo(bookItemToReplace.getFormat());
@@ -223,8 +224,8 @@ public class BookItemControllerTest {
     @Test
     @Order(7)
     void shouldNotUpdateAnExistingBookItemIfUserRequested() {
-        BookItemToSaveDto bookToUpdate = getBookToSaveDto();
-        HttpEntity<?> request = new HttpEntity<>(bookToUpdate, userHeader);
+        BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, userHeader);
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/book-items/3", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -233,8 +234,8 @@ public class BookItemControllerTest {
     @Test
     @Order(8)
     void shouldNotUpdateAnExistingBookItemIfUnauthenticatedUserRequested() {
-        BookItemToSaveDto bookToUpdate = getBookToSaveDto();
-        HttpEntity<BookItemToSaveDto> request = new HttpEntity<>(bookToUpdate);
+        BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace);
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/book-items/3", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
@@ -243,8 +244,8 @@ public class BookItemControllerTest {
     @Test
     @Order(9)
     void shouldNotUpdateABookItemThatDoesNotExist() {
-        BookItemToSaveDto bookToUpdate = getBookToSaveDto();
-        HttpEntity<?> request = new HttpEntity<>(bookToUpdate, adminHeader);
+        BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/book-items/999999999", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -260,8 +261,8 @@ public class BookItemControllerTest {
         assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
         BookItemDto bookBeforeUpdate = getBookItemDtoFromResponse(getResponseBeforeUpdate);
 
-        BookItemDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<Object> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
+        BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
 
         ResponseEntity<String> patchResponse = restTemplate
                 .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.PATCH, request, String.class);
@@ -296,8 +297,8 @@ public class BookItemControllerTest {
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotPartiallyUpdateAnExistingBookItemIfUserRequested(Long bookItemId) {
-        BookItemDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<?> request = new HttpEntity<>(bookFieldsToUpdate, userHeader);
+        BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, userHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .getRestTemplate()
@@ -311,8 +312,8 @@ public class BookItemControllerTest {
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotPartiallyUpdateAnExistingBookItemIfUnauthorizedUserRequested(Long bookItemId) {
-        BookItemDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<BookItemDto> request = new HttpEntity<>(bookFieldsToUpdate);
+        BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .getRestTemplate()
@@ -323,8 +324,8 @@ public class BookItemControllerTest {
     @Test
     @Order(12)
     void shouldNotPartiallyUpdateABookItemThatDoesNotExist() {
-        BookItemDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<?> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
+        BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
+        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
 
         ResponseEntity<Void> patchResponse = restTemplate
                 .getRestTemplate()
@@ -400,8 +401,22 @@ public class BookItemControllerTest {
         return bookToSaveDto;
     }
 
-    private BookItemDto getBookItemDtoToPartialUpdate() {
-        BookItemDto bookDto = new BookItemDto();
+    private BookItemToUpdateDto getBookToUpdateDto() {
+        BookItemToUpdateDto bookToUpdateDto = new BookItemToUpdateDto();
+        bookToUpdateDto.setIsReferenceOnly(false);
+        bookToUpdateDto.setBorrowed(LocalDate.parse("14-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        bookToUpdateDto.setDueDate(LocalDate.parse("18-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        bookToUpdateDto.setPrice(BigDecimal.valueOf(12.34));
+        bookToUpdateDto.setFormat(BookItemFormat.JOURNAL);
+        bookToUpdateDto.setStatus(BookItemStatus.AVAILABLE);
+        bookToUpdateDto.setDateOfPurchase(LocalDate.parse("05-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        bookToUpdateDto.setPublicationDate(LocalDate.parse("13-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        bookToUpdateDto.setBookId(1L);
+        return bookToUpdateDto;
+    }
+
+    private BookItemToUpdateDto getBookItemDtoToPartialUpdate() {
+        BookItemToUpdateDto bookDto = new BookItemToUpdateDto();
         bookDto.setPrice(BigDecimal.valueOf(34.45));
         bookDto.setFormat(BookItemFormat.AUDIO_BOOK);
         bookDto.setDateOfPurchase(LocalDate.parse("01-10-1993", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
