@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.bookItem.BookItemService;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
+import com.example.libraryapp.domain.bookItem.dto.BookItemToUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -47,14 +48,14 @@ public class BookItemController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    ResponseEntity<BookItemDto> replaceBookItem(@PathVariable Long id, @RequestBody BookItemToSaveDto bookItem) {
+    ResponseEntity<BookItemDto> replaceBookItem(@PathVariable Long id, @RequestBody BookItemToUpdateDto bookItem) {
         BookItemDto replacedBookItem = bookItemService.replaceBookItem(id, bookItem);
         return ResponseEntity.ok(replacedBookItem);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('admin:update')")
-    ResponseEntity<BookItemDto> updateBookItem(@PathVariable Long id, @RequestBody BookItemDto bookItem) {
+    ResponseEntity<BookItemDto> updateBookItem(@PathVariable Long id, @RequestBody BookItemToUpdateDto bookItem) {
         BookItemDto updatedBookItem = bookItemService.updateBookItem(id, bookItem);
         return ResponseEntity.ok(updatedBookItem);
     }

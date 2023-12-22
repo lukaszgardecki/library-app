@@ -24,7 +24,6 @@ public class AuthenticationController {
     }
 
     // TODO: 30.11.2023 jak zrobić by weryfikować membera tez po ROLI?
-    // TODO: 30.11.2023 czy te linki muszą tu być ? lepiej zrobić assembler
     @PostMapping("/authenticate")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginRequest request) {
         LoginResponse token = authService.authenticate(request);
