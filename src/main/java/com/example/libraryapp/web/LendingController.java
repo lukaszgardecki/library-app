@@ -62,6 +62,7 @@ public class LendingController {
     @PreAuthorize("hasAuthority('admin:update')")
     public ResponseEntity<?> returnABook(@RequestParam String bookBarcode) {
         LendingDto returnedBook = lendingService.returnABook(bookBarcode);
+        notificationService.send(NotificationService.BOOK_RETURNED);
         return ResponseEntity.ok(returnedBook);
     }
 
