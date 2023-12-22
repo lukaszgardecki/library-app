@@ -163,6 +163,15 @@ public class BookControllerTest {
     }
 
     @Test
+    @Order(20)
+    void shouldNotCreateABookIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .postForEntity("/api/v1/books", request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     @Order(17)
     void shouldUpdateAnExistingBookIfAdminRequested() {
         BookToSaveDto bookToReplace = getBookToSaveDto();
@@ -215,6 +224,15 @@ public class BookControllerTest {
         ResponseEntity<String> putResponse = restTemplate
                 .exchange("/api/v1/books/999999999", HttpMethod.PUT, request, String.class);
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(21)
+    void shouldNotUpdateABookIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/books/1", HttpMethod.PUT, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @ParameterizedTest
@@ -290,6 +308,15 @@ public class BookControllerTest {
                 .getRestTemplate()
                 .exchange("/api/v1/books/99999", HttpMethod.PATCH, request, Void.class);
         assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(22)
+    void shouldNotPartiallyUpdateABookIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/books/1", HttpMethod.PATCH, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test

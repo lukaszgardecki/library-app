@@ -353,6 +353,15 @@ public class ReservationControllerTest {
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
+    @Test
+    @Order(24)
+    void shouldNotMakeAReservationIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/reservations", HttpMethod.POST, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     @ParameterizedTest
     @Order(22)
     @CsvSource({
@@ -476,7 +485,7 @@ public class ReservationControllerTest {
 
     @Test
     @Order(19)
-    void shouldNotDeleteAReservationIfUserIsNotAuthenticated() {
+    void shouldNotCancelAReservationIfUserIsNotAuthenticated() {
         ActionRequest reservationToCancel = createPostRequestBody(1L, "540200000001");
         HttpEntity<Object> request = new HttpEntity<>(reservationToCancel);
         ResponseEntity<Void> deleteResponse = restTemplate
@@ -497,6 +506,15 @@ public class ReservationControllerTest {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/reservations", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @Order(25)
+    void shouldNotCancelAReservationIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/reservations", HttpMethod.DELETE, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     private ActionRequest createPostRequestBody(Long userId, String bookBarcode) {

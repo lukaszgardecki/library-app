@@ -189,6 +189,16 @@ public class BookItemControllerTest {
     }
 
     @Test
+    @Order(18)
+    void shouldNotCreateANewBookItemIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/book-items", HttpMethod.POST, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    @Order(19)
     void shouldUpdateAnExistingBookItemIfAdminRequested() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
         HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
@@ -243,7 +253,7 @@ public class BookItemControllerTest {
 
     @Test
     @Order(9)
-    void shouldNotUpdateABookItemThatDoesNotExist() {
+    void shouldNotUpdateAnExistingBookItemThatDoesNotExist() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
         HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
         ResponseEntity<String> putResponse = restTemplate
@@ -251,7 +261,17 @@ public class BookItemControllerTest {
         assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    @Order(20)
+    void shouldNotUpdateAnExistingBookItemIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/book-items/1", HttpMethod.PUT, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     @ParameterizedTest
+    @Order(21)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
@@ -334,6 +354,7 @@ public class BookItemControllerTest {
     }
 
     @Test
+    @Order(22)
     void shouldDeleteAnExistingBookItemIfAdminRequested() {
         HttpEntity<?> request = new HttpEntity<>(adminHeader);
 
@@ -388,6 +409,15 @@ public class BookItemControllerTest {
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/book-items/4", HttpMethod.DELETE, null, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    @Order(23)
+    void shouldNotPartiallyUpdateAnExistingBookItemIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/book-items/1", HttpMethod.PATCH, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     private BookItemToSaveDto getBookToSaveDto() {

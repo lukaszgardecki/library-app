@@ -391,6 +391,15 @@ public class LendingControllerTest {
     }
 
     @Test
+    @Order(35)
+    void shouldNotBorrowABookItemIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/lendings", HttpMethod.POST, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     @Order(33)
     void shouldRenewABookIfAdminRequestedAndBookIsNotReservedAndDateIsOK() {
         String bookBarcode = "540200000002";

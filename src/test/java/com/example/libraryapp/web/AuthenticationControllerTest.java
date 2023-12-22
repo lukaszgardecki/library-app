@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -48,13 +47,20 @@ public class AuthenticationControllerTest {
     @Test
     void shouldNotAuthenticateAUserIfCredentialsAreNotCorrect() {
         LoginRequest userCredentials = getCredentialsWithBadPassword();
-        ResponseEntity<String> createResponse = restTemplate
+        ResponseEntity<String> authResponse = restTemplate
                 .postForEntity("/api/v1/authenticate", userCredentials, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
 
         userCredentials = getCredentialsWithBadEmail();
-        createResponse = restTemplate.postForEntity("/api/v1/authenticate", userCredentials, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        authResponse = restTemplate.postForEntity("/api/v1/authenticate", userCredentials, String.class);
+        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void shouldNotAuthenticateAUserIfRequestBodyIsEmpty() {
+        ResponseEntity<String> authResponse = restTemplate
+                .postForEntity("/api/v1/authenticate", ResponseEntity.EMPTY, String.class);
+        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
@@ -79,6 +85,13 @@ public class AuthenticationControllerTest {
         ResponseEntity<String> createResponse = restTemplate
                 .postForEntity("/api/v1/register", userToSave, String.class);
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
+    void shouldNotCreateAUserIfRequestBodyIsEmpty() {
+        ResponseEntity<String> authResponse = restTemplate
+                .postForEntity("/api/v1/register", ResponseEntity.EMPTY, String.class);
+        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     private RegisterRequest getUserRegistrationDtoWithUniqueEmail() {

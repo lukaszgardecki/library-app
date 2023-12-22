@@ -289,6 +289,15 @@ public class MemberControllerTest {
     }
 
     @Test
+    @Order(21)
+    void shouldNotPartiallyUpdateUserDataIfRequestBodyIsEmpty() {
+        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+        ResponseEntity<String> response = restTemplate
+                .exchange("/api/v1/members/2", HttpMethod.PATCH, request, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     @Order(19)
     void shouldDeleteAnExistingUserIfAdminRequested() {
         long memberIdToDelete = 3L;
