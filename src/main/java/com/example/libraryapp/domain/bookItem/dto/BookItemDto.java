@@ -3,6 +3,7 @@ package com.example.libraryapp.domain.bookItem.dto;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.bookItem.BookItemFormat;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
+import com.example.libraryapp.domain.rack.RackDto;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -26,4 +27,5 @@ public class BookItemDto extends RepresentationModel<BookItemDto> {
     private LocalDate dateOfPurchase;
     private LocalDate publicationDate;
     private BookDto book;
+    private RackDto rack;
 }
