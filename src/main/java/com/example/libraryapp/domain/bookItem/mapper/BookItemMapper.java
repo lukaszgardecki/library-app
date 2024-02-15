@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
+import com.example.libraryapp.domain.rack.RackMapper;
 
 public class BookItemMapper {
 
@@ -20,6 +21,7 @@ public class BookItemMapper {
                 .dateOfPurchase(bookItem.getDateOfPurchase())
                 .publicationDate(bookItem.getPublicationDate())
                 .book(BookMapper.map(bookItem.getBook()))
+                .rack(RackMapper.map(bookItem.getRack()))
                 .build();
     }
 

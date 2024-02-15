@@ -24,6 +24,10 @@ public class Message {
     public static final String RESERVATION_LIMIT_EXCEEDED = "The user has already reserved maximum number of books";
     public static final String RESERVATION_BOOK_ITEM_LOST = "The reservation cannot be created because book item is lost";
 
+    public static final String RACK_NOT_FOUND = "No rack with id: %s";
+    public static final String RACK_LOCATION_ALREADY_EXISTS = "The rack location (%s) already exists";
+    public static final String RACK_CANNOT_BE_DELETED = "The rack (%s) can't be deleted. Only empty racks can be deleted";
+
     public static final String BAD_BOOK_BARCODE = "Invalid Barcode";
     public static final String BAD_CARD_NUMBER = "Invalid card number";
     public static final String BAD_EMAIL = "Email must be unique";
