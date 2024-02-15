@@ -9,6 +9,7 @@ Library-app is a library management system - REST API that allows users to make 
 
 Additionally, some operations can only be performed by members with administrator privileges:
 - creating, updating and deleting books and their copies. Each newly created copy of the book is assigned a barcode, which allows for easy and quick identification.
+- assigning books to racks, which allows better organization and faster locating of books in the library
 - updating and deleting other members
 - updating and managing members' data, e.g. library cards, fees etc.
 - managing book reservations and loans
@@ -275,7 +276,8 @@ docker-compose up -d
         "format": "MAGAZINE",
         "dateOfPurchase": "2023-12-23",
         "publicationDate": "2023-12-24",
-        "bookId": 3
+        "bookId": 3,
+        "rackId": 1
     }
     ```
 - Server responses:
@@ -306,7 +308,8 @@ docker-compose up -d
           "status": "AVAILABLE",
           "dateOfPurchase": "2023-12-23",
           "publicationDate": "2023-12-24",
-          "bookId": 3
+          "bookId": 3,
+          "rackId" 1:
       }
       ```
 - Server responses:
@@ -636,6 +639,146 @@ docker-compose up -d
   - **409 Conflict** - *Occurs in one of the following situations:*
     - *the book has been already reserved by another member*
     - *the book extension operation is performed after the planned return date*
+
+---
+
+### Retrieve all racks:
+- Request: `GET` `http://localhost:8080/api/v1/racks?{page}&{size}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params: `none`
+- Query params:
+  - `{page}` - *page number (optional), e.g. page=0. Default page is 0*
+  - `{size}` - *page size (optional), e.g. size=5. Default size is 20*
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to retrieve all members' data or is not authenticated*
+
+### Retrieve a single rack:
+- Request: `GET` `http://localhost:8080/api/v1/racks/{rackId}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params:
+  - `{rackId}` - id of rack to fetch
+- Query params: `none`
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **400 Bad Request** - *path is wrong, e.g., an ID is not a number*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to retrieve data or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+
+### Retrieve book items of a rack:
+- Request: `GET` `http://localhost:8080/api/v1/racks/{rackId}/book-items?{page}&{size}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params:
+  - `{rackId}` - id of rack to fetch
+- Query params:
+  - `{page}` - *page number (optional), e.g. page=0. Default page is 0*
+  - `{size}` - *page size (optional), e.g. size=5. Default size is 20*
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **400 Bad Request** - *path is wrong, e.g., an ID is not a number*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to retrieve data or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+
+### Search for racks by location identifier:
+- Request: `GET` `http://localhost:8080/api/v1/racks/search?{q}&{page}&{size}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params: `none`
+- Query params:
+  - `{q}` - *query (required), e.g. q=someLocationsIdentifier*
+  - `{page}` - *page number (optional), e.g. page=0. Default page is 0*
+  - `{size}` - *page size (optional), e.g. size=5. Default size is 20*
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to search for racks or is not authenticated*
+
+### Create a new rack:
+- Request: `POST` `http://localhost:8080/api/v1/racks`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params: `none`
+- Query params: `none`
+- Request body:
+  - body is required
+  - template (all fields):
+    ```
+    { 
+        "locationIdentifier": "test-I-id-or-CoDe"
+    }
+    ```
+- Server responses:
+  - **201 Created** - *request was successful, the resource is successfully created and returned as JSON*
+  - **400 Bad Request** - *a required body is missing*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to create new racks or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+
+### Replace a single rack:
+- Request: `PUT` `http://localhost:8080/api/v1/racks/{rackId}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params:
+  - `{rackId}` - id of rack to replace
+- Query params: `none`
+- Request body:
+  - body is required
+  - not all fields are required (bookId is required)
+    - template (all fields):
+      ```
+      { 
+          "locationIdentifier": "test-I-other-id-or-CoDe"
+      }
+      ```
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **400 Bad Request** - *a required body is missing or path is wrong, e.g., an ID is not a number*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to update a rack or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+
+### Edit the details of a single copy of book:
+- Request: `PATCH` `http://localhost:8080/api/v1/racks/{rackId}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params:
+  - `{rackId}` - id of rack to edit
+- Query params: `none`
+- Request body:
+  - body is required
+  - not all fields are required (minimum 1 field)
+  - template (all fields):
+    ```
+    { 
+        "locationIdentifier": "test-I-other-id-or-CoDe2"
+    }
+    ```
+- Server responses:
+  - **200 OK** - *request was successful, the resource itself is returned as JSON*
+  - **400 Bad Request** - *a required body is missing or path is wrong, e.g., an ID is not a number*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to update a rack or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
+
+### Delete a single rack:
+- Request: `DELETE` `http://localhost:8080/api/v1/racks/{rackId}`
+- Access: ***ADMIN***
+- Headers:
+  - **Authorization** - contains the bearer token, e.g. `Bearer {token}` (required)
+- Path params:
+  - `{rackId}` - id of rack to delete
+- Query params: `none`
+- Server responses:
+  - **204 No Content** - *request was successful, the resource is successfully deleted*
+  - **400 Bad Request** - *path is wrong, e.g., an ID is not a number*
+  - **403 Forbidden** - *the request is not allowed, e.g., the member is not allowed to delete a rack or is not authenticated*
+  - **404 Not Found** - *a resource could not be accessed, e.g., an ID for a resource could not be found*
 
 ---
 

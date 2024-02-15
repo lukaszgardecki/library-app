@@ -10,7 +10,10 @@ import com.example.libraryapp.domain.config.assembler.BookItemModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
+import com.example.libraryapp.domain.exception.rack.RackNotFoundException;
 import com.example.libraryapp.domain.helper.LibraryGenerator;
+import com.example.libraryapp.domain.rack.Rack;
+import com.example.libraryapp.domain.rack.RackRepository;
 import com.example.libraryapp.management.Message;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,15 +27,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookItemService {
     private final BookItemRepository bookItemRepository;
     private final BookRepository bookRepository;
+    private final RackRepository rackRepository;
     private final BookItemModelAssembler bookItemModelAssembler;
     private final PagedResourcesAssembler<BookItem> pagedResourcesAssembler;
 
     public BookItemService(BookItemRepository bookItemRepository,
                            BookRepository bookRepository,
+                           RackRepository rackRepository,
                            BookItemModelAssembler bookItemModelAssembler,
                            PagedResourcesAssembler<BookItem> pagedResourcesAssembler) {
         this.bookItemRepository = bookItemRepository;
         this.bookRepository = bookRepository;
+        this.rackRepository = rackRepository;
         this.bookItemModelAssembler = bookItemModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
@@ -50,18 +56,22 @@ public class BookItemService {
 
     public BookItemDto addBookItem(BookItemToSaveDto item) {
         Book book = findBook(item.getBookId());
+        Rack rack = findRack(item.getRackId());
         BookItem bookItemToSave = BookItemMapper.map(item);
         bookItemToSave.setStatus(BookItemStatus.AVAILABLE);
         bookItemToSave.setBarcode(LibraryGenerator.generateBarcode(item.getBookId()));
         bookItemToSave.setBook(book);
+        bookItemToSave.setRack(rack);
         BookItem savedBookItem = bookItemRepository.save(bookItemToSave);
         book.addBookItem(bookItemToSave);
+        rack.addBookItem(bookItemToSave);
         return bookItemModelAssembler.toModel(savedBookItem);
     }
 
     @Transactional
     public BookItemDto replaceBookItem(Long bookItemId, BookItemToUpdateDto bookItem) {
         Book book = findBook(bookItem.getBookId());
+        Rack rack = findRack(bookItem.getRackId());
         BookItem bookToSave = findBookItem(bookItemId);
 //        bookToSave.setBarcode(bookItem.getBarcode());
         bookToSave.setIsReferenceOnly(bookItem.getIsReferenceOnly());
@@ -73,6 +83,7 @@ public class BookItemService {
         bookToSave.setDateOfPurchase(bookItem.getDateOfPurchase());
         bookToSave.setPublicationDate(bookItem.getPublicationDate());
         bookToSave.setBook(book);
+        bookToSave.setRack(rack);
         return bookItemModelAssembler.toModel(bookToSave);
     }
 
@@ -90,6 +101,10 @@ public class BookItemService {
         if (bookItem.getBookId() != null) {
             Book book = findBook(bookItem.getBookId());
             bookToUpdate.setBook(book);
+        }
+        if (bookItem.getRackId() != null) {
+            Rack rack = findRack(bookItem.getRackId());
+            bookToUpdate.setRack(rack);
         }
         return bookItemModelAssembler.toModel(bookToUpdate);
     }
@@ -110,5 +125,10 @@ public class BookItemService {
     private Book findBook(Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
+    }
+
+    private Rack findRack(Long id) {
+        return rackRepository.findById(id)
+                .orElseThrow(() -> new RackNotFoundException(id));
     }
 }

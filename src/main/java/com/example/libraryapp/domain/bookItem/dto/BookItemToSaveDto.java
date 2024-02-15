@@ -18,4 +18,5 @@ public class BookItemToSaveDto {
     private LocalDate dateOfPurchase;
     private LocalDate publicationDate;
     private Long bookId;
+    private Long rackId;
 }

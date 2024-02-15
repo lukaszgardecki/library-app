@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.bookItem;
 
 import com.example.libraryapp.domain.book.Book;
+import com.example.libraryapp.domain.rack.Rack;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,7 +37,10 @@ public class BookItem {
     @JoinColumn(name = "book_id")
     @JsonManagedReference
     private Book book;
-    //    private Rack placedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "rack_id")
+    private Rack rack;
 
     public void updateAfterReservation() {
         if (status == BookItemStatus.AVAILABLE) status = BookItemStatus.RESERVED;

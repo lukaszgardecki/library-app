@@ -8,6 +8,8 @@ import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.rack.RackException;
+import com.example.libraryapp.domain.exception.rack.RackNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,8 @@ public class CustomExceptionHandler {
             BookNotFoundException.class,
             BookItemNotFoundException.class,
             ReservationNotFoundException.class,
-            LendingNotFoundException.class
+            LendingNotFoundException.class,
+            RackNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(RuntimeException ex, WebRequest request) {
@@ -42,7 +45,8 @@ public class CustomExceptionHandler {
             MemberHasNotReturnedBooksException.class,
             ReservationException.class,
             CheckoutException.class,
-            BookItemException.class
+            BookItemException.class,
+            RackException.class
     })
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorMessage activityMustBeInterrupted(RuntimeException ex, WebRequest request) {

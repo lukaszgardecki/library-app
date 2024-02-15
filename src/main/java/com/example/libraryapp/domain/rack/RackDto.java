@@ -1,28 +1,20 @@
 package com.example.libraryapp.domain.rack;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "rack")
-public class Rack {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RackDto extends RepresentationModel<RackDto> {
     private Long id;
     private String locationIdentifier;
-
-    @OneToMany(mappedBy = "rack", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<BookItem> bookItems;
-
-    public void addBookItem(BookItem item) {
-        bookItems.add(item);
-    }
 }

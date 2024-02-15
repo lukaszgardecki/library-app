@@ -22,4 +22,5 @@ public class BookItemToUpdateDto {
     private LocalDate dateOfPurchase;
     private LocalDate publicationDate;
     private Long bookId;
+    private Long rackId;
 }
