@@ -10,6 +10,8 @@ import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToUpdateDto;
+import com.example.libraryapp.domain.rack.Rack;
+import com.example.libraryapp.domain.rack.RackMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.*;
@@ -125,6 +127,8 @@ public class BookItemControllerTest {
         assertThat(returnedBook.getBook().getLanguage()).isEqualTo("Hungarian");
         assertThat(returnedBook.getBook().getPages()).isEqualTo(195);
         assertThat(returnedBook.getBook().getISBN()).isEqualTo("460302346-4");
+        assertThat(returnedBook.getRack().getId()).isEqualTo(5L);
+        assertThat(returnedBook.getRack().getLocationIdentifier()).isEqualTo("123-V-56");
     }
 
     @Test
@@ -166,6 +170,8 @@ public class BookItemControllerTest {
         assertThat(returnedBook.getBook().getLanguage()).isEqualTo("Hungarian");
         assertThat(returnedBook.getBook().getPages()).isEqualTo(195);
         assertThat(returnedBook.getBook().getISBN()).isEqualTo("460302346-4");
+        assertThat(returnedBook.getRack().getId()).isEqualTo(3L);
+        assertThat(returnedBook.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
     }
 
     @Test
@@ -222,6 +228,8 @@ public class BookItemControllerTest {
         assertThat(bookItemAfter.getFormat()).isEqualTo(bookItemToReplace.getFormat());
         assertThat(bookItemAfter.getDateOfPurchase()).isEqualTo(bookItemToReplace.getDateOfPurchase());
         assertThat(bookItemAfter.getPublicationDate()).isEqualTo(bookItemToReplace.getPublicationDate());
+        assertThat(bookItemAfter.getRack().getId()).isEqualTo(bookItemToReplace.getRackId());
+        assertThat(bookItemAfter.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
         assertThat(bookItemAfter.getBook().getId()).isEqualTo(1);
         assertThat(bookItemAfter.getBook().getTitle()).isEqualTo("Araya");
         assertThat(bookItemAfter.getBook().getSubject()).isEqualTo("White Plains");
@@ -358,6 +366,12 @@ public class BookItemControllerTest {
     void shouldDeleteAnExistingBookItemIfAdminRequested() {
         HttpEntity<?> request = new HttpEntity<>(adminHeader);
 
+        ResponseEntity<String> response1 = restTemplate.exchange("/api/v1/racks/5/book-items", HttpMethod.GET, request, String.class);
+        assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext1 = JsonPath.parse(response1.getBody());
+        int rackListLength1 = documentContext1.read("$.page.totalElements");
+        assertThat(rackListLength1).isEqualTo(2);
+
         ResponseEntity<Void> deleteResponse = restTemplate
                 .exchange("/api/v1/book-items/1", HttpMethod.DELETE, request, Void.class);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -365,6 +379,12 @@ public class BookItemControllerTest {
         ResponseEntity<String> getResponse = restTemplate
                 .getForEntity("/api/v1/book-items/1", String.class);
         assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
+        ResponseEntity<String> response2 = restTemplate.exchange("/api/v1/racks/5/book-items", HttpMethod.GET, request, String.class);
+        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
+        DocumentContext documentContext2 = JsonPath.parse(response2.getBody());
+        int rackListLength2 = documentContext2.read("$.page.totalElements");
+        assertThat(rackListLength2).isEqualTo(1);
     }
 
     @ParameterizedTest
@@ -428,6 +448,7 @@ public class BookItemControllerTest {
         bookToSaveDto.setDateOfPurchase(LocalDate.parse("05-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         bookToSaveDto.setPublicationDate(LocalDate.parse("13-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         bookToSaveDto.setBookId(1L);
+        bookToSaveDto.setRackId(3L);
         return bookToSaveDto;
     }
 
@@ -442,6 +463,7 @@ public class BookItemControllerTest {
         bookToUpdateDto.setDateOfPurchase(LocalDate.parse("05-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         bookToUpdateDto.setPublicationDate(LocalDate.parse("13-12-2023", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         bookToUpdateDto.setBookId(1L);
+        bookToUpdateDto.setRackId(3L);
         return bookToUpdateDto;
     }
 
@@ -479,7 +501,12 @@ public class BookItemControllerTest {
         book.setPages(documentContext.read("$.book.pages"));
         book.setISBN(documentContext.read("$.book.isbn"));
 
+        Rack rack = new Rack();
+        rack.setId(((Number) documentContext.read("$.rack.id")).longValue());
+        rack.setLocationIdentifier(documentContext.read("$.rack.locationIdentifier"));
+
         dto.setBook(BookMapper.map(book));
+        dto.setRack(RackMapper.map(rack));
         return dto;
     }
 }
