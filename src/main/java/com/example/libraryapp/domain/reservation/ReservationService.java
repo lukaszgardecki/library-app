@@ -14,6 +14,7 @@ import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -28,24 +29,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
-
-    public ReservationService(ReservationRepository reservationRepository,
-                              BookItemRepository bookItemRepository,
-                              MemberRepository memberRepository,
-                              ReservationModelAssembler reservationModelAssembler,
-                              PagedResourcesAssembler<Reservation> pagedResourcesAssembler) {
-        this.reservationRepository = reservationRepository;
-        this.bookItemRepository = bookItemRepository;
-        this.memberRepository = memberRepository;
-        this.reservationModelAssembler = reservationModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
 
     public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
         PagedModel<ReservationResponse> collectionModel;

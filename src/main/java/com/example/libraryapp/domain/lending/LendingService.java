@@ -19,6 +19,7 @@ import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LendingService {
     private final LendingRepository lendingRepository;
     private final MemberRepository memberRepository;
@@ -40,22 +42,6 @@ public class LendingService {
     private final FineService fineService;
     private final LendingModelAssembler lendingModelAssembler;
     private final PagedResourcesAssembler<Lending> pagedResourcesAssembler;
-
-    public LendingService(LendingRepository lendingRepository,
-                          MemberRepository memberRepository,
-                          BookItemRepository bookItemRepository,
-                          ReservationRepository reservationRepository,
-                          FineService fineService,
-                          LendingModelAssembler lendingModelAssembler,
-                          PagedResourcesAssembler<Lending> pagedResourcesAssembler) {
-        this.lendingRepository = lendingRepository;
-        this.memberRepository = memberRepository;
-        this.bookItemRepository = bookItemRepository;
-        this.reservationRepository = reservationRepository;
-        this.fineService = fineService;
-        this.lendingModelAssembler = lendingModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
 
     public PagedModel<LendingDto> findLendings(Long memberId, Pageable pageable) {
         PagedModel<LendingDto> collectionModel;
