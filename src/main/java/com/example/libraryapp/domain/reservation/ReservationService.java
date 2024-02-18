@@ -10,10 +10,13 @@ import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.domain.notification.NotificationDetails;
+import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,29 +26,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
+    private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
-
-    public ReservationService(ReservationRepository reservationRepository,
-                              BookItemRepository bookItemRepository,
-                              MemberRepository memberRepository,
-                              ReservationModelAssembler reservationModelAssembler,
-                              PagedResourcesAssembler<Reservation> pagedResourcesAssembler) {
-        this.reservationRepository = reservationRepository;
-        this.bookItemRepository = bookItemRepository;
-        this.memberRepository = memberRepository;
-        this.reservationModelAssembler = reservationModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
 
     public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
         PagedModel<ReservationResponse> collectionModel;
@@ -73,6 +67,10 @@ public class ReservationService {
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
         book.updateAfterReservation();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.RESERVATION_CREATED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return reservationModelAssembler.toModel(savedReservation);
     }
 
@@ -87,6 +85,10 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.RESERVATION_DELETED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
     }
 
     private PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
@@ -158,6 +160,16 @@ public class ReservationService {
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)
+                .build();
+    }
+
+    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
+        return NotificationDetails.builder()
+                .createdAt(LocalDateTime.now())
+                .content(notificationMessage)
+                .bookTitle(bookTitle)
+                .userEmail(member.getEmail())
+                .userPhoneNumber(member.getPerson().getPhone())
                 .build();
     }
 }

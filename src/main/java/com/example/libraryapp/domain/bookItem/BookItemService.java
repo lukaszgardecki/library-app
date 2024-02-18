@@ -15,6 +15,7 @@ import com.example.libraryapp.domain.helper.LibraryGenerator;
 import com.example.libraryapp.domain.rack.Rack;
 import com.example.libraryapp.domain.rack.RackRepository;
 import com.example.libraryapp.management.Message;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,24 +25,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class BookItemService {
     private final BookItemRepository bookItemRepository;
     private final BookRepository bookRepository;
     private final RackRepository rackRepository;
     private final BookItemModelAssembler bookItemModelAssembler;
     private final PagedResourcesAssembler<BookItem> pagedResourcesAssembler;
-
-    public BookItemService(BookItemRepository bookItemRepository,
-                           BookRepository bookRepository,
-                           RackRepository rackRepository,
-                           BookItemModelAssembler bookItemModelAssembler,
-                           PagedResourcesAssembler<BookItem> pagedResourcesAssembler) {
-        this.bookItemRepository = bookItemRepository;
-        this.bookRepository = bookRepository;
-        this.rackRepository = rackRepository;
-        this.bookItemModelAssembler = bookItemModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
 
     public PagedModel<BookItemDto> findAllBookItems(Pageable pageable) {
         Page<BookItem> bookItemPage =

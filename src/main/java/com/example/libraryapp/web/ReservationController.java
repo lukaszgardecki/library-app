@@ -1,7 +1,6 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.member.MemberService;
-import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
@@ -21,7 +20,6 @@ import java.net.URI;
 public class ReservationController {
     private final ReservationService reservationService;
     private final MemberService memberService;
-    private final NotificationService notificationService;
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -51,7 +49,6 @@ public class ReservationController {
         memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
         ReservationResponse savedReservation = reservationService.makeAReservation(request);
         URI savedReservationUri = createURI(savedReservation);
-        notificationService.send(NotificationService.RESERVATION_CREATED);
         return ResponseEntity.created(savedReservationUri).body(savedReservation);
     }
 
@@ -60,7 +57,6 @@ public class ReservationController {
     ResponseEntity<?> cancelAReservation(@RequestBody ActionRequest request) {
         memberService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
         reservationService.cancelAReservation(request);
-        notificationService.send(NotificationService.RESERVATION_DELETED);
         return ResponseEntity.noContent().build();
     }
 

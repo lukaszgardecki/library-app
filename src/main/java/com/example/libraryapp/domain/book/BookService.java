@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,19 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
     private final BookModelAssembler bookModelAssembler;
     private final PagedResourcesAssembler<Book> pagedResourcesAssembler;
-
-    public BookService(BookRepository bookRepository,
-                       BookModelAssembler bookModelAssembler,
-                       PagedResourcesAssembler<Book> pagedResourcesAssembler) {
-        this.bookRepository = bookRepository;
-        this.bookModelAssembler = bookModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
-
 
     public PagedModel<BookDto> findAllBook(Pageable pageable) {
         Page<Book> bookPage =
@@ -55,7 +48,6 @@ public class BookService {
         bookToReplace.setPages(book.getPages());
         Book savedBook = bookRepository.save(bookToReplace);
         return bookModelAssembler.toModel(savedBook);
-
     }
 
     @Transactional

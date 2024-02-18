@@ -13,12 +13,15 @@ import com.example.libraryapp.domain.fine.FineService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.domain.notification.NotificationDetails;
+import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.Message;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,33 +32,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LendingService {
     private final LendingRepository lendingRepository;
     private final MemberRepository memberRepository;
     private final BookItemRepository bookItemRepository;
     private final ReservationRepository reservationRepository;
     private final FineService fineService;
+    private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
     private final PagedResourcesAssembler<Lending> pagedResourcesAssembler;
-
-    public LendingService(LendingRepository lendingRepository,
-                          MemberRepository memberRepository,
-                          BookItemRepository bookItemRepository,
-                          ReservationRepository reservationRepository,
-                          FineService fineService,
-                          LendingModelAssembler lendingModelAssembler,
-                          PagedResourcesAssembler<Lending> pagedResourcesAssembler) {
-        this.lendingRepository = lendingRepository;
-        this.memberRepository = memberRepository;
-        this.bookItemRepository = bookItemRepository;
-        this.reservationRepository = reservationRepository;
-        this.fineService = fineService;
-        this.lendingModelAssembler = lendingModelAssembler;
-        this.pagedResourcesAssembler = pagedResourcesAssembler;
-    }
 
     public PagedModel<LendingDto> findLendings(Long memberId, Pageable pageable) {
         PagedModel<LendingDto> collectionModel;
@@ -83,14 +73,23 @@ public class LendingService {
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
         reservation.updateAfterLending();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_BORROWED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(savedLending);
     }
 
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        Member member = lending.getMember();
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_EXTENDED, lending.getBookItem().getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -104,6 +103,10 @@ public class LendingService {
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_RETURNED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -183,5 +186,15 @@ public class LendingService {
         lendingToSave.setDueDate(endTime);
         lendingToSave.setStatus(LendingStatus.CURRENT);
         return lendingToSave;
+    }
+
+    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
+        return NotificationDetails.builder()
+                .createdAt(LocalDateTime.now())
+                .content(notificationMessage)
+                .bookTitle(bookTitle)
+                .userEmail(member.getEmail())
+                .userPhoneNumber(member.getPerson().getPhone())
+                .build();
     }
 }
