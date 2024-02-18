@@ -25,7 +25,7 @@ public class LendingController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PagedModel<LendingDto>> getAllCheckouts(
+    public ResponseEntity<PagedModel<LendingDto>> getAllLendings(
             @RequestParam(required = false) Long memberId, Pageable pageable
     ) {
         memberService.checkIfAdminOrDataOwnerRequested(memberId);

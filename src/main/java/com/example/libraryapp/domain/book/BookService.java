@@ -48,7 +48,6 @@ public class BookService {
         bookToReplace.setPages(book.getPages());
         Book savedBook = bookRepository.save(bookToReplace);
         return bookModelAssembler.toModel(savedBook);
-
     }
 
     @Transactional
