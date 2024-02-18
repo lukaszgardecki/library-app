@@ -13,6 +13,8 @@ import com.example.libraryapp.domain.fine.FineService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.domain.notification.NotificationDetails;
+import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,6 +43,7 @@ public class LendingService {
     private final BookItemRepository bookItemRepository;
     private final ReservationRepository reservationRepository;
     private final FineService fineService;
+    private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
     private final PagedResourcesAssembler<Lending> pagedResourcesAssembler;
 
@@ -69,14 +73,23 @@ public class LendingService {
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
         reservation.updateAfterLending();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_BORROWED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(savedLending);
     }
 
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        Member member = lending.getMember();
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_EXTENDED, lending.getBookItem().getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -90,6 +103,10 @@ public class LendingService {
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
+        NotificationDetails details = createNotificationDetails(
+                member, Message.BOOK_RETURNED, book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -169,5 +186,15 @@ public class LendingService {
         lendingToSave.setDueDate(endTime);
         lendingToSave.setStatus(LendingStatus.CURRENT);
         return lendingToSave;
+    }
+
+    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
+        return NotificationDetails.builder()
+                .createdAt(LocalDateTime.now())
+                .content(notificationMessage)
+                .bookTitle(bookTitle)
+                .userEmail(member.getEmail())
+                .userPhoneNumber(member.getPerson().getPhone())
+                .build();
     }
 }

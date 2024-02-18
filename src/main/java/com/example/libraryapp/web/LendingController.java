@@ -3,7 +3,6 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.lending.LendingService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.MemberService;
-import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import java.net.URI;
 public class LendingController {
     private final LendingService lendingService;
     private final MemberService memberService;
-    private final NotificationService notificationService;
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
@@ -46,7 +44,6 @@ public class LendingController {
     public ResponseEntity<?> borrowABook(@RequestBody ActionRequest request) {
         LendingDto savedCheckout = lendingService.borrowABook(request);
         URI savedCheckoutUri = createURI(savedCheckout);
-        notificationService.send(NotificationService.BOOK_BORROWED);
         return ResponseEntity.created(savedCheckoutUri).body(savedCheckout);
     }
 
@@ -54,7 +51,6 @@ public class LendingController {
     @PreAuthorize("hasAuthority('admin:create')")
     public ResponseEntity<?> renewABook(@RequestParam String bookBarcode) {
         LendingDto renewedLending = lendingService.renewABook(bookBarcode);
-        notificationService.send(NotificationService.BOOK_EXTENDED);
         return ResponseEntity.ok(renewedLending);
     }
 
@@ -62,7 +58,6 @@ public class LendingController {
     @PreAuthorize("hasAuthority('admin:update')")
     public ResponseEntity<?> returnABook(@RequestParam String bookBarcode) {
         LendingDto returnedBook = lendingService.returnABook(bookBarcode);
-        notificationService.send(NotificationService.BOOK_RETURNED);
         return ResponseEntity.ok(returnedBook);
     }
 
