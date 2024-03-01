@@ -18,7 +18,8 @@ public enum Role {
             Permission.ADMIN_CREATE,
             Permission.ADMIN_UPDATE,
             Permission.ADMIN_DELETE
-    ));
+    )),
+    WAREHOUSE(Collections.emptySet());
 
     @Getter
     private final Set<Permission> permissions;
