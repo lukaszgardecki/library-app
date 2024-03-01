@@ -1,310 +1,272 @@
 package com.example.libraryapp.web;
 
-import com.example.libraryapp.domain.auth.AuthenticationService;
-import com.example.libraryapp.domain.auth.LoginRequest;
-import com.example.libraryapp.domain.auth.LoginResponse;
-import com.example.libraryapp.domain.book.Book;
-import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.bookItem.BookItemFormat;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToUpdateDto;
-import com.example.libraryapp.domain.rack.Rack;
-import com.example.libraryapp.domain.rack.RackMapper;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.*;
+import com.example.libraryapp.domain.exception.ErrorMessage;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import java.math.BigDecimal;
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance( TestInstance.Lifecycle.PER_CLASS)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@ActiveProfiles("test")
-public class BookItemControllerTest {
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-    @Autowired
-    private AuthenticationService authenticationService;
-    private HttpHeaders adminHeader;
-    private HttpHeaders userHeader;
-
-    @BeforeAll
-    void authenticate() {
-        LoginRequest admin = new LoginRequest();
-        admin.setUsername("admin@example.com");
-        admin.setPassword("adminpass");
-        LoginResponse adminLoginResponse = authenticationService.authenticate(admin);
-        String adminToken = adminLoginResponse.getToken();
-
-        HttpHeaders adminHeader = new HttpHeaders();
-        adminHeader.setBearerAuth(adminToken);
-        adminHeader.setContentType(MediaType.APPLICATION_JSON);
-        this.adminHeader = adminHeader;
-
-        LoginRequest user = new LoginRequest();
-        user.setUsername("user@example.com");
-        user.setPassword("userpass");
-        LoginResponse userLoginResponse = authenticationService.authenticate(user);
-        String userToken = userLoginResponse.getToken();
-
-        HttpHeaders userHeader = new HttpHeaders();
-        userHeader.setBearerAuth(userToken);
-        userHeader.setContentType(MediaType.APPLICATION_JSON);
-        this.userHeader = userHeader;
-    }
+public class BookItemControllerTest extends BaseTest {
 
     @Test
-    @Order(1)
     void shouldReturnPageOf20BookItemsWhenListIsRequested() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/book-items", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int bookListLength = documentContext.read("$._embedded.bookItemDtoList.length()");
-        assertThat(bookListLength).isEqualTo(7);
+        client.get()
+                .uri("/api/v1/book-items")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$._embedded.bookItemDtoList.length()").isEqualTo(20);
     }
 
     @Test
-    @Order(2)
     void shouldReturnPageOf3BookItemsWhenListIsRequested() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/book-items?page=0&size=3", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int bookListLength = documentContext.read("$._embedded.bookItemDtoList.length()");
-        assertThat(bookListLength).isEqualTo(3);
-        int sizeParam = documentContext.read("$.page.size");
-        assertThat(sizeParam).isEqualTo(3);
-        int totalElementsParam = documentContext.read("$.page.totalElements");
-        assertThat(totalElementsParam).isEqualTo(7);
-        int totalPagesParam = documentContext.read("$.page.totalPages");
-        assertThat(totalPagesParam).isEqualTo(3);
-        int numberParam = documentContext.read("$.page.number");
-        assertThat(numberParam).isEqualTo(0);
+        client.get()
+                .uri("/api/v1/book-items?page=0&size=3")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$._embedded.bookItemDtoList.length()").isEqualTo(3)
+                .jsonPath("$.page.size").isEqualTo(3)
+                .jsonPath("$.page.totalElements").isEqualTo(70)
+                .jsonPath("$.page.totalPages").isEqualTo(24)
+                .jsonPath("$.page.number").isEqualTo(0);
     }
 
     @Test
-    @Order(3)
     void shouldReturnAnExistingBookItem() {
-        ResponseEntity<String> response = restTemplate
-                .getForEntity("/api/v1/book-items/1", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookItemDto responseBody = client.get()
+                .uri("/api/v1/book-items/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
 
-        BookItemDto returnedBook = getBookItemDtoFromResponse(response);
-        assertThat(returnedBook.getId()).isEqualTo(1);
-        assertThat(returnedBook.getBarcode()).isEqualTo("540200000001");
-        assertThat(returnedBook.getIsReferenceOnly()).isEqualTo(true);
-        assertThat(returnedBook.getBorrowed()).isEqualTo("2023-05-21");
-        assertThat(returnedBook.getDueDate()).isEqualTo("2023-06-10");
-        assertThat(returnedBook.getPrice()).isEqualTo(BigDecimal.valueOf(12.34));
-        assertThat(returnedBook.getFormat()).isEqualTo(BookItemFormat.MAGAZINE);
-        assertThat(returnedBook.getStatus()).isEqualTo(BookItemStatus.AVAILABLE);
-        assertThat(returnedBook.getDateOfPurchase()).isEqualTo("2023-01-28");
-        assertThat(returnedBook.getPublicationDate()).isEqualTo("2023-02-28");
-        assertThat(returnedBook.getBook().getId()).isEqualTo(1);
-        assertThat(returnedBook.getBook().getTitle()).isEqualTo("Araya");
-        assertThat(returnedBook.getBook().getSubject()).isEqualTo("White Plains");
-        assertThat(returnedBook.getBook().getPublisher()).isEqualTo("Xena Hallut");
-        assertThat(returnedBook.getBook().getLanguage()).isEqualTo("Hungarian");
-        assertThat(returnedBook.getBook().getPages()).isEqualTo(195);
-        assertThat(returnedBook.getBook().getISBN()).isEqualTo("460302346-4");
-        assertThat(returnedBook.getRack().getId()).isEqualTo(5L);
-        assertThat(returnedBook.getRack().getLocationIdentifier()).isEqualTo("123-V-56");
+        assertThat(responseBody.getId()).isEqualTo(1);
+        assertThat(responseBody.getBarcode()).isEqualTo("540200000001");
+        assertThat(responseBody.getIsReferenceOnly()).isEqualTo(true);
+        assertThat(responseBody.getBorrowed()).isNull();
+        assertThat(responseBody.getDueDate()).isNull();
+        assertThat(responseBody.getPrice()).isEqualTo(BigDecimal.valueOf(12.34));
+        assertThat(responseBody.getFormat()).isEqualTo(BookItemFormat.MAGAZINE);
+        assertThat(responseBody.getStatus()).isEqualTo(BookItemStatus.RESERVED);
+        assertThat(responseBody.getDateOfPurchase()).isEqualTo("2023-01-28");
+        assertThat(responseBody.getPublicationDate()).isEqualTo("2023-01-29");
+        assertThat(responseBody.getBook().getId()).isEqualTo(1);
+        assertThat(responseBody.getBook().getTitle()).isEqualTo("Araya");
+        assertThat(responseBody.getBook().getSubject()).isEqualTo("White Plains");
+        assertThat(responseBody.getBook().getPublisher()).isEqualTo("Xena Hallut");
+        assertThat(responseBody.getBook().getLanguage()).isEqualTo("Hungarian");
+        assertThat(responseBody.getBook().getPages()).isEqualTo(195);
+        assertThat(responseBody.getBook().getISBN()).isEqualTo("460302346-4");
+        assertThat(responseBody.getRack().getId()).isEqualTo(1L);
+        assertThat(responseBody.getRack().getLocationIdentifier()).isEqualTo("123-I-12");
     }
 
     @Test
-    @Order(4)
     void shouldNotReturnABookItemThatDoesNotExist() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/book-items/99999", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        client.get()
+                .uri("/api/v1/book-items/9999999")
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(17)
     void shouldCreateANewBookItemIfAdminRequested() {
         BookItemToSaveDto bookToSaveDto = getBookToSaveDto();
-        HttpEntity<?> request = new HttpEntity<>(bookToSaveDto, adminHeader);
 
-        ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/book-items", request, String.class);
+        EntityExchangeResult<BookItemDto> response = client.post()
+                .uri("/api/v1/book-items")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .body(BodyInserters.fromValue(bookToSaveDto))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(BookItemDto.class).returnResult();
 
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        BookItemDto responseBody = response.getResponseBody();
 
-        URI locationOfNewBook = createResponse.getHeaders().getLocation();
-        ResponseEntity<String> getResponse = restTemplate
-                .getForEntity(locationOfNewBook, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        client.get()
+                .uri(response.getResponseHeaders().getLocation())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class).returnResult();
 
-        BookItemDto returnedBook = getBookItemDtoFromResponse(getResponse);
-        assertThat(returnedBook.getId()).isNotNull();
-        assertThat(returnedBook.getBarcode()).isNotNull();
-        assertThat(returnedBook.getStatus()).isNotNull();
-        assertThat(returnedBook.getIsReferenceOnly()).isEqualTo(bookToSaveDto.getIsReferenceOnly());
-        assertThat(returnedBook.getPrice()).isEqualTo(bookToSaveDto.getPrice());
-        assertThat(returnedBook.getFormat()).isEqualTo(bookToSaveDto.getFormat());
-        assertThat(returnedBook.getDateOfPurchase()).isEqualTo(bookToSaveDto.getDateOfPurchase());
-        assertThat(returnedBook.getPublicationDate()).isEqualTo(bookToSaveDto.getPublicationDate());
-        assertThat(returnedBook.getBook().getId()).isEqualTo(1);
-        assertThat(returnedBook.getBook().getTitle()).isEqualTo("Araya");
-        assertThat(returnedBook.getBook().getSubject()).isEqualTo("White Plains");
-        assertThat(returnedBook.getBook().getPublisher()).isEqualTo("Xena Hallut");
-        assertThat(returnedBook.getBook().getLanguage()).isEqualTo("Hungarian");
-        assertThat(returnedBook.getBook().getPages()).isEqualTo(195);
-        assertThat(returnedBook.getBook().getISBN()).isEqualTo("460302346-4");
-        assertThat(returnedBook.getRack().getId()).isEqualTo(3L);
-        assertThat(returnedBook.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
+        assertThat(responseBody.getId()).isNotNull();
+        assertThat(responseBody.getBarcode()).isNotNull();
+        assertThat(responseBody.getStatus()).isNotNull();
+        assertThat(responseBody.getIsReferenceOnly()).isEqualTo(bookToSaveDto.getIsReferenceOnly());
+        assertThat(responseBody.getPrice()).isEqualTo(bookToSaveDto.getPrice());
+        assertThat(responseBody.getFormat()).isEqualTo(bookToSaveDto.getFormat());
+        assertThat(responseBody.getDateOfPurchase()).isEqualTo(bookToSaveDto.getDateOfPurchase());
+        assertThat(responseBody.getPublicationDate()).isEqualTo(bookToSaveDto.getPublicationDate());
+        assertThat(responseBody.getBook().getId()).isEqualTo(1);
+        assertThat(responseBody.getBook().getTitle()).isEqualTo("Araya");
+        assertThat(responseBody.getBook().getSubject()).isEqualTo("White Plains");
+        assertThat(responseBody.getBook().getPublisher()).isEqualTo("Xena Hallut");
+        assertThat(responseBody.getBook().getLanguage()).isEqualTo("Hungarian");
+        assertThat(responseBody.getBook().getPages()).isEqualTo(195);
+        assertThat(responseBody.getBook().getISBN()).isEqualTo("460302346-4");
+        assertThat(responseBody.getRack().getId()).isEqualTo(3L);
+        assertThat(responseBody.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
     }
 
     @Test
-    @Order(5)
     void shouldNotCreateANewBookItemIfUserRequested() {
         BookItemToSaveDto bookToSaveDto = getBookToSaveDto();
-        HttpEntity<?> request = new HttpEntity<>(bookToSaveDto, userHeader);
-
-        ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/book-items", request, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.post()
+                .uri("/api/v1/book-items")
+                .header(HttpHeaders.AUTHORIZATION, userToken)
+                .body(BodyInserters.fromValue(bookToSaveDto))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(6)
     void shouldNotCreateANewBookItemIfUnauthenticatedUserRequested() {
         BookItemToSaveDto bookToSaveDto = getBookToSaveDto();
-        ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/book-items", bookToSaveDto, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.post()
+                .uri("/api/v1/book-items")
+                .body(BodyInserters.fromValue(bookToSaveDto))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(18)
     void shouldNotCreateANewBookItemIfRequestBodyIsEmpty() {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
-        ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/book-items", HttpMethod.POST, request, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        client.post()
+                .uri("/api/v1/book-items")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(19)
     void shouldUpdateAnExistingBookItemIfAdminRequested() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
 
-        ResponseEntity<String> responseBefore = restTemplate
-                .exchange("/api/v1/book-items/3", HttpMethod.GET, request, String.class);
-        assertThat(responseBefore.getStatusCode()).isEqualTo(HttpStatus.OK);
-        BookItemDto bookItemBefore = getBookItemDtoFromResponse(responseBefore);
+        BookItemDto responseBodyBefore = client.get()
+                .uri("/api/v1/book-items/3")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
 
-        ResponseEntity<String> responseAfter = restTemplate
-                .exchange("/api/v1/book-items/3", HttpMethod.PUT, request, String.class);
-        assertThat(responseAfter.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookItemDto responseBodyAfter = client.put()
+                .uri("/api/v1/book-items/3")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .body(BodyInserters.fromValue(bookItemToReplace))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
 
-        BookItemDto bookItemAfter = getBookItemDtoFromResponse(responseAfter);
-        assertThat(bookItemAfter.getId()).isEqualTo(bookItemBefore.getId());
-        assertThat(bookItemAfter.getBarcode()).isEqualTo(bookItemBefore.getBarcode());
-
-        assertThat(bookItemAfter.getStatus()).isEqualTo(bookItemToReplace.getStatus());
-        assertThat(bookItemAfter.getIsReferenceOnly()).isEqualTo(bookItemToReplace.getIsReferenceOnly());
-        assertThat(bookItemAfter.getPrice()).isEqualTo(bookItemToReplace.getPrice());
-        assertThat(bookItemAfter.getFormat()).isEqualTo(bookItemToReplace.getFormat());
-        assertThat(bookItemAfter.getDateOfPurchase()).isEqualTo(bookItemToReplace.getDateOfPurchase());
-        assertThat(bookItemAfter.getPublicationDate()).isEqualTo(bookItemToReplace.getPublicationDate());
-        assertThat(bookItemAfter.getRack().getId()).isEqualTo(bookItemToReplace.getRackId());
-        assertThat(bookItemAfter.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
-        assertThat(bookItemAfter.getBook().getId()).isEqualTo(1);
-        assertThat(bookItemAfter.getBook().getTitle()).isEqualTo("Araya");
-        assertThat(bookItemAfter.getBook().getSubject()).isEqualTo("White Plains");
-        assertThat(bookItemAfter.getBook().getPublisher()).isEqualTo("Xena Hallut");
-        assertThat(bookItemAfter.getBook().getLanguage()).isEqualTo("Hungarian");
-        assertThat(bookItemAfter.getBook().getPages()).isEqualTo(195);
-        assertThat(bookItemAfter.getBook().getISBN()).isEqualTo("460302346-4");
+        assertThat(responseBodyAfter.getId()).isEqualTo(responseBodyBefore.getId());
+        assertThat(responseBodyAfter.getBarcode()).isEqualTo(responseBodyBefore.getBarcode());
+        assertThat(responseBodyAfter.getStatus()).isEqualTo(bookItemToReplace.getStatus());
+        assertThat(responseBodyAfter.getIsReferenceOnly()).isEqualTo(bookItemToReplace.getIsReferenceOnly());
+        assertThat(responseBodyAfter.getPrice()).isEqualTo(bookItemToReplace.getPrice());
+        assertThat(responseBodyAfter.getFormat()).isEqualTo(bookItemToReplace.getFormat());
+        assertThat(responseBodyAfter.getDateOfPurchase()).isEqualTo(bookItemToReplace.getDateOfPurchase());
+        assertThat(responseBodyAfter.getPublicationDate()).isEqualTo(bookItemToReplace.getPublicationDate());
+        assertThat(responseBodyAfter.getRack().getId()).isEqualTo(bookItemToReplace.getRackId());
+        assertThat(responseBodyAfter.getRack().getLocationIdentifier()).isEqualTo("123-III-34");
+        assertThat(responseBodyAfter.getBook().getId()).isEqualTo(1);
+        assertThat(responseBodyAfter.getBook().getTitle()).isEqualTo("Araya");
+        assertThat(responseBodyAfter.getBook().getSubject()).isEqualTo("White Plains");
+        assertThat(responseBodyAfter.getBook().getPublisher()).isEqualTo("Xena Hallut");
+        assertThat(responseBodyAfter.getBook().getLanguage()).isEqualTo("Hungarian");
+        assertThat(responseBodyAfter.getBook().getPages()).isEqualTo(195);
+        assertThat(responseBodyAfter.getBook().getISBN()).isEqualTo("460302346-4");
     }
 
     @Test
-    @Order(7)
     void shouldNotUpdateAnExistingBookItemIfUserRequested() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, userHeader);
-        ResponseEntity<String> putResponse = restTemplate
-                .exchange("/api/v1/book-items/3", HttpMethod.PUT, request, String.class);
-        assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.put()
+                .uri("/api/v1/book-items/3")
+                .header(HttpHeaders.AUTHORIZATION, userToken)
+                .body(BodyInserters.fromValue(bookItemToReplace))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(8)
     void shouldNotUpdateAnExistingBookItemIfUnauthenticatedUserRequested() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace);
-        ResponseEntity<String> putResponse = restTemplate
-                .exchange("/api/v1/book-items/3", HttpMethod.PUT, request, String.class);
-        assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.put()
+                .uri("/api/v1/book-items/3")
+                .body(BodyInserters.fromValue(bookItemToReplace))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(9)
     void shouldNotUpdateAnExistingBookItemThatDoesNotExist() {
         BookItemToUpdateDto bookItemToReplace = getBookToUpdateDto();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookItemToReplace, adminHeader);
-        ResponseEntity<String> putResponse = restTemplate
-                .exchange("/api/v1/book-items/999999999", HttpMethod.PUT, request, String.class);
-        assertThat(putResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        client.put()
+                .uri("/api/v1/book-items/999999999")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .body(BodyInserters.fromValue(bookItemToReplace))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(20)
     void shouldNotUpdateAnExistingBookItemIfRequestBodyIsEmpty() {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
-        ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/book-items/1", HttpMethod.PUT, request, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        client.put()
+                .uri("/api/v1/book-items/3")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorMessage.class);
     }
 
     @ParameterizedTest
-    @Order(21)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldPartiallyUpdateAnExistingBookItemIfAdminRequested(Long bookItemId) {
-        ResponseEntity<String> getResponseBeforeUpdate = restTemplate
-                .getForEntity("/api/v1/book-items/" + bookItemId, String.class);
-        assertThat(getResponseBeforeUpdate.getStatusCode()).isEqualTo(HttpStatus.OK);
-        BookItemDto bookBeforeUpdate = getBookItemDtoFromResponse(getResponseBeforeUpdate);
-
         BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
 
-        ResponseEntity<String> patchResponse = restTemplate
-                .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.PATCH, request, String.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookItemDto bookBeforeUpdate = client.get()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
 
-        ResponseEntity<String> getResponse = restTemplate
-                .getForEntity("/api/v1/book-items/" + bookItemId, String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        BookItemDto bookAfterUpdate = client.patch()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .body(BodyInserters.fromValue(bookFieldsToUpdate))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
 
-        BookItemDto bookAfterUpdate = getBookItemDtoFromResponse(getResponse);
         assertThat(bookAfterUpdate.getPrice()).isEqualTo(bookFieldsToUpdate.getPrice());
         assertThat(bookAfterUpdate.getFormat()).isEqualTo(bookFieldsToUpdate.getFormat());
         assertThat(bookAfterUpdate.getDateOfPurchase()).isEqualTo(bookFieldsToUpdate.getDateOfPurchase());
-
         assertThat(bookAfterUpdate.getId()).isEqualTo(bookBeforeUpdate.getId());
         assertThat(bookAfterUpdate.getBarcode()).isEqualTo(bookBeforeUpdate.getBarcode());
         assertThat(bookAfterUpdate.getStatus()).isEqualTo(bookBeforeUpdate.getStatus());
@@ -320,124 +282,114 @@ public class BookItemControllerTest {
     }
 
     @ParameterizedTest
-    @Order(10)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotPartiallyUpdateAnExistingBookItemIfUserRequested(Long bookItemId) {
         BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, userHeader);
-
-        ResponseEntity<Void> patchResponse = restTemplate
-                .getRestTemplate()
-                .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.PATCH, request, Void.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.patch()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .header(HttpHeaders.AUTHORIZATION, userToken)
+                .body(BodyInserters.fromValue(bookFieldsToUpdate))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @ParameterizedTest
-    @Order(11)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotPartiallyUpdateAnExistingBookItemIfUnauthorizedUserRequested(Long bookItemId) {
         BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate);
-
-        ResponseEntity<Void> patchResponse = restTemplate
-                .getRestTemplate()
-                .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.PATCH, request, Void.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.patch()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .body(BodyInserters.fromValue(bookFieldsToUpdate))
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(12)
     void shouldNotPartiallyUpdateABookItemThatDoesNotExist() {
         BookItemToUpdateDto bookFieldsToUpdate = getBookItemDtoToPartialUpdate();
-        HttpEntity<BookItemToUpdateDto> request = new HttpEntity<>(bookFieldsToUpdate, adminHeader);
-
-        ResponseEntity<Void> patchResponse = restTemplate
-                .getRestTemplate()
-                .exchange("/api/v1/book-items/99999", HttpMethod.PATCH, request, Void.class);
-        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        client.patch()
+                .uri("/api/v1/book-items/99999")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .body(BodyInserters.fromValue(bookFieldsToUpdate))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(22)
-    void shouldDeleteAnExistingBookItemIfAdminRequested() {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
+    void shouldNotPartiallyUpdateABookItemIfRequestBodyIsEmpty() {
+        client.patch()
+                .uri("/api/v1/book-items/99999")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody(ErrorMessage.class);
+    }
 
-        ResponseEntity<String> response1 = restTemplate.exchange("/api/v1/racks/5/book-items", HttpMethod.GET, request, String.class);
-        assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
-        DocumentContext documentContext1 = JsonPath.parse(response1.getBody());
-        int rackListLength1 = documentContext1.read("$.page.totalElements");
-        assertThat(rackListLength1).isEqualTo(2);
+    @Test
+    void shouldDeleteAnExistingBookItemIfBookIsAvailableAndAdminRequested() {
+        client.delete()
+                .uri("/api/v1/book-items/41")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isNoContent();
 
-        ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/book-items/1", HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-
-        ResponseEntity<String> getResponse = restTemplate
-                .getForEntity("/api/v1/book-items/1", String.class);
-        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-        ResponseEntity<String> response2 = restTemplate.exchange("/api/v1/racks/5/book-items", HttpMethod.GET, request, String.class);
-        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
-        DocumentContext documentContext2 = JsonPath.parse(response2.getBody());
-        int rackListLength2 = documentContext2.read("$.page.totalElements");
-        assertThat(rackListLength2).isEqualTo(1);
+        client.get()
+                .uri("/api/v1/book-items/41")
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class);
     }
 
     @ParameterizedTest
-    @Order(13)
     @CsvSource({
             "1", "2", "3", "4", "5", "6"
     })
     void shouldNotDeleteAnExistingBookItemIfUserRequested(Long bookItemId) {
-        HttpEntity<?> request = new HttpEntity<>(userHeader);
-
-        ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.delete()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .header(HttpHeaders.AUTHORIZATION, userToken)
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     @ParameterizedTest
-    @Order(14)
     @CsvSource({
-            "3", "4", "7"
+            "1", "3"
     })
     void shouldNotDeleteAnExistingBookItemIfBookItemIsAlreadyReservedOrNotReturned(Long bookItemId) {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
-
-        ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/book-items/" + bookItemId, HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        client.delete()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.CONFLICT)
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(15)
     void shouldNotDeleteBookItemThatDoesNotExist() {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
-
-        ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/book-items/999999", HttpMethod.DELETE, request, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        client.delete()
+                .uri("/api/v1/book-items/999999")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class);
     }
 
     @Test
-    @Order(16)
     void shouldNotDeleteBookItemIfUnauthenticatedUserRequested() {
-        ResponseEntity<Void> deleteResponse = restTemplate
-                .exchange("/api/v1/book-items/4", HttpMethod.DELETE, null, Void.class);
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-    }
-
-    @Test
-    @Order(23)
-    void shouldNotPartiallyUpdateAnExistingBookItemIfRequestBodyIsEmpty() {
-        HttpEntity<?> request = new HttpEntity<>(adminHeader);
-        ResponseEntity<String> response = restTemplate
-                .exchange("/api/v1/book-items/1", HttpMethod.PATCH, request, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        client.delete()
+                .uri("/api/v1/book-items/4")
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
     }
 
     private BookItemToSaveDto getBookToSaveDto() {
@@ -473,40 +425,5 @@ public class BookItemControllerTest {
         bookDto.setFormat(BookItemFormat.AUDIO_BOOK);
         bookDto.setDateOfPurchase(LocalDate.parse("01-10-1993", DateTimeFormatter.ofPattern("dd-MM-yyyy")));
         return bookDto;
-    }
-
-    private BookItemDto getBookItemDtoFromResponse(ResponseEntity<String> response) {
-        BookItemDto dto = new BookItemDto();
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        dto.setId(((Number) documentContext.read("$.id")).longValue());
-        dto.setBarcode(documentContext.read("$.barcode"));
-        dto.setIsReferenceOnly(documentContext.read("$.isReferenceOnly"));
-        String borrowed = documentContext.read("$.borrowed");
-        dto.setBorrowed(borrowed != null ? LocalDate.parse(borrowed, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null);
-        String dueDate = documentContext.read("$.dueDate");
-        dto.setDueDate(dueDate != null ? LocalDate.parse(dueDate, DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null);
-        dto.setPrice(BigDecimal.valueOf(((Number) documentContext.read("$.price")).doubleValue()));
-
-        dto.setFormat(BookItemFormat.valueOf(documentContext.read("$.format")));
-        dto.setStatus(BookItemStatus.valueOf(documentContext.read("$.status")));
-        dto.setDateOfPurchase(LocalDate.parse(documentContext.read("$.dateOfPurchase"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        dto.setPublicationDate(LocalDate.parse(documentContext.read("$.publicationDate"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-        Book book = new Book();
-        book.setId(((Number) documentContext.read("$.book.id")).longValue());
-        book.setTitle(documentContext.read("$.book.title"));
-        book.setSubject(documentContext.read("$.book.subject"));
-        book.setPublisher(documentContext.read("$.book.publisher"));
-        book.setLanguage(documentContext.read("$.book.language"));
-        book.setPages(documentContext.read("$.book.pages"));
-        book.setISBN(documentContext.read("$.book.isbn"));
-
-        Rack rack = new Rack();
-        rack.setId(((Number) documentContext.read("$.rack.id")).longValue());
-        rack.setLocationIdentifier(documentContext.read("$.rack.locationIdentifier"));
-
-        dto.setBook(BookMapper.map(book));
-        dto.setRack(RackMapper.map(rack));
-        return dto;
     }
 }

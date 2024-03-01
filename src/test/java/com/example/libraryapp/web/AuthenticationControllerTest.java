@@ -1,43 +1,26 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.auth.LoginRequest;
-import com.example.libraryapp.domain.auth.LoginResponse;
 import com.example.libraryapp.domain.auth.RegisterRequest;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import org.junit.jupiter.api.MethodOrderer;
+import com.example.libraryapp.domain.token.Token;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance( TestInstance.Lifecycle.PER_CLASS)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@ActiveProfiles("test")
-public class AuthenticationControllerTest {
-
-    @Autowired
-    private TestRestTemplate restTemplate;
+public class AuthenticationControllerTest extends BaseTest {
 
     @Test
     void shouldAuthenticateAUserIfCredentialsAreCorrect() {
         LoginRequest userCredentials = getCorrectCredentials();
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/authenticate", userCredentials, String.class);
-        LoginResponse token = getTokenFromResponse(response);
+        Token token = client.post()
+                .uri("/api/v1/authenticate")
+                .body(BodyInserters.fromValue(userCredentials))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Token.class)
+                .returnResult().getResponseBody();
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
         assertThat(token).isNotNull();
         assertThat(token.getToken()).isNotNull();
         assertThat(token.getToken()).isNotEmpty();
@@ -47,32 +30,39 @@ public class AuthenticationControllerTest {
     @Test
     void shouldNotAuthenticateAUserIfCredentialsAreNotCorrect() {
         LoginRequest userCredentials = getCredentialsWithBadPassword();
-        ResponseEntity<String> authResponse = restTemplate
-                .postForEntity("/api/v1/authenticate", userCredentials, String.class);
-        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.post()
+                .uri("/api/v1/authenticate")
+                .body(BodyInserters.fromValue(userCredentials))
+                .exchange()
+                .expectStatus().isForbidden();
 
         userCredentials = getCredentialsWithBadEmail();
-        authResponse = restTemplate.postForEntity("/api/v1/authenticate", userCredentials, String.class);
-        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.post()
+                .uri("/api/v1/authenticate")
+                .body(BodyInserters.fromValue(userCredentials))
+                .exchange()
+                .expectStatus().isForbidden();
     }
 
     @Test
     void shouldNotAuthenticateAUserIfRequestBodyIsEmpty() {
-        ResponseEntity<String> authResponse = restTemplate
-                .postForEntity("/api/v1/authenticate", ResponseEntity.EMPTY, String.class);
-        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        client.post()
+                .uri("/api/v1/authenticate")
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 
     @Test
-    @DirtiesContext
     void shouldCreateANewUserIfEmailIsUnique() {
         RegisterRequest userToSave = getUserRegistrationDtoWithUniqueEmail();
-        ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/register", userToSave, String.class);
-        LoginResponse token = getTokenFromResponse(createResponse);
+        Token token = client.post()
+                .uri("/api/v1/register")
+                .body(BodyInserters.fromValue(userToSave))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Token.class)
+                .returnResult().getResponseBody();
 
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(createResponse.getBody()).isNotNull();
         assertThat(token).isNotNull();
         assertThat(token.getToken()).isNotNull();
         assertThat(token.getToken()).isNotEmpty();
@@ -82,16 +72,19 @@ public class AuthenticationControllerTest {
     @Test
     void shouldNotCreateANewUserIfEmailAlreadyExists() {
         RegisterRequest userToSave = getUserRegistrationDtoWithAlreadyExistedEmail();
-        ResponseEntity<String> createResponse = restTemplate
-                .postForEntity("/api/v1/register", userToSave, String.class);
-        assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        client.post()
+                .uri("/api/v1/register")
+                .body(BodyInserters.fromValue(userToSave))
+                .exchange()
+                .expectStatus().isForbidden();
     }
 
     @Test
     void shouldNotCreateAUserIfRequestBodyIsEmpty() {
-        ResponseEntity<String> authResponse = restTemplate
-                .postForEntity("/api/v1/register", ResponseEntity.EMPTY, String.class);
-        assertThat(authResponse.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        client.post()
+                .uri("/api/v1/register")
+                .exchange()
+                .expectStatus().isBadRequest();
     }
 
     private RegisterRequest getUserRegistrationDtoWithUniqueEmail() {
@@ -104,12 +97,6 @@ public class AuthenticationControllerTest {
         RegisterRequest user = getUserRegistrationDto();
         user.setEmail("user@example.com");
         return user;
-    }
-
-    private LoginResponse getTokenFromResponse(ResponseEntity<String> response) {
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        String token = documentContext.read("$.token");
-        return new LoginResponse(token);
     }
 
     private LoginRequest getCorrectCredentials() {
