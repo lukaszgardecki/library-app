@@ -51,6 +51,13 @@ public class ReservationService {
         return collectionModel;
     }
 
+    public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
+        List<Reservation> reservations = reservationRepository.findAll(pageable).stream()
+                .filter(res -> res.getStatus() == ReservationStatus.PENDING)
+                .toList();
+        return pagedResourcesAssembler.toModel(new PageImpl<>(reservations), reservationModelAssembler);
+    }
+
     public ReservationResponse findReservationById(Long id) {
         Reservation reservation = findReservation(id);
         return reservationModelAssembler.toModel(reservation);
@@ -89,6 +96,21 @@ public class ReservationService {
                 member, Message.RESERVATION_DELETED, book.getBook().getTitle()
         );
         notificationService.sendNotification(details);
+    }
+
+    @Transactional
+    public ReservationResponse changeReservationStatusToReady(Long reservationId) {
+        Reservation reservation = findReservation(reservationId);
+        Member member = reservation.getMember();
+        String bookTitle = reservation.getBookItem().getBook().getTitle();
+
+        reservation.setStatus(ReservationStatus.READY);
+
+        NotificationDetails details = createNotificationDetails(
+                member, Message.RESERVATION_READY, bookTitle
+        );
+        notificationService.sendNotification(details);
+        return reservationModelAssembler.toModel(reservation);
     }
 
     private PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {

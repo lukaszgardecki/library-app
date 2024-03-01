@@ -35,6 +35,7 @@ public class Message {
 
     public static final String RESERVATION_CREATED = "The reservation has been successfully created.";
     public static final String RESERVATION_DELETED = "The reservation has been successfully cancelled.";
+    public static final String RESERVATION_READY = "The reservation has been successfully completed.";
     public static final String BOOK_BORROWED = "The book has been successfully borrowed.";
     public static final String BOOK_EXTENDED = "The book has been successfully extended";
     public static final String BOOK_RETURNED = "The book has been successfully returned";
