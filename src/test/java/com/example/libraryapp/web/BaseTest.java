@@ -31,6 +31,7 @@ public class BaseTest {
     protected String userToken;
     protected String user5Token;
     protected String warehouseToken;
+    protected String cashierToken;
 
     @BeforeAll
     void authenticate() {
@@ -38,6 +39,7 @@ public class BaseTest {
         this.userToken = authenticate("user@example.com", "userpass");
         this.user5Token = authenticate("p.smerf@gmail.com", "userpass3");
         this.warehouseToken = authenticate("m.zul@gmail.com", "userpass5");
+        this.cashierToken = authenticate("l.gaga@gmail.com", "userpass4");
     }
 
     private String authenticate(String username, String password) {

@@ -14,7 +14,7 @@ values
 --     password: userpass3
     ('{bcrypt}$2a$10$VMVSw5F7rVN/wo7C8YWEyutSr52TZ4lq2AFd7xvmOHrIa0B6tp.am', 'p.smerf@gmail.com',	5, 'USER', '2023-05-25', 0, 1, 0, 5),
 --     password: userpass4
-    ('{bcrypt}$2a$10$dBf92dsiKShz8/b2sZGtJuy.YThoWU1q1.TSKOgA8TIsBLF0GsBNG', 'l.gaga@gmail.com',	6, 'USER', '2023-05-26', 0, 2, 0, 6),
+    ('{bcrypt}$2a$10$dBf92dsiKShz8/b2sZGtJuy.YThoWU1q1.TSKOgA8TIsBLF0GsBNG', 'l.gaga@gmail.com',	6, 'CASHIER', '2023-05-26', 0, 2, 0, 6),
 --     password: userpass5
     ('{bcrypt}$2a$10$qmsW4vMJ1lmaX5YlAfU/2ug0DQaxC1h9hzqXBzMwqLw9VzbqeLjjq', 'm.zul@gmail.com',	7, 'WAREHOUSE', '2023-05-27', 0, 0, 0, 7),
 --     password: userpass6
