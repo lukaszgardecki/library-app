@@ -19,7 +19,8 @@ public enum Role {
             Permission.ADMIN_UPDATE,
             Permission.ADMIN_DELETE
     )),
-    WAREHOUSE(Collections.emptySet());
+    WAREHOUSE(Collections.emptySet()),
+    CASHIER(Collections.emptySet());
 
     @Getter
     private final Set<Permission> permissions;
