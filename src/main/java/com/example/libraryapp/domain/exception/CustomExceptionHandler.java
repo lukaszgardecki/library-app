@@ -3,7 +3,9 @@ package com.example.libraryapp.domain.exception;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
-import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
+import com.example.libraryapp.domain.exception.card.CardNotFoundException;
+import com.example.libraryapp.domain.exception.payment.PaymentNotFoundException;
+import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
@@ -33,7 +35,9 @@ public class CustomExceptionHandler {
             BookItemNotFoundException.class,
             ReservationNotFoundException.class,
             LendingNotFoundException.class,
-            RackNotFoundException.class
+            RackNotFoundException.class,
+            CardNotFoundException.class,
+            PaymentNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(RuntimeException ex, WebRequest request) {

@@ -15,7 +15,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/api/v1/warehouse", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasRole('WAREHOUSE')")
+@PreAuthorize("hasAnyRole('WAREHOUSE', 'ADMIN')")
 @RequiredArgsConstructor
 public class WarehouseController {
     private final ReservationService reservationService;

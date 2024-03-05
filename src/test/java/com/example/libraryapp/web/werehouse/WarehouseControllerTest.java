@@ -29,6 +29,21 @@ public class WarehouseControllerTest extends BaseTest {
     }
 
     @Test
+    void shouldReturnPendingReservationsIfAdminRequested() {
+        client.get()
+                .uri("/api/v1/warehouse/reservations/pending")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(4)
+                .jsonPath("$.page.size").isEqualTo(4)
+                .jsonPath("$.page.totalElements").isEqualTo(4)
+                .jsonPath("$.page.totalPages").isEqualTo(1)
+                .jsonPath("$.page.number").isEqualTo(0);
+    }
+
+    @Test
     void shouldNotReturnPendingReservationsIfUserRequested() {
         client.get()
                 .uri("/api/v1/warehouse/reservations/pending")
@@ -55,6 +70,32 @@ public class WarehouseControllerTest extends BaseTest {
         ReservationResponse updatedReservation = client.post()
                 .uri("/api/v1/warehouse/reservations/" + reservationId + "/ready")
                 .header(HttpHeaders.AUTHORIZATION, warehouseToken)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ReservationResponse.class)
+                .returnResult().getResponseBody();
+
+        ReservationResponse reservationGet = client.get()
+                .uri("/api/v1/reservations/" + reservationId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ReservationResponse.class)
+                .returnResult().getResponseBody();
+
+        assertThat(updatedReservation.getStatus()).isEqualTo(reservationGet.getStatus());
+        assertThat(updatedReservation.getStatus()).isEqualTo(ReservationStatus.READY);
+        assertThat(reservationGet.getStatus()).isEqualTo(ReservationStatus.READY);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "13", "14", "15", "16"
+    })
+    void shouldCompleteTheReservationIfAdminRequested(Long reservationId) {
+        ReservationResponse updatedReservation = client.post()
+                .uri("/api/v1/warehouse/reservations/" + reservationId + "/ready")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(ReservationResponse.class)

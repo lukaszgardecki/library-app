@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.member;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
-import com.example.libraryapp.domain.exception.fine.UnsettledFineException;
+import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.lending.Lending;
