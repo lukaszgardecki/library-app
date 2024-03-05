@@ -33,7 +33,9 @@ public class CustomExceptionHandler {
             BookItemNotFoundException.class,
             ReservationNotFoundException.class,
             LendingNotFoundException.class,
-            RackNotFoundException.class
+            RackNotFoundException.class,
+            CardNotFoundException.class,
+            PaymentNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(RuntimeException ex, WebRequest request) {

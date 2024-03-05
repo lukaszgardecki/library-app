@@ -28,6 +28,10 @@ public class Message {
     public static final String RACK_LOCATION_ALREADY_EXISTS = "The rack location (%s) already exists";
     public static final String RACK_CANNOT_BE_DELETED = "The rack (%s) can't be deleted. Only empty racks can be deleted";
 
+    public static final String CARD_NOT_FOUND = "No card with id: %s";
+
+    public static final String PAYMENT_NOT_FOUND = "No payment with id: %s";
+
     public static final String BAD_BOOK_BARCODE = "Invalid Barcode";
     public static final String BAD_CARD_NUMBER = "Invalid card number";
     public static final String BAD_EMAIL = "Email must be unique";
