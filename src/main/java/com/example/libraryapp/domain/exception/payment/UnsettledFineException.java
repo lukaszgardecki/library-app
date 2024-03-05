@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.exception.fine;
+package com.example.libraryapp.domain.exception.payment;
 
 import com.example.libraryapp.management.Message;
 
