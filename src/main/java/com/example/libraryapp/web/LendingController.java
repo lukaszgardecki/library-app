@@ -41,7 +41,7 @@ public class LendingController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> borrowABook(@RequestBody ActionRequest request) {
+    public ResponseEntity<LendingDto> borrowABook(@RequestBody ActionRequest request) {
         LendingDto savedCheckout = lendingService.borrowABook(request);
         URI savedCheckoutUri = createURI(savedCheckout);
         return ResponseEntity.created(savedCheckoutUri).body(savedCheckout);
@@ -49,15 +49,22 @@ public class LendingController {
 
     @PostMapping("/renew")
     @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<?> renewABook(@RequestParam String bookBarcode) {
+    public ResponseEntity<LendingDto> renewABook(@RequestParam String bookBarcode) {
         LendingDto renewedLending = lendingService.renewABook(bookBarcode);
         return ResponseEntity.ok(renewedLending);
     }
 
     @PatchMapping("/return")
     @PreAuthorize("hasAuthority('admin:update')")
-    public ResponseEntity<?> returnABook(@RequestParam String bookBarcode) {
+    public ResponseEntity<LendingDto> returnABook(@RequestParam String bookBarcode) {
         LendingDto returnedBook = lendingService.returnABook(bookBarcode);
+        return ResponseEntity.ok(returnedBook);
+    }
+
+    @PostMapping("/{id}/lost")
+    @PreAuthorize("hasAuthority('admin:update')")
+    public ResponseEntity<LendingDto> setBookLost(@PathVariable("id") Long lendingId) {
+        LendingDto returnedBook = lendingService.setLendingLost(lendingId);
         return ResponseEntity.ok(returnedBook);
     }
 

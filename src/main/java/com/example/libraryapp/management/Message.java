@@ -23,6 +23,7 @@ public class Message {
     public static final String RESERVATION_ALREADY_CREATED = "The reservation has already been created.";
     public static final String RESERVATION_LIMIT_EXCEEDED = "The user has already reserved maximum number of books";
     public static final String RESERVATION_BOOK_ITEM_LOST = "The reservation cannot be created because book item is lost";
+    public static final String RESERVATION_CANCEL_BOOK_ITEM_LOST = "The reservation has been cancelled because the book item was lost";
 
     public static final String RACK_NOT_FOUND = "No rack with id: %s";
     public static final String RACK_LOCATION_ALREADY_EXISTS = "The rack location (%s) already exists";
@@ -43,4 +44,5 @@ public class Message {
     public static final String BOOK_BORROWED = "The book has been successfully borrowed.";
     public static final String BOOK_EXTENDED = "The book has been successfully extended";
     public static final String BOOK_RETURNED = "The book has been successfully returned";
+    public static final String BOOK_LOST = "The book has been lost. Your account has been charged an additional fee of %s";
 }

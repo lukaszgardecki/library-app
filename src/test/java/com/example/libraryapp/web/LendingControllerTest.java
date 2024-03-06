@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -571,6 +572,108 @@ public class LendingControllerTest extends BaseTest {
         String bookBarcode = "540200000003";
         client.patch()
                 .uri("/api/v1/lendings/return?bookBarcode=" + bookBarcode)
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
+    }
+
+    @Test
+    void shouldSetLendingLostIfAdminRequested() {
+        long lendingId = 4L;
+        long memberId = 3L;
+        long bookItemId = 8L;
+
+        LendingDto lendingBefore = client.get()
+                .uri("/api/v1/lendings/" + lendingId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(LendingDto.class)
+                .returnResult().getResponseBody();
+
+        MemberDto memberBefore = client.get()
+                .uri("/api/v1/members/" + memberId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(MemberDto.class)
+                .returnResult().getResponseBody();
+
+        BookItemDto bookItemBefore = client.get()
+                .uri("/api/v1/book-items/" + bookItemId)
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BookItemDto.class)
+                .returnResult().getResponseBody();
+
+        BigDecimal bookItemPrice = bookItemBefore.getPrice();
+
+        assertThat(lendingBefore.getStatus()).isEqualTo(LendingStatus.CURRENT);
+        assertThat(memberBefore.getCharge()).isEqualTo(new BigDecimal("0.00"));
+        assertThat(memberBefore.getTotalBooksBorrowed()).isEqualTo(5);
+        assertThat(bookItemBefore.getStatus()).isEqualTo(BookItemStatus.LOANED);
+
+        LendingDto returnBodyPost = client.post()
+                .uri("/api/v1/lendings/" + lendingId + "/lost")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(LendingDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(returnBodyPost.getStatus()).isEqualTo(LendingStatus.COMPLETED);
+        assertThat(returnBodyPost.getMember().getCharge()).isEqualTo(bookItemPrice);
+        assertThat(returnBodyPost.getBookItem().getStatus()).isEqualTo(BookItemStatus.LOST);
+
+        ReservationResponse anotherReservation = client.get()
+                .uri("/api/v1/reservations/16")
+                .header(HttpHeaders.AUTHORIZATION, adminToken)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ReservationResponse.class)
+                .returnResult().getResponseBody();
+        assertThat(anotherReservation.getStatus()).isEqualTo(ReservationStatus.CANCELED);
+    }
+
+    @Test
+    void shouldNotSetLendingLostIfUserRequested() {
+        long lendingId = 4L;
+        client.post()
+                .uri("/api/v1/lendings/" + lendingId + "/lost")
+                .header(HttpHeaders.AUTHORIZATION, userToken)
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
+    }
+
+    @Test
+    void shouldNotSetLendingLostIfUnauthenticatedUserRequested() {
+        long lendingId = 4L;
+        client.post()
+                .uri("/api/v1/lendings/" + lendingId + "/lost")
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
+    }
+
+    @Test
+    void shouldNotSetLendingLostIfCashierRequested() {
+        long lendingId = 4L;
+        client.post()
+                .uri("/api/v1/lendings/" + lendingId + "/lost")
+                .header(HttpHeaders.AUTHORIZATION, cashierToken)
+                .exchange()
+                .expectStatus().isForbidden()
+                .expectBody(ErrorMessage.class);
+    }
+
+    @Test
+    void shouldNotSetLendingLostIfWarehouseRequested() {
+        long lendingId = 4L;
+        client.post()
+                .uri("/api/v1/lendings/" + lendingId + "/lost")
+                .header(HttpHeaders.AUTHORIZATION, warehouseToken)
                 .exchange()
                 .expectStatus().isForbidden()
                 .expectBody(ErrorMessage.class);

@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.LendingModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
@@ -108,6 +109,41 @@ public class LendingService {
         );
         notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
+    }
+
+    @Transactional
+    public LendingDto setLendingLost(Long lendingId) {
+        Lending lending = findLending(lendingId);
+        lending.setReturnDate(LocalDate.now());
+        BookItem book = lending.getBookItem();
+        Member member = lending.getMember();
+        BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
+        fine = fine.add(book.getPrice());
+        lending.setStatus(LendingStatus.COMPLETED);
+        book.setStatus(BookItemStatus.LOST);
+        member.updateAfterReturning(fine);
+        NotificationDetails details = createNotificationDetails(
+                member, String.format(Message.BOOK_LOST, book.getPrice()), book.getBook().getTitle()
+        );
+        notificationService.sendNotification(details);
+        List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
+        cancelReservations(reservationsToCancel);
+        sendNotifications(reservationsToCancel);
+        return lendingModelAssembler.toModel(lending);
+    }
+
+    private void sendNotifications(List<Reservation> reservationsToCancel) {
+        reservationsToCancel.forEach(res -> {
+            NotificationDetails details = createNotificationDetails(
+                    res.getMember(), Message.RESERVATION_CANCEL_BOOK_ITEM_LOST, res.getBookItem().getBook().getTitle()
+            );
+            notificationService.sendNotification(details);
+
+        });
+    }
+
+    private void cancelReservations(List<Reservation> reservationsOfLostBook) {
+        reservationsOfLostBook.forEach(res -> res.setStatus(ReservationStatus.CANCELED));
     }
 
     private PagedModel<LendingDto> findAllCheckouts(Pageable pageable) {
