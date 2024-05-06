@@ -24,9 +24,9 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             </column>
         </addColumn>
 
-        <modifySql dbms="mysql">
-            <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
-        </modifySql>
+<!--        <modifySql dbms="mysql">-->
+<!--            <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>-->
+<!--        </modifySql>-->
     </changeSet>
 
 </databaseChangeLog>
