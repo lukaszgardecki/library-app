@@ -1,0 +1,37 @@
+<h3 class="">Book list</h3>
+
+<app-pagination [page]="page"></app-pagination>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <ul class="list-group">
+
+        <li *ngFor="let bookItem of bookItems" class="list-group-item position-item rounded border mb-3">
+          <div class="d-flex align-items-center">
+            <img src="https://bs.katowice.pl/wp-content/uploads/2022/08/1170px-Book_icon_closed_-_Blue_and_gold.svg_.png" alt="Zdjęcie" class="mx-5 rounded img-list">
+            <div class="col">
+              <h5 class="card-title border-bottom">{{bookItem.book.title}}</h5>
+
+              <dl class="dl-horizontal">
+                <dt>Wydawca:</dt>
+                <dd>
+                  <span class=""><a href="#">{{bookItem.book.publisher}}</a></span><br>
+                </dd>
+                <dt>Rok wydania:</dt>
+                <dd>
+                  <span class=""><a href="#">{{bookItem.publicationDate}}</a></span><br>
+                </dd>
+                <dt>Format:</dt>
+                <dd>
+                  <span class="">{{bookItem.format}}</span><br>
+                </dd>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <!-- Dodaj kolejne pozycje według potrzeb -->
+      </ul>
+    </div>
+  </div>
+</div>
