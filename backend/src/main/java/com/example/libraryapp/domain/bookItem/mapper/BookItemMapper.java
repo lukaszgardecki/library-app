@@ -21,7 +21,7 @@ public class BookItemMapper {
                 .dateOfPurchase(bookItem.getDateOfPurchase())
                 .publicationDate(bookItem.getPublicationDate())
                 .book(BookMapper.map(bookItem.getBook()))
-                .rack(RackMapper.map(bookItem.getRack()))
+                .rack(bookItem.getRack() != null ? RackMapper.map(bookItem.getRack()) : null)
                 .build();
     }
 
