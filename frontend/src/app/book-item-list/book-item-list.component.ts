@@ -1,31 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { BookItemsService } from '../services/book-items.service';
 import { BookItem } from '../models/book-item';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Page } from '../shared/page';
 import { HypermediaCollection } from '../shared/hypermedia-collection';
+import { ActivatedRoute } from '@angular/router';
+import { ListComponent } from '../shared/list-component';
 
 @Component({
   selector: 'app-book-item-list',
   templateUrl: './book-item-list.component.html',
   styleUrl: './book-item-list.component.css'
 })
-export class BookItemListComponent implements OnInit {
+export class BookItemListComponent implements ListComponent, OnInit {
   page: Page = new Page();
+  routeName: string = "book-items";
   links: HypermediaCollection;
   bookItems: Array<BookItem>;
+  sortTypes = [
+    {name: "---", queryParam: undefined},
+    {name: "Tytuł rosnąco", queryParam: "book.title,asc"},
+    {name: "Tytuł malejąco", queryParam: "book.title,desc"},
+    {name: "Cena rosnąco", queryParam: "price,asc"},
+    {name: "Cena malejąco", queryParam: "price,desc"}
+  ];
 
-  constructor(private bookItemsService: BookItemsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private bookItemsService: BookItemsService, private route: ActivatedRoute) { }
+  
 
   ngOnInit(): void {
     const pageNo = this.route.snapshot.queryParams["page"];
-    const pageSize = this.route.snapshot.queryParams["size"]
-
-    this.getAllBookItems(pageNo, pageSize);
+    const pageSize = this.route.snapshot.queryParams["size"];
+    this.getAll(pageNo, pageSize);
   }
 
-  getAllBookItems(page: number, size: number) {
-    this.bookItemsService.getAllBookItems(page, size).subscribe(p => {
+  getAll(page: number, size: number, sort: string="asc") {
+    this.bookItemsService.getAllBookItems(page, size, sort).subscribe(p => {
       this.page = p.page;
       this.bookItems = p._embedded.bookItemDtoList;
       this.links = p._links;
