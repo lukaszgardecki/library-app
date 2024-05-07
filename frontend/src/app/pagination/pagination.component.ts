@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Page } from '../shared/page';
 import { BookItemListComponent } from '../book-item-list/book-item-list.component';
-import { isatty } from 'tty';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagination',
@@ -13,23 +13,19 @@ export class PaginationComponent{
   @Input()
   page: Page;
 
-  constructor(private bookItemList: BookItemListComponent) {}
+  constructor(private bookItemList: BookItemListComponent, private router: Router) {}
 
   goPrevPage() {
-    // this.router.navigateByUrl(this.links.prev.href);
     const prevPage = this.page.number-1;
-    // const pageSize = this.page.size;
     const pageSize = this.page.size;
-    // this.router.navigate(['book-items', {page: prevPage, size: pageSize}])
+    this.router.navigate(['book-items'], { queryParams: { page: prevPage, size: pageSize } });
     this.bookItemList.getAllBookItems(prevPage, pageSize);
   }
 
   goNextPage() {
     const nextPage = this.page.number+1;
-    // const pageSize = this.page.size;
     const pageSize = this.page.size;
-    // this.router.navigateByUrl(this.links.next.href);
-    // console.log(this.links.next.href);
+    this.router.navigate(['book-items'], { queryParams: { page: nextPage, size: pageSize } });
     this.bookItemList.getAllBookItems(nextPage, pageSize);
   }
 
@@ -39,9 +35,11 @@ export class PaginationComponent{
     if (typeof btnValue === 'number') {
       const pageIndex = btnValue - 1;
       const pageSize = this.page.size;
+      this.router.navigate(['book-items'], { queryParams: { page: pageIndex, size: pageSize } });
       this.bookItemList.getAllBookItems(pageIndex, pageSize);
     }
   }
+  
   isSelectedFirst(): boolean {
     return this.page.number === 0;
   }
