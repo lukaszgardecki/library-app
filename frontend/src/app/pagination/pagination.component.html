@@ -1,39 +1,65 @@
-<nav aria-label="Page navigation">
-  <ul class="pagination pagination-reset justify-content-center">
-      <li class="page-item" [ngClass]="{'disabled': isSelectedFirst()}" >
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goPrevPage()">Previous</a>  
-      </li>
-<!-- 1 element -->
-      <li class="page-item" [ngClass]="{'active': isActive(1)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(1)">{{getValueOfBtnNo(1)}}</a>
-      </li>
-<!-- 2 element -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(1) ? 'none' : 'inital'}"  [ngClass]="{'active': isActive(2)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(2) ? 'none' : 'initial'}" (click)="goToPage(2)">{{getValueOfBtnNo(2)}}</a>
-      </li>
-<!-- 3 element -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(2) ? 'none' : 'inital'}"  [ngClass]="{'active': isActive(3)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(3)">{{getValueOfBtnNo(3)}}</a>
-      </li>
-<!-- 4 element (middle) -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(3) ? 'none' : 'inital'}" [ngClass]="{'active': isActive(4)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(4)">{{getValueOfBtnNo(4)}}</a>
-      </li>
-<!-- 5 element -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(4) ? 'none' : 'inital'}"  [ngClass]="{'active': isActive(5)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(5)">{{getValueOfBtnNo(5)}}</a>
-      </li>
-<!-- 6 element -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(5) ? 'none' : 'inital'}"  [ngClass]="{'active': isActive(6)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(6) ? 'none' : 'initial'}" (click)="goToPage(6)">{{getValueOfBtnNo(6)}}</a>
-      </li>
-<!-- 7 element -->
-      <li class="page-item" [ngStyle]="{'display': arePagesMax(6) ? 'none' : 'inital'}" [ngClass]="{'active': isActive(7)}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(7)">{{getValueOfBtnNo(7)}}</a>
-      </li>
+<div class="row">
+  <!-- START Paging -->
+  <nav class="col-md-10" aria-label="Page navigation">
+    <ul class="pagination pagination-reset justify-content-center">
+        <li class="page-item" [ngClass]="{'disabled': isSelectedFirst()}" >
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goPrevPage()">Previous</a>  
+        </li>
+  <!-- 1 element -->
+        <li class="page-item" [ngClass]="{'active': isActive(1)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(1)">{{getValueOfBtnNo(1)}}</a>
+        </li>
+  <!-- 2 element -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(1) ? 'none' : 'inline'}"  [ngClass]="{'active': isActive(2)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(2) ? 'none' : 'initial'}" (click)="goToPage(2)">{{getValueOfBtnNo(2)}}</a>
+        </li>
+  <!-- 3 element -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(2) ? 'none' : 'inline'}"  [ngClass]="{'active': isActive(3)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(3)">{{getValueOfBtnNo(3)}}</a>
+        </li>
+  <!-- 4 element (middle) -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(3) ? 'none' : 'inline'}" [ngClass]="{'active': isActive(4)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(4)">{{getValueOfBtnNo(4)}}</a>
+        </li>
+  <!-- 5 element -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(4) ? 'none' : 'inline'}"  [ngClass]="{'active': isActive(5)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(5)">{{getValueOfBtnNo(5)}}</a>
+        </li>
+  <!-- 6 element -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(5) ? 'none' : 'inline'}"  [ngClass]="{'active': isActive(6)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(6) ? 'none' : 'initial'}" (click)="goToPage(6)">{{getValueOfBtnNo(6)}}</a>
+        </li>
+  <!-- 7 element -->
+        <li class="page-item" [ngStyle]="{'display': arePagesMax(6) ? 'none' : 'inline'}" [ngClass]="{'active': isActive(7)}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goToPage(7)">{{getValueOfBtnNo(7)}}</a>
+        </li>
 
-      <li class="page-item" [ngClass]="{'disabled': isSelectedLast()}">
-        <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goNextPage()">Next</a>
-      </li>
-  </ul>
-</nav>
+        <li class="page-item" [ngClass]="{'disabled': isSelectedLast()}">
+          <a class="page-link" [ngStyle]="{cursor: 'pointer'}" (click)="goNextPage()">Next</a>
+        </li>
+    </ul>
+  </nav>
+  <!-- END Paging -->
+
+  <!-- START Sizing -->
+  <div class="col-md dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Ilość
+    </button>
+    <ul class="dropdown-menu">
+      <li *ngFor="let size of pageSizes"><a class="dropdown-item" (click)="changeSize(size)">{{size}}</a></li>
+    </ul>
+  </div>
+  <!-- END Sizing -->
+
+  <!-- START Sorting -->
+  <div class="col-md dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Sortuj
+    </button>
+    <ul class="dropdown-menu">
+      <li *ngFor="let sortType of listComponent.sortTypes"><a class="dropdown-item" (click)="sort(sortType.queryParam)">{{sortType.name}}</a></li>
+    </ul>
+  </div>
+  <!-- END Sorting -->
+</div>
