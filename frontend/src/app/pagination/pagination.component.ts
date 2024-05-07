@@ -3,6 +3,7 @@ import { Page } from '../shared/page';
 import { BookItemListComponent } from '../book-item-list/book-item-list.component';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
