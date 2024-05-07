@@ -11,7 +11,7 @@ import { HypermediaCollection } from '../shared/hypermedia-collection';
   styleUrl: './book-item-list.component.css'
 })
 export class BookItemListComponent implements OnInit {
-  page: Page;
+  page: Page = new Page();
   links: HypermediaCollection;
   bookItems: Array<BookItem>;
 
@@ -25,9 +25,7 @@ export class BookItemListComponent implements OnInit {
   }
 
   getAllBookItems(page: number, size: number) {
-    
     this.bookItemsService.getAllBookItems(page, size).subscribe(p => {
-  
       this.page = p.page;
       this.bookItems = p._embedded.bookItemDtoList;
       this.links = p._links;
