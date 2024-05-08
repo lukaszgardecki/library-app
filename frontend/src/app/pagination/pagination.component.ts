@@ -1,5 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Page } from '../shared/page';
+import { Component, Input, output} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListComponent } from '../shared/list-component';
 
@@ -15,6 +14,7 @@ export class PaginationComponent{
   listComponent: ListComponent;
 
   pageSizes = [10, 20, 50, 100];
+  selectedSortTypeName: string = "Sortuj";
 
   constructor(
     private router: Router,
@@ -22,24 +22,28 @@ export class PaginationComponent{
   ) {}
 
   goPrevPage() {
-    const currPageNum = this.listComponent.page.number + 1;
-    const prevPageNum = currPageNum - 1;
-    this.goToPage(prevPageNum);
+    const page = this.listComponent.page.number - 1;
+    const size = this.route.snapshot.queryParams["size"]
+    const sort = this.route.snapshot.queryParams["sort"];
+    this.updatePage(page, size, sort);
   }
 
   goNextPage() {
-    const currPageNum = this.listComponent.page.number + 1;
-    const nextPageNum = currPageNum + 1;
-    this.goToPage(nextPageNum);
+    const page = this.listComponent.page.number + 1;
+    const size = this.route.snapshot.queryParams["size"]
+    const sort = this.route.snapshot.queryParams["sort"];
+    this.updatePage(page, size, sort);
   }
 
   /**
    * 
-   * @param number Page number (not index) counted from 1.
+   * @param number Number of button 1-7 !!!.
    * 
    */
-  goToPage(number: number) {
+  goToPageFromBtn(number: number) {
+    console.log("input: %s", number);
     const btnValue = this.getValueOfBtnNo(number);
+    console.log("goToPage (btnValue): %s", btnValue);
     
     if (typeof btnValue === 'number') {
       const page = btnValue - 1;
@@ -54,9 +58,11 @@ export class PaginationComponent{
       this.updatePage(0, size, sort);
   }
 
-  sort(sort?: any) {
+  sort(sort: any) {
     const size = this.listComponent.page.size;
+    const selectedSortType = this.listComponent.sortTypes.filter(t => t.queryParam===sort)[0];
     this.updatePage(0, size, sort);
+    this.selectedSortTypeName = selectedSortType.queryParam ? selectedSortType.name : "Sortuj";
   }
 
   private updatePage(pageIndex: number, pageSize: number, sort: any) {
@@ -118,27 +124,29 @@ export class PaginationComponent{
 
   getValueOfBtnNo(number: number): number | string {
     let value: number | string = 0;
+    let pageNum = this.listComponent.page.number + 1; // page.number is an index (numerated from 0)
+    let totalPages = this.listComponent.page.totalPages;
     switch(number) {
       case 1:
         value = 1;
         break;
       case 2:
-        value = this.listComponent.page.number < 4 || this.arePagesMax(7) ? 2: '...';
+        value = this.arePagesMax(7) || pageNum <= 4 ? 2: '...';
         break;
       case 3:
-        value = this.listComponent.page.number > 3 && this.listComponent.page.number < this.listComponent.page.totalPages - 3 ? this.listComponent.page.number : this.listComponent.page.number >= this.listComponent.page.totalPages - 4 && this.arePagesMin(7) ? this.listComponent.page.totalPages - 4 : 3 ;
+        value = this.arePagesMax(7) || pageNum <= 4 ? 3 : pageNum > totalPages - 3 ? totalPages - 4 : pageNum - 1;
         break;
       case 4:
-        value = this.listComponent.page.number > 3 && this.listComponent.page.number < this.listComponent.page.totalPages - 3 ? this.listComponent.page.number + 1 : this.listComponent.page.number >= this.listComponent.page.totalPages - 3 && this.arePagesMin(7) ? this.listComponent.page.totalPages - 3 : 4 ;
+        value = this.arePagesMax(7) || pageNum <= 4 ? 4 : pageNum > totalPages - 3 ? totalPages - 3 : pageNum;
         break;
       case 5:
-        value = this.listComponent.page.number > 3 && this.listComponent.page.number < this.listComponent.page.totalPages - 3 ? this.listComponent.page.number + 2 : this.listComponent.page.number >= this.listComponent.page.totalPages - 3 && this.arePagesMin(7) ? this.listComponent.page.totalPages - 2 : 5;
+        value = this.arePagesMax(7) || pageNum <= 4 ? 5 : pageNum > totalPages - 3 ? totalPages - 2 : pageNum + 1;
         break;
       case 6:
-        value = this.arePagesMax(7) ? 6 : this.listComponent.page.number >= this.listComponent.page.totalPages - 4 ? this.listComponent.page.totalPages - 1 : '...';
+        value = this.arePagesMax(7) ? 6 : pageNum >= totalPages - 3 ? totalPages - 1 : '...';
         break;
       case 7:
-        value = this.listComponent.page.totalPages;
+        value = totalPages;
         break;
     }
     return value;
