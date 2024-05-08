@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { BookItemListComponent } from './book-item-list/book-item-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginationComponent } from './pagination/pagination.component';
+import { BookListComponent } from './book-list/book-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BookItemListComponent,
-    PaginationComponent
+    PaginationComponent,
+    BookListComponent
   ],
   imports: [
     BrowserModule,
