@@ -1,0 +1,25 @@
+<h3 class="">Book list</h3>
+
+<app-pagination [listComponent]="this"></app-pagination>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10 mx-auto">
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Publisher</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let book of books">
+                    <td>{{book.title}}</td>
+                    <td>{{book.publisher}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
