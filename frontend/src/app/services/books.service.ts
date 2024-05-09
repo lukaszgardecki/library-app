@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BookItemsPage } from '../models/book-items-page';
 import { BooksPage } from '../models/books-page';
+import { Book } from '../models/book';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,9 @@ export class BooksService {
   getAllBooks(page: number, size: number, sort: string): Observable<BooksPage> {
     const params = new HttpParams().set("page", page).set("size", size).set("sort", sort);
     return this.http.get<BooksPage>(this.baseURL, {params: params});
+  }
+
+  getBookById(id: number): Observable<Book> {
+    return this.http.get<Book>(`${this.baseURL}/${id}`);
   }
 }

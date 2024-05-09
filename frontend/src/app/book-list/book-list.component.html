@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let book of books">
-                    <td>{{book.title}}</td>
+                    <td><a class="text-decoration-none" (click)="showDetails(book.id)" [ngStyle]="{cursor: 'pointer'}">{{book.title}}</a></td>
                     <td>{{book.publisher}}</td>
                 </tr>
             </tbody>
