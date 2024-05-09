@@ -1,8 +1,19 @@
 version: '3'
 services:
+  frontend:
+    container_name: library_app_frontend
+    build: ./frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - springboot-net
+    depends_on:
+      - api
+    links:
+      - api
   api:
     container_name: web
-    build: .
+    build: ./backend
     ports:
       - "8080:8080"
     environment:
