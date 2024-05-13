@@ -22,7 +22,8 @@
       "ES2022",
       "dom"
     ]
-    ,"strictPropertyInitialization": false
+    ,"strictPropertyInitialization": false,
+    "types": ["jquery"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

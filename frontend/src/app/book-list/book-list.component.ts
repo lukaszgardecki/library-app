@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListComponent } from '../shared/list-component';
 import { Page } from '../shared/page';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BooksService } from '../services/books.service';
 import { Book } from '../models/book';
 import { HypermediaCollection } from '../shared/hypermedia-collection';
@@ -26,7 +26,11 @@ export class BookListComponent implements ListComponent, OnInit {
     {name: "Strony malejąco", queryParam: "pages,desc"}
   ];
 
-  constructor(private booksService: BooksService, private route: ActivatedRoute) { }
+  constructor(
+    private booksService: BooksService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const pageNo = this.route.snapshot.queryParams["page"];
@@ -40,5 +44,9 @@ export class BookListComponent implements ListComponent, OnInit {
       this.books = p._embedded.bookDtoList;
       this.links = p._links;
     });
+  }
+
+  showDetails(bookId: number) { 
+    this.router.navigate(['books', bookId]);
   }
 }

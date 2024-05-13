@@ -1,4 +1,4 @@
-<h3 class="">Book list</h3>
+<!-- <h3 class="">Book list</h3>
 
 <app-pagination [listComponent]="this"></app-pagination>
 
@@ -15,11 +15,95 @@
             </thead>
             <tbody>
                 <tr *ngFor="let book of books">
-                    <td>{{book.title}}</td>
+                    <td><a class="text-decoration-none" (click)="showDetails(book.id)" [ngStyle]="{cursor: 'pointer'}">{{book.title}}</a></td>
                     <td>{{book.publisher}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
   </div>
+</div> -->
+
+<div class="bgded overlay" style="background-image:url('../images/demo/backgrounds/01.png');">
+    <div id="breadcrumb" class="hoc clear"> 
+      <!-- ################################################################################################ -->
+      <h6 class="heading">Sidebar Left</h6>
+      <!-- ################################################################################################ -->
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Lorem</a></li>
+        <li><a href="#">Ipsum</a></li>
+        <li><a href="#">Dolor</a></li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </div>
 </div>
+    <!-- ################################################################################################ -->
+    <!-- ################################################################################################ -->
+    <!-- ################################################################################################ -->
+    <div class="wrapper row3">
+      <main class="hoc container clear"> 
+        <!-- main body -->
+        <!-- ################################################################################################ -->
+        <div class="sidebar one_quarter first"> 
+          <!-- ################################################################################################ -->
+          <h6>Books</h6>
+          
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#sorting" aria-expanded="true" aria-controls="sorting">
+                  Sort by
+                </button>
+              </h2>
+              <div id="sorting" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <ul *ngFor="let sortType of sortTypes" class="accordion-body">
+                  <li><a (click)="null">{{sortType.name}}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- ################################################################################################ -->
+        <!-- ################################################################################################ -->
+
+        
+        <div class="content three_quarter">
+
+          <app-pagination [listComponent]="this"></app-pagination>
+          
+        
+          <div id="list">
+            <ul>
+              <li *ngFor="let book of books">
+                <div class="img-container">
+                    <img src="https://bs.katowice.pl/wp-content/uploads/2022/08/1170px-Book_icon_closed_-_Blue_and_gold.svg_.png" alt="Zdjęcie">
+                </div>
+ 
+                
+                <div class="list-cont">
+                    <header>{{book.title}}</header>
+                    <div class="list-cont-row">
+                        <div><b>Wydawca:</b></div>
+                        <div>{{book.publisher}}</div>
+                    </div>
+                    <div class="list-cont-row">
+                        <div><strong>Temat:</strong></div>
+                        <div>{{book.subject}}</div>
+                    </div>
+                </div>
+                
+                <div class="list-actions">
+
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <app-pagination [listComponent]="this"></app-pagination>
+        </div>
+
+        <div class="clear"></div>
+      </main>
+    </div>

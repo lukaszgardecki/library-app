@@ -7,13 +7,19 @@ import { BookItemListComponent } from './book-item-list/book-item-list.component
 import { HttpClientModule } from '@angular/common/http';
 import { PaginationComponent } from './pagination/pagination.component';
 import { BookListComponent } from './book-list/book-list.component';
+import { BookDetailsComponent } from './book-details/book-details.component';
+import { HomePageComponent } from './home-page/home-page.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BookItemListComponent,
     PaginationComponent,
-    BookListComponent
+    BookListComponent,
+    BookDetailsComponent,
+    HomePageComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

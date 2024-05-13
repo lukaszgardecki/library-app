@@ -21,7 +21,7 @@ System is designed to charge members for late return of books, so remember to re
 
 ## Technologies and libraries
 Project is created with:
-- [Java 17](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html)
+- [Java 18](https://www.oracle.com/java/technologies/javase/jdk18-archive-downloads.html)
 - [Spring Boot 3.1](https://spring.io/projects/spring-boot)
 - [Spring Data JPA](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
 - [Spring HATEOAS](https://docs.spring.io/spring-hateoas/docs/current/reference/html/)
@@ -43,19 +43,23 @@ Project is created with:
 ```bash
 git clone https://github.com/lukaszgardecki/library-app.git
 ```
-3. Go to the project directory:
+3. Go to the backend directory:
 ```bash
-cd library-app
+cd library-app/backend
 ```
 4. Build a project:
 ```bash
 ./mvnw install
 ```
-5. Run all containers:
+5. Go to the project main directory:
+```bash
+cd ..
+```
+6. Run all containers:
 ```bash
 docker-compose up -d
 ```
-6. Please be patient. It may take a while.
+7. Please be patient. It may take a while.
 
 ## API Endpoints
 Documentation is available at [Wiki](https://github.com/lukaszgardecki/library-app/wiki).

@@ -16,6 +16,7 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
             select * from Lending
             where book_item_id = :bookItemId
             and status = 'CURRENT'
+            LIMIT 1
             """
             , nativeQuery = true)
     Optional<Lending> findCurrentLendingByBookItemId(@Param(value = "bookItemId") Long bookItemId);

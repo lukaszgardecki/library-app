@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @AutoConfigureMockMvc
 @AutoConfigureWebTestClient
-public class BaseTest {
+public abstract class BaseTest {
 
     @Autowired
     protected WebTestClient client;
