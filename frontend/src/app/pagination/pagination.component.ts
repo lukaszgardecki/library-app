@@ -41,9 +41,7 @@ export class PaginationComponent{
    * 
    */
   goToPageFromBtn(number: number) {
-    console.log("input: %s", number);
     const btnValue = this.getValueOfBtnNo(number);
-    console.log("goToPage (btnValue): %s", btnValue);
     
     if (typeof btnValue === 'number') {
       const page = btnValue - 1;
