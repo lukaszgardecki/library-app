@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.management.PairDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/books", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,8 +24,12 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<PagedModel<BookDto>> getAllBooks(Pageable pageable) {
-        PagedModel<BookDto> collectionModel = bookService.findAllBook(pageable);
+    public ResponseEntity<PagedModel<BookDto>> getAllBooks(
+            Pageable pageable,
+            @RequestParam(value = "lang", required = false)
+            List<String> languages
+    ) {
+        PagedModel<BookDto> collectionModel = bookService.findAllBook(pageable, languages);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
@@ -31,6 +37,12 @@ public class BookController {
     public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
         BookDto book = bookService.findBookById(id);
         return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/languages/count")
+    public ResponseEntity<List<PairDto>> getBookLanguages() {
+        var languages = bookService.findBookLanguagesWithCount();
+        return ResponseEntity.ok(languages);
     }
 
     @PostMapping

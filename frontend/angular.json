@@ -40,7 +40,7 @@
               "src/app/home-page/styles/layout.css"
             ],
             "scripts": [
-              
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
 
               "src/app/home-page/scripts/jquery.min.js",
               "src/app/home-page/scripts/jquery.flexslider-min.js",

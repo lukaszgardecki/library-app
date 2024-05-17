@@ -12,6 +12,10 @@ File: Layout CSS
 @import url("custom.flexslider.css");
 @import url("framework.css");
 
+:root {
+	--main-color: #1C7AA8;
+}
+
 /* Rows
 --------------------------------------------------------------------------------------------------------------- */
 .row0, .row0 a{}
@@ -268,7 +272,7 @@ td{border-width:0 1px;}
 .faico li:last-child{margin-right:0;}
 .faico a{display:inline-block; width:36px; height:36px; line-height:36px; font-size:18px; text-align:center;}
 
-.faico a{color:#1C7AA8;}
+.faico a{color: var(--main-color);}
 .faico a:hover{}
 
 .faicon-dribble:hover{color:#EA4C89;}
@@ -289,7 +293,7 @@ td{border-width:0 1px;}
 /* Colours
 --------------------------------------------------------------------------------------------------------------- */
 body{color:#CBCBCB; background-color:#1A1A1A;}
-a{color:#1C7AA8;}
+a{color:var(--main-color);}
 a:active, a:focus{background:transparent;}/* IE10 + 11 Bugfix - prevents grey background */
 hr, .borderedbox{border-color:#D7D7D7;}
 label span{color:#FF0000; background-color:inherit;}
@@ -298,7 +302,7 @@ input:focus, textarea:focus, *:required:focus{border-color:#56AED4;}
 .overlay::after{color:inherit; background-color:rgba(0,0,0,.55);}
 .coloured.overlay::after{background-color:rgba(28,122,168,.55);/* #1C7AA8 */}
 
-.btn, .btn.inverse:hover, a .icon, a.inverse:hover .icon{color:#FFFFFF; background-color:#1C7AA8; border-color:#1C7AA8;}
+.btn, .btn.inverse:hover, a .icon, a.inverse:hover .icon{color:#FFFFFF; background-color:var(--main-color); border-color:var(--main-color);}
 .btn:hover, .btn.inverse, a:hover .icon, a.inverse .icon{color:inherit; background-color:transparent; border-color:inherit;}
 
 blockquote::before{color:rgba(0,0,0,.05);}
@@ -309,13 +313,13 @@ blockquote::before{color:rgba(0,0,0,.05);}
 
 /* Flexslider */
 .flex-direction-nav a, .flex-direction-nav .flex-disabled:hover{color:#FFFFFF;}
-.flex-direction-nav a:hover{color:#1C7AA8;}
+.flex-direction-nav a:hover{color: var(--main-color);}
 
 
 /* Rows */
 .row0, .row0 a{color:#CBCBCB; background-color:#222222;}
 .row1{color:#363636; background-color:#FFFFFF;}
-.row2{color:#363636; background-color:#F6F6F6; border-color:#1C7AA8;}
+.row2{color:#363636; background-color:#F6F6F6; border-color:var(--main-color);}
 .row3{color:#363636; background-color:#FFFFFF;}
 .row4{color:#363636; background-color:#FFFFFF; border-color:#F0F0F0;}
 .row5, .row5 a{color:#363636; background-color:#FFFFFF;}
@@ -324,7 +328,7 @@ blockquote::before{color:rgba(0,0,0,.05);}
 
 /* Top Bar */
 #topbar, #topbar ul li{border-color:rgba(255,255,255,.2);}
-#topbar > div:last-of-type li:first-child a{color:#1C7AA8;}
+#topbar > div:last-of-type li:first-child a{color:var(--main-color);}
 
 
 /* Header */
@@ -352,33 +356,33 @@ blockquote::before{color:rgba(0,0,0,.05);}
 
 #footer input, #footer button{border-color:transparent;}
 #footer input{color:#363636; background-color:#F0F0F0;}
-#footer input:focus{border-color:#1C7AA8;}
-#footer button{color:#FFFFFF; background-color:#1C7AA8;}
+#footer input:focus{border-color:var(--main-color);}
+#footer button{color:#FFFFFF; background-color:var(--main-color);}
 
 
 /* Navigation */
 #mainav li a{color:inherit;}
-#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:#1C7AA8; background-color:inherit;}
+#mainav .active a, #mainav a:hover, #mainav li:hover > a{color:var(--main-color); background-color:inherit;}
 #mainav li li a, #mainav .active li a{color:#FFFFFF; background-color:rgba(0,0,0,.6); border-color:rgba(0,0,0,.6);}
-#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:#1C7AA8;}
+#mainav li li:hover > a, #mainav .active .active > a{color:#FFFFFF; background-color:var(--main-color);}
 #mainav form select{color:#FFFFFF; background-color:#222222; border-color:rgba(255,255,255,.2);/* #FFFFFF */}
 
 #breadcrumb a{color:inherit; background-color:inherit;}
-#breadcrumb li:last-child a{color:#1C7AA8;}
+#breadcrumb li:last-child a{color: var(--main-color);}
 
 .container .sidebar nav a{color:inherit; border-color:#D7D7D7;}
-.container .sidebar nav a:hover{color:#1C7AA8;}
+.container .sidebar nav a:hover{color: var(--main-color);}
 
 .pagination, .pagination a, .pagination strong{border-color:#D7D7D7;}
-.pagination .current *{color:#FFFFFF; background-color:#1C7AA8;}
+.pagination .current *{color:#FFFFFF; background-color: var(--main-color);}
 
 
-#backtotop{color:#FFFFFF; background-color:#1C7AA8;}
+#backtotop{color:#FFFFFF; background-color: var(--main-color);}
 
 
 /* Tables + Comments */
 table, th, td, #comments .avatar, #comments input, #comments textarea{border-color:#D7D7D7;}
-#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color:#1C7AA8;}
+#comments input:focus, #comments textarea:focus, #comments *:required:focus{border-color: var(--main-color);}
 th{color:#FFFFFF; background-color:#373737;}
 tr, #comments li, #comments input[type="submit"], #comments input[type="reset"]{color:inherit; background-color:#FBFBFB;}
 tr:nth-child(even), #comments li:nth-child(even){color:inherit; background-color:#F7F7F7;}
