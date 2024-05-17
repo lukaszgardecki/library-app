@@ -1,4 +1,4 @@
-import { Component, Input, output} from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ListComponent } from '../shared/list-component';
 
@@ -13,9 +13,6 @@ export class PaginationComponent{
   @Input()
   listComponent: ListComponent;
 
-  pageSizes = [10, 20, 50, 100];
-  selectedSortTypeName: string = "Sortuj";
-
   constructor(
     private router: Router,
     private route: ActivatedRoute
@@ -23,16 +20,12 @@ export class PaginationComponent{
 
   goPrevPage() {
     const page = this.listComponent.page.number - 1;
-    const size = this.route.snapshot.queryParams["size"]
-    const sort = this.route.snapshot.queryParams["sort"];
-    this.updatePage(page, size, sort);
+    this.updatePage(page);
   }
 
   goNextPage() {
     const page = this.listComponent.page.number + 1;
-    const size = this.route.snapshot.queryParams["size"]
-    const sort = this.route.snapshot.queryParams["sort"];
-    this.updatePage(page, size, sort);
+    this.updatePage(page);
   }
 
   /**
@@ -45,27 +38,16 @@ export class PaginationComponent{
     
     if (typeof btnValue === 'number') {
       const page = btnValue - 1;
-      const size = this.listComponent.page.size;
-      const sort = this.route.snapshot.queryParams["sort"];
-      this.updatePage(page, size, sort);
+      this.updatePage(page);
     }
   }
 
-  changeSize(size: number) {
-      const sort = this.route.snapshot.queryParams["sort"];
-      this.updatePage(0, size, sort);
-  }
+  private updatePage(pageIndex: number) {
+    const queryParams = { ...this.route.snapshot.queryParams };
+    queryParams["page"] = pageIndex;
 
-  sort(sort: any) {
-    const size = this.listComponent.page.size;
-    const selectedSortType = this.listComponent.sortTypes.filter(t => t.queryParam===sort)[0];
-    this.updatePage(0, size, sort);
-    this.selectedSortTypeName = selectedSortType.queryParam ? selectedSortType.name : "Sortuj";
-  }
-
-  private updatePage(pageIndex: number, pageSize: number, sort: any) {
-    this.router.navigate([this.listComponent.routeName], { queryParams: { page: pageIndex, size: pageSize, sort: sort } });
-    this.listComponent.getAll(pageIndex, pageSize, sort);
+    this.router.navigate([this.listComponent.routeName], { queryParams: queryParams });
+    this.listComponent.getAllByParams(queryParams);
   }
   
   isSelectedFirst(): boolean {
