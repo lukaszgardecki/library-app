@@ -14,6 +14,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -21,9 +24,15 @@ public class BookService {
     private final BookModelAssembler bookModelAssembler;
     private final PagedResourcesAssembler<Book> pagedResourcesAssembler;
 
-    public PagedModel<BookDto> findAllBook(Pageable pageable) {
-        Page<Book> bookPage =
-                pageable.isUnpaged() ? new PageImpl<>(bookRepository.findAll()) : bookRepository.findAll(pageable);
+    public PagedModel<BookDto> findAllBook(Pageable pageable, List<String> languages) {
+        Page<Book> bookPage;
+
+        if (languages != null && !languages.isEmpty()) {
+            bookPage = bookRepository.findByLanguages(languages, pageable);
+        } else {
+            bookPage = bookRepository.findAll(pageable);
+        }
+
         return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
     }
 

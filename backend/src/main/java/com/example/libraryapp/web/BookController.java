@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/books", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,8 +23,12 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<PagedModel<BookDto>> getAllBooks(Pageable pageable) {
-        PagedModel<BookDto> collectionModel = bookService.findAllBook(pageable);
+    public ResponseEntity<PagedModel<BookDto>> getAllBooks(
+            Pageable pageable,
+            @RequestParam(value = "lang", required = false)
+            List<String> languages
+    ) {
+        PagedModel<BookDto> collectionModel = bookService.findAllBook(pageable, languages);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 

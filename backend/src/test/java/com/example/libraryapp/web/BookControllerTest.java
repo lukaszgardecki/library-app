@@ -25,6 +25,34 @@ public class BookControllerTest extends BaseTest {
     }
 
     @Test
+    void shouldReturnPageOf6BooksWhenListByLanguageIsRequested() {
+        client.get()
+                .uri("/api/v1/books?lang=Hindi")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(6)
+                .jsonPath("$.page.size").isEqualTo(20)
+                .jsonPath("$.page.totalElements").isEqualTo(6)
+                .jsonPath("$.page.totalPages").isEqualTo(1)
+                .jsonPath("$.page.number").isEqualTo(0);
+    }
+
+    @Test
+    void shouldReturnPageOf22BooksWhenListByLanguageIsRequested() {
+        client.get()
+                .uri("/api/v1/books?page=0&size=10&sort=&lang=Moldovan&lang=Bosnian&lang=Hebrew&lang=Belarusian")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(10)
+                .jsonPath("$.page.size").isEqualTo(10)
+                .jsonPath("$.page.totalElements").isEqualTo(22)
+                .jsonPath("$.page.totalPages").isEqualTo(3)
+                .jsonPath("$.page.number").isEqualTo(0);
+    }
+
+    @Test
     void shouldReturnPageOf3BooksWhenListIsRequested() {
         client.get()
                 .uri("/api/v1/books?page=0&size=3")
