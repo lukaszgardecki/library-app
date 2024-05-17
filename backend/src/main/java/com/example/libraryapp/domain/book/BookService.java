@@ -5,9 +5,9 @@ import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
+import com.example.libraryapp.management.PairDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -34,6 +34,14 @@ public class BookService {
         }
 
         return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
+    }
+
+    public List<PairDto> findBookLanguagesWithCount() {
+        return bookRepository.findAll().stream()
+                .collect(Collectors.groupingBy(Book::getLanguage, Collectors.counting()))
+                .entrySet().stream()
+                .map(entry -> new PairDto(entry.getKey(), String.valueOf(entry.getValue())))
+                .collect(Collectors.toList());
     }
 
     public BookDto findBookById(Long id) {

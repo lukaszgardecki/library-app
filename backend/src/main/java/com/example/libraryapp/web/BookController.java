@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.management.PairDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -36,6 +37,12 @@ public class BookController {
     public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
         BookDto book = bookService.findBookById(id);
         return ResponseEntity.ok(book);
+    }
+
+    @GetMapping("/languages/count")
+    public ResponseEntity<List<PairDto>> getBookLanguages() {
+        var languages = bookService.findBookLanguagesWithCount();
+        return ResponseEntity.ok(languages);
     }
 
     @PostMapping

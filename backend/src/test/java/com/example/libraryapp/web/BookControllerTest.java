@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.exception.ErrorMessage;
+import com.example.libraryapp.management.PairDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -64,6 +65,15 @@ public class BookControllerTest extends BaseTest {
                 .jsonPath("$.page.totalElements").isEqualTo(492)
                 .jsonPath("$.page.totalPages").isEqualTo(164)
                 .jsonPath("$.page.number").isEqualTo(0);
+    }
+
+    @Test
+    void shouldReturnSetOfBookLanguages() {
+        client.get()
+                .uri("/api/v1/books/languages/count")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(PairDto.class);
     }
 
     @Test
