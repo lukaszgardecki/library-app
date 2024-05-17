@@ -3,7 +3,7 @@ import { BookItemsService } from '../services/book-items.service';
 import { BookItem } from '../models/book-item';
 import { Page } from '../shared/page';
 import { HypermediaCollection } from '../shared/hypermedia-collection';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ListComponent } from '../shared/list-component';
 
 @Component({
@@ -25,21 +25,31 @@ export class BookItemListComponent implements ListComponent, OnInit {
   ];
 
   constructor(private bookItemsService: BookItemsService, private route: ActivatedRoute) { }
+  getAllByParams(queryParams?: Params | undefined) {
+    throw new Error('Method not implemented.');
+  }
   
 
   ngOnInit(): void {
     const pageNo = this.route.snapshot.queryParams["page"];
     const pageSize = this.route.snapshot.queryParams["size"];
-    this.getAll(pageNo, pageSize);
+    // this.getAll(pageNo, pageSize);
   }
 
-  getAll(page: number, size: number, sort: string="asc") {
-    this.bookItemsService.getAllBookItems(page, size, sort).subscribe(p => {
-      this.page = p.page;
-      this.bookItems = p._embedded.bookItemDtoList;
-      this.links = p._links;
-    });
+  // getAll(page: number, size: number, sort: string="asc") {
+  //   this.bookItemsService.getAllBookItems(page, size, sort).subscribe(p => {
+  //     this.page = p.page;
+  //     this.bookItems = p._embedded.bookItemDtoList;
+  //     this.links = p._links;
+  //   });
+  // }
+
+  sort(sort: any) {
+      
   }
 
-  
+
+  changeSize(size: number) {
+      
+  }
 }

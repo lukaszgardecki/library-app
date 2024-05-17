@@ -5,14 +5,17 @@ import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
+import com.example.libraryapp.management.PairDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +24,24 @@ public class BookService {
     private final BookModelAssembler bookModelAssembler;
     private final PagedResourcesAssembler<Book> pagedResourcesAssembler;
 
-    public PagedModel<BookDto> findAllBook(Pageable pageable) {
-        Page<Book> bookPage =
-                pageable.isUnpaged() ? new PageImpl<>(bookRepository.findAll()) : bookRepository.findAll(pageable);
+    public PagedModel<BookDto> findAllBook(Pageable pageable, List<String> languages) {
+        Page<Book> bookPage;
+
+        if (languages != null && !languages.isEmpty()) {
+            bookPage = bookRepository.findByLanguages(languages, pageable);
+        } else {
+            bookPage = bookRepository.findAll(pageable);
+        }
+
         return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
+    }
+
+    public List<PairDto> findBookLanguagesWithCount() {
+        return bookRepository.findAll().stream()
+                .collect(Collectors.groupingBy(Book::getLanguage, Collectors.counting()))
+                .entrySet().stream()
+                .map(entry -> new PairDto(entry.getKey(), String.valueOf(entry.getValue())))
+                .collect(Collectors.toList());
     }
 
     public BookDto findBookById(Long id) {

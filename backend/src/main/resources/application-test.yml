@@ -3,7 +3,5 @@ spring:
     url: jdbc:mysql://localhost:3306/libraryapp
     username: root
     password: admin
-  jpa:
-    show-sql: true
   liquibase:
     contexts: test
