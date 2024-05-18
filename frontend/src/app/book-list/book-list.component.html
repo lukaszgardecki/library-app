@@ -90,7 +90,7 @@
  
                 
                 <div class="list-cont">
-                    <header>{{book.title}}</header>
+                    <header><a [routerLink]="['/books', book.id]">{{book.title}}</a></header>
                     <div class="list-cont-row">
                         <div><b>Wydawca:</b></div>
                         <div>{{book.publisher}}</div>
