@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BooksService } from '../services/books.service';
 import { Book } from '../models/book';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-book-details',
@@ -14,7 +15,8 @@ export class BookDetailsComponent implements OnInit {
   constructor(
     private bookService: BooksService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -27,6 +29,6 @@ export class BookDetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['books']);
+    this.location.back();
   }
 }
