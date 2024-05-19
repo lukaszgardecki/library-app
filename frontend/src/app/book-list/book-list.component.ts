@@ -18,7 +18,7 @@ export class BookListComponent implements ListComponent, OnInit {
   links: HypermediaCollection;
   books: Array<Book>;
   selectedSortTypeName: string = "Domyślnie";
-  selectedPageSize: number;
+  selectedPageSize: number = 20;
   pageSizes = [10, 20, 50, 100];
   languages = new Array<Pair>;
   selectedLanguages = new Array<string>;
@@ -39,11 +39,7 @@ export class BookListComponent implements ListComponent, OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const validParams = this.validateParams(params);
-      this.initializeValuesFromParams(validParams);
-      this.getAllByParams(validParams);
-    });
+    this.getAllByParams();
     this.getAllLanguages();
   }
 
@@ -102,38 +98,5 @@ export class BookListComponent implements ListComponent, OnInit {
     queryParams[paramName] = value;
     this.router.navigate([this.routeName], { queryParams: queryParams });
     return queryParams;
-  }
-
-  private initializeValuesFromParams(params: Params) {
-    if ('size' in params) {
-      this.selectedPageSize = +params['size'];
-    }
-    if ('lang' in params) {
-      this.selectedLanguages = params['lang'];
-    }
-    if ('sort' in params) {
-      const sortType = this.sortTypes.find(st => st.queryParam === params['sort']);
-      if (sortType) {
-        this.selectedSortTypeName = sortType.name;
-      }
-    }
-  }
-
-  private validateParams(params: Params): Params {
-    const validatedParams = { ...params };
-
-    if (!validatedParams['size'] || validatedParams['size'] < 0) {
-      validatedParams['size'] = 20;
-    }
-
-    if (!validatedParams['page'] || validatedParams['page'] < 0) {
-      validatedParams['page'] = 0;
-    }
-
-    const sortType = this.sortTypes.find(st => st.queryParam === validatedParams['sort']);
-    if (!validatedParams['sort'] || !sortType) {
-      validatedParams['sort'] = "";
-    }
-    return validatedParams;
   }
 }
