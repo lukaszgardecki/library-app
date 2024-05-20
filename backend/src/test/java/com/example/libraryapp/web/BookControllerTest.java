@@ -2,6 +2,8 @@ package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.domain.bookItem.BookItemStatus;
+import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.exception.ErrorMessage;
 import com.example.libraryapp.management.PairDto;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.BodyInserters;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,7 +72,7 @@ public class BookControllerTest extends BaseTest {
     }
 
     @Test
-    void shouldReturnSetOfBookLanguages() {
+    void shouldReturnListOfBookLanguages() {
         client.get()
                 .uri("/api/v1/books/languages/count")
                 .exchange()
@@ -111,6 +115,22 @@ public class BookControllerTest extends BaseTest {
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody(ErrorMessage.class);
+    }
+
+    @Test
+    void shouldReturnABookItemListOfBook() {
+        List<BookItemDto> responseBody = client.get()
+                .uri("/api/v1/books/1/book-items")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(BookItemDto.class)
+                .returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.size()).isEqualTo(3);
+        assertThat(responseBody.get(0).getStatus()).isEqualTo(BookItemStatus.RESERVED);
+        assertThat(responseBody.get(1).getStatus()).isEqualTo(BookItemStatus.AVAILABLE);
+        assertThat(responseBody.get(2).getStatus()).isEqualTo(BookItemStatus.LOANED);
     }
 
     @Test
