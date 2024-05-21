@@ -14,6 +14,7 @@ File: Layout CSS
 
 :root {
 	--main-color: #1C7AA8;
+	--button-hover-color: #155A7D;
 }
 
 /* Rows
@@ -412,7 +413,7 @@ table a, #comments a{background-color:inherit;}
 #book-details .item-status.available{color: #387a3a; background-color: rgb(226, 250, 224);}
 #book-details .item-status.unavailable{color: #a04747; background-color: rgb(253, 230, 230);}
 #book-details button{color: white; background-color: var(--main-color)}
-#book-details button:hover{background-color: #155A7D;}
+#book-details button:hover{background-color: var(--button-hover-color);}
 
 /* Text no select */
 .no-select {-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;}
