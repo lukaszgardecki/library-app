@@ -11,6 +11,7 @@ import { BookDetailsComponent } from './book-details/book-details.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
+import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { AuthInterceptorProvider } from './services/custom.interceptor';
 
 @NgModule({
@@ -22,7 +23,8 @@ import { AuthInterceptorProvider } from './services/custom.interceptor';
     BookDetailsComponent,
     HomePageComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileDashboardComponent
   ],
   imports: [
     BrowserModule,
