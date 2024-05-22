@@ -78,76 +78,60 @@
                 </table>
             </div>
 
-            <div class="item-section">
+            <div class="item-section" *ngIf="getLoanableItems().length > 0">
                 <h1>Loanable items</h1>
                 <ul>
-                    <li>
+                    <li *ngFor="let bookItem of getLoanableItems()">
                         <div class="item-section-info">
                             <span><strong>Call number:</strong></span>
-                            <span>II 1061788</span>
+                            <span>{{bookItem.barcode}}</span>
 
                             <span><strong>Status:</strong></span>
-                            <span>Unavailable</span>
+                            <span>{{getStatusLabel(bookItem.status)}}</span>
 
                             <span><strong>Shelving location:</strong></span>
-                            <span>P7</span>
+                            <span>{{bookItem.rack.locationIdentifier}}</span>
                         </div>
                         <div class="item-section-actions">
-                            <div class="item-status unavailable">
-                                <i class="fa fa-2x fa-remove"></i>
-                                <span>Unavailable</span>
+                            <div class="item-status" [ngClass]="{'available': isAvailable(bookItem), 'unavailable': !isAvailable(bookItem)}">
+                                <i class="fa fa-2x fa-check" *ngIf="isAvailable(bookItem)"></i>
+                                <i class="fa fa-2x fa-remove" *ngIf="!isAvailable(bookItem)"></i>
+                                <span>{{isAvailable(bookItem) ? "Available" : "Unavailable"}}</span>
                             </div>
                             <div></div>
                             <div></div>
-                            <button>Request</button>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="item-section-info">
-                            <span><strong>Call number:</strong></span>
-                            <span>II 1061788</span>
-
-                            <span><strong>Status:</strong></span>
-                            <span>Unavailable</span>
-
-                            <span><strong>Shelving location:</strong></span>
-                            <span>P7</span>
-                        </div>
-                        <div class="item-section-actions">
-                            <div class="item-status unavailable">
-                                <i class="fa fa-2x fa-remove"></i>
-                                <span>Unavailable</span>
-                            </div>
-                            <div></div>
-                            <div></div>
-                            <button>Request</button>
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="item-section-info">
-                            <span><strong>Call number:</strong></span>
-                            <span>II 1061788</span>
-
-                            <span><strong>Status:</strong></span>
-                            <span>Available</span>
-
-                            <span><strong>Shelving location:</strong></span>
-                            <span>P7</span>
-                        </div>
-                        <div class="item-section-actions">
-                            <div class="item-status available">
-                                <i class="fa fa-2x fa-check"></i>
-                                <span>Available</span>
-                            </div>
-                            <div></div>
-                            <div></div>
-                            <button>Request</button>
+                            <button *ngIf="isAvailable(bookItem)">Request</button>
                         </div>
                     </li>
                 </ul>
+            </div>
 
+            <div class="item-section" *ngIf="getOnSiteItems().length > 0">
+                <h1>Items available on-site only</h1>
+                <ul>
+                    <li *ngFor="let bookItem of getOnSiteItems()">
+                        <div class="item-section-info">
+                            <span><strong>Call number:</strong></span>
+                            <span>{{bookItem.barcode}}</span>
+
+                            <span><strong>Status:</strong></span>
+                            <span>{{getStatusLabel(bookItem.status)}}</span>
+                            
+                            <span><strong>Shelving location:</strong></span>
+                            <span>{{bookItem.rack.locationIdentifier}}</span>
+                        </div>
+                        <div class="item-section-actions">
+                            <div class="item-status" [ngClass]="{'available': isAvailable(bookItem), 'unavailable': !isAvailable(bookItem)}">
+                                <i class="fa fa-2x fa-check" *ngIf="isAvailable(bookItem)"></i>
+                                <i class="fa fa-2x fa-remove" *ngIf="!isAvailable(bookItem)"></i>
+                                <span>{{isAvailable(bookItem) ? "Available" : "Unavailable"}}</span>
+                            </div>
+                            <div></div>
+                            <div></div>
+                            <button *ngIf="isAvailable(bookItem)">Request</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </main>

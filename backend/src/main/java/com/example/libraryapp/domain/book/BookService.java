@@ -3,6 +3,8 @@ package com.example.libraryapp.domain.book;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
+import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.management.PairDto;
@@ -34,6 +36,12 @@ public class BookService {
         }
 
         return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
+    }
+
+    public List<BookItemDto> findBookItemsByBookId(Long id) {
+        return findBook(id).getBookItems().stream()
+                .map(BookItemMapper::map)
+                .toList();
     }
 
     public List<PairDto> findBookLanguagesWithCount() {
