@@ -12,6 +12,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
+import { FormsModule } from '@angular/forms';
 import { AuthInterceptorProvider } from './services/custom.interceptor';
 
 @NgModule({
@@ -29,7 +30,8 @@ import { AuthInterceptorProvider } from './services/custom.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration(),
