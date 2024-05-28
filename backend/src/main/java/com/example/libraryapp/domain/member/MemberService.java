@@ -3,9 +3,9 @@ package com.example.libraryapp.domain.member;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.UserModelAssembler;
-import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.lending.Lending;
 import com.example.libraryapp.domain.lending.LendingRepository;
 import com.example.libraryapp.domain.lending.LendingStatus;
@@ -14,7 +14,6 @@ import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import com.example.libraryapp.domain.reservation.Reservation;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
-import com.example.libraryapp.management.Message;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,8 +21,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,16 +46,6 @@ public class MemberService {
     public MemberDto findMemberById(Long id) {
         Member member = findMember(id);
         return userModelAssembler.toModel(member);
-    }
-
-    private Optional<MemberDto> findMemberByEmail(String email) {
-        return memberRepository.findByEmail(email)
-                .map(userModelAssembler::toModel);
-    }
-
-    private Optional<String> findMemberRoleByUserId(Long id) {
-        return memberRepository.findById(id)
-                .map(user -> user.getRole().name());
     }
 
     @Transactional
@@ -95,41 +82,12 @@ public class MemberService {
         memberRepository.deleteById(id);
     }
 
-    public boolean checkIfCurrentLoggedInUserIsAdmin() {
-         return getCurrentLoggedInUserRole().equals(Role.ADMIN.name());
-    }
-
-    public void checkIfAdminRequested() {
-        boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
-        boolean isNotAdmin = !isAdmin;
-        if (isNotAdmin) throw new AccessDeniedException(Message.ACCESS_DENIED);
-    }
-
-    public void checkIfAdminOrDataOwnerRequested(Long userId) {
-        boolean isOwner = Objects.equals(getCurrentLoggedInUserId(), userId);
-        boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
-        boolean isNotAdminOrDataOwner = !(isOwner || isAdmin);
-        if (isNotAdminOrDataOwner) throw new AccessDeniedException(Message.ACCESS_DENIED);
-    }
-
     // TODO: 30.11.2023 czy te metody są potrzebne?
     // TODO: 30.11.2023 nie da się inaczej sprawdzić czy user ma rolę admin?
 
-    private Long getCurrentLoggedInUserId() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return findMemberByEmail(username)
-                .orElseThrow(MemberNotFoundException::new)
-                .getId();
-    }
     private Member findMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException(id));
-    }
-
-    private String getCurrentLoggedInUserRole() {
-        Long userId = getCurrentLoggedInUserId();
-        return findMemberRoleByUserId(userId)
-                .orElseThrow(() -> new MemberNotFoundException(userId));
     }
 
     private void checkIfUserHasReturnedAllBooks(Member member) {

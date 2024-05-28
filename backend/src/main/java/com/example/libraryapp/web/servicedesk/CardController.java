@@ -2,17 +2,20 @@ package com.example.libraryapp.web.servicedesk;
 
 import com.example.libraryapp.domain.card.CardService;
 import com.example.libraryapp.domain.card.dto.CardDto;
+import com.example.libraryapp.domain.config.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.libraryapp.domain.member.Role.ADMIN;
+import static com.example.libraryapp.domain.member.Role.CASHIER;
 
 @RestController
 @RequestMapping(value = "/api/v1/cards", produces = MediaType.APPLICATION_JSON_VALUE)
-@PreAuthorize("hasAnyRole('CASHIER', 'ADMIN')")
+@RoleAuthorization({ADMIN, CASHIER})
 @RequiredArgsConstructor
 public class CardController {
     private final CardService cardService;

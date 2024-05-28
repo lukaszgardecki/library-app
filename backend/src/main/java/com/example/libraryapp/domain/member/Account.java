@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.member;
 
-import com.example.libraryapp.domain.token.Token;
+import com.example.libraryapp.domain.token.AccessToken;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public abstract class Account implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "member")
-    private List<Token> tokens;
+    private List<AccessToken> tokens;
 
 
     @Override

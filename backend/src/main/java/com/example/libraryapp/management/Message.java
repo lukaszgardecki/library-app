@@ -2,6 +2,8 @@ package com.example.libraryapp.management;
 
 public class Message {
     public static final String ACCESS_DENIED = "Access Denied";
+    public static final String FORBIDDEN = "Forbidden: You do not have permission to view this content.";
+    public static final String BODY_MISSING = "Required request body is missing";
 
     public static final String MEMBER_NOT_FOUND = "No member with id: %s";
     public static final String NOT_RETURNED_BOOKS = "Member has not returned the books";

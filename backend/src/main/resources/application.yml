@@ -11,6 +11,8 @@ springdoc:
     path: /swagger-ui.html
 
 jwt:
-  expirationTime: 3600000
+  expirationTime: 900000 #15 min
   secret: 694d057a02aec7b4de008225532c4aa7eadd6759d5f920749adb20a92dc158c1
+  refresh-token:
+     expiration: 604800000 #7 days
 

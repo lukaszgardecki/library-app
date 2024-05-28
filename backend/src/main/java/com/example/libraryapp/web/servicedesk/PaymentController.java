@@ -1,5 +1,6 @@
 package com.example.libraryapp.web.servicedesk;
 
+import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.payment.PaymentService;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
 import com.example.libraryapp.domain.payment.dto.PaymentResponse;
@@ -7,15 +8,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.example.libraryapp.domain.member.Role.ADMIN;
+import static com.example.libraryapp.domain.member.Role.CASHIER;
+
 @RestController
 @RequestMapping(value = "/api/v1/payments")
-@PreAuthorize("hasAnyRole('CASHIER', 'ADMIN')")
+@RoleAuthorization({CASHIER, ADMIN})
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;

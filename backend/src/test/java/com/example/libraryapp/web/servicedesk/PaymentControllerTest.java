@@ -1,273 +1,239 @@
 package com.example.libraryapp.web.servicedesk;
 
 import com.example.libraryapp.domain.exception.ErrorMessage;
-import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.dto.MemberDto;
 import com.example.libraryapp.domain.payment.PaymentDescription;
 import com.example.libraryapp.domain.payment.PaymentMethod;
 import com.example.libraryapp.domain.payment.PaymentStatus;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
 import com.example.libraryapp.domain.payment.dto.PaymentResponse;
+import com.example.libraryapp.management.Message;
 import com.example.libraryapp.web.BaseTest;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.web.reactive.function.BodyInserters;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.*;
 
 public class PaymentControllerTest extends BaseTest {
 
-    @Test
-    void shouldReturnAllPaymentsIfCashierRequested() {
-        client.get()
-                .uri("/api/v1/payments")
-                .header(HttpHeaders.AUTHORIZATION, cashierToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$._embedded.paymentResponseList.length()").isEqualTo(4)
-                .jsonPath("$.page.size").isEqualTo(20)
-                .jsonPath("$.page.totalElements").isEqualTo(4)
-                .jsonPath("$.page.totalPages").isEqualTo(1)
-                .jsonPath("$.page.number").isEqualTo(0);
+    @Nested
+    @DisplayName("Tests for GET endpoints")
+    class GetPaymentsTests {
+        @Test
+        @DisplayName("Should return all payments if CASHIER requested.")
+        void shouldReturnAllPaymentsIfCashierRequested() {
+            client.testRequest(GET, "/payments", cashier, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.paymentResponseList.length()").isEqualTo(4)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(4)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("Should return all payments if ADMIN requested.")
+        void shouldReturnAllPaymentsIfAdminRequested() {
+            client.testRequest(GET, "/payments", admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.paymentResponseList.length()").isEqualTo(4)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(4)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+        }
+
+        @Test
+        @DisplayName("Should not return all payments if USER requested.")
+        void shouldNotReturnAllPaymentsIfUserRequested() {
+            ErrorMessage responseBody = client.testRequest(GET, "/payments", user, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
+
+        @Test
+        @DisplayName("Should not return all payments if WAREHOUSE requested.")
+        void shouldNotReturnAllPaymentsIfWarehouseRequested() {
+            ErrorMessage responseBody = client.testRequest(GET, "/payments", warehouse, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
+
+        @Test
+        @DisplayName("Should not return all payments if an unauthorized USER requested.")
+        void shouldNotReturnAllPaymentsIfUnauthenticatedUserRequested() {
+            ErrorMessage responseBody = client.testRequest(GET, "/payments", UNAUTHORIZED)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+        }
+
+        @Test
+        @DisplayName("Should return a single payment if CASHIER requested.")
+        void shouldReturnASinglePaymentIfCashierRequested() {
+            long paymentId = 1L;
+            PaymentResponse returnedPayment = client.testRequest(GET, "/payments/" + paymentId, cashier, OK)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult().getResponseBody();
+
+            assertThat(returnedPayment.getId()).isEqualTo(paymentId);
+            assertThat(returnedPayment.getAmount()).isEqualTo("24.34");
+            assertThat(returnedPayment.getCreationDate()).isEqualTo(LocalDateTime.parse("2023-03-30 13:33:55", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            assertThat(returnedPayment.getMemberId()).isEqualTo(1L);
+            assertThat(returnedPayment.getMethod()).isEqualTo(PaymentMethod.CREDIT_CARD);
+            assertThat(returnedPayment.getStatus()).isEqualTo(PaymentStatus.FAILED);
+            assertThat(returnedPayment.getDescription()).isEqualTo(PaymentDescription.FINE_LATE_RETURN.getDescription());
+        }
+
+        @Test
+        @DisplayName("Should return a single payment if ADMIN requested.")
+        void shouldReturnASinglePaymentIfAdminRequested() {
+            long paymentId = 1L;
+            PaymentResponse returnedPayment = client.testRequest(GET, "/payments/" + paymentId, admin, OK)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult().getResponseBody();
+
+            assertThat(returnedPayment.getId()).isEqualTo(paymentId);
+            assertThat(returnedPayment.getAmount()).isEqualTo("24.34");
+            assertThat(returnedPayment.getCreationDate()).isEqualTo(LocalDateTime.parse("2023-03-30 13:33:55", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            assertThat(returnedPayment.getMemberId()).isEqualTo(1L);
+            assertThat(returnedPayment.getMethod()).isEqualTo(PaymentMethod.CREDIT_CARD);
+            assertThat(returnedPayment.getStatus()).isEqualTo(PaymentStatus.FAILED);
+            assertThat(returnedPayment.getDescription()).isEqualTo(PaymentDescription.FINE_LATE_RETURN.getDescription());
+        }
+
+        @Test
+        @DisplayName("Should not return a single payment if USER requested.")
+        void shouldNotReturnASinglePaymentIfUserRequested() {
+            long paymentId = 1L;
+            ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, user, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
+
+        @Test
+        @DisplayName("Should not return a single payment if WAREHOUSE requested.")
+        void shouldNotReturnASinglePaymentIfWarehouseRequested() {
+            long paymentId = 1L;
+            ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, warehouse, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
+
+        @Test
+        @DisplayName("Should not return a single payment if an unauthorized USER requested.")
+        void shouldNotReturnASinglePaymentIfUnauthenticatedUserRequested() {
+            long paymentId = 1L;
+            ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, UNAUTHORIZED)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+        }
     }
 
-    @Test
-    void shouldReturnAllPaymentsIfAdminRequested() {
-        client.get()
-                .uri("/api/v1/payments")
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$._embedded.paymentResponseList.length()").isEqualTo(4)
-                .jsonPath("$.page.size").isEqualTo(20)
-                .jsonPath("$.page.totalElements").isEqualTo(4)
-                .jsonPath("$.page.totalPages").isEqualTo(1)
-                .jsonPath("$.page.number").isEqualTo(0);
-    }
+    @Nested
+    @DisplayName("Tests for POST endpoints")
+    class PayFeesTests {
+        @Test
+        @DisplayName("Should pay a fine if CASHIER requested.")
+        void shouldPayAFineIfCashierRequested() {
+            PaymentRequest paymentToSave = createPaymentRequest();
+            EntityExchangeResult<PaymentResponse> response = client.testRequest(POST, "/payments/pay-fine", paymentToSave, cashier, CREATED)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult();
 
-    @Test
-    void shouldNotReturnAllPaymentsIfUserRequested() {
-        client.get()
-                .uri("/api/v1/payments")
-                .header(HttpHeaders.AUTHORIZATION, userToken)
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+            PaymentResponse returnedPayment = response.getResponseBody();
+            assertThat(returnedPayment.getId()).isNotNull();
+            assertThat(returnedPayment.getAmount()).isEqualTo(paymentToSave.getAmount());
+            assertThat(returnedPayment.getMemberId()).isEqualTo(paymentToSave.getMemberId());
+            assertThat(returnedPayment.getCreationDate()).isNotNull();
+            assertThat(returnedPayment.getStatus()).isNotNull();
+            assertThat(returnedPayment.getMethod()).isEqualTo(paymentToSave.getPaymentMethod());
+            assertThat(returnedPayment.getDescription()).isEqualTo(paymentToSave.getPaymentDescription().getDescription());
 
-    @Test
-    void shouldNotReturnAllPaymentsIfWarehouseRequested() {
-        client.get()
-                .uri("/api/v1/payments")
-                .header(HttpHeaders.AUTHORIZATION, warehouseToken)
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+            PaymentResponse payment = client.testRequest(GET, extractURI(response), admin, OK)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult().getResponseBody();
 
-    @Test
-    void shouldNotReturnAllPaymentsIfUnauthenticatedUserRequested() {
-        client.get()
-                .uri("/api/v1/payments")
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+            assertThat(payment).isEqualTo(returnedPayment);
 
-    @Test
-    void shouldReturnASinglePaymentIfCashierRequested() {
-        long paymentId = 1L;
-        PaymentResponse returnedPayment = client.get()
-                .uri("/api/v1/payments/" + paymentId)
-                .header(HttpHeaders.AUTHORIZATION, cashierToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(PaymentResponse.class)
-                .returnResult().getResponseBody();
+            MemberDto member = client.testRequest(GET, "/members/8", admin, OK)
+                    .expectBody(MemberDto.class)
+                    .returnResult().getResponseBody();
+            assertThat(member.getCharge()).isEqualTo(new BigDecimal("0.00"));
+        }
 
-        assertThat(returnedPayment.getId()).isEqualTo(paymentId);
-        assertThat(returnedPayment.getAmount()).isEqualTo("24.34");
-        assertThat(returnedPayment.getCreationDate()).isEqualTo(LocalDateTime.parse("2023-03-30 13:33:55", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        assertThat(returnedPayment.getMemberId()).isEqualTo(1L);
-        assertThat(returnedPayment.getMethod()).isEqualTo(PaymentMethod.CREDIT_CARD);
-        assertThat(returnedPayment.getStatus()).isEqualTo(PaymentStatus.FAILED);
-        assertThat(returnedPayment.getDescription()).isEqualTo(PaymentDescription.FINE_LATE_RETURN.getDescription());
-    }
+        @Test
+        @DisplayName("Should pay a fine if ADMIN requested.")
+        void shouldPayAFineIfAdminRequested() {
+            PaymentRequest paymentToSave = createPaymentRequest();
+            EntityExchangeResult<PaymentResponse> response = client.testRequest(POST, "/payments/pay-fine", paymentToSave, admin, CREATED)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult();
 
-    @Test
-    void shouldReturnASinglePaymentIfAdminRequested() {
-        long paymentId = 1L;
-        PaymentResponse returnedPayment = client.get()
-                .uri("/api/v1/payments/" + paymentId)
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(PaymentResponse.class)
-                .returnResult().getResponseBody();
+            PaymentResponse returnedPayment = response.getResponseBody();
+            assertThat(returnedPayment.getId()).isNotNull();
+            assertThat(returnedPayment.getAmount()).isEqualTo(paymentToSave.getAmount());
+            assertThat(returnedPayment.getMemberId()).isEqualTo(paymentToSave.getMemberId());
+            assertThat(returnedPayment.getCreationDate()).isNotNull();
+            assertThat(returnedPayment.getStatus()).isNotNull();
+            assertThat(returnedPayment.getMethod()).isEqualTo(paymentToSave.getPaymentMethod());
+            assertThat(returnedPayment.getDescription()).isEqualTo(paymentToSave.getPaymentDescription().getDescription());
 
-        assertThat(returnedPayment.getId()).isEqualTo(paymentId);
-        assertThat(returnedPayment.getAmount()).isEqualTo("24.34");
-        assertThat(returnedPayment.getCreationDate()).isEqualTo(LocalDateTime.parse("2023-03-30 13:33:55", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        assertThat(returnedPayment.getMemberId()).isEqualTo(1L);
-        assertThat(returnedPayment.getMethod()).isEqualTo(PaymentMethod.CREDIT_CARD);
-        assertThat(returnedPayment.getStatus()).isEqualTo(PaymentStatus.FAILED);
-        assertThat(returnedPayment.getDescription()).isEqualTo(PaymentDescription.FINE_LATE_RETURN.getDescription());
-    }
+            PaymentResponse payment = client.testRequest(GET, extractURI(response), admin, OK)
+                    .expectBody(PaymentResponse.class)
+                    .returnResult().getResponseBody();
 
-    @Test
-    void shouldNotReturnASinglePaymentIfUserRequested() {
-        long paymentId = 1L;
-        client.get()
-                .uri("/api/v1/payments/" + paymentId)
-                .header(HttpHeaders.AUTHORIZATION, userToken)
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+            assertThat(payment).isEqualTo(returnedPayment);
 
-    @Test
-    void shouldNotReturnASinglePaymentIfWarehouseRequested() {
-        long paymentId = 1L;
-        client.get()
-                .uri("/api/v1/payments/" + paymentId)
-                .header(HttpHeaders.AUTHORIZATION, warehouseToken)
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+            MemberDto member = client.testRequest(GET, "/members/8", admin, OK)
+                    .expectBody(MemberDto.class)
+                    .returnResult().getResponseBody();
+            assertThat(member.getCharge()).isEqualTo(new BigDecimal("0.00"));
+        }
 
-    @Test
-    void shouldNotReturnASinglePaymentIfUnauthenticatedUserRequested() {
-        long paymentId = 1L;
-        client.get()
-                .uri("/api/v1/payments/" + paymentId)
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
+        @Test
+        @DisplayName("Should not pay a fine if USER requested.")
+        void shouldNotPayAFineIfUserRequested() {
+            PaymentRequest paymentToSave = createPaymentRequest();
+            ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, user, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
 
-    @Test
-    void shouldPayAFineIfCashierRequested() {
-        PaymentRequest paymentToSave = createPaymentRequest();
-        EntityExchangeResult<PaymentResponse> response = client.post()
-                .uri("/api/v1/payments/pay-fine")
-                .header(HttpHeaders.AUTHORIZATION, cashierToken)
-                .body(BodyInserters.fromValue(paymentToSave))
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody(PaymentResponse.class)
-                .returnResult();
+        @Test
+        @DisplayName("Should not pay a fine if WAREHOUSE requested.")
+        void shouldNotPayAFineIfWarehouseRequested() {
+            PaymentRequest paymentToSave = createPaymentRequest();
+            ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, warehouse, FORBIDDEN)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+        }
 
-        PaymentResponse returnedPayment = response.getResponseBody();
-        assertThat(returnedPayment.getId()).isNotNull();
-        assertThat(returnedPayment.getAmount()).isEqualTo(paymentToSave.getAmount());
-        assertThat(returnedPayment.getMemberId()).isEqualTo(paymentToSave.getMemberId());
-        assertThat(returnedPayment.getCreationDate()).isNotNull();
-        assertThat(returnedPayment.getStatus()).isNotNull();
-        assertThat(returnedPayment.getMethod()).isEqualTo(paymentToSave.getPaymentMethod());
-        assertThat(returnedPayment.getDescription()).isEqualTo(paymentToSave.getPaymentDescription().getDescription());
-
-        PaymentResponse payment = client.get()
-                .uri(response.getResponseHeaders().getLocation())
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(PaymentResponse.class)
-                .returnResult().getResponseBody();
-
-        assertThat(payment).isEqualTo(returnedPayment);
-
-        MemberDto member = client.get()
-                .uri("/api/v1/members/8")
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(MemberDto.class)
-                .returnResult().getResponseBody();
-        assertThat(member.getCharge()).isEqualTo(new BigDecimal("0.00"));
-    }
-
-    @Test
-    void shouldPayAFineIfAdminRequested() {
-        PaymentRequest paymentToSave = createPaymentRequest();
-        EntityExchangeResult<PaymentResponse> response = client.post()
-                .uri("/api/v1/payments/pay-fine")
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .body(BodyInserters.fromValue(paymentToSave))
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody(PaymentResponse.class)
-                .returnResult();
-
-        PaymentResponse returnedPayment = response.getResponseBody();
-        assertThat(returnedPayment.getId()).isNotNull();
-        assertThat(returnedPayment.getAmount()).isEqualTo(paymentToSave.getAmount());
-        assertThat(returnedPayment.getMemberId()).isEqualTo(paymentToSave.getMemberId());
-        assertThat(returnedPayment.getCreationDate()).isNotNull();
-        assertThat(returnedPayment.getStatus()).isNotNull();
-        assertThat(returnedPayment.getMethod()).isEqualTo(paymentToSave.getPaymentMethod());
-        assertThat(returnedPayment.getDescription()).isEqualTo(paymentToSave.getPaymentDescription().getDescription());
-
-        PaymentResponse payment = client.get()
-                .uri(response.getResponseHeaders().getLocation())
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(PaymentResponse.class)
-                .returnResult().getResponseBody();
-
-        assertThat(payment).isEqualTo(returnedPayment);
-
-        MemberDto member = client.get()
-                .uri("/api/v1/members/8")
-                .header(HttpHeaders.AUTHORIZATION, adminToken)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(MemberDto.class)
-                .returnResult().getResponseBody();
-        assertThat(member.getCharge()).isEqualTo(new BigDecimal("0.00"));
-    }
-
-    @Test
-    void shouldNotPayAFineIfUserRequested() {
-        PaymentRequest paymentToSave = createPaymentRequest();
-        client.post()
-                .uri("/api/v1/payments/pay-fine")
-                .header(HttpHeaders.AUTHORIZATION, userToken)
-                .body(BodyInserters.fromValue(paymentToSave))
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
-
-    @Test
-    void shouldNotPayAFineIfWarehouseRequested() {
-        PaymentRequest paymentToSave = createPaymentRequest();
-        client.post()
-                .uri("/api/v1/payments/pay-fine")
-                .header(HttpHeaders.AUTHORIZATION, warehouseToken)
-                .body(BodyInserters.fromValue(paymentToSave))
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
-    }
-
-    @Test
-    void shouldNotPayAFineIfUnauthenticatedUserRequested() {
-        PaymentRequest paymentToSave = createPaymentRequest();
-        client.post()
-                .uri("/api/v1/payments/pay-fine")
-                .body(BodyInserters.fromValue(paymentToSave))
-                .exchange()
-                .expectStatus().isForbidden()
-                .expectBody(ErrorMessage.class);
+        @Test
+        @DisplayName("Should not pay a fine if an unauthorized USER requested.")
+        void shouldNotPayAFineIfUnauthenticatedUserRequested() {
+            PaymentRequest paymentToSave = createPaymentRequest();
+            ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, UNAUTHORIZED)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+        }
     }
 
     private PaymentRequest createPaymentRequest() {
