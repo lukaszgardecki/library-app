@@ -2,29 +2,30 @@ package com.example.libraryapp.domain.token;
 
 import com.example.libraryapp.domain.member.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-public class Token {
+@Getter
+@Setter
+@MappedSuperclass
+public abstract class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String token;
+    protected Long id;
+    protected String token;
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType;
+    protected TokenType tokenType;
 
-    private boolean expired;
-    private boolean revoked;
+    protected boolean expired;
+    protected boolean revoked;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    protected Member member;
+
+    public void setInvalid() {
+        this.expired = true;
+        this.revoked = true;
+    }
 }
