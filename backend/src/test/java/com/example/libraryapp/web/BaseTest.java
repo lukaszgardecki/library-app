@@ -1,8 +1,11 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.TestAuth;
+import com.example.libraryapp.TestHelper;
 import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.auth.LoginRequest;
 import com.example.libraryapp.domain.auth.LoginResponse;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,14 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpStatus.OK;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -20,34 +29,56 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @AutoConfigureWebTestClient
 public abstract class BaseTest {
-
-    @Autowired
-    protected WebTestClient client;
+    public static final String API_PREFIX = "/api/v1";
 
     @Autowired
     protected AuthenticationService authenticationService;
+    @Autowired
+    protected WebTestClient testClient;
+    protected TestHelper client;
 
-    protected String adminToken;
-    protected String userToken;
-    protected String user5Token;
-    protected String warehouseToken;
-    protected String cashierToken;
+    protected TestAuth admin;
+    protected TestAuth user;
+    protected TestAuth user5;
+    protected TestAuth warehouse;
+    protected TestAuth cashier;
 
     @BeforeAll
     void authenticate() {
-        this.adminToken = authenticate("admin@example.com", "adminpass");
-        this.userToken = authenticate("user@example.com", "userpass");
-        this.user5Token = authenticate("p.smerf@gmail.com", "userpass3");
-        this.warehouseToken = authenticate("m.zul@gmail.com", "userpass5");
-        this.cashierToken = authenticate("l.gaga@gmail.com", "userpass4");
+        this.client = new TestHelper(testClient);
+        this.admin = auth("admin@example.com", "adminpass");
+        this.user = auth("user@example.com", "userpass");
+        this.user5 = auth("p.smerf@gmail.com", "userpass3");
+        this.warehouse = auth("m.zul@gmail.com", "userpass5");
+        this.cashier = auth("l.gaga@gmail.com", "userpass4");
     }
 
-    private String authenticate(String username, String password) {
+    private TestAuth auth(String username, String password) {
         LoginRequest user = new LoginRequest();
         user.setUsername(username);
         user.setPassword(password);
-        LoginResponse loginResponse = authenticationService.authenticate(user);
-        String token = loginResponse.getToken();
-        return "Bearer " + token;
+
+        EntityExchangeResult<LoginResponse> response = client.testRequest(POST, "/authenticate", user, OK)
+                .expectBody(LoginResponse.class)
+                .returnResult();
+
+        String accessToken = response.getResponseBody().getAccessToken();
+        String refreshToken = response.getResponseBody().getRefreshToken();
+
+        Cookie fingerprint = response.getResponseCookies().values().stream()
+                .flatMap(List::stream)
+                .filter(cookie -> "__Secure-Fgp".equals(cookie.getName()))
+                .findFirst()
+                .map(el -> new Cookie(el.getName(), el.getValue()))
+                .orElseThrow();
+
+        return new TestAuth("Bearer " + accessToken, "Bearer " + refreshToken, fingerprint);
+    }
+
+    protected String extractURI(EntityExchangeResult<?> response) {
+        return response.getResponseHeaders()
+                .getLocation()
+                .getPath()
+                .replace(BaseTest.API_PREFIX, "");
     }
 }
