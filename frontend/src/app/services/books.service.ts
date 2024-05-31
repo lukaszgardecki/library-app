@@ -23,18 +23,18 @@ export class BooksService {
   }
 
   getAllBooks(queryParams?: Params): Observable<BooksPage> {
-    return this.http.get<BooksPage>(this.baseURL, { params: queryParams });
+    return this.http.get<BooksPage>(this.baseURL, { params: queryParams, withCredentials: true });
   }
 
   getBookById(id: number): Observable<Book> {
-    return this.http.get<Book>(`${this.baseURL}/${id}`);
+    return this.http.get<Book>(`${this.baseURL}/${id}`, { withCredentials: true });
   }
 
   getBookItemsByBookId(id: number): Observable<BookItem[]> {
-    return this.http.get<BookItem[]>(`${this.baseURL}/${id}/book-items`)
+    return this.http.get<BookItem[]>(`${this.baseURL}/${id}/book-items`, { withCredentials: true })
   }
 
   getLanguageListCount(): Observable<Pair[]>{
-    return this.http.get<Pair[]>(`${this.baseURL}/languages/count`)
+    return this.http.get<Pair[]>(`${this.baseURL}/languages/count`, { withCredentials: true })
   }
 }
