@@ -2,9 +2,11 @@ package com.example.libraryapp.domain.config;
 
 import com.example.libraryapp.domain.token.AccessToken;
 import com.example.libraryapp.domain.token.AccessTokenRepository;
+import com.example.libraryapp.domain.token.TokenType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -21,9 +23,9 @@ public class CustomLogoutHandler implements LogoutHandler {
             HttpServletResponse response,
             Authentication authentication
     ) {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(TokenType.BEARER.getPrefix())) {
             return;
         }
 

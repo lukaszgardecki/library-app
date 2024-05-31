@@ -10,8 +10,10 @@ import java.security.SecureRandom;
 
 public class SecurityUtils {
     public static final String FINGERPRINT_NAME = "userFingerprint";
-    private static final String FINGERPRINT_COOKIE_NAME = "Set-Cookie";
-    private static final String FINGERPRINT_COOKIE_PATTERN = "__Secure-Fgp=%s; SameSite=Strict; HttpOnly; Secure";
+    public static final String FINGERPRINT_COOKIE_NAME = "myCookie";
+    //    public static final String FINGERPRINT_COOKIE_NAME = "__Secure-Fgp";
+    public static final String FINGERPRINT_COOKIE_HEADER = "Set-Cookie";
+    private static final String FINGERPRINT_COOKIE_PATTERN = FINGERPRINT_COOKIE_NAME + "=%s; SameSite=Strict; HttpOnly"; // add Secure if the SSL certificate is available
     private static final int FINGERPRINT_LENGTH = 50;
 
     public static String generateFingerprintValue() {
@@ -19,7 +21,7 @@ public class SecurityUtils {
     }
 
     public static Cookie generateFingerprintCookie(String text) {
-        return new Cookie(FINGERPRINT_COOKIE_NAME, FINGERPRINT_COOKIE_PATTERN.formatted(text));
+        return new Cookie(FINGERPRINT_COOKIE_HEADER, FINGERPRINT_COOKIE_PATTERN.formatted(text));
     }
 
     public static String generateStringOfLength(int length) {

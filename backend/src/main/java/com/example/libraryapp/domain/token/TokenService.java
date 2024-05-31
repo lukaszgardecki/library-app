@@ -71,7 +71,7 @@ public class TokenService {
     }
 
     public Optional<String> findToken(HttpServletRequest request) {
-        String BEARER_PREFIX = "Bearer ";
+        String BEARER_PREFIX = TokenType.BEARER.getPrefix();
         Optional<String> token = Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith(BEARER_PREFIX))
                 .map(authHeader -> authHeader.substring(BEARER_PREFIX.length()));
@@ -81,7 +81,7 @@ public class TokenService {
 
     public Optional<String> findFingerprint(HttpServletRequest request) {
         Optional<String> fingerprint = Arrays.stream(request.getCookies())
-                .filter(cookie -> "__Secure-Fgp".equals(cookie.getName()))
+                .filter(cookie -> SecurityUtils.FINGERPRINT_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue);
         if (fingerprint.isEmpty()) throw new JwtException(Message.ACCESS_DENIED);

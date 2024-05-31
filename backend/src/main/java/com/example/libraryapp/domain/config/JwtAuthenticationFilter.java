@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.config;
 
 import com.example.libraryapp.domain.token.TokenService;
+import com.example.libraryapp.domain.token.TokenType;
 import com.example.libraryapp.management.Message;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -37,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if ((authHeader == null || !authHeader.startsWith("Bearer ")) &&  !requestURI.endsWith("/refresh-token")) {
+        if ((authHeader == null || !authHeader.startsWith(TokenType.BEARER.getPrefix())) &&  !requestURI.endsWith("/refresh-token")) {
             filterChain.doFilter(request,response);
             return;
         }
