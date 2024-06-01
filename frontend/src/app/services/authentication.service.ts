@@ -13,7 +13,7 @@ export class AuthenticationService {
   private readonly REFRESH_TOKEN_NAME = "refresh_token";
   private _isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this._isLoggedInSubject.asObservable();
-
+  currentUserId: number = -1;
   private accessTokenSubject: BehaviorSubject<string | null>;
   private refreshTokenSubject: BehaviorSubject<string | null>;
   private refreshTokenTimeout: any;
@@ -36,11 +36,13 @@ export class AuthenticationService {
 
     let tokensAreValid = this.isValidToken(this.refreshToken) && this.isValidToken(this.accessToken);
     this._isLoggedInSubject.next(tokensAreValid);
+    this.currentUserId = this.findUserIdInToken(this.refreshToken);
   }
 
   authenticate(login: Login): Observable<any> {
     return this.http.post<Token>(`${this.baseURL}/authenticate`, login, { withCredentials: true }).pipe(
       tap(response => {
+        this.currentUserId = this.findUserIdInToken(response.refresh_token)
         sessionStorage.setItem(this.ACCESS_TOKEN_NAME, response.access_token);
         sessionStorage.setItem(this.REFRESH_TOKEN_NAME, response.refresh_token);
         this._isLoggedInSubject.next(true);
@@ -58,6 +60,7 @@ export class AuthenticationService {
 
     return this.http.post<Token>(`${this.baseURL}/refresh-token`, {}, { withCredentials: true }).pipe(
       tap(response => {
+        this.currentUserId = this.findUserIdInToken(response.refresh_token)
         sessionStorage.setItem(this.ACCESS_TOKEN_NAME, response.access_token);
         sessionStorage.setItem(this.REFRESH_TOKEN_NAME, response.refresh_token);
         this._isLoggedInSubject.next(true);
@@ -75,6 +78,7 @@ export class AuthenticationService {
   logout() {
       this.http.post(`${this.baseURL}/authenticate/logout`, {}).subscribe({
         next: () => {
+          this.currentUserId = -1;
           sessionStorage.removeItem(this.ACCESS_TOKEN_NAME);
           sessionStorage.removeItem(this.REFRESH_TOKEN_NAME);
           this._isLoggedInSubject.next(false);
@@ -93,6 +97,15 @@ export class AuthenticationService {
       const timeout = expires.getTime() - Date.now() - 60000; // 1 minute before expiry
       this.refreshTokenTimeout = setTimeout(() => this.refreshTokenRequest().subscribe(), timeout);
     }
+  }
+
+  private findUserIdInToken(token: string | null): number {
+    if (!token) return -1;
+    
+    const payloadBase64 = token.split('.')[1];
+    const payloadJson = atob(payloadBase64);
+    const jwtToken = JSON.parse(payloadJson);
+    return jwtToken.userId;
   }
 
   private isValidToken(token: string | null): boolean {
