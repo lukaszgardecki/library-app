@@ -14,6 +14,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptorProvider } from './services/custom.interceptor';
+import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthInterceptorProvider } from './services/custom.interceptor';
     HomePageComponent,
     FooterComponent,
     LoginComponent,
-    ProfileDashboardComponent
+    ProfileDashboardComponent,
+    PersonalDetailsComponent
   ],
   imports: [
     BrowserModule,
