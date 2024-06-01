@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.auth.LoginResponse;
 import com.example.libraryapp.domain.auth.RegisterRequest;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.domain.config.SecurityUtils;
 import com.example.libraryapp.domain.exception.ErrorMessage;
 import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
@@ -39,8 +40,8 @@ public class AuthenticationControllerTest extends BaseTest {
             LoginRequest userCredentials = getCorrectCredentials();
             LoginResponse responseBody = client.testRequest(POST, "/authenticate", userCredentials, OK)
                     .expectAll(resp -> {
-                        resp.expectCookie().httpOnly("__Secure-Fgp", true);
-                        resp.expectCookie().secure("__Secure-Fgp", true);
+                        resp.expectCookie().httpOnly(SecurityUtils.FINGERPRINT_COOKIE_NAME, true);
+                        resp.expectCookie().secure(SecurityUtils.FINGERPRINT_COOKIE_NAME, SecurityUtils.isFgpCookieSecured());
                     })
                     .expectBody(LoginResponse.class)
                     .returnResult().getResponseBody();
@@ -53,7 +54,7 @@ public class AuthenticationControllerTest extends BaseTest {
         void shouldNotAuthenticateAUserIfPasswordIsNotCorrect() {
             LoginRequest userCredentials = getCredentialsWithBadPassword();
             ErrorMessage respBody1 = client.testRequest(POST, "/authenticate", userCredentials, UNAUTHORIZED)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(respBody1.getMessage()).isEqualTo(Message.BAD_CREDENTIALS);
@@ -64,7 +65,7 @@ public class AuthenticationControllerTest extends BaseTest {
         void shouldNotAuthenticateAUserIfEmailIsNotCorrect() {
             LoginRequest userCredentials = getCredentialsWithBadEmail();
             ErrorMessage respBody2 = client.testRequest(POST, "/authenticate", userCredentials, UNAUTHORIZED)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(respBody2.getMessage()).isEqualTo(Message.BAD_CREDENTIALS);
@@ -74,7 +75,7 @@ public class AuthenticationControllerTest extends BaseTest {
         @DisplayName("Should not authenticate a user if a request body is missing.")
         void shouldNotAuthenticateAUserIfRequestBodyIsEmpty() {
             ErrorMessage responseBody = client.testRequest(POST, "/authenticate", BAD_REQUEST)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
@@ -89,7 +90,7 @@ public class AuthenticationControllerTest extends BaseTest {
         void shouldCreateANewUserIfEmailIsUnique() {
             RegisterRequest userToSave = getUserRegistrationDtoWithUniqueEmail();
             client.testRequest(POST, "/register", userToSave, OK)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody().isEmpty();
         }
 
@@ -98,7 +99,7 @@ public class AuthenticationControllerTest extends BaseTest {
         void shouldNotCreateANewUserIfEmailAlreadyExists() {
             RegisterRequest userToSave = getUserRegistrationDtoWithAlreadyExistedEmail();
             ErrorMessage responseBody = client.testRequest(POST, "/register", userToSave, UNAUTHORIZED)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.BAD_EMAIL);
@@ -108,7 +109,7 @@ public class AuthenticationControllerTest extends BaseTest {
         @DisplayName("Should not create a new user if a request body is missing.")
         void shouldNotCreateAUserIfRequestBodyIsEmpty() {
             ErrorMessage responseBody = client.testRequest(POST, "/register", BAD_REQUEST)
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
@@ -128,8 +129,8 @@ public class AuthenticationControllerTest extends BaseTest {
                     .exchange()
                     .expectStatus().isOk()
                     .expectAll(resp -> {
-                        resp.expectCookie().httpOnly("__Secure-Fgp", true);
-                        resp.expectCookie().secure("__Secure-Fgp", true);
+                        resp.expectCookie().httpOnly(SecurityUtils.FINGERPRINT_COOKIE_NAME, true);
+                        resp.expectCookie().secure(SecurityUtils.FINGERPRINT_COOKIE_NAME, SecurityUtils.isFgpCookieSecured());
                     })
                     .expectBody(LoginResponse.class)
                     .returnResult()
@@ -147,7 +148,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie(user.getFgpCookie().getName(), user.getFgpCookie().getValue())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
@@ -162,7 +163,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie(user.getFgpCookie().getName(), user.getFgpCookie().getValue())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class);
         }
 
@@ -176,7 +177,22 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie(user.getFgpCookie().getName(), user.getFgpCookie().getValue())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
+                    .expectBody(ErrorMessage.class);
+        }
+
+        @Test
+        @DisplayName("Should not refresh a token if sent token has no userID claim.")
+        void shouldNotRefreshTokenIfTokenHasNoUserIdClaim() {
+            String tokenWithoutUserIdClaim = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyRmluZ2VycHJpbnQiOiI4RkJCQzczNkNCNTZEQzQwMzc4QjQ0MzJENzU2MDRCNTA0QTYwNjkwNDU4RjJGQkUxRTMzOTgyRDY5NDQ2NDVCIiwic3ViIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJuYmYiOjE3MTcyNzA4MzIsImV4cCI6MTcxNzg3NTYzMiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MSIsImlhdCI6MTcxNzI3MDgzMn0.NMAeWRHkvsKaJkEuXfJftjrM92t-rHk1xJaBk6NOqKA" ;
+            String cookieValue = "d#IhdRl5FF8Sel8n/E%zaeR/N#Vg6Pxe8cJQynh0Y44euRP5z$";
+            testClient.post()
+                    .uri("/api/v1/refresh-token")
+                    .header(HttpHeaders.AUTHORIZATION, tokenWithoutUserIdClaim)
+                    .cookie(user.getFgpCookie().getName(), cookieValue)
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class);
         }
 
@@ -188,7 +204,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie(user.getFgpCookie().getName(), user.getFgpCookie().getValue())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
@@ -202,7 +218,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .header(HttpHeaders.AUTHORIZATION, user.getRefreshToken())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
@@ -217,7 +233,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie("BAD_COOKIE_NAME", user.getFgpCookie().getValue())
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
@@ -232,7 +248,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .cookie(user.getFgpCookie().getName(), "BAD_COOKIE_VALUE")
                     .exchange()
                     .expectStatus().isUnauthorized()
-                    .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"))
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(respBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
@@ -248,7 +264,7 @@ public class AuthenticationControllerTest extends BaseTest {
                 .cookie(user.getFgpCookie().getName(), user.getFgpCookie().getValue())
                 .exchange()
                 .expectStatus().isOk()
-                .expectAll(resp -> resp.expectCookie().doesNotExist("__Secure-Fgp"));
+                .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         assertThat(authentication).isNull();

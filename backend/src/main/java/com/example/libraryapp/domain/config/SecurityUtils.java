@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class SecurityUtils {
+    public static final String ID_CLAIM_NAME = "userId";
     public static final String FINGERPRINT_NAME = "userFingerprint";
     public static final String FINGERPRINT_COOKIE_NAME = "myCookie";
     //    public static final String FINGERPRINT_COOKIE_NAME = "__Secure-Fgp";
@@ -46,5 +47,9 @@ public class SecurityUtils {
 
     public static String bytesToHex(byte[] bytes) {
         return DatatypeConverter.printHexBinary(bytes);
+    }
+
+    public static boolean isFgpCookieSecured() {
+        return FINGERPRINT_COOKIE_NAME.equals("__Secure-Fgp");
     }
 }
