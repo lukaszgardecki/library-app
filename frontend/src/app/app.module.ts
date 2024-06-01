@@ -18,6 +18,10 @@ import { PersonalDetailsComponent } from './profile-dashboard/personal-details/p
 import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borrowed-items.component';
 import { OnSiteItemsComponent } from './profile-dashboard/on-site-items/on-site-items.component';
+import { RequestedItemsCompletedComponent } from './profile-dashboard/requested-items/requested-items-completed/requested-items-completed.component';
+import { RequestedItemsPendingComponent } from './profile-dashboard/requested-items/requested-items-pending/requested-items-pending.component';
+import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-items/requested-items-unsent/requested-items-unsent.component';
+import { RequestedItemsComponent } from './profile-dashboard/requested-items/requested-items.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,11 @@ import { OnSiteItemsComponent } from './profile-dashboard/on-site-items/on-site-
     PersonalDetailsComponent,
     NotificationsComponent,
     BorrowedItemsComponent,
-    OnSiteItemsComponent
+    OnSiteItemsComponent,
+    RequestedItemsComponent,
+    RequestedItemsUnsentComponent,
+    RequestedItemsPendingComponent,
+    RequestedItemsCompletedComponent
   ],
   imports: [
     BrowserModule,

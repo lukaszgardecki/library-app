@@ -10,6 +10,10 @@ import { PersonalDetailsComponent } from './profile-dashboard/personal-details/p
 import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borrowed-items.component';
 import { OnSiteItemsComponent } from './profile-dashboard/on-site-items/on-site-items.component';
+import { RequestedItemsComponent } from './profile-dashboard/requested-items/requested-items.component';
+import { RequestedItemsCompletedComponent } from './profile-dashboard/requested-items/requested-items-completed/requested-items-completed.component';
+import { RequestedItemsPendingComponent } from './profile-dashboard/requested-items/requested-items-pending/requested-items-pending.component';
+import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-items/requested-items-unsent/requested-items-unsent.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -24,7 +28,16 @@ const routes: Routes = [
       {path: "details", component: PersonalDetailsComponent},
       {path: "notifications", component: NotificationsComponent},
       {path: "borrowed-items", component: BorrowedItemsComponent},
-      {path: "on-site-items", component: OnSiteItemsComponent}
+      {path: "on-site-items", component: OnSiteItemsComponent},
+      {
+        path: "requested-items", 
+        component: RequestedItemsComponent, 
+        children: [
+          {path: "unsent", component: RequestedItemsUnsentComponent},
+          {path: "pending", component: RequestedItemsPendingComponent},
+          {path: "completed", component: RequestedItemsCompletedComponent}
+        ]
+      }
     ]
   }
 ];
