@@ -20,6 +20,10 @@ import { UserHistoryComponent } from './profile-dashboard/user-history/user-hist
 import { FeesAccountedComponent } from './profile-dashboard/fees/fees-accounted/fees-accounted.component';
 import { FeesNotAccountedComponent } from './profile-dashboard/fees/fees-not-accounted/fees-not-accounted.component';
 import { FeesComponent } from './profile-dashboard/fees/fees.component';
+import { EditEmailComponent } from './profile-dashboard/edit/edit-email/edit-email.component';
+import { EditPasswordComponent } from './profile-dashboard/edit/edit-password/edit-password.component';
+import { EditPhoneNumberComponent } from './profile-dashboard/edit/edit-phone-number/edit-phone-number.component';
+import { EditComponent } from './profile-dashboard/edit/edit.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -53,6 +57,15 @@ const routes: Routes = [
         children: [
           {path: "not-accounted", component: FeesNotAccountedComponent},
           {path: "accounted", component: FeesAccountedComponent},
+        ]
+      },
+      {
+        path: "edit",
+        component: EditComponent,
+        children: [
+          {path: "password", component: EditPasswordComponent},
+          {path: "email", component: EditEmailComponent},
+          {path: "phone", component: EditPhoneNumberComponent},
         ]
       }
     ]
