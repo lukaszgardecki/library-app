@@ -24,6 +24,7 @@ import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-ite
 import { RequestedItemsComponent } from './profile-dashboard/requested-items/requested-items.component';
 import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
 import { RenewableItemsComponent } from './profile-dashboard/renewable-items/renewable-items.component';
+import { UserHistoryComponent } from './profile-dashboard/user-history/user-history.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { RenewableItemsComponent } from './profile-dashboard/renewable-items/ren
     RequestedItemsPendingComponent,
     RequestedItemsCompletedComponent,
     ReservationsComponent,
-    RenewableItemsComponent
+    RenewableItemsComponent,
+    UserHistoryComponent
   ],
   imports: [
     BrowserModule,
