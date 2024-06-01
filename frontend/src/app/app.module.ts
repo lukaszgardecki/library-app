@@ -22,6 +22,7 @@ import { RequestedItemsCompletedComponent } from './profile-dashboard/requested-
 import { RequestedItemsPendingComponent } from './profile-dashboard/requested-items/requested-items-pending/requested-items-pending.component';
 import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-items/requested-items-unsent/requested-items-unsent.component';
 import { RequestedItemsComponent } from './profile-dashboard/requested-items/requested-items.component';
+import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RequestedItemsComponent } from './profile-dashboard/requested-items/req
     RequestedItemsComponent,
     RequestedItemsUnsentComponent,
     RequestedItemsPendingComponent,
-    RequestedItemsCompletedComponent
+    RequestedItemsCompletedComponent,
+    ReservationsComponent
   ],
   imports: [
     BrowserModule,
