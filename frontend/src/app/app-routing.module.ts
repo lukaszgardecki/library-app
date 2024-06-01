@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
 import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
+import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borrowed-items.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
     component: ProfileDashboardComponent,
     children: [
       {path: "details", component: PersonalDetailsComponent},
-      {path: "notifications", component: NotificationsComponent}
+      {path: "notifications", component: NotificationsComponent},
+      {path: "borrowed-items", component: BorrowedItemsComponent}
     ]
   }
 ];
