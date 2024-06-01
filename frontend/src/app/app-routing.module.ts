@@ -9,6 +9,7 @@ import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard
 import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
 import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borrowed-items.component';
+import { OnSiteItemsComponent } from './profile-dashboard/on-site-items/on-site-items.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -22,7 +23,8 @@ const routes: Routes = [
     children: [
       {path: "details", component: PersonalDetailsComponent},
       {path: "notifications", component: NotificationsComponent},
-      {path: "borrowed-items", component: BorrowedItemsComponent}
+      {path: "borrowed-items", component: BorrowedItemsComponent},
+      {path: "on-site-items", component: OnSiteItemsComponent}
     ]
   }
 ];

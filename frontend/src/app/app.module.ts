@@ -17,6 +17,7 @@ import { AuthInterceptorProvider } from './services/custom.interceptor';
 import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
 import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borrowed-items.component';
+import { OnSiteItemsComponent } from './profile-dashboard/on-site-items/on-site-items.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { BorrowedItemsComponent } from './profile-dashboard/borrowed-items/borro
     ProfileDashboardComponent,
     PersonalDetailsComponent,
     NotificationsComponent,
-    BorrowedItemsComponent
+    BorrowedItemsComponent,
+    OnSiteItemsComponent
   ],
   imports: [
     BrowserModule,
