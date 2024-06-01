@@ -25,6 +25,9 @@ import { RequestedItemsComponent } from './profile-dashboard/requested-items/req
 import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
 import { RenewableItemsComponent } from './profile-dashboard/renewable-items/renewable-items.component';
 import { UserHistoryComponent } from './profile-dashboard/user-history/user-history.component';
+import { FeesAccountedComponent } from './profile-dashboard/fees/fees-accounted/fees-accounted.component';
+import { FeesNotAccountedComponent } from './profile-dashboard/fees/fees-not-accounted/fees-not-accounted.component';
+import { FeesComponent } from './profile-dashboard/fees/fees.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,10 @@ import { UserHistoryComponent } from './profile-dashboard/user-history/user-hist
     RequestedItemsCompletedComponent,
     ReservationsComponent,
     RenewableItemsComponent,
-    UserHistoryComponent
+    UserHistoryComponent,
+    FeesComponent,
+    FeesNotAccountedComponent,
+    FeesAccountedComponent
   ],
   imports: [
     BrowserModule,

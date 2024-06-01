@@ -17,6 +17,9 @@ import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-ite
 import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
 import { RenewableItemsComponent } from './profile-dashboard/renewable-items/renewable-items.component';
 import { UserHistoryComponent } from './profile-dashboard/user-history/user-history.component';
+import { FeesAccountedComponent } from './profile-dashboard/fees/fees-accounted/fees-accounted.component';
+import { FeesNotAccountedComponent } from './profile-dashboard/fees/fees-not-accounted/fees-not-accounted.component';
+import { FeesComponent } from './profile-dashboard/fees/fees.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -43,7 +46,15 @@ const routes: Routes = [
       },
       {path: "reservations", component: ReservationsComponent},
       {path: "renewable-items", component: RenewableItemsComponent},
-      {path: "history", component: UserHistoryComponent}
+      {path: "history", component: UserHistoryComponent},
+      {
+        path: "fees",
+        component: FeesComponent,
+        children: [
+          {path: "not-accounted", component: FeesNotAccountedComponent},
+          {path: "accounted", component: FeesAccountedComponent},
+        ]
+      }
     ]
   }
 ];
