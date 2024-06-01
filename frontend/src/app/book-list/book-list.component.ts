@@ -10,7 +10,10 @@ import { Pair } from '../shared/pair';
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.css'
+  styleUrls: [
+    './book-list.component.css',
+    '../../bootstrap-fragments.css'
+  ]
 })
 export class BookListComponent implements ListComponent, OnInit {
   page: Page = new Page();

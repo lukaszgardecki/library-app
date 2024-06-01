@@ -18,6 +18,7 @@
       <ng-template #loggedIn>
         <ul>
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
+          <li><a [routerLink]="['/userprofile']">Profile</a></li>
           <li><a [routerLink]="['']" (click)="logout()">Logout</a></li>
         </ul>
       </ng-template>
@@ -51,7 +52,6 @@
     <ul class="clear">
       <li ngClass="{'active': isLinkActive}"><a [routerLink]="['/']">Home</a></li>
       <li><a [routerLink]="['/books']">Books</a></li>
-      <li><a [routerLink]="['/userprofile']">Profile</a></li>
     </ul>
   </nav>
 </div>
