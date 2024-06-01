@@ -15,6 +15,7 @@ import { RequestedItemsCompletedComponent } from './profile-dashboard/requested-
 import { RequestedItemsPendingComponent } from './profile-dashboard/requested-items/requested-items-pending/requested-items-pending.component';
 import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-items/requested-items-unsent/requested-items-unsent.component';
 import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
+import { RenewableItemsComponent } from './profile-dashboard/renewable-items/renewable-items.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -39,7 +40,8 @@ const routes: Routes = [
           {path: "completed", component: RequestedItemsCompletedComponent},
         ]
       },
-      {path: "reservations", component: ReservationsComponent}
+      {path: "reservations", component: ReservationsComponent},
+      {path: "renewable-items", component: RenewableItemsComponent}
     ]
   }
 ];

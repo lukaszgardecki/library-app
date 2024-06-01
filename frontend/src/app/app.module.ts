@@ -23,6 +23,7 @@ import { RequestedItemsPendingComponent } from './profile-dashboard/requested-it
 import { RequestedItemsUnsentComponent } from './profile-dashboard/requested-items/requested-items-unsent/requested-items-unsent.component';
 import { RequestedItemsComponent } from './profile-dashboard/requested-items/requested-items.component';
 import { ReservationsComponent } from './profile-dashboard/reservations/reservations.component';
+import { RenewableItemsComponent } from './profile-dashboard/renewable-items/renewable-items.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ReservationsComponent } from './profile-dashboard/reservations/reservat
     RequestedItemsUnsentComponent,
     RequestedItemsPendingComponent,
     RequestedItemsCompletedComponent,
-    ReservationsComponent
+    ReservationsComponent,
+    RenewableItemsComponent
   ],
   imports: [
     BrowserModule,
