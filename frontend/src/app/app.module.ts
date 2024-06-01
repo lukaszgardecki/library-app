@@ -15,6 +15,7 @@ import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptorProvider } from './services/custom.interceptor';
 import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
+import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { PersonalDetailsComponent } from './profile-dashboard/personal-details/p
     FooterComponent,
     LoginComponent,
     ProfileDashboardComponent,
-    PersonalDetailsComponent
+    PersonalDetailsComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

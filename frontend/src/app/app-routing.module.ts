@@ -7,6 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard.component';
 import { PersonalDetailsComponent } from './profile-dashboard/personal-details/personal-details.component';
+import { NotificationsComponent } from './profile-dashboard/notifications/notifications.component';
 
 const routes: Routes = [
   {path: "", component: HomePageComponent},
@@ -18,7 +19,8 @@ const routes: Routes = [
     path: "userprofile",
     component: ProfileDashboardComponent,
     children: [
-      {path: "details", component: PersonalDetailsComponent}
+      {path: "details", component: PersonalDetailsComponent},
+      {path: "notifications", component: NotificationsComponent}
     ]
   }
 ];
