@@ -33,6 +33,7 @@ import { EditPasswordComponent } from './profile-dashboard/edit/edit-password/ed
 import { EditPhoneNumberComponent } from './profile-dashboard/edit/edit-phone-number/edit-phone-number.component';
 import { EditComponent } from './profile-dashboard/edit/edit.component';
 import { NullPlaceholderPipe } from './shared/pipes/null-placeholder.pipe';
+import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { NullPlaceholderPipe } from './shared/pipes/null-placeholder.pipe';
     EditPasswordComponent,
     EditEmailComponent,
     EditPhoneNumberComponent,
-    NullPlaceholderPipe
+    NullPlaceholderPipe,
+    EnumNamePipe
   ],
   imports: [
     BrowserModule,
