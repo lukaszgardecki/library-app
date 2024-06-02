@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.auth;
 
+import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.config.AuthTokens;
 import com.example.libraryapp.domain.config.Fingerprint;
@@ -129,7 +130,7 @@ public class AuthenticationService {
 
     private LibraryCard createMemberLibraryCard(Member member) {
         return LibraryCard.builder()
-                .active(true)
+                .status(CardStatus.ACTIVE)
                 .barcode(LibraryGenerator.generateCardNum(member.getId()))
                 .issuedAt(LocalDateTime.now())
                 .build();

@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.card.dto;
 
+import com.example.libraryapp.domain.card.CardStatus;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -14,5 +15,5 @@ public class CardDto extends RepresentationModel<CardDto> {
     private Long id;
     private String barcode;
     private LocalDateTime issuedAt;
-    private boolean active;
+    private CardStatus status;
 }

@@ -11,7 +11,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -50,10 +49,11 @@ public class TokenService {
         if (refreshTokenRepository.existsValidToken(token)) return true;
         else throw new JwtException(Message.ACCESS_DENIED);
     }
-    public AuthTokens generateAuth(UserDetails userDetails) {
+    public AuthTokens generateAuth(Member userDetails) {
         Fingerprint fingerprint = new Fingerprint();
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put(SecurityUtils.FINGERPRINT_NAME, fingerprint.getHash());
+        extraClaims.put(SecurityUtils.ID_CLAIM_NAME, userDetails.getId());
         String accessToken = generator.generateAccessToken(extraClaims, userDetails);
         String refreshToken = generator.generateRefreshToken(extraClaims, userDetails);
         return new AuthTokens(accessToken, refreshToken, fingerprint);

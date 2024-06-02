@@ -19,5 +19,6 @@ public class LibraryCard {
     private Long id;
     private String barcode;
     private LocalDateTime issuedAt;
-    private boolean active;
+    @Enumerated(EnumType.STRING)
+    private CardStatus status;
 }

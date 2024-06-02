@@ -1,13 +1,13 @@
 --liquibase formatted sql
 --changeset lukas:0008
 insert into
-    person(first_name, last_name, phone, street_address, city, state, zip_code, country)
+    person(first_name, last_name, gender, phone, pesel, nationality, date_of_birth, mothers_name, fathers_name, street_address, city, state, zip_code, country)
 values
-    ('Kasia', 'Lubiczytać', '111-111-111', 'Street 1', 'City 1', 'State 1', 'Zip 1', 'Country 1'),
-    ('Kamil', 'Nielubi', '222-222-222', 'Street 2', 'City 2', 'State 2', 'Zip 2', 'Country 2'),
-    ('Adam', 'Mickiewicz', '333-333-333', 'Street 3', 'City 3', 'State 3', 'Zip 3', 'Country 3'),
-    ('Ambroży',	'Kleks', '444-444-444', 'Street 4', 'City 4', 'State 4', 'Zip 4', 'Country 4'),
-    ('Papa',	'Smerf',	'555-555-555', 'Street 5', 'City 5', 'State 5', 'Zip 5', 'Country 5'),
-    ('Lady',	'Gaga',	'666-666-666', 'Street 6', 'City 6', 'State 6', 'Zip 6', 'Country 6'),
-    ('Mietek',	'Żul',	'777-777-777', 'Street 7', 'City 7', 'State 7', 'Zip 7', 'Country 7'),
-    ('Ojciec',	'Mateusz',	'888-888-888', 'Street 8', 'City 8', 'State 8', 'Zip 8', 'Country 8');
+    ('Kasia', 'Lubiczytać', 'FEMALE', '111-111-111', '91011212345', 'Angielskie', '1991-01-12', 'Julia', 'Jan', 'Konopacka 2d/23', 'Poznań', 'Śląsk', '11-111', 'Anglia'),
+    ('Kamil', 'Nielubi', 'MALE', '222-222-222', '92021312345', 'Polskie', '1992-02-13', 'Agnieszka', 'Zygmunt', 'Adamskiego 5', 'Warszawa', 'Mazowsze', '22-222', 'Polska'),
+    ('Adam', 'Mickiewicz', 'OTHER', '333-333-333', '93031412345', 'Hiszpańskie', '1993-03-14', 'Anna', 'Przemysław', 'Witosa 23/402', 'Katowice', 'Śląsk', '33-333', 'Hiszpania'),
+    ('Ambroży',	'Kleks', 'MALE', '444-444-444', '94041512345', 'Niemieckie', '1994-04-15', 'Katarzyna', 'Dawid', 'Al. Korfantego 4b/2', 'Chorzów', 'Warmińsko-Mazurskie', '44-444', 'Niemcy'),
+    ('Papa',	'Smerf', 'MALE',	'555-555-555', '95051612345', 'Chińskie', '1995-05-16', 'Anna', 'Łukasz', 'Powstańców Śląskich 34', 'Białystok', 'Lubelskie', '55-555', 'Chiny'),
+    ('Lady',	'Gaga', 'MALE',	'666-666-666', '96061712345', 'Japońskie', '1996-06-17', 'Julita', 'Jakub', 'Kwiatowa 3', 'Warszawa', 'Kujawsko-Pomorskie', '66-666', 'Japonia'),
+    ('Mietek',	'Żul', 'MALE',	'777-777-777', '97071812345', 'Francuskie', '1997-07-18', 'Dżesika', 'Andrzej', 'Ptasia 34', 'Most', 'Małopolska', '77-777', 'Francja'),
+    ('Ojciec',	'Mateusz', 'MALE',	'888-888-888', '98081912345', 'Rosyjskie', '1998-08-19', 'Aneta', 'Dobromir', 'Barlickiego 13/31', 'Wielkopolska', 'State 8', '88-888', 'Rosja');

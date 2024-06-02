@@ -1,5 +1,6 @@
 package com.example.libraryapp.web.servicedesk;
 
+import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.dto.CardDto;
 import com.example.libraryapp.domain.exception.ErrorMessage;
 import com.example.libraryapp.management.Message;
@@ -82,7 +83,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000007");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-27 16:07:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(true);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.ACTIVE);
         }
 
         @Test
@@ -95,7 +96,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000007");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-27 16:07:32", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(true);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.ACTIVE);
         }
 
         @Test
@@ -142,7 +143,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000006");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-26 15:06:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(true);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.ACTIVE);
         }
 
         @Test
@@ -155,7 +156,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000006");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-26 15:06:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(true);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.ACTIVE);
         }
 
         @Test
@@ -198,7 +199,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000005");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-25 14:05:56", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(false);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.INACTIVE);
         }
 
         @Test
@@ -211,7 +212,7 @@ public class CardControllerTest extends BaseTest {
             assertThat(returnedCard.getId()).isEqualTo(cardId);
             assertThat(returnedCard.getBarcode()).isEqualTo("540100000005");
             assertThat(returnedCard.getIssuedAt()).isEqualTo(LocalDateTime.parse("2023-05-25 14:05:56", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            assertThat(returnedCard.isActive()).isEqualTo(false);
+            assertThat(returnedCard.getStatus()).isEqualTo(CardStatus.INACTIVE);
         }
 
         @Test

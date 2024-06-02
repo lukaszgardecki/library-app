@@ -15,6 +15,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="email" type="VARCHAR(255)">
                 <constraints unique="true"/>
             </column>
+            <column name="status" type="VARCHAR(50)" />
             <column name="person_id" type="BIGINT">
                 <constraints nullable="false"
                              foreignKeyName="fk_member_person_id"

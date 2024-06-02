@@ -20,6 +20,7 @@ public class TokenValidator {
             && hasSubject(token)
             && hasIssuer(token)
             && hasIssuedDate(token)
+            && hasUserID(token)
             && !isExpired(token)
             && !isBeforeDate(token);
     }
@@ -61,6 +62,10 @@ public class TokenValidator {
 
     private boolean hasIssuedDate(String token) {
         return !extractBodyClaims(token, Claims::getIssuedAt).toString().isBlank();
+    }
+
+    private boolean hasUserID(String token) {
+        return extractAllClaims(token).getBody().containsKey(SecurityUtils.ID_CLAIM_NAME);
     }
 
     private boolean isExpired(String token) {

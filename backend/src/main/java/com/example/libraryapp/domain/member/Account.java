@@ -16,7 +16,9 @@ import java.util.List;
 public abstract class Account implements UserDetails {
     private String password;
     private String email;
-//    private AccountStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private AccountStatus status;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Person person;
@@ -45,12 +47,12 @@ public abstract class Account implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !status.equals(AccountStatus.INACTIVE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !status.equals(AccountStatus.SUSPENDED);
     }
 
     @Override
@@ -60,6 +62,6 @@ public abstract class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return status.equals(AccountStatus.ACTIVE);
     }
 }

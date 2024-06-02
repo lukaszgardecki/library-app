@@ -21,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -72,7 +74,11 @@ public class CustomExceptionHandler {
         return new ErrorMessage(HttpStatus.UNAUTHORIZED,ex, request);
     }
 
-    @ExceptionHandler(ForbiddenAccessException.class)
+    @ExceptionHandler({
+            ForbiddenAccessException.class,
+            LockedException.class,
+            DisabledException.class
+    })
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorMessage userHasNoAccessToData(RuntimeException ex, WebRequest request) {
         return new ErrorMessage(HttpStatus.FORBIDDEN,ex, request);

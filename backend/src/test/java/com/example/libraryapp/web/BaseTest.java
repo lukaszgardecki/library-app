@@ -5,6 +5,7 @@ import com.example.libraryapp.TestHelper;
 import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.auth.LoginRequest;
 import com.example.libraryapp.domain.auth.LoginResponse;
+import com.example.libraryapp.domain.config.SecurityUtils;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -67,7 +68,7 @@ public abstract class BaseTest {
 
         Cookie fingerprint = response.getResponseCookies().values().stream()
                 .flatMap(List::stream)
-                .filter(cookie -> "__Secure-Fgp".equals(cookie.getName()))
+                .filter(cookie -> SecurityUtils.FINGERPRINT_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(el -> new Cookie(el.getName(), el.getValue()))
                 .orElseThrow();
