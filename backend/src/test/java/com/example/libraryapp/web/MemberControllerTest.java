@@ -2,6 +2,8 @@ package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.exception.ErrorMessage;
+import com.example.libraryapp.domain.member.AccountStatus;
+import com.example.libraryapp.domain.member.Gender;
 import com.example.libraryapp.domain.member.dto.MemberDto;
 import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
@@ -68,6 +70,14 @@ public class MemberControllerTest extends BaseTest {
             assertThat(returnedUser.getTotalBooksBorrowed()).isEqualTo(5);
             assertThat(returnedUser.getTotalBooksReserved()).isEqualTo(1);
             assertThat(returnedUser.getCharge()).isEqualTo(new BigDecimal("0.00"));
+            assertThat(returnedUser.getGender()).isEqualTo(Gender.OTHER.name());
+            assertThat(returnedUser.getDateOfBirth()).isEqualTo("1993-03-14");
+            assertThat(returnedUser.getStatus()).isEqualTo(AccountStatus.CLOSED);
+            assertThat(returnedUser.getPhoneNumber()).isEqualTo("333-333-333");
+            assertThat(returnedUser.getPesel()).isEqualTo("93031412345");
+            assertThat(returnedUser.getNationality()).isEqualTo("Hiszpańskie");
+            assertThat(returnedUser.getParentsNames()).isEqualTo("Anna, Przemysław");
+            assertThat(returnedUser.getAddress()).isEqualTo("Witosa 23/402, 33-333 Katowice, Śląsk, Hiszpania");
             assertThat(returnedUser.getCard().getBarcode()).isEqualTo(Constants.LIBRARY_NUM + Constants.CARD_START_CODE + "00000003");
         }
 

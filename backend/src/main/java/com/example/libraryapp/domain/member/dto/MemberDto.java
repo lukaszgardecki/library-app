@@ -15,7 +15,14 @@ public class MemberDto extends RepresentationModel<MemberDto> {
     private Long id;
     private String firstName;
     private String lastName;
+    private String gender;
+    private String address;
+    private LocalDate dateOfBirth;
     private String email;
+    private String phoneNumber;
+    private String pesel;
+    private String nationality;
+    private String parentsNames;
     private LibraryCard card;
     private LocalDate dateOfMembership;
     private int totalBooksBorrowed;
