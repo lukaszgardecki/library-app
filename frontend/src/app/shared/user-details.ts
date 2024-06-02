@@ -10,4 +10,5 @@ export class UserDetails {
     totalBooksBorrowed: number;
     totalBooksReserved: number;
     charge: BigInt;
+    status: string;
 }

@@ -72,6 +72,45 @@ public class AuthenticationControllerTest extends BaseTest {
         }
 
         @Test
+        @DisplayName("Should not authenticate a user if their account is SUSPENDED.")
+        void shouldNotAuthenticateAUserIfTheirAccountIsSuspended() {
+            LoginRequest userCredentials = new LoginRequest();
+            userCredentials.setUsername("a.kleks@gmail.com");
+            userCredentials.setPassword("userpass2");
+            ErrorMessage respBody2 = client.testRequest(POST, "/authenticate", userCredentials, FORBIDDEN)
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(respBody2.getMessage()).isEqualTo("User account is locked");
+        }
+
+        @Test
+        @DisplayName("Should not authenticate a user if their account is CLOSED.")
+        void shouldNotAuthenticateAUserIfTheirAccountIsClosed() {
+            LoginRequest userCredentials = new LoginRequest();
+            userCredentials.setUsername("a.mickiewicz@gmail.com");
+            userCredentials.setPassword("userpass1");
+            ErrorMessage respBody2 = client.testRequest(POST, "/authenticate", userCredentials, FORBIDDEN)
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(respBody2.getMessage()).isEqualTo("User is disabled");
+        }
+
+        @Test
+        @DisplayName("Should not authenticate a user if their account is INACTIVE.")
+        void shouldNotAuthenticateAUserIfTheirAccountIsInactive() {
+            LoginRequest userCredentials = new LoginRequest();
+            userCredentials.setUsername("o.mateusz@gmail.com");
+            userCredentials.setPassword("userpass6");
+            ErrorMessage respBody2 = client.testRequest(POST, "/authenticate", userCredentials, FORBIDDEN)
+                    .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(respBody2.getMessage()).isEqualTo("User is disabled");
+        }
+
+        @Test
         @DisplayName("Should not authenticate a user if a request body is missing.")
         void shouldNotAuthenticateAUserIfRequestBodyIsEmpty() {
             ErrorMessage responseBody = client.testRequest(POST, "/authenticate", BAD_REQUEST)

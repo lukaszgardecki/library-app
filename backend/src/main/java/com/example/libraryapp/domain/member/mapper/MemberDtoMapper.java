@@ -16,6 +16,7 @@ public class MemberDtoMapper {
         dto.setTotalBooksBorrowed(member.getTotalBooksBorrowed());
         dto.setTotalBooksReserved(member.getTotalBooksReserved());
         dto.setCharge(member.getCharge());
+        dto.setStatus(member.getStatus());
         return dto;
     }
 }

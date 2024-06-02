@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.member.dto;
 
 import com.example.libraryapp.domain.card.LibraryCard;
+import com.example.libraryapp.domain.member.AccountStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -20,4 +21,5 @@ public class MemberDto extends RepresentationModel<MemberDto> {
     private int totalBooksBorrowed;
     private int totalBooksReserved;
     private BigDecimal charge;
+    private AccountStatus status;
 }
