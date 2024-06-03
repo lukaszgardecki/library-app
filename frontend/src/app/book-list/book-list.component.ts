@@ -52,10 +52,15 @@ export class BookListComponent implements ListComponent, OnInit {
 
   getAllByParams(queryParams?: Params) {
     this.booksService.getAllBooks(queryParams).subscribe(p => {
-      this.page = p.page;
-      this.books = p._embedded.bookDtoList;
-      this.links = p._links;
-    });
+      if (p._embedded && p._embedded.bookDtoList !== null) {
+          this.page = p.page;
+          this.books = p._embedded.bookDtoList;
+          this.links = p._links;
+      } else {
+          const newParams = this.updateQueryParams("page", 0);
+          this.getAllByParams(newParams);
+      }
+    })
   }
 
   getAllLanguages() {
