@@ -13,17 +13,17 @@ import { PdfService } from '../../services/pdf.service';
 export class BorrowedItemsComponent implements ProfileSetting, OnInit {
   name: string = "Borrowed items";
   routerLink: string = "borrowed-items";
-  borrowedItems: Array<Lending>;
+  lendings: Array<Lending>;
   lendingService = inject(LendingService);
   authService = inject(AuthenticationService);
   pdfService = inject(PdfService);
 
   ngOnInit(): void {
     const userId = this.authService.currentUserId;
-    this.lendingService.getLendingByUserId(userId).subscribe({
-      next: items => this.borrowedItems = items._embedded.lendingDtoList
+    this.lendingService.getLendingsByUserId(userId).subscribe({
+      next: items => this.lendings = items._embedded.lendingDtoList
     });
-    console.log(this.borrowedItems);
+    console.log(this.lendings);
   }
 
   public saveAsPDF(): void {
