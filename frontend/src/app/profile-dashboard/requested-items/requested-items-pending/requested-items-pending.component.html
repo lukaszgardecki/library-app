@@ -1,5 +1,5 @@
 <h1>{{name}}</h1>
-<ng-container *ngIf="pendingReservations; else lack">
+<ng-container *ngIf="pendingReservations && pendingReservations.length > 0; else lack">
     <button class="save-to-file" (click)="saveAsPDF()">Save to file</button>
     <table id="table">
         <thead>
@@ -16,4 +16,4 @@
         </tbody>
     </table>
 </ng-container>
-<ng-template #lack>Brak książek.</ng-template>
+<ng-template #lack>Lack of documents</ng-template>
