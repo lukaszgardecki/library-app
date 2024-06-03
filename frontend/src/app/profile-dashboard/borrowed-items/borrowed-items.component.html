@@ -1,7 +1,7 @@
 <h1>{{name}}</h1>
 <ng-container *ngIf="borrowedItems; else lack">
-    <button class="save-to-file">Save to file</button>
-    <table>
+    <button class="save-to-file" (click)="saveAsPDF()">Save to file</button>
+    <table id="table">
         <thead>
             <tr>
                 <th>#</th>
