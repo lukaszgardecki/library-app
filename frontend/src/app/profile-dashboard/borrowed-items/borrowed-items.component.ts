@@ -21,9 +21,12 @@ export class BorrowedItemsComponent implements ProfileSetting, OnInit {
   ngOnInit(): void {
     const userId = this.authService.currentUserId;
     this.lendingService.getLendingsByUserId(userId).subscribe({
-      next: items => this.lendings = items._embedded.lendingDtoList
+      next: lendingPage => {
+        if (lendingPage._embedded) {
+          this.lendings = lendingPage._embedded.lendingDtoList;
+        } 
+      }
     });
-    console.log(this.lendings);
   }
 
   public saveAsPDF(): void {

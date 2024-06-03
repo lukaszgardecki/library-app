@@ -1,0 +1,28 @@
+h2 {
+    margin-bottom: 20px;
+}
+
+.save-to-file {
+    float: right;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: var(--main-color);
+    font-weight: bold;
+    border: 2px solid var(--main-color);
+    cursor: pointer;
+}
+
+.save-to-file:hover {
+    color: #fff;
+    background-color: var(--main-color);
+}
+
+.c2 {
+    width: 100%;
+}
+
+th {
+    text-align: center;
+    vertical-align: middle;
+}
