@@ -14,5 +14,6 @@ export class ConfigService {
 
 export const AUTHORIZED_ENDPOINTS = [
   "/refresh-token",
-  "/members"
+  "/members",
+  "/lendings"
 ];
