@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.lending.LendingService;
+import com.example.libraryapp.domain.lending.LendingStatus;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,12 @@ public class LendingController {
     @GetMapping
     @RoleAuthorization({ADMIN, USER})
     public ResponseEntity<PagedModel<LendingDto>> getAllLendings(
-            @RequestParam(required = false) Long memberId, Pageable pageable
+            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) LendingStatus status,
+            Pageable pageable
     ) {
         authService.checkIfAdminOrDataOwnerRequested(memberId);
-        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, pageable);
+        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable);
         return ResponseEntity.ok(collectionModel);
     }
 

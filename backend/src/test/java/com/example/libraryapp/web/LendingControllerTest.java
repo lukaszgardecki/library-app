@@ -37,10 +37,6 @@ public class LendingControllerTest extends BaseTest {
             client.testRequest(GET, "/lendings", admin, OK)
                     .expectBody()
                     .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(8);
-
-            client.testRequest(GET, "/lendings?memberId=1", admin, OK)
-                    .expectBody()
-                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(2);
         }
 
         @Test
@@ -56,6 +52,22 @@ public class LendingControllerTest extends BaseTest {
         }
 
         @Test
+        @DisplayName("Should return all member's lendings if ADMIN requested.")
+        void shouldReturnAllUsersLendingsIfAdminRequested() {
+            client.testRequest(GET, "/lendings?memberId=1", admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(2);
+
+            client.testRequest(GET, "/lendings?memberId=3&status=CURRENT", admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(5);
+
+            client.testRequest(GET, "/lendings?status=COMPLETED", admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(1);
+        }
+
+        @Test
         @DisplayName("Should return all member's lendings if USER requested and does own this data.")
         void shouldReturnAllUsersLendingsIfUserRequestedAndDoesOwnThisData() {
             client.testRequest(GET, "/lendings?memberId=2", user, OK)
@@ -67,10 +79,9 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not return all lendings if ADMIN requested and user ID doesn't exist.")
         void shouldNotReturnAllUsersLendingsIfUserIdDoesNotExist() {
             long memberId = 99999999;
-            ErrorMessage responseBody1 = client.testRequest(GET, "/lendings?memberId=" + memberId, admin, NOT_FOUND)
-                    .expectBody(ErrorMessage.class)
-                    .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            client.testRequest(GET, "/lendings?memberId=" + memberId, admin, OK)
+                    .expectBody()
+                    .jsonPath("_embedded").doesNotExist();
 
             client.testRequest(GET, "/lendings?memberId=badrequest", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class);

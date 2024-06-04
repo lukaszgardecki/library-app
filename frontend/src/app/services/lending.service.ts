@@ -18,7 +18,7 @@ export class LendingService {
     this.baseURL = `${baseURL}/lendings`;
   }
 
-  getLendingsByUserId(id: number): Observable<LendingsPage> {
-    return this.http.get<LendingsPage>(`${this.baseURL}?memberId=${id}`, { withCredentials: true });
+  getCurrentLendingsByUserId(id: number): Observable<LendingsPage> {
+    return this.http.get<LendingsPage>(`${this.baseURL}?memberId=${id}&status=CURRENT`, { withCredentials: true });
   }
 }
