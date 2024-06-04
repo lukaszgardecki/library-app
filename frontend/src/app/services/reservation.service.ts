@@ -19,6 +19,10 @@ export class ReservationService {
   }
 
   getPendingLendingsByUserId(id: number): Observable<ReservationsPage> {
-    return this.http.get<ReservationsPage>(`${this.baseURL}?memberId=${id}`, { withCredentials: true });
+    return this.http.get<ReservationsPage>(`${this.baseURL}?memberId=${id}&status=PENDING`, { withCredentials: true });
+  }
+
+  getReadyLendingsByUserId(id: number): Observable<ReservationsPage> {
+    return this.http.get<ReservationsPage>(`${this.baseURL}?memberId=${id}&status=READY`, { withCredentials: true });
   }
 }

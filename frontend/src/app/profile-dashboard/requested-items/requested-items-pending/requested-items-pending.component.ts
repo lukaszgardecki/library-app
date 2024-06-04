@@ -23,7 +23,7 @@ export class RequestedItemsPendingComponent implements ProfileSetting, OnInit {
     this.reservationService.getPendingLendingsByUserId(userId).subscribe({
       next: reservationPage => {
         if (reservationPage._embedded) {
-          this.pendingReservations = reservationPage._embedded.reservationResponseList.filter(res => res.status === "PENDING");
+          this.pendingReservations = reservationPage._embedded.reservationResponseList;
         }
       }
     });

@@ -34,10 +34,6 @@ public class ReservationControllerTest extends BaseTest {
             client.testRequest(GET, "/reservations", admin, OK)
                     .expectBody()
                     .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(16);
-
-            client.testRequest(GET, "/reservations?memberId=2", admin, OK)
-                    .expectBody()
-                    .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(2);
         }
 
         @Test
@@ -52,6 +48,21 @@ public class ReservationControllerTest extends BaseTest {
                     .jsonPath("$.page.number").isEqualTo(1);
         }
 
+        @ParameterizedTest
+        @DisplayName("Should return all member's reservations if ADMIN requested.")
+        @CsvSource({
+                "memberId=2, 2",
+                "status=PENDING, 4",
+                "status=READY, 4",
+                "status=COMPLETED, 8",
+                "memberId=3&status=COMPLETED, 5",
+        })
+        void shouldReturnAllUsersReservationsIfAdminRequested(String params, int expectedValue) {
+            client.testRequest(GET, "/reservations?" + params, admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(expectedValue);
+        }
+
         @Test
         @DisplayName("Should return all user's reservations if USER requested and does own this data.")
         void shouldReturnAllUsersReservationsIfUserRequestedAndDoesOwnThisData() {
@@ -64,10 +75,9 @@ public class ReservationControllerTest extends BaseTest {
         @DisplayName("Should not return member's reservations if ADMIN requested and member ID doesn't exist.")
         void shouldNotReturnMembersReservationsIfMemberIdDoesNotExist() {
             long memberId = 99999999;
-            ErrorMessage responseBody1 = client.testRequest(GET, "/reservations?memberId=" + memberId, admin, NOT_FOUND)
-                    .expectBody(ErrorMessage.class)
-                    .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            client.testRequest(GET, "/reservations?memberId=" + memberId, admin, OK)
+                    .expectBody()
+                    .jsonPath("_embedded").doesNotExist();
 
             client.testRequest(GET, "/reservations?memberId=badrequest", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class);

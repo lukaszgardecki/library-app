@@ -3,6 +3,7 @@ package com.example.libraryapp.web;
 import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.reservation.ReservationService;
+import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,12 @@ public class ReservationController {
     @GetMapping
     @RoleAuthorization({USER, ADMIN})
     public ResponseEntity<PagedModel<ReservationResponse>> getAllReservations(
-            @RequestParam(required = false) Long memberId, Pageable pageable
+            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) ReservationStatus status,
+            Pageable pageable
     ) {
         authService.checkIfAdminOrDataOwnerRequested(memberId);
-        PagedModel<ReservationResponse> collectionModel = reservationService.findReservations(memberId, pageable);
+        PagedModel<ReservationResponse> collectionModel = reservationService.findReservations(memberId, status, pageable);
         return ResponseEntity.ok(collectionModel);
     }
 

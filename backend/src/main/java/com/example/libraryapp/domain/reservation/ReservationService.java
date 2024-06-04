@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,14 +42,17 @@ public class ReservationService {
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
 
-    public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
-        PagedModel<ReservationResponse> collectionModel;
-        if (memberId != null) {
-            collectionModel = findReservationsByUserId(memberId, pageable);
-        } else {
-            collectionModel = findAllReservations(pageable);
-        }
-        return collectionModel;
+    public PagedModel<ReservationResponse> findReservations(Long memberId, ReservationStatus status, Pageable pageable) {
+        List<Reservation> reservations = reservationRepository.findAll().stream()
+                .filter(res -> memberId == null || Objects.equals(res.getMember().getId(), memberId))
+                .filter(res -> status == null || res.getStatus() == status)
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), reservations.size());
+        List<Reservation> paginatedList = reservations.subList(start, end);
+        Page<Reservation> reservationPage = new PageImpl<>(paginatedList, pageable, reservations.size());
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
     public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
@@ -111,23 +115,6 @@ public class ReservationService {
         );
         notificationService.sendNotification(details);
         return reservationModelAssembler.toModel(reservation);
-    }
-
-    private PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
-        Page<Reservation> reservationPage = reservationRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
-    }
-
-    private PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
-        Member member = findMemberById(memberId);
-        List<Reservation> reservationList = reservationRepository.findAllByMemberId(member.getId());
-        Page<Reservation> reservationPage;
-        if (pageable.isUnpaged()) {
-            reservationPage = new PageImpl<>(reservationList);
-        } else {
-            reservationPage = new PageImpl<>(reservationList, pageable, reservationList.size());
-        }
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
     private BookItem findBookByBarcode(String bookBarcode) {

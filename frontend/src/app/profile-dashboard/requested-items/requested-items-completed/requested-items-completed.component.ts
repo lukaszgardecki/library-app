@@ -20,10 +20,10 @@ export class RequestedItemsCompletedComponent implements ProfileSetting, OnInit 
 
   ngOnInit(): void {
     const userId = this.authService.currentUserId;
-    this.reservationService.getPendingLendingsByUserId(userId).subscribe({
+    this.reservationService.getReadyLendingsByUserId(userId).subscribe({
       next: reservationPage => {
         if (reservationPage._embedded) {
-          this.completedReservations = reservationPage._embedded.reservationResponseList.filter(res => res.status === "READY");
+          this.completedReservations = reservationPage._embedded.reservationResponseList;
         }
       }
     });
