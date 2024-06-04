@@ -20,10 +20,10 @@ export class BorrowedItemsComponent implements ProfileSetting, OnInit {
 
   ngOnInit(): void {
     const userId = this.authService.currentUserId;
-    this.lendingService.getLendingsByUserId(userId).subscribe({
+    this.lendingService.getCurrentLendingsByUserId(userId).subscribe({
       next: lendingPage => {
         if (lendingPage._embedded) {
-          this.lendings = lendingPage._embedded.lendingDtoList;
+          this.lendings = lendingPage._embedded.lendingDtoList.filter(item => item.bookItem.isReferenceOnly === false);
         } 
       }
     });
