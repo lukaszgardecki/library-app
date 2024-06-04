@@ -27,7 +27,7 @@ public class ReservationModelAssembler extends RepresentationModelAssemblerSuppo
         ReservationResponse reservationResponse = ReservationDtoMapper.map(entity);
         reservationResponse.add(linkTo(methodOn(ReservationController.class).getReservationById(entity.getId())).withSelfRel());
         if (entity.getMember() != null) {
-            reservationResponse.add(linkTo(methodOn(ReservationController.class).getAllReservations(entity.getMember().getId(), null)).withRel(IanaLinkRelations.COLLECTION));
+            reservationResponse.add(linkTo(methodOn(ReservationController.class).getAllReservations(entity.getMember().getId(), null, null)).withRel(IanaLinkRelations.COLLECTION));
         }
         return reservationResponse;
     }
@@ -36,7 +36,7 @@ public class ReservationModelAssembler extends RepresentationModelAssemblerSuppo
     @NonNull
     public CollectionModel<ReservationResponse> toCollectionModel(@NonNull Iterable<? extends Reservation> entities) {
         CollectionModel<ReservationResponse> collectionModel = super.toCollectionModel(entities);
-        collectionModel.add(linkTo(methodOn(ReservationController.class).getAllReservations(null, null)).withSelfRel());
+        collectionModel.add(linkTo(methodOn(ReservationController.class).getAllReservations(null, null, null)).withSelfRel());
         return collectionModel;
     }
 }

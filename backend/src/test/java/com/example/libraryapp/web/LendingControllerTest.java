@@ -76,7 +76,7 @@ public class LendingControllerTest extends BaseTest {
         }
 
         @Test
-        @DisplayName("Should not return all lendings if ADMIN requested and user ID doesn't exist.")
+        @DisplayName("Should not return member's lendings if ADMIN requested and user ID doesn't exist.")
         void shouldNotReturnAllUsersLendingsIfUserIdDoesNotExist() {
             long memberId = 99999999;
             client.testRequest(GET, "/lendings?memberId=" + memberId, admin, OK)
