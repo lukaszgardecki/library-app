@@ -24,7 +24,7 @@ public class LendingModelAssembler extends RepresentationModelAssemblerSupport<L
     public LendingDto toModel(@NonNull Lending lending) {
         LendingDto checkoutModel = LendingDtoMapper.map(lending);
         checkoutModel.add(linkTo(methodOn(LendingController.class).getLendingById(lending.getId())).withSelfRel());
-        checkoutModel.add(linkTo(methodOn(LendingController.class).getAllLendings(lending.getMember().getId(), null)).withRel(IanaLinkRelations.COLLECTION));
+        checkoutModel.add(linkTo(methodOn(LendingController.class).getAllLendings(lending.getMember().getId(), null, null)).withRel(IanaLinkRelations.COLLECTION));
         return checkoutModel;
     }
 }
