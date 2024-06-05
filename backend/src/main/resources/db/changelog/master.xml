@@ -26,4 +26,5 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="../testdata/0004_lending.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0007_token.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0009_payment.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0010_action.sql" relativeToChangelogFile="true" context="dev, test"/>
 </databaseChangeLog>
