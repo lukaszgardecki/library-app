@@ -47,4 +47,29 @@ public class Message {
     public static final String BOOK_EXTENDED = "The book has been successfully extended";
     public static final String BOOK_RETURNED = "The book has been successfully returned";
     public static final String BOOK_LOST = "The book has been lost. Your account has been charged an additional fee of %s";
+
+    // Action templates:
+    public static final String ACTION_REGISTER = "Zapisanie czytelnika %s %s, Nr karty %s";
+    public static final String ACTION_LOGIN = "Zalogowanie czytelnika %s %s, Nr karty %s";
+    public static final String ACTION_LOGOUT = "Wylogowanie czytelnika %s %s, Nr karty %s";
+    public static final String ACTION_LOGIN_FAILED = "Nieudane logowanie czytelnika %s %s, Nr karty %s";
+    public static final String ACTION_REQUEST_NEW = "Zamówiono %s";
+    public static final String ACTION_REQUEST_SENT = "Wysłano zamówienie %s";
+    public static final String ACTION_REQUEST_CANCELED = "Anulowano zamówienie %s";
+    public static final String ACTION_REQUEST_COMPLETED = "Zrealizowano %s";
+    public static final String ACTION_BOOK_BORROWED = "Wypożyczono %s";
+    public static final String ACTION_BOOK_RENEWED = "Prolongata czytelnika %s";
+    public static final String ACTION_BOOK_RETURNED = "Zwrócono %s";
+    public static final String ACTION_BOOK_LOST = "Zgubiono %s";
+    public static final String ACTION_NOTIFICATION_SENT_EMAIL = "Wysłano e-mail do czytelnika (%s) %s";
+    public static final String ACTION_NOTIFICATION_SENT_SMS = "Wysłano wiadomość SMS do czytelnika (%s) %s";
+
+    // Notification reasons:
+    public static final String REASON_BOOK_BORROWED = "Wypożyczenie dokumentu";
+    public static final String REASON_BOOK_EXTENDED = "Prolongata dokumentu";
+    public static final String REASON_BOOK_RETURNED = "Zwrócenie dokumentu";
+    public static final String REASON_BOOK_LOST = "Zgubienie dokumentu";
+    public static final String REASON_REQUEST_COMPLETED = "Zrealizowanie zamówienia";
+    public static final String REASON_REQUEST_CANCELED = "Anulowanie zamówienia";
+    public static final String REASON_REQUEST_CREATED = "Utworzenie zamówienia";
 }
