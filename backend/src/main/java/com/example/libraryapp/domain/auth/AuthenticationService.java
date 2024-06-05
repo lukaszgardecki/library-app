@@ -1,5 +1,9 @@
 package com.example.libraryapp.domain.auth;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.LoginAction;
+import com.example.libraryapp.domain.action.types.LoginFailedAction;
+import com.example.libraryapp.domain.action.types.RegisterAction;
 import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.config.AuthTokens;
@@ -32,6 +36,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final MemberRepository memberRepository;
+    private final ActionRepository actionRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
@@ -42,6 +47,7 @@ public class AuthenticationService {
         Member savedMember = memberRepository.saveAndFlush(member);
         LibraryCard card = createMemberLibraryCard(savedMember);
         savedMember.setCard(card);
+        actionRepository.save(new RegisterAction(member));
     }
 
     public LoginResponse authenticate(
@@ -59,6 +65,7 @@ public class AuthenticationService {
 
         tokenService.revokeAllUserTokens(member);
         tokenService.saveTokens(member, accessToken, refreshToken);
+        actionRepository.save(new LoginAction(member));
         response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
         return new LoginResponse(accessToken, refreshToken);
     }
