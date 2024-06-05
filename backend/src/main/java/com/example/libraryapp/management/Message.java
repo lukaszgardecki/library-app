@@ -49,6 +49,7 @@ public class Message {
     public static final String BOOK_LOST = "The book has been lost. Your account has been charged an additional fee of %s";
 
     // Action templates:
+    public static final String ACTION_NOT_FOUND_BY_ID = "No action with id: %s";
     public static final String ACTION_REGISTER = "Zapisanie czytelnika %s %s, Nr karty %s";
     public static final String ACTION_LOGIN = "Zalogowanie czytelnika %s %s, Nr karty %s";
     public static final String ACTION_LOGOUT = "Wylogowanie czytelnika %s %s, Nr karty %s";
