@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NotificationDetails {
     private LocalDateTime createdAt;
+    private String reason;
     private String content;
     private String bookTitle;
-    private String userEmail;
-    private String userPhoneNumber;
+    private String bookBarcode;
+    private Long memberId;
+    private String memberEmail;
+    private String memberPhoneNumber;
 }

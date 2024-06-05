@@ -9,7 +9,7 @@ public class NotificationFactory {
 
     public static EmailNotification createEmailNotification(NotificationDetails details) {
         return EmailNotification.builder()
-                .userEmail(details.getUserEmail())
+                .userEmail(details.getMemberEmail())
                 .createdAt(details.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")))
                 .bookTitle(details.getBookTitle())
                 .content(details.getContent())
@@ -18,7 +18,7 @@ public class NotificationFactory {
 
     public static SMSNotification createSMSNotification(NotificationDetails details) {
         return SMSNotification.builder()
-                .phoneNumber(details.getUserPhoneNumber())
+                .phoneNumber(details.getMemberPhoneNumber())
                 .createdAt(details.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss")))
                 .bookTitle(details.getBookTitle())
                 .content(details.getContent())

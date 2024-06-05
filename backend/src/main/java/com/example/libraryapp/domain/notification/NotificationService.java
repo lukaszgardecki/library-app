@@ -9,7 +9,7 @@ public class NotificationService {
 
     public void sendNotification(NotificationDetails details) {
         sendEmail(details);
-        if (details.getUserPhoneNumber() != null && !details.getUserPhoneNumber().isBlank()) {
+        if (details.getMemberPhoneNumber() != null && !details.getMemberPhoneNumber().isBlank()) {
             sendSMS(details);
         }
     }
