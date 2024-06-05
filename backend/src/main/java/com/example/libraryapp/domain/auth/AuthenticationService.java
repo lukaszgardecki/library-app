@@ -44,19 +44,13 @@ public class AuthenticationService {
         savedMember.setCard(card);
     }
 
-
     public LoginResponse authenticate(
             LoginRequest loginRequest,
             HttpServletResponse response
     ) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
         Member member = memberRepository.findByEmail(loginRequest.getUsername())
                 .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
+        validatePassword(loginRequest, member);
         AuthTokens auth = tokenService.generateAuth(member);
         String accessToken = auth.accessToken();
         String refreshToken = auth.refreshToken();
@@ -105,6 +99,20 @@ public class AuthenticationService {
         boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
         boolean isNotAdminOrDataOwner = !(isOwner || isAdmin);
         if (isNotAdminOrDataOwner) throw new ForbiddenAccessException();
+    }
+
+    private void validatePassword(LoginRequest loginRequest, Member member) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+        } catch (RuntimeException ex){
+            actionRepository.save(new LoginFailedAction(member));
+            throw ex;
+        }
     }
 
     private String getCurrentLoggedInUserRole() {
@@ -166,6 +174,12 @@ public class AuthenticationService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
+                .pesel(request.getPesel())
+                .dateOfBirth(request.getDateOfBirth())
+                .gender(request.getGender())
+                .nationality(request.getNationality())
+                .mothersName(request.getMothersName())
+                .fathersName(request.getFathersName())
                 .build();
     }
 
