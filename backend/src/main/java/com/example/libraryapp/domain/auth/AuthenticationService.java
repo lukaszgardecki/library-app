@@ -146,6 +146,7 @@ public class AuthenticationService {
         member.setDateOfMembership(LocalDate.now());
         member.setEmail(request.getEmail());
         member.setPassword(passwordEncoder.encode(request.getPassword()));
+        member.setStatus(AccountStatus.PENDING);
         member.setRole(Role.USER);
         return member;
     }
