@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +21,8 @@ public abstract class Action {
     protected Long id;
 
     protected Long memberId;
+    @Formula("type")
+    protected String type;
     @Size(max = 1500)
     protected String message;
     protected LocalDateTime createdAt;

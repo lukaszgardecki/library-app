@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class ActionDto extends RepresentationModel<ActionDto> {
     private Long id;
     private Long memberId;
+    private String type;
     private String message;
     private LocalDateTime createdAt;
 }

@@ -6,6 +6,7 @@ public class ActionDtoMapper {
         return ActionDto.builder()
                 .id(action.getId())
                 .memberId(action.getMemberId())
+                .type(action.getType())
                 .message(action.getMessage())
                 .createdAt(action.getCreatedAt())
                 .build();
