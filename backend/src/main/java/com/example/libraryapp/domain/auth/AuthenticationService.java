@@ -1,5 +1,9 @@
 package com.example.libraryapp.domain.auth;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.LoginAction;
+import com.example.libraryapp.domain.action.types.LoginFailedAction;
+import com.example.libraryapp.domain.action.types.RegisterAction;
 import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.config.AuthTokens;
@@ -32,6 +36,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final MemberRepository memberRepository;
+    private final ActionRepository actionRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
@@ -42,21 +47,16 @@ public class AuthenticationService {
         Member savedMember = memberRepository.saveAndFlush(member);
         LibraryCard card = createMemberLibraryCard(savedMember);
         savedMember.setCard(card);
+        actionRepository.save(new RegisterAction(member));
     }
-
 
     public LoginResponse authenticate(
             LoginRequest loginRequest,
             HttpServletResponse response
     ) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
         Member member = memberRepository.findByEmail(loginRequest.getUsername())
                 .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
+        validatePassword(loginRequest, member);
         AuthTokens auth = tokenService.generateAuth(member);
         String accessToken = auth.accessToken();
         String refreshToken = auth.refreshToken();
@@ -65,6 +65,7 @@ public class AuthenticationService {
 
         tokenService.revokeAllUserTokens(member);
         tokenService.saveTokens(member, accessToken, refreshToken);
+        actionRepository.save(new LoginAction(member));
         response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -107,6 +108,20 @@ public class AuthenticationService {
         if (isNotAdminOrDataOwner) throw new ForbiddenAccessException();
     }
 
+    private void validatePassword(LoginRequest loginRequest, Member member) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+        } catch (RuntimeException ex){
+            actionRepository.save(new LoginFailedAction(member));
+            throw ex;
+        }
+    }
+
     private String getCurrentLoggedInUserRole() {
         Long userId = getCurrentLoggedInUserId();
         return findMemberRoleByUserId(userId)
@@ -146,6 +161,7 @@ public class AuthenticationService {
         member.setDateOfMembership(LocalDate.now());
         member.setEmail(request.getEmail());
         member.setPassword(passwordEncoder.encode(request.getPassword()));
+        member.setStatus(AccountStatus.PENDING);
         member.setRole(Role.USER);
         return member;
     }
@@ -165,6 +181,12 @@ public class AuthenticationService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
+                .pesel(request.getPesel())
+                .dateOfBirth(request.getDateOfBirth())
+                .gender(request.getGender())
+                .nationality(request.getNationality())
+                .mothersName(request.getMothersName())
+                .fathersName(request.getFathersName())
                 .build();
     }
 

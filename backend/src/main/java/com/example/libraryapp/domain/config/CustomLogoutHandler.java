@@ -1,5 +1,7 @@
 package com.example.libraryapp.domain.config;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.LogoutAction;
 import com.example.libraryapp.domain.token.AccessToken;
 import com.example.libraryapp.domain.token.AccessTokenRepository;
 import com.example.libraryapp.domain.token.TokenType;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomLogoutHandler implements LogoutHandler {
     private final AccessTokenRepository accessTokenRepository;
+    private final ActionRepository actionRepository;
 
     @Override
     public void logout(
@@ -36,6 +39,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
             accessTokenRepository.save(storedToken);
+            actionRepository.save(new LogoutAction(storedToken.getMember()));
             SecurityContextHolder.clearContext();
         }
     }

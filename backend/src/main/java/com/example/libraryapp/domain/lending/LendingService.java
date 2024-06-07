@@ -1,5 +1,10 @@
 package com.example.libraryapp.domain.lending;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.BookBorrowedAction;
+import com.example.libraryapp.domain.action.types.BookLostAction;
+import com.example.libraryapp.domain.action.types.BookRenewedAction;
+import com.example.libraryapp.domain.action.types.BookReturnedAction;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -42,6 +47,7 @@ public class LendingService {
     private final LendingRepository lendingRepository;
     private final BookItemRepository bookItemRepository;
     private final ReservationRepository reservationRepository;
+    private final ActionRepository actionRepository;
     private final FineService fineService;
     private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
@@ -77,8 +83,9 @@ public class LendingService {
         member.updateAfterLending();
         reservation.updateAfterLending();
         NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_BORROWED, book.getBook().getTitle()
+                savedLending, Message.BOOK_BORROWED, Message.REASON_BOOK_BORROWED
         );
+        actionRepository.save(new BookBorrowedAction(savedLending));
         notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(savedLending);
     }
@@ -86,12 +93,12 @@ public class LendingService {
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
-        Member member = lending.getMember();
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
         NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_EXTENDED, lending.getBookItem().getBook().getTitle()
+                lending, Message.BOOK_EXTENDED, Message.REASON_BOOK_EXTENDED
         );
+        actionRepository.save(new BookRenewedAction(lending));
         notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
@@ -107,8 +114,9 @@ public class LendingService {
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
         NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_RETURNED, book.getBook().getTitle()
+                lending, Message.BOOK_RETURNED,Message.REASON_BOOK_RETURNED
         );
+        actionRepository.save(new BookReturnedAction(lending));
         notificationService.sendNotification(details);
         return lendingModelAssembler.toModel(lending);
     }
@@ -125,8 +133,9 @@ public class LendingService {
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
         NotificationDetails details = createNotificationDetails(
-                member, String.format(Message.BOOK_LOST, book.getPrice()), book.getBook().getTitle()
+                lending, Message.BOOK_LOST.formatted(book.getPrice()), Message.REASON_BOOK_LOST
         );
+        actionRepository.save(new BookLostAction(lending));
         notificationService.sendNotification(details);
         List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
         cancelReservations(reservationsToCancel);
@@ -137,7 +146,7 @@ public class LendingService {
     private void sendNotifications(List<Reservation> reservationsToCancel) {
         reservationsToCancel.forEach(res -> {
             NotificationDetails details = createNotificationDetails(
-                    res.getMember(), Message.RESERVATION_CANCEL_BOOK_ITEM_LOST, res.getBookItem().getBook().getTitle()
+                    res, Message.RESERVATION_CANCEL_BOOK_ITEM_LOST, Message.REASON_BOOK_LOST
             );
             notificationService.sendNotification(details);
 
@@ -202,13 +211,30 @@ public class LendingService {
         return lendingToSave;
     }
 
-    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
+    private NotificationDetails createNotificationDetails(Reservation reservation, String message, String reason) {
+        return createNotificationDetails(message, reason)
+                .bookTitle(reservation.getBookItem().getBook().getTitle())
+                .bookBarcode(reservation.getBookItem().getBarcode())
+                .memberId(reservation.getMember().getId())
+                .memberEmail(reservation.getMember().getEmail())
+                .memberPhoneNumber(reservation.getMember().getPerson().getPhone())
+                .build();
+    }
+
+    private NotificationDetails createNotificationDetails(Lending lending, String message, String reason) {
+        return createNotificationDetails(message, reason)
+                .bookTitle(lending.getBookItem().getBook().getTitle())
+                .bookBarcode(lending.getBookItem().getBarcode())
+                .memberId(lending.getMember().getId())
+                .memberEmail(lending.getMember().getEmail())
+                .memberPhoneNumber(lending.getMember().getPerson().getPhone())
+                .build();
+    }
+
+    private NotificationDetails.NotificationDetailsBuilder createNotificationDetails(String message, String reason) {
         return NotificationDetails.builder()
                 .createdAt(LocalDateTime.now())
-                .content(notificationMessage)
-                .bookTitle(bookTitle)
-                .userEmail(member.getEmail())
-                .userPhoneNumber(member.getPerson().getPhone())
-                .build();
+                .reason(reason)
+                .content(message);
     }
 }

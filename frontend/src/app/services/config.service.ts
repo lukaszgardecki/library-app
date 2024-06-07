@@ -16,5 +16,7 @@ export const AUTHORIZED_ENDPOINTS = [
   "/refresh-token",
   "/members",
   "/lendings",
-  "/reservations"
+  "/reservations",
+  "/authenticate/logout",
+  "/actions"
 ];

@@ -1,5 +1,9 @@
 package com.example.libraryapp.domain.reservation;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.RequestCancelAction;
+import com.example.libraryapp.domain.action.types.RequestCompletedAction;
+import com.example.libraryapp.domain.action.types.RequestNewAction;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -38,6 +42,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
+    private final ActionRepository actionRepository;
     private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
@@ -79,8 +84,9 @@ public class ReservationService {
         member.updateAfterReservation();
         book.updateAfterReservation();
         NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_CREATED, book.getBook().getTitle()
+                savedReservation, Message.RESERVATION_CREATED, Message.REASON_REQUEST_CREATED
         );
+        actionRepository.save(new RequestNewAction(savedReservation));
         notificationService.sendNotification(details);
         return reservationModelAssembler.toModel(savedReservation);
     }
@@ -97,22 +103,21 @@ public class ReservationService {
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
         NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_DELETED, book.getBook().getTitle()
+                reservation, Message.RESERVATION_DELETED, Message.REASON_REQUEST_CANCELED
         );
+        actionRepository.save(new RequestCancelAction(reservation));
         notificationService.sendNotification(details);
     }
 
     @Transactional
     public ReservationResponse changeReservationStatusToReady(Long reservationId) {
         Reservation reservation = findReservation(reservationId);
-        Member member = reservation.getMember();
-        String bookTitle = reservation.getBookItem().getBook().getTitle();
-
         reservation.setStatus(ReservationStatus.READY);
 
         NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_READY, bookTitle
+                reservation, Message.RESERVATION_READY, Message.REASON_REQUEST_COMPLETED
         );
+        actionRepository.save(new RequestCompletedAction(reservation));
         notificationService.sendNotification(details);
         return reservationModelAssembler.toModel(reservation);
     }
@@ -172,13 +177,16 @@ public class ReservationService {
                 .build();
     }
 
-    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
+    private NotificationDetails createNotificationDetails(Reservation reservation, String message, String reason) {
         return NotificationDetails.builder()
                 .createdAt(LocalDateTime.now())
-                .content(notificationMessage)
-                .bookTitle(bookTitle)
-                .userEmail(member.getEmail())
-                .userPhoneNumber(member.getPerson().getPhone())
+                .reason(reason)
+                .content(message)
+                .bookTitle(reservation.getBookItem().getBook().getTitle())
+                .bookBarcode(reservation.getBookItem().getBarcode())
+                .memberId(reservation.getMember().getId())
+                .memberEmail(reservation.getMember().getEmail())
+                .memberPhoneNumber(reservation.getMember().getPerson().getPhone())
                 .build();
     }
 }

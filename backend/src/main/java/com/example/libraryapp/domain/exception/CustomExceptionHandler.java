@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.exception;
 
+import com.example.libraryapp.domain.exception.action.ActionNotFoundException;
 import com.example.libraryapp.domain.exception.auth.ForbiddenAccessException;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemException;
@@ -45,7 +46,8 @@ public class CustomExceptionHandler {
             LendingNotFoundException.class,
             RackNotFoundException.class,
             CardNotFoundException.class,
-            PaymentNotFoundException.class
+            PaymentNotFoundException.class,
+            ActionNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(RuntimeException ex, WebRequest request) {
