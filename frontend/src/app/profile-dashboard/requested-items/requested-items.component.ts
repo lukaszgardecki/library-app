@@ -11,7 +11,7 @@ import { RequestedItemsCompletedComponent } from './requested-items-completed/re
 })
 export class RequestedItemsComponent implements ProfileSetting {
   name: string = "Requested items";
-  routerLink: string = "requested-items";
+  routerLink: string;
   elements?: ProfileSetting[] = [
     new RequestedItemsUnsentComponent(),
     new RequestedItemsPendingComponent(),

@@ -21,7 +21,7 @@
                             <ul>
                                 <li *ngFor="let el of option.elements" 
                                     [ngClass]="{'selected':  false}"
-                                    [routerLink]="option.routerLink + '/' + el.routerLink"
+                                    [routerLink]="el.routerLink"
                                     >
                                     {{el.name}}
                                 </li>

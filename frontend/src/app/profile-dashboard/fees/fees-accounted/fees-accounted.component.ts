@@ -8,5 +8,5 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 })
 export class FeesAccountedComponent implements ProfileSetting {
   name: string = "Accounted fees"
-  routerLink: string = "accounted";
+  routerLink: string = "fees/accounted";
 }

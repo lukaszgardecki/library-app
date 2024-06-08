@@ -8,5 +8,5 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 })
 export class EditPasswordComponent implements ProfileSetting {
   name: string = "Change password";
-  routerLink: string = "password";
+  routerLink: string = "edit/password";
 }

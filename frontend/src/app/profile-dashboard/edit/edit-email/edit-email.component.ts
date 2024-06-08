@@ -8,5 +8,5 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 })
 export class EditEmailComponent implements ProfileSetting {
   name: string = "Change e-mail address"
-  routerLink: string = "email";
+  routerLink: string = "edit/email";
 }
