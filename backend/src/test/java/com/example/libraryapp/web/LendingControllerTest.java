@@ -376,12 +376,13 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should renew a book if ADMIN requested and the book is not reserved and date is before return date.")
         void shouldRenewABookIfAdminRequestedAndBookIsNotReservedAndDateIsOK() {
             String bookBarcode = "540200000006";
+            ActionRequest requestBody = new ActionRequest(2L, bookBarcode);
 
             LendingDto lendingBefore = client.testRequest(GET, "/lendings/3", admin, OK)
                     .expectBody(LendingDto.class)
                     .returnResult().getResponseBody();
 
-            client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, admin, OK)
+            client.testRequest(POST, "/lendings/renew", requestBody, admin, OK)
                     .expectBody(LendingDto.class);
 
             LendingDto lendingAfter = client.testRequest(GET, "/lendings/3", admin, OK)
@@ -395,7 +396,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if ADMIN requested and the book is reserved.")
         void shouldNotRenewABookIfAdminRequestedAndBookIsReserved() {
             String bookBarcode = "540200000008";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, admin, CONFLICT)
+            ActionRequest requestBody = new ActionRequest(3L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_CANNOT_BE_RENEWED);
@@ -405,7 +407,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if ADMIN requested and returning date is late.")
         void shouldNotRenewABookIfAdminRequestedAndDateIsNotOK() {
             String bookBarcode = "540200000003";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, admin, CONFLICT)
+            ActionRequest requestBody = new ActionRequest(1L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_CANNOT_BE_RENEWED);
@@ -415,7 +418,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if ADMIN requested and book barcode doesn't exist.")
         void shouldNotRenewABookIfAdminRequestedAndBookItemDoesNotExist() {
             String bookBarcode = "540299999999";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, admin, NOT_FOUND)
+            ActionRequest requestBody = new ActionRequest(1L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
@@ -425,17 +429,28 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if ADMIN requested and the lending doesn't exist.")
         void shouldNotRenewABookIfAdminRequestedAndLendingDoesNotExist() {
             String bookBarcode = "540200000055";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, admin, NOT_FOUND)
+            ActionRequest requestBody = new ActionRequest(1L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
         }
 
         @Test
-        @DisplayName("Should not renew a book if USER requested.")
+        @DisplayName("Should renew a book if USER requested and the lending is theirs.")
+        void shouldRenewABookIfUserRequestedAndLendingIsTheirs() {
+            String bookBarcode = "540200000006";
+            ActionRequest requestBody = new ActionRequest(2L, bookBarcode);
+            client.testRequest(POST, "/lendings/renew", requestBody, user, OK)
+                    .expectBody(LendingDto.class);
+        }
+
+        @Test
+        @DisplayName("Should not renew a book if USER requested and the lending is not theirs.")
         void shouldNotRenewABookIfUserRequested() {
-            String bookBarcode = "540200000008";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, user, FORBIDDEN)
+            String bookBarcode = "540200000003";
+            ActionRequest requestBody = new ActionRequest(1L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
@@ -445,7 +460,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if CASHIER requested.")
         void shouldNotRenewABookIfCashierRequested() {
             String bookBarcode = "540200000008";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, cashier, FORBIDDEN)
+            ActionRequest requestBody = new ActionRequest(3L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, cashier, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
@@ -455,7 +471,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if WAREHOUSE requested.")
         void shouldNotRenewABookIfWarehouseRequested() {
             String bookBarcode = "540200000008";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, warehouse, FORBIDDEN)
+            ActionRequest requestBody = new ActionRequest(3L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
@@ -465,7 +482,8 @@ public class LendingControllerTest extends BaseTest {
         @DisplayName("Should not renew a book if an unauthorized USER requested.")
         void shouldNotRenewABookIfUserIsNotAuthenticated() {
             String bookBarcode = "540200000008";
-            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew?bookBarcode=" + bookBarcode, UNAUTHORIZED)
+            ActionRequest requestBody = new ActionRequest(3L, bookBarcode);
+            ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
             assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);

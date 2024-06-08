@@ -55,9 +55,10 @@ public class LendingController {
     }
 
     @PostMapping("/renew")
-    @RoleAuthorization({ADMIN})
-    public ResponseEntity<LendingDto> renewABook(@RequestParam String bookBarcode) {
-        LendingDto renewedLending = lendingService.renewABook(bookBarcode);
+    @RoleAuthorization({ADMIN, USER})
+    public ResponseEntity<LendingDto> renewABook(@RequestBody ActionRequest request) {
+        authService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        LendingDto renewedLending = lendingService.renewABook(request.getBookBarcode());
         return ResponseEntity.ok(renewedLending);
     }
 
