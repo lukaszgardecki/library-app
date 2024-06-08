@@ -30,10 +30,11 @@ public class LendingController {
     public ResponseEntity<PagedModel<LendingDto>> getAllLendings(
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) LendingStatus status,
+            @RequestParam(required = false) Boolean renewable,
             Pageable pageable
     ) {
         authService.checkIfAdminOrDataOwnerRequested(memberId);
-        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable);
+        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable, renewable);
         return ResponseEntity.ok(collectionModel);
     }
 
@@ -54,9 +55,10 @@ public class LendingController {
     }
 
     @PostMapping("/renew")
-    @RoleAuthorization({ADMIN})
-    public ResponseEntity<LendingDto> renewABook(@RequestParam String bookBarcode) {
-        LendingDto renewedLending = lendingService.renewABook(bookBarcode);
+    @RoleAuthorization({ADMIN, USER})
+    public ResponseEntity<LendingDto> renewABook(@RequestBody ActionRequest request) {
+        authService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        LendingDto renewedLending = lendingService.renewABook(request.getBookBarcode());
         return ResponseEntity.ok(renewedLending);
     }
 

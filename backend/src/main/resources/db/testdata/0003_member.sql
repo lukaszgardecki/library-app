@@ -4,7 +4,7 @@ insert into
     member(password, email, status, person_id, role, date_of_membership, total_books_borrowed, total_books_reserved, charge, library_card_id)
 values
 --     password: adminpass
-    ('{bcrypt}$2a$10$mbU0nK/DUpHgy1ncyAEUN.m8QE9gIXLP6DwYb9/WaFUVZy86/zIJ6','admin@example.com', 'ACTIVE', 1, 'ADMIN', '2023-05-21', 2, 2, 0, 1),
+    ('{bcrypt}$2a$10$mbU0nK/DUpHgy1ncyAEUN.m8QE9gIXLP6DwYb9/WaFUVZy86/zIJ6','admin@example.com', 'ACTIVE', 1, 'ADMIN', '2023-05-21', 5, 2, 0, 1),
 --     password: userpass
     ('{bcrypt}$2a$10$rOZ4x9b/F.Pu7L9awPKaB.c.11kk7.1IVvsjn9BsITGiXZCHIouC6', 'user@example.com', 'ACTIVE',  2, 'USER', '2023-05-22', 1, 1, 0, 2),
 --     password: userpass1
