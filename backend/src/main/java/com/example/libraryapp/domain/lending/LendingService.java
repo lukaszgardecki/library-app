@@ -53,10 +53,13 @@ public class LendingService {
     private final LendingModelAssembler lendingModelAssembler;
     private final PagedResourcesAssembler<Lending> pagedResourcesAssembler;
 
-    public PagedModel<LendingDto> findLendings(Long memberId, LendingStatus status, Pageable pageable) {
+    public PagedModel<LendingDto> findLendings(
+            Long memberId, LendingStatus status, Pageable pageable, Boolean renewable
+    ) {
         List<Lending> lendings = lendingRepository.findAll().stream()
                 .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
                 .filter(len -> status == null || len.getStatus() == status)
+                .filter(len -> renewable == null || isRenewable(len) == renewable)
                 .collect(Collectors.toList());
 
         int start = (int) pageable.getOffset();
@@ -181,6 +184,11 @@ public class LendingService {
 
     private boolean isBookReserved(Long bookItemId) {
         return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
+    }
+
+    private boolean isRenewable(Lending len) {
+        return !isBookReserved(len.getBookItem().getId())
+             && len.getDueDate().isAfter(LocalDate.now());
     }
 
     private void checkIfMemberCanBorrowABook(Member member) {

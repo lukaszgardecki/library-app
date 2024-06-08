@@ -30,10 +30,11 @@ public class LendingController {
     public ResponseEntity<PagedModel<LendingDto>> getAllLendings(
             @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) LendingStatus status,
+            @RequestParam(required = false) Boolean renewable,
             Pageable pageable
     ) {
         authService.checkIfAdminOrDataOwnerRequested(memberId);
-        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable);
+        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable, renewable);
         return ResponseEntity.ok(collectionModel);
     }
 
