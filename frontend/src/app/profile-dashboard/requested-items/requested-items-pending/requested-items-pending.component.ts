@@ -12,7 +12,7 @@ import { PdfService } from '../../../services/pdf.service';
 })
 export class RequestedItemsPendingComponent implements ProfileSetting, OnInit {
   name: string = "Pending";
-  routerLink: string = "pending";
+  routerLink: string = "requested-items/pending";
   reservationService = inject(ReservationService);
   pendingReservations: Array<Reservation>;
   authService = inject(AuthenticationService);

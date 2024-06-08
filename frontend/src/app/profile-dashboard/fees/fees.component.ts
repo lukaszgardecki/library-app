@@ -10,7 +10,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
 })
 export class FeesComponent implements ProfileSetting {
   name: string = "Fees";
-  routerLink: string = "fees";
+  routerLink: string;
   elements?: ProfileSetting[] = [
     new FeesNotAccountedComponent(),
     new FeesAccountedComponent()

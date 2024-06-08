@@ -8,5 +8,5 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 })
 export class EditPhoneNumberComponent implements ProfileSetting {
   name: string = "Change phone number"
-  routerLink: string = "phone";
+  routerLink: string = "edit/phone";
 }

@@ -39,35 +39,21 @@ const routes: Routes = [
       {path: "notifications", component: NotificationsComponent},
       {path: "borrowed-items", component: BorrowedItemsComponent},
       {path: "on-site-items", component: OnSiteItemsComponent},
-      {
-        path: "requested-items", 
-        component: RequestedItemsComponent, 
-        children: [
-          {path: "unsent", component: RequestedItemsUnsentComponent},
-          {path: "pending", component: RequestedItemsPendingComponent},
-          {path: "completed", component: RequestedItemsCompletedComponent},
-        ]
-      },
+
+      {path: "requested-items/unsent", component: RequestedItemsUnsentComponent},
+      {path: "requested-items/pending", component: RequestedItemsPendingComponent},
+      {path: "requested-items/completed", component: RequestedItemsCompletedComponent},
+      
       {path: "reservations", component: ReservationsComponent},
       {path: "renewable-items", component: RenewableItemsComponent},
       {path: "history", component: UserHistoryComponent},
-      {
-        path: "fees",
-        component: FeesComponent,
-        children: [
-          {path: "not-accounted", component: FeesNotAccountedComponent},
-          {path: "accounted", component: FeesAccountedComponent},
-        ]
-      },
-      {
-        path: "edit",
-        component: EditComponent,
-        children: [
-          {path: "password", component: EditPasswordComponent},
-          {path: "email", component: EditEmailComponent},
-          {path: "phone", component: EditPhoneNumberComponent},
-        ]
-      }
+
+      {path: "fees/not-accounted", component: FeesNotAccountedComponent},
+      {path: "fees/accounted", component: FeesAccountedComponent},
+
+      {path: "edit/password", component: EditPasswordComponent},
+      {path: "edit/email", component: EditEmailComponent},
+      {path: "edit/phone", component: EditPhoneNumberComponent},
     ]
   }
 ];

@@ -8,5 +8,5 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 })
 export class RequestedItemsUnsentComponent implements ProfileSetting {
   name: string = "Unsent";
-  routerLink: string = "unsent";
+  routerLink: string = "requested-items/unsent";
 }

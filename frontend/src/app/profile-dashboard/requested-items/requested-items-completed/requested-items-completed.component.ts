@@ -12,7 +12,7 @@ import { ReservationService } from '../../../services/reservation.service';
 })
 export class RequestedItemsCompletedComponent implements ProfileSetting, OnInit {
   name: string = "Completed";
-  routerLink: string = "completed";
+  routerLink: string = "requested-items/completed";
   reservationService = inject(ReservationService);
   completedReservations: Array<Reservation>;
   authService = inject(AuthenticationService);

@@ -1,4 +1,3 @@
-FRAGMENT OF CODE FROM BOOTSTARP START
 :root {
     --bs-primary-bg-subtle: #cfe2ff;
     --bs-body-color: #212529;
@@ -97,21 +96,26 @@ FRAGMENT OF CODE FROM BOOTSTARP START
     z-index: 2;
 }
 .accordion-button:focus,
-.list-button:focus {
+.list-button:focus,
+.accordion-body li:focus {
     z-index: 3;
     outline: 0;
     box-shadow: var(--bs-accordion-btn-focus-box-shadow);
 }
 
-.accordion button:focus {
+.accordion button:focus,
+.accordion-body li:focus {
     background-color: var(--main-color);
     color: #fff;
 }
 
-.accordion-header {
+.accordion-header,
+.accordion-body li {
     margin-bottom: 0;
-    border: 1px solid;
+    border-bottom: 1px solid #D7D7D7;
+    border-right: 1px solid #D7D7D7;
 }
+
 .accordion-item {
     color: var(--bs-accordion-color);
     background-color: var(--bs-accordion-bg);
@@ -141,10 +145,18 @@ FRAGMENT OF CODE FROM BOOTSTARP START
     border-bottom-right-radius: var(--bs-accordion-border-radius);
     border-bottom-left-radius: var(--bs-accordion-border-radius);
 }
-.accordion-body {
-    padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
-    border: 1px solid;
+
+.accordion-body li {
+    font-family: var(--font-family-1);
+    line-height: 1;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    padding-left: calc(var(--bs-accordion-btn-padding-x) * 2);
 }
+
+.accordion-body li:hover {
+    color: #fff;
+}
+
 .accordion-flush > .accordion-item {
     border-right: 0;
     border-left: 0;
