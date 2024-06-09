@@ -24,9 +24,7 @@ export class UserService {
     return this.http.get<UserDetails>(`${this.baseURL}/${id}`, { withCredentials: true });
   }
 
-  updatePassword(userId: number, password: string): Observable<UserDetails> {
-    const user = new UserUpdate();
-    user.password = password;
+  updateUser(userId: number, user: UserUpdate): Observable<UserDetails> {
     return this.http.patch<UserDetails>(`${this.baseURL}/${userId}`, user, { withCredentials: true });
   }
 }
