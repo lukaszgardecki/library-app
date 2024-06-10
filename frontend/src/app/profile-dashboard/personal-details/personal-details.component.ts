@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, inject } from '@angular/core';
 import { ProfileSetting } from '../profile-dashboard.component';
 import { UserService } from '../../services/user.service';
-import { UserDetails } from '../../shared/user-details';
+import { UserDetails } from '../../models/user-details';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({

@@ -1,4 +1,4 @@
-import { UserDetails } from "../shared/user-details";
+import { UserDetails } from "./user-details";
 import { BookItem } from "./book-item";
 
 export class Reservation {
