@@ -1,0 +1,36 @@
+.notification-details {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+  
+.notification-info {
+  margin-top: 20px;
+  padding-top: 10px;
+}
+  
+.notification-info .row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  margin: 10px 0;
+}
+
+.notification-info strong {
+  color: #333;
+}
+
+.notification-info span {
+  display: block;
+}
+
+.notification-info a {
+  color: var(--main-color);
+  text-decoration: none;
+}
+  
+.notification-info a:hover {
+  text-decoration: underline;
+}
+

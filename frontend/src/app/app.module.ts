@@ -35,6 +35,7 @@ import { EditComponent } from './profile-dashboard/edit/edit.component';
 import { NullPlaceholderPipe } from './shared/pipes/null-placeholder.pipe';
 import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
 import { WebsocketService } from './services/websocket.service';
+import { NotificationDetailsComponent } from './profile-dashboard/notifications/notification-details/notification-details.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { WebsocketService } from './services/websocket.service';
     EditEmailComponent,
     EditPhoneNumberComponent,
     NullPlaceholderPipe,
-    EnumNamePipe
+    EnumNamePipe,
+    NotificationDetailsComponent
   ],
   imports: [
     BrowserModule,
