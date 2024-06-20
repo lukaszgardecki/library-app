@@ -1,1 +1,32 @@
 <h1>{{name}}</h1>
+<div>
+  <ng-container *ngIf="!listIsEmpty; else lack">
+      <div class="btn-bar right-side"> 
+        <button class="button btn-2 btn-delete" (click)="deleteSelected()">Delete</button>
+        <button class="button btn-2" (click)="selectAll($event)">Select all</button>
+      </div>
+           
+      <table id="table">
+          <thead>
+              <tr>
+                  <th>Creation date</th>
+                  <th>Subject</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let notification of notifications$ | async; index as i" >
+                  <td [ngClass]="{'bold': !notification.read}" class="c1">{{notification.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</td>
+                  <td [ngClass]="{'bold': !notification.read}" class="c2 grid-container">
+                    <a style="cursor: pointer;" (click)="showDetails(notification)">
+                      {{notification.subject}}
+                    </a>
+                    <input type="checkbox" [checked]="notification.selected" [(ngModel)]="notification.selected" class="checkbox">
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <div id="bottom"></div>
+  </ng-container>
+  <ng-template #lack>Lack of notifications</ng-template>
+</div>
