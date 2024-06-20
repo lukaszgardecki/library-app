@@ -108,6 +108,11 @@ public class AuthenticationService {
         if (isNotAdminOrDataOwner) throw new ForbiddenAccessException();
     }
 
+    public Long getCurrentLoggedInUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findMemberByEmail(username).getId();
+    }
+
     private void validatePassword(LoginRequest loginRequest, Member member) {
         try {
             authenticationManager.authenticate(
@@ -126,11 +131,6 @@ public class AuthenticationService {
         Long userId = getCurrentLoggedInUserId();
         return findMemberRoleByUserId(userId)
                 .orElseThrow(() -> new MemberNotFoundException(userId));
-    }
-
-    private Long getCurrentLoggedInUserId() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return findMemberByEmail(username).getId();
     }
 
     private Member findMemberByEmail(String email) {

@@ -36,7 +36,7 @@ public class LendingControllerTest extends BaseTest {
         void shouldReturnAllLendingsIfAdminRequested() {
             client.testRequest(GET, "/lendings", admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(8);
+                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(12);
         }
 
         @Test
@@ -46,8 +46,8 @@ public class LendingControllerTest extends BaseTest {
                     .expectBody()
                     .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(3)
                     .jsonPath("$.page.size").isEqualTo(3)
-                    .jsonPath("$.page.totalElements").isEqualTo(8)
-                    .jsonPath("$.page.totalPages").isEqualTo(3)
+                    .jsonPath("$.page.totalElements").isEqualTo(12)
+                    .jsonPath("$.page.totalPages").isEqualTo(4)
                     .jsonPath("$.page.number").isEqualTo(1);
         }
 
@@ -56,7 +56,7 @@ public class LendingControllerTest extends BaseTest {
         void shouldReturnAllUsersLendingsIfAdminRequested() {
             client.testRequest(GET, "/lendings?memberId=1", admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(2);
+                    .jsonPath("$._embedded.lendingDtoList.length()").isEqualTo(6);
 
             client.testRequest(GET, "/lendings?memberId=3&status=CURRENT", admin, OK)
                     .expectBody()
@@ -189,7 +189,7 @@ public class LendingControllerTest extends BaseTest {
         }
 
         @ParameterizedTest
-        @DisplayName("Should not return a lending if an unauthorized ADMIN requested.")
+        @DisplayName("Should not return a lending if an unauthorized USER requested.")
         @CsvSource({
                 "1", "2", "3", "4"
         })
@@ -207,7 +207,7 @@ public class LendingControllerTest extends BaseTest {
         @ParameterizedTest
         @DisplayName("Should borrow a book if ADMIN requested and member has reserved the book earlier.")
         @CsvSource({
-                "1, 4, 540200000004, 3"
+                "2, 7, 540200000007, 6"
         })
         void shouldBorrowABookIfAdminRequestedAndMemberHasReservedABookEarlier(
                 Long memberId, Long bookItemId, String bookBarcode, Long reservationId
@@ -240,7 +240,7 @@ public class LendingControllerTest extends BaseTest {
             assertThat(memberAfter.getTotalBooksBorrowed()).isEqualTo(memberBefore.getTotalBooksBorrowed() + 1);
             assertThat(memberAfter.getTotalBooksReserved()).isEqualTo(memberBefore.getTotalBooksReserved() - 1);
 
-            BookItemDto bookItemAfter = findBookItemById(4L);
+            BookItemDto bookItemAfter = findBookItemById(bookItemId);
             assertThat(bookItemAfter.getBorrowed()).isEqualTo(returnedLending.getCreationDate());
             assertThat(bookItemAfter.getDueDate()).isEqualTo(returnedLending.getDueDate());
             assertThat(bookItemAfter.getStatus()).isEqualTo(BookItemStatus.LOANED);
