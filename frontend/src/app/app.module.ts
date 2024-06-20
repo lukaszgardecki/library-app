@@ -34,6 +34,7 @@ import { EditPhoneNumberComponent } from './profile-dashboard/edit/edit-phone-nu
 import { EditComponent } from './profile-dashboard/edit/edit.component';
 import { NullPlaceholderPipe } from './shared/pipes/null-placeholder.pipe';
 import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
+import { WebsocketService } from './services/websocket.service';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    AuthInterceptorProvider
+    AuthInterceptorProvider,
+    WebsocketService
   ],
   bootstrap: [AppComponent]
 })
