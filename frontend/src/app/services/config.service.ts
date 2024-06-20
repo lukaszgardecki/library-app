@@ -18,5 +18,6 @@ export const AUTHORIZED_ENDPOINTS = [
   "/lendings",
   "/reservations",
   "/authenticate/logout",
-  "/actions"
+  "/actions",
+  "/notifications"
 ];
