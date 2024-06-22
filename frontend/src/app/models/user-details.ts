@@ -1,4 +1,4 @@
-import { LibraryCard } from "../shared/library-card";
+import { LibraryCard } from "./library-card";
 
 export class UserDetails {
     id: number;
