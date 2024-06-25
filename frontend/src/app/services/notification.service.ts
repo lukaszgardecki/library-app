@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
-import { BehaviorSubject, Observable, catchError, filter, find, map, of, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { NotificationsPage } from '../models/notifications-page';
 import { Notification } from '../models/notification';
 import { AuthenticationService } from './authentication.service';
@@ -12,8 +12,8 @@ import { WebsocketService } from './websocket.service';
 })
 export class NotificationService {
   private baseURL;
-  private notificationsSubject = new BehaviorSubject<Notification[]>([]);
-  notifications$ = this.notificationsSubject.asObservable();
+  private notificationsPageSubject = new BehaviorSubject<NotificationsPage>(new NotificationsPage());
+  notificationsPage$ = this.notificationsPageSubject.asObservable();
   private currentNotificationSubject = new BehaviorSubject<Notification>(new Notification());
 
   constructor(
@@ -25,17 +25,12 @@ export class NotificationService {
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/notifications`;
 
-    this.refresh();
+    this.fetchNotificationsPage(0);
     this.subscribeUserNotifications();
   }
 
-  getNotifications(): Observable<Notification[]> {
-    return this.notifications$;
-  }
-
-  refresh(): void {
-    const userId = this.authenticationService.currentUserId;
-    this.refreshNotifications(userId);
+  getNotificationsPage(pageIndex: number = 0) {
+    this.fetchNotificationsPage(pageIndex);
   }
 
   getSingleNotificationById(): Observable<Notification> {
@@ -45,23 +40,46 @@ export class NotificationService {
   deleteById(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseURL}/${id}`, { withCredentials: true }).pipe(
       tap(() => {
-        const currentNotifications = this.notificationsSubject.value;
-        const updatedNotifications = currentNotifications.filter(notification => notification.id !== id);
-        this.publishUpdatedNotifications(updatedNotifications);
+        const currentPage = this.notificationsPageSubject.value;
+
+        if (currentPage.page.totalPages > 1) {
+          if (currentPage.page.number === currentPage.page.totalPages - 1 && currentPage._embedded.notificationDtoList.length === 1) {
+              this.fetchNotificationsPage(currentPage.page.number - 1);
+          } else {
+              this.fetchNotificationsPage(currentPage.page.number);
+          }
+        } else {
+          let currentNotifications = this.notificationsPageSubject.value._embedded.notificationDtoList;
+          let updatedNotifications = currentNotifications.filter(notification => notification.id !== id);
+          updatedNotifications = this.sortByDateDesc(updatedNotifications);
+          currentPage._embedded.notificationDtoList = updatedNotifications;
+          currentPage.page.totalElements = currentPage.page.totalElements - 1;
+          currentPage.page.totalPages = Math.ceil(currentPage.page.totalElements / currentPage.page.size);
+
+          this.notificationsPageSubject.next(currentPage);
+        } 
       })
     );
   }
 
   deleteAllSelected() {
-    const currentNotifications = this.notificationsSubject.value;
-    if (currentNotifications.length > 0) {
-      const ids = currentNotifications
+    const ids = this.notificationsPageSubject.value._embedded.notificationDtoList
         .filter(el => el.selected)
-        .map(el => el.id)
+        .map(el => el.id);
+    if (ids.length > 0) {
+      
       this.http.delete<void>(`${this.baseURL}`, { body: ids, withCredentials: true }).subscribe({
         next: () => {
-          const updatedNotifications = currentNotifications.filter(el => !ids.includes(el.id));
-          this.publishUpdatedNotifications(updatedNotifications);
+          const currentPageNum = this.notificationsPageSubject.value.page.number;
+
+          const countToDelete = ids.length;
+          const elementsOnPage = this.notificationsPageSubject.value._embedded.notificationDtoList.length;
+          const allPageToDelete = countToDelete === elementsOnPage;
+          const isLastPage = currentPageNum == this.notificationsPageSubject.value.page.totalPages - 1;
+          const isPageBefore = currentPageNum > 0;
+
+          let newPageNum = allPageToDelete && isPageBefore && isLastPage ? currentPageNum - 1 : currentPageNum;
+          this.fetchNotificationsPage(newPageNum);
         }
       });
     }
@@ -76,13 +94,19 @@ export class NotificationService {
     }
   }
 
-  private refreshNotifications(id: number): void {
-    this.http.get<NotificationsPage>(`${this.baseURL}`, { params: { memberId: id }, withCredentials: true })
-        .pipe(
-          tap(notificationPage => {
-            this.publishUpdatedNotifications(notificationPage._embedded.notificationDtoList);
-          })
-        ).subscribe();
+  private fetchNotificationsPage(pageIndex: number): void {
+    const userId = this.authenticationService.currentUserId;
+    let params = new HttpParams()
+      .set("memberId", userId)
+      .set("sort", "created_at,desc")
+      .set("page", pageIndex);
+    this.http.get<NotificationsPage>(`${this.baseURL}`, { params: params, withCredentials: true })
+      .subscribe({
+        next: notificationPage => {
+          console.log(notificationPage);
+          this.notificationsPageSubject.next(notificationPage);
+        }
+      });
   }
 
   private subscribeUserNotifications() {
@@ -94,16 +118,22 @@ export class NotificationService {
     });
   }
 
-  private publishUpdatedNotifications(list: Notification[]): void {
-    const sortedNotifications = this.sortByDateDesc(list);
-    this.notificationsSubject.next(sortedNotifications);
-  }
+
 
   private addNotification(newNotification: Notification): void {
-    const currentNotifications = this.notificationsSubject.value;
-    const updatedNotifications = [...currentNotifications, newNotification];
-    const sortedNotifications = this.sortByDateDesc(updatedNotifications);
-    this.notificationsSubject.next(sortedNotifications);
+    const currentPage = this.notificationsPageSubject.value;
+    
+    if (currentPage.page.number == 0) {
+      // add the new element, delete the last element
+      let currentNotifications = currentPage._embedded.notificationDtoList;
+      currentNotifications = currentNotifications.slice(0, currentNotifications.length-1);
+      currentNotifications = [...currentNotifications, newNotification];
+      currentPage.page.totalElements = currentPage.page.totalElements + 1;
+      currentPage.page.totalPages = Math.ceil(currentPage.page.totalElements / currentPage.page.size);
+      currentPage._embedded.notificationDtoList = this.sortByDateDesc(currentNotifications);
+    }
+    
+    this.notificationsPageSubject.next(currentPage);
   }
 
   private sortByDateDesc(notifications: Notification[]) {

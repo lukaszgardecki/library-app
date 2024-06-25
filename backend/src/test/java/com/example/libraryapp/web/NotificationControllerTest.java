@@ -27,7 +27,8 @@ public class NotificationControllerTest extends BaseTest {
         void shouldReturnAllNotificationsIfAdminRequested() {
             client.testRequest(GET, "/notifications", admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.notificationDtoList.length()").isEqualTo(7);
+                    .jsonPath("$._embedded.notificationDtoList.length()").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(27);
         }
 
         @Test
@@ -37,8 +38,8 @@ public class NotificationControllerTest extends BaseTest {
                     .expectBody()
                     .jsonPath("$._embedded.notificationDtoList.length()").isEqualTo(3)
                     .jsonPath("$.page.size").isEqualTo(3)
-                    .jsonPath("$.page.totalElements").isEqualTo(7)
-                    .jsonPath("$.page.totalPages").isEqualTo(3)
+                    .jsonPath("$.page.totalElements").isEqualTo(27)
+                    .jsonPath("$.page.totalPages").isEqualTo(9)
                     .jsonPath("$.page.number").isEqualTo(1);
         }
 
@@ -47,7 +48,8 @@ public class NotificationControllerTest extends BaseTest {
         void shouldReturnAllUsersNotificationsIfAdminRequested() {
             client.testRequest(GET, "/notifications?memberId=5", admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.notificationDtoList.length()").isEqualTo(4);
+                    .jsonPath("$._embedded.notificationDtoList.length()").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(24);
         }
 
         @Test

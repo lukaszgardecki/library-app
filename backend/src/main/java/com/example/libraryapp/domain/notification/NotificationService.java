@@ -15,7 +15,6 @@ import com.example.libraryapp.domain.notification.strategies.SystemNotificationS
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
@@ -24,8 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,14 +35,7 @@ public class NotificationService {
     private static final String TOPIC = "notifications";
 
     public PagedModel<NotificationDto> findNotifications(Long memberId, Pageable pageable) {
-        List<Notification> notifications = notificationRepository.findAll().stream()
-                .filter(notification -> memberId == null || Objects.equals(notification.getMemberId(), memberId))
-                .collect(Collectors.toList());
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), notifications.size());
-        List<Notification> paginatedList = notifications.subList(start, end);
-        Page<Notification> notificationPage = new PageImpl<>(paginatedList, pageable, notifications.size());
+        Page<Notification> notificationPage = notificationRepository.findAllByParams(memberId, pageable);
         return pagedResourcesAssembler.toModel(notificationPage, notificationModelAssembler);
     }
 
