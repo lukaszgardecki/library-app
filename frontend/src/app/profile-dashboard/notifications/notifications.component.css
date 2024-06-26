@@ -17,6 +17,14 @@ h2 {
     align-items: center;
 }
 
+.grid-container > a {
+    width: 100%;
+}
+
+.grid-container > .checkbox {
+    justify-self: end;
+}
+
 th {
     text-align: center;
     vertical-align: middle;

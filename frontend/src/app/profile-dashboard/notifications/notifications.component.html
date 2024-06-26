@@ -16,11 +16,13 @@
           <tbody>
               <tr *ngFor="let notification of notificationsPage._embedded.notificationDtoList" >
                   <td [ngClass]="{'bold': !notification.read}" class="c1">{{notification.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</td>
-                  <td [ngClass]="{'bold': !notification.read}" class="c2 grid-container">
-                    <a style="cursor: pointer;" (click)="showDetails(notification)">
-                      {{notification.subject}}
-                    </a>
-                    <input type="checkbox" [checked]="notification.selected" [(ngModel)]="notification.selected" class="checkbox">
+                  <td [ngClass]="{'bold': !notification.read}" class="c2">
+                    <div class="grid-container">
+                      <a style="cursor: pointer;" (click)="showDetails(notification)">
+                        {{notification.subject}}
+                      </a>
+                      <input type="checkbox" [checked]="notification.selected" [(ngModel)]="notification.selected" class="checkbox">
+                    </div>
                   </td>
               </tr>
           </tbody>
