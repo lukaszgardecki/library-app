@@ -100,7 +100,7 @@
                             </div>
                             <div></div>
                             <div></div>
-                            <button *ngIf="isAvailable(bookItem)">Request</button>
+                            <button *ngIf="isAvailable(bookItem) && isAuthenticated()" (click)="makeAReservation(bookItem)">Request</button>
                         </div>
                     </li>
                 </ul>
@@ -128,7 +128,7 @@
                             </div>
                             <div></div>
                             <div></div>
-                            <button *ngIf="isAvailable(bookItem)">Request</button>
+                            <button *ngIf="isAvailable(bookItem) && isAuthenticated()" (click)="makeAReservation(bookItem)">Request</button>
                         </div>
                     </li>
                 </ul>
