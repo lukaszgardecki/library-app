@@ -56,7 +56,7 @@ export class BookDetailsComponent implements OnInit {
   }
 
   isAvailable(bookItem: BookItem): boolean {
-    return bookItem.status === BookItemStatus.AVAILABLE || bookItem.status === BookItemStatus.RESERVED;
+    return bookItem.status === BookItemStatus.AVAILABLE;
   }
 
   goBack() {
