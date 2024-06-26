@@ -1,5 +1,9 @@
 package com.example.libraryapp.domain.reservation;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.RequestCancelAction;
+import com.example.libraryapp.domain.action.types.RequestCompletedAction;
+import com.example.libraryapp.domain.action.types.RequestNewAction;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -10,8 +14,8 @@ import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
-import com.example.libraryapp.domain.notification.NotificationDetails;
 import com.example.libraryapp.domain.notification.NotificationService;
+import com.example.libraryapp.domain.notification.NotificationType;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
@@ -26,10 +30,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,18 +41,22 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
+    private final ActionRepository actionRepository;
     private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
 
-    public PagedModel<ReservationResponse> findReservations(Long memberId, Pageable pageable) {
-        PagedModel<ReservationResponse> collectionModel;
-        if (memberId != null) {
-            collectionModel = findReservationsByUserId(memberId, pageable);
-        } else {
-            collectionModel = findAllReservations(pageable);
-        }
-        return collectionModel;
+    public PagedModel<ReservationResponse> findReservations(Long memberId, ReservationStatus status, Pageable pageable) {
+        List<Reservation> reservations = reservationRepository.findAll().stream()
+                .filter(res -> memberId == null || Objects.equals(res.getMember().getId(), memberId))
+                .filter(res -> status == null || res.getStatus() == status)
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), reservations.size());
+        List<Reservation> paginatedList = reservations.subList(start, end);
+        Page<Reservation> reservationPage = new PageImpl<>(paginatedList, pageable, reservations.size());
+        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
     public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
@@ -74,10 +82,8 @@ public class ReservationService {
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
         book.updateAfterReservation();
-        NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_CREATED, book.getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new RequestNewAction(savedReservation));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, ReservationDtoMapper.map(savedReservation));
         return reservationModelAssembler.toModel(savedReservation);
     }
 
@@ -92,42 +98,17 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
-        NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_DELETED, book.getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new RequestCancelAction(reservation));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CANCELLED, ReservationDtoMapper.map(reservation));
     }
 
     @Transactional
     public ReservationResponse changeReservationStatusToReady(Long reservationId) {
         Reservation reservation = findReservation(reservationId);
-        Member member = reservation.getMember();
-        String bookTitle = reservation.getBookItem().getBook().getTitle();
-
         reservation.setStatus(ReservationStatus.READY);
-
-        NotificationDetails details = createNotificationDetails(
-                member, Message.RESERVATION_READY, bookTitle
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new RequestCompletedAction(reservation));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_COMPLETED, ReservationDtoMapper.map(reservation));
         return reservationModelAssembler.toModel(reservation);
-    }
-
-    private PagedModel<ReservationResponse> findAllReservations(Pageable pageable) {
-        Page<Reservation> reservationPage = reservationRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
-    }
-
-    private PagedModel<ReservationResponse> findReservationsByUserId(Long memberId, Pageable pageable) {
-        Member member = findMemberById(memberId);
-        List<Reservation> reservationList = reservationRepository.findAllByMemberId(member.getId());
-        Page<Reservation> reservationPage;
-        if (pageable.isUnpaged()) {
-            reservationPage = new PageImpl<>(reservationList);
-        } else {
-            reservationPage = new PageImpl<>(reservationList, pageable, reservationList.size());
-        }
-        return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
     private BookItem findBookByBarcode(String bookBarcode) {
@@ -182,16 +163,6 @@ public class ReservationService {
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)
-                .build();
-    }
-
-    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
-        return NotificationDetails.builder()
-                .createdAt(LocalDateTime.now())
-                .content(notificationMessage)
-                .bookTitle(bookTitle)
-                .userEmail(member.getEmail())
-                .userPhoneNumber(member.getPerson().getPhone())
                 .build();
     }
 }

@@ -25,45 +25,45 @@
 
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#sorting-body" aria-expanded="true" aria-controls="sorting-body">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sorting-body" aria-expanded="false" aria-controls="sorting-body">
                   Sort by
                 </button>
               </h2>
               <div id="sorting-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
                 <div class="accordion-body">
                   <ul>
-                    <li *ngFor="let sortType of sortTypes" (click)="sort(sortType.queryParam)" [ngClass]="{'selected': sortType.name === selectedSortTypeName}">{{sortType.name}}</li>
+                    <li *ngFor="let sortType of sortTypes" (click)="sort(sortType)" [ngClass]="{'selected': sortType.selected}">{{sortType.name}}</li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#sizing-body" aria-expanded="true" aria-controls="sizing-body">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sizing-body" aria-expanded="false" aria-controls="sizing-body">
                   Page size
                 </button>
               </h2>
               <div id="sizing-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
                 <div class="accordion-body">
                   <ul>
-                    <li *ngFor="let size of pageSizes" (click)="changeSize(size)" [ngClass]="{'selected': size === selectedPageSize}">{{size}}</li>
+                    <li *ngFor="let size of pageSizes" (click)="changeSize(size)" [ngClass]="{'selected': size.selected }">{{size.value}}</li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            <div class="accordion-item">
+            <div class="accordion-item" *ngIf="languages$ | async as languages">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#language-body" aria-expanded="true" aria-controls="language-body">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#language-body" aria-expanded="false" aria-controls="language-body">
                   Language
                 </button>
               </h2>
               <div id="language-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
                 <div class="accordion-body">
                   <ul>
-                    <li *ngFor="let language of languages" (click)="getAllByLanguage(language.key)" [ngClass]="{'selected': isSelected(language.key)}">
-                      <span>{{language.key}}</span>
-                      <div>{{language.value}}</div>
+                    <li *ngFor="let language of languages" (click)="getAllByLanguage(language)" [ngClass]="{'selected': language.selected}">
+                      <span>{{language.name}}</span>
+                      <div>{{language.amount}}</div>
                     </li>
                   </ul>
                 </div>
@@ -76,39 +76,44 @@
         <!-- ################################################################################################ -->
 
         
-        <div class="content three_quarter">
+        <div class="content three_quarter" *ngIf="booksPage$ | async as booksPage">
 
-          <app-pagination [listComponent]="this" [ngStyle]="{visibility: books ? 'visible' : 'hidden'}"></app-pagination>
+          <ng-container *ngIf="booksPage._embedded; else noBooks">
+
+            <app-pagination (pageChange)="loadPage($event)" [page]="booksPage.page"></app-pagination>
           
-        
-          <div id="list">
-            <ul>
-              <li *ngFor="let book of books">
-                <div class="img-container">
-                    <img src="https://bs.katowice.pl/wp-content/uploads/2022/08/1170px-Book_icon_closed_-_Blue_and_gold.svg_.png" alt="Zdjęcie">
-                </div>
- 
-                
-                <div class="list-cont">
-                    <header><a [routerLink]="['/books', book.id]">{{book.title}}</a></header>
-                    <div class="list-cont-row">
-                        <div><b>Wydawca:</b></div>
-                        <div>{{book.publisher}}</div>
-                    </div>
-                    <div class="list-cont-row">
-                        <div><strong>Temat:</strong></div>
-                        <div>{{book.subject}}</div>
-                    </div>
-                </div>
-                
-                <div class="list-actions">
+            <div id="list">
+              <ul>
+                <li *ngFor="let book of booksPage._embedded.bookDtoList">
+                  <div class="img-container">
+                      <img src="https://bs.katowice.pl/wp-content/uploads/2022/08/1170px-Book_icon_closed_-_Blue_and_gold.svg_.png" alt="Zdjęcie">
+                  </div>
+  
+                  
+                  <div class="list-cont">
+                      <header><a [routerLink]="['/books', book.id]">{{book.title}}</a></header>
+                      <div class="list-cont-row">
+                          <div><b>Wydawca:</b></div>
+                          <div>{{book.publisher}}</div>
+                      </div>
+                      <div class="list-cont-row">
+                          <div><strong>Temat:</strong></div>
+                          <div>{{book.subject}}</div>
+                      </div>
+                  </div>
+                  
+                  <div class="list-actions">
 
-                </div>
-              </li>
-            </ul>
-          </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
 
-          <app-pagination [listComponent]="this" [ngStyle]="{visibility: books ? 'visible' : 'hidden'}"></app-pagination>
+            <app-pagination (pageChange)="loadPage($event)" [page]="booksPage.page"></app-pagination>
+
+          </ng-container>
+
+          <ng-template #noBooks>No books</ng-template>
         </div>
 
         <div class="clear"></div>

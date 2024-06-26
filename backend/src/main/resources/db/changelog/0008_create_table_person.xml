@@ -13,6 +13,12 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="phone" type="VARCHAR(20)"/>
+            <column name="pesel" type="VARCHAR(15)"/>
+            <column name="date_of_birth" type="DATE"/>
+            <column name="gender" type="VARCHAR(50)"/>
+            <column name="nationality" type="VARCHAR(50)"/>
+            <column name="mothers_name" type="VARCHAR(100)"/>
+            <column name="fathers_name" type="VARCHAR(100)"/>
 
             <column name="street_address" type="VARCHAR(255)"/>
             <column name="city" type="VARCHAR(255)"/>

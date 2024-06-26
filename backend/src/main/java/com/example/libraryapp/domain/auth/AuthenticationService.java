@@ -1,90 +1,151 @@
 package com.example.libraryapp.domain.auth;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.LoginAction;
+import com.example.libraryapp.domain.action.types.LoginFailedAction;
+import com.example.libraryapp.domain.action.types.RegisterAction;
+import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
+import com.example.libraryapp.domain.config.AuthTokens;
+import com.example.libraryapp.domain.config.Fingerprint;
+import com.example.libraryapp.domain.exception.auth.ForbiddenAccessException;
+import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.helper.LibraryGenerator;
 import com.example.libraryapp.domain.member.*;
-import com.example.libraryapp.domain.token.JwtService;
-import com.example.libraryapp.domain.token.Token;
-import com.example.libraryapp.domain.token.TokenRepository;
-import com.example.libraryapp.domain.token.TokenType;
+import com.example.libraryapp.domain.token.TokenService;
 import com.example.libraryapp.management.Message;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final MemberRepository memberRepository;
-    private final TokenRepository tokenRepository;
+    private final ActionRepository actionRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    public LoginResponse register(RegisterRequest request) {
+    public void register(RegisterRequest request) {
         checkIfEmailIsUnique(request);
         Member member = createMemberWithUserRole(request);
         Member savedMember = memberRepository.saveAndFlush(member);
         LibraryCard card = createMemberLibraryCard(savedMember);
         savedMember.setCard(card);
-
-        String jwtToken = jwtService.generateToken(member);
-        saveMemberToken(savedMember, jwtToken);
-        return new LoginResponse(jwtToken);
+        actionRepository.save(new RegisterAction(member));
     }
 
-
-    public LoginResponse authenticate(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
-        Member member = memberRepository.findByEmail(request.getUsername())
+    public LoginResponse authenticate(
+            LoginRequest loginRequest,
+            HttpServletResponse response
+    ) {
+        Member member = memberRepository.findByEmail(loginRequest.getUsername())
                 .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
-        String jwtToken = jwtService.generateToken(member);
-        revokeAllUserTokens(member);
-        saveMemberToken(member, jwtToken);
-        return new LoginResponse(jwtToken);
+        validatePassword(loginRequest, member);
+        AuthTokens auth = tokenService.generateAuth(member);
+        String accessToken = auth.accessToken();
+        String refreshToken = auth.refreshToken();
+        Fingerprint fingerprint = auth.fingerprint();
+        Cookie fgpCookie = fingerprint.getCookie();
+
+        tokenService.revokeAllUserTokens(member);
+        tokenService.saveTokens(member, accessToken, refreshToken);
+        actionRepository.save(new LoginAction(member));
+        response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
+        return new LoginResponse(accessToken, refreshToken);
     }
 
+    public LoginResponse refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        String refreshToken = tokenService.findToken(request)
+                .orElseThrow(() -> new AccessDeniedException(Message.ACCESS_DENIED));
+        String memberEmail = tokenService.extractUsername(refreshToken);
+        Member member = memberRepository.findByEmail(memberEmail)
+                .orElseThrow(MemberNotFoundException::new);
 
-    private void saveMemberToken(Member member, String jwtToken) {
-        Token token = Token.builder()
-                .member(member)
-                .token(jwtToken)
-                .tokenType(TokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
+        AuthTokens auth = tokenService.generateAuth(member);
+        String newAccessToken = auth.accessToken();
+        String newRefreshToken = auth.refreshToken();
+        Fingerprint newFingerprint = auth.fingerprint();
+        Cookie fgpCookie = newFingerprint.getCookie();
+        tokenService.revokeAllUserTokens(member);
+        tokenService.saveTokens(member, newAccessToken, newRefreshToken);
+        response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
+        return new LoginResponse(newAccessToken, newRefreshToken);
     }
 
-    private void revokeAllUserTokens(Member member) {
-        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(member.getId());
+    public boolean checkIfCurrentLoggedInUserIsAdmin() {
+        return getCurrentLoggedInUserRole().equals(Role.ADMIN.name());
+    }
 
-        if (validUserTokens.isEmpty()) return;
+    public void checkIfAdminRequested() {
+        boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
+        boolean isNotAdmin = !isAdmin;
+        if (isNotAdmin) throw new ForbiddenAccessException();
+    }
 
-        validUserTokens.forEach(t -> {
-            t.setExpired(true);
-            t.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserTokens);
+    public void checkIfAdminOrDataOwnerRequested(Long userId) {
+        boolean isOwner = Objects.equals(getCurrentLoggedInUserId(), userId);
+        boolean isAdmin = checkIfCurrentLoggedInUserIsAdmin();
+        boolean isNotAdminOrDataOwner = !(isOwner || isAdmin);
+        if (isNotAdminOrDataOwner) throw new ForbiddenAccessException();
+    }
+
+    public Long getCurrentLoggedInUserId() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return findMemberByEmail(username).getId();
+    }
+
+    private void validatePassword(LoginRequest loginRequest, Member member) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+        } catch (RuntimeException ex){
+            actionRepository.save(new LoginFailedAction(member));
+            throw ex;
+        }
+    }
+
+    private String getCurrentLoggedInUserRole() {
+        Long userId = getCurrentLoggedInUserId();
+        return findMemberRoleByUserId(userId)
+                .orElseThrow(() -> new MemberNotFoundException(userId));
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private Optional<String> findMemberRoleByUserId(Long id) {
+        return memberRepository.findById(id)
+                .map(user -> user.getRole().name());
     }
 
     private LibraryCard createMemberLibraryCard(Member member) {
         return LibraryCard.builder()
-                .active(true)
+                .status(CardStatus.ACTIVE)
                 .barcode(LibraryGenerator.generateCardNum(member.getId()))
                 .issuedAt(LocalDateTime.now())
                 .build();
@@ -100,6 +161,7 @@ public class AuthenticationService {
         member.setDateOfMembership(LocalDate.now());
         member.setEmail(request.getEmail());
         member.setPassword(passwordEncoder.encode(request.getPassword()));
+        member.setStatus(AccountStatus.PENDING);
         member.setRole(Role.USER);
         return member;
     }
@@ -119,13 +181,21 @@ public class AuthenticationService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
+                .pesel(request.getPesel())
+                .dateOfBirth(request.getDateOfBirth())
+                .gender(request.getGender())
+                .nationality(request.getNationality())
+                .mothersName(request.getMothersName())
+                .fathersName(request.getFathersName())
                 .build();
     }
 
     private void checkIfEmailIsUnique(RegisterRequest request) {
-        Optional<Member> memberWithSameEmail = memberRepository.findAll().stream()
+        memberRepository.findAll().stream()
                 .filter(member -> member.getEmail().equals(request.getEmail()))
-                .findAny();
-        if (memberWithSameEmail.isPresent()) throw new BadCredentialsException(Message.BAD_EMAIL);
+                .findAny()
+                .ifPresent(email -> {
+                    throw new BadCredentialsException(Message.BAD_EMAIL);
+                });
     }
 }

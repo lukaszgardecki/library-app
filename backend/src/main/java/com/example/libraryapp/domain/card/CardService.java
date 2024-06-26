@@ -31,14 +31,14 @@ public class CardService {
     @Transactional
     public CardDto activateCard(Long cardId) {
         LibraryCard card = findCard(cardId);
-        card.setActive(true);
+        card.setStatus(CardStatus.ACTIVE);
         return cardModelAssembler.toModel(card);
     }
 
     @Transactional
     public CardDto blockCard(Long cardId) {
         LibraryCard card = findCard(cardId);
-        card.setActive(false);
+        card.setStatus(CardStatus.INACTIVE);
         return cardModelAssembler.toModel(card);
     }
 

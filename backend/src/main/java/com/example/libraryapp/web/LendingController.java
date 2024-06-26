@@ -1,46 +1,53 @@
 package com.example.libraryapp.web;
 
+import com.example.libraryapp.domain.auth.AuthenticationService;
+import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.lending.LendingService;
+import com.example.libraryapp.domain.lending.LendingStatus;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
-import com.example.libraryapp.domain.member.MemberService;
 import com.example.libraryapp.management.ActionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+
+import static com.example.libraryapp.domain.member.Role.ADMIN;
+import static com.example.libraryapp.domain.member.Role.USER;
 
 @RestController
 @RequestMapping("/api/v1/lendings")
 @RequiredArgsConstructor
 public class LendingController {
     private final LendingService lendingService;
-    private final MemberService memberService;
+    private final AuthenticationService authService;
 
     @GetMapping
-    @PreAuthorize("isAuthenticated()")
+    @RoleAuthorization({ADMIN, USER})
     public ResponseEntity<PagedModel<LendingDto>> getAllLendings(
-            @RequestParam(required = false) Long memberId, Pageable pageable
+            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) LendingStatus status,
+            @RequestParam(required = false) Boolean renewable,
+            Pageable pageable
     ) {
-        memberService.checkIfAdminOrDataOwnerRequested(memberId);
-        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, pageable);
+        authService.checkIfAdminOrDataOwnerRequested(memberId);
+        PagedModel<LendingDto> collectionModel = lendingService.findLendings(memberId, status, pageable, renewable);
         return ResponseEntity.ok(collectionModel);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @RoleAuthorization({ADMIN, USER})
     public ResponseEntity<LendingDto> getLendingById(@PathVariable Long id) {
         LendingDto lending = lendingService.findLendingById(id);
-        memberService.checkIfAdminOrDataOwnerRequested(lending.getMember().getId());
+        authService.checkIfAdminOrDataOwnerRequested(lending.getMember().getId());
         return ResponseEntity.ok(lending);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin:create')")
+    @RoleAuthorization({ADMIN})
     public ResponseEntity<LendingDto> borrowABook(@RequestBody ActionRequest request) {
         LendingDto savedCheckout = lendingService.borrowABook(request);
         URI savedCheckoutUri = createURI(savedCheckout);
@@ -48,21 +55,22 @@ public class LendingController {
     }
 
     @PostMapping("/renew")
-    @PreAuthorize("hasAuthority('admin:create')")
-    public ResponseEntity<LendingDto> renewABook(@RequestParam String bookBarcode) {
-        LendingDto renewedLending = lendingService.renewABook(bookBarcode);
+    @RoleAuthorization({ADMIN, USER})
+    public ResponseEntity<LendingDto> renewABook(@RequestBody ActionRequest request) {
+        authService.checkIfAdminOrDataOwnerRequested(request.getMemberId());
+        LendingDto renewedLending = lendingService.renewABook(request.getBookBarcode());
         return ResponseEntity.ok(renewedLending);
     }
 
     @PatchMapping("/return")
-    @PreAuthorize("hasAuthority('admin:update')")
+    @RoleAuthorization({ADMIN})
     public ResponseEntity<LendingDto> returnABook(@RequestParam String bookBarcode) {
         LendingDto returnedBook = lendingService.returnABook(bookBarcode);
         return ResponseEntity.ok(returnedBook);
     }
 
     @PostMapping("/{id}/lost")
-    @PreAuthorize("hasAuthority('admin:update')")
+    @RoleAuthorization({ADMIN})
     public ResponseEntity<LendingDto> setBookLost(@PathVariable("id") Long lendingId) {
         LendingDto returnedBook = lendingService.setLendingLost(lendingId);
         return ResponseEntity.ok(returnedBook);

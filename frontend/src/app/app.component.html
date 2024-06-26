@@ -6,13 +6,22 @@
         <li><i class="fa fa-envelope-o"></i> info&#64;domain.com</li>
       </ul>
     </div>
+
     <div class="fl_right">
-      <ul>
-        <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
-        <li *ngIf="!isLoggedIn"><a href="/login">Login</a></li>
-        <li *ngIf="!isLoggedIn"><a href="#">Register</a></li>
-        <li *ngIf="isLoggedIn"><a [routerLink]="['']" routerLinkActive="active" (click)="logout()">Logout</a></li>
-      </ul>
+      <ng-container>
+        <ul *ngIf="!isLoggedIn; else loggedIn">
+          <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="#">Register</a></li>
+        </ul>
+      </ng-container>
+      <ng-template #loggedIn>
+        <ul>
+          <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
+          <li><a [routerLink]="['/userprofile']">Profile</a></li>
+          <li><a [routerLink]="['']" (click)="logout()">Logout</a></li>
+        </ul>
+      </ng-template>
     </div>
   </div>
 </div>
@@ -43,7 +52,6 @@
     <ul class="clear">
       <li ngClass="{'active': isLinkActive}"><a [routerLink]="['/']">Home</a></li>
       <li><a [routerLink]="['/books']">Books</a></li>
-      <li><a [routerLink]="['/userprofile']">Profile</a></li>
     </ul>
   </nav>
 </div>

@@ -1,0 +1,113 @@
+form {
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    width: 75%;
+    height: 40px;
+    font-weight: bold;
+}
+
+.required {
+    color: #c80000;
+}
+
+.msg {
+    font-weight: bold;
+    margin-bottom: 25px;
+    padding-left: 5px;
+}
+
+.error {
+    color: #c80000;
+    background-color: rgb(255, 209, 209);
+}
+
+.success {
+    color: #2fc800;
+    background-color: rgb(218, 255, 209);
+}
+
+.error p,
+.success p {
+    padding: 10px;
+    margin: 0;
+}
+
+input {
+    height: 40px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d7d7d7;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border: 1.2px solid var(--main-color);
+    box-shadow: 0 0 8px rgba(28, 122, 168, 0.5);
+}
+
+input::placeholder {
+    color: #d7d7d7;
+}
+
+input::-webkit-input-placeholder {
+    color: #d7d7d7;
+}
+
+input:-moz-placeholder {
+    color: #d7d7d7;
+}
+
+input::-moz-placeholder {
+    color: #d7d7d7;
+}
+
+input:-ms-input-placeholder {
+    color: #d7d7d7;
+}
+
+.save-button {
+    display: flex;
+    justify-content: end;
+}
+
+.save-button button {
+    background-color: var(--main-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.save-button button:hover {
+    background-color: var(--button-hover-color);
+}
+
+@media (max-width: 450px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    label {
+        width: 100%;
+    }
+
+    .form-group input {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .save-button {
+        margin-top: 15px;
+        justify-content: center;
+    }
+}

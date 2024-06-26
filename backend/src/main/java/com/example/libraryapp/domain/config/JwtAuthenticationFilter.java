@@ -1,12 +1,16 @@
 package com.example.libraryapp.domain.config;
 
-import com.example.libraryapp.domain.token.JwtService;
-import com.example.libraryapp.domain.token.TokenRepository;
+import com.example.libraryapp.domain.token.TokenService;
+import com.example.libraryapp.domain.token.TokenType;
+import com.example.libraryapp.management.Message;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,50 +18,77 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final JwtService jwtService;
+    private final TokenService tokenService;
     private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        String jwt;
-        String userEmail;
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if ((authHeader == null || !authHeader.startsWith(TokenType.BEARER.getPrefix())) &&  !requestURI.endsWith("/refresh-token")) {
+            filterChain.doFilter(request,response);
             return;
         }
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
+        try {
+            String token = extractToken(request);
+            String fingerprint = extractFingerprint(request);
+            boolean tokenFgpAreOK = tokenService.validateTokenAndFgp(token, fingerprint);
+            boolean authenticationIsAbsent = SecurityContextHolder.getContext().getAuthentication() == null;
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-
-            Boolean isTokenValid = tokenRepository.findByToken(jwt)
-                    .map(t -> !t.isExpired() && !t.isRevoked())
-                    .orElse(false);
-
-            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (tokenFgpAreOK && authenticationIsAbsent) {
+                UserDetails userDetails = loadUserDetailsFromToken(token);
+                setAuthentication(request, userDetails);
             }
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            handlerExceptionResolver.resolveException(
+                    request, response,null, new JwtException(Message.ACCESS_DENIED)
+            );
         }
-        filterChain.doFilter(request, response);
+    }
+
+    private UserDetails loadUserDetailsFromToken(String token) {
+        String username = tokenService.extractUsername(token);
+        return userDetailsService.loadUserByUsername(username);
+    }
+
+    private String extractToken(HttpServletRequest request) {
+        return tokenService.findToken(request)
+                .filter(getTokenValidator(request.getRequestURI()))
+                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED));
+    }
+
+    private String extractFingerprint(HttpServletRequest request) {
+        return tokenService.findFingerprint(request)
+                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED));
+    }
+
+    private Predicate<String> getTokenValidator(String requestURI) {
+        return requestURI.endsWith("/refresh-token") ?
+                tokenService::isRefreshTokenValidInDB :
+                tokenService::isAccessTokenValidInDB;
+    }
+
+    private void setAuthentication(HttpServletRequest request, UserDetails userDetails) {
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }

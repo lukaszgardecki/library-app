@@ -1,26 +1,30 @@
 package com.example.libraryapp.domain.lending;
 
+import com.example.libraryapp.domain.action.ActionRepository;
+import com.example.libraryapp.domain.action.types.BookBorrowedAction;
+import com.example.libraryapp.domain.action.types.BookLostAction;
+import com.example.libraryapp.domain.action.types.BookRenewedAction;
+import com.example.libraryapp.domain.action.types.BookReturnedAction;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.config.assembler.LendingModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
-import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
-import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
-import com.example.libraryapp.management.FineService;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
-import com.example.libraryapp.domain.member.MemberRepository;
-import com.example.libraryapp.domain.notification.NotificationDetails;
 import com.example.libraryapp.domain.notification.NotificationService;
+import com.example.libraryapp.domain.notification.NotificationType;
 import com.example.libraryapp.domain.reservation.Reservation;
+import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
+import com.example.libraryapp.management.FineService;
 import com.example.libraryapp.management.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,29 +37,36 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LendingService {
     private final LendingRepository lendingRepository;
-    private final MemberRepository memberRepository;
     private final BookItemRepository bookItemRepository;
     private final ReservationRepository reservationRepository;
+    private final ActionRepository actionRepository;
     private final FineService fineService;
     private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
     private final PagedResourcesAssembler<Lending> pagedResourcesAssembler;
 
-    public PagedModel<LendingDto> findLendings(Long memberId, Pageable pageable) {
-        PagedModel<LendingDto> collectionModel;
-        if (memberId != null) {
-            collectionModel = findLendingsByMemberId(memberId, pageable);
-        } else {
-            collectionModel = findAllCheckouts(pageable);
-        }
-        return collectionModel;
+    public PagedModel<LendingDto> findLendings(
+            Long memberId, LendingStatus status, Pageable pageable, Boolean renewable
+    ) {
+        List<Lending> lendings = lendingRepository.findAll().stream()
+                .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
+                .filter(len -> status == null || len.getStatus() == status)
+                .filter(len -> renewable == null || isRenewable(len) == renewable)
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), lendings.size());
+        List<Lending> paginatedList = lendings.subList(start, end);
+        Page<Lending> checkoutDtoPage = new PageImpl<>(paginatedList, pageable, lendings.size());
+        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
     }
 
     public LendingDto findLendingById(Long id) {
@@ -74,23 +85,18 @@ public class LendingService {
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
         reservation.updateAfterLending();
-        NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_BORROWED, book.getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new BookBorrowedAction(savedLending));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, ReservationDtoMapper.map(reservation));
         return lendingModelAssembler.toModel(savedLending);
     }
 
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
-        Member member = lending.getMember();
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
-        NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_EXTENDED, lending.getBookItem().getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new BookRenewedAction(lending));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, LendingDtoMapper.map(lending));
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -104,10 +110,8 @@ public class LendingService {
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
-        NotificationDetails details = createNotificationDetails(
-                member, Message.BOOK_RETURNED, book.getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new BookReturnedAction(lending));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, LendingDtoMapper.map(lending));
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -122,10 +126,8 @@ public class LendingService {
         lending.setStatus(LendingStatus.COMPLETED);
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
-        NotificationDetails details = createNotificationDetails(
-                member, String.format(Message.BOOK_LOST, book.getPrice()), book.getBook().getTitle()
-        );
-        notificationService.sendNotification(details);
+        actionRepository.save(new BookLostAction(lending));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, LendingDtoMapper.map(lending));
         List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
         cancelReservations(reservationsToCancel);
         sendNotifications(reservationsToCancel);
@@ -133,41 +135,13 @@ public class LendingService {
     }
 
     private void sendNotifications(List<Reservation> reservationsToCancel) {
-        reservationsToCancel.forEach(res -> {
-            NotificationDetails details = createNotificationDetails(
-                    res.getMember(), Message.RESERVATION_CANCEL_BOOK_ITEM_LOST, res.getBookItem().getBook().getTitle()
-            );
-            notificationService.sendNotification(details);
-
-        });
+        reservationsToCancel.forEach(
+                res -> notificationService.saveAndSendNotification(NotificationType.RESERVATION_CANCEL_BOOK_ITEM_LOST, ReservationDtoMapper.map(res))
+        );
     }
 
     private void cancelReservations(List<Reservation> reservationsOfLostBook) {
         reservationsOfLostBook.forEach(res -> res.setStatus(ReservationStatus.CANCELED));
-    }
-
-    private PagedModel<LendingDto> findAllCheckouts(Pageable pageable) {
-        Page<Lending> checkoutDtoPage =
-                pageable.isUnpaged() ? new PageImpl<>(lendingRepository.findAll()) : lendingRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
-    }
-
-    private PagedModel<LendingDto> findLendingsByMemberId(Long memberId, Pageable pageable) {
-        if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException(memberId);
-        }
-
-        List<Lending> lendingList = lendingRepository.findAll()
-                .stream()
-                .filter(checkout -> checkout.getMember().getId().equals(memberId))
-                .toList();
-        Page<Lending> checkoutDtoPage;
-        if (pageable.isUnpaged()) {
-            checkoutDtoPage = new PageImpl<>(lendingList);
-        } else {
-            checkoutDtoPage = new PageImpl<>(lendingList, pageable, lendingList.size());
-        }
-        return pagedResourcesAssembler.toModel(checkoutDtoPage, lendingModelAssembler);
     }
 
     private Lending findLendingByBookBarcode(String bookBarcode) {
@@ -196,6 +170,11 @@ public class LendingService {
         return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
     }
 
+    private boolean isRenewable(Lending len) {
+        return !isBookReserved(len.getBookItem().getId())
+             && len.getDueDate().isAfter(LocalDate.now());
+    }
+
     private void checkIfMemberCanBorrowABook(Member member) {
         if (member.hasCharges()) {
             throw new UnsettledFineException();
@@ -222,15 +201,5 @@ public class LendingService {
         lendingToSave.setDueDate(endTime);
         lendingToSave.setStatus(LendingStatus.CURRENT);
         return lendingToSave;
-    }
-
-    private NotificationDetails createNotificationDetails(Member member, String notificationMessage, String bookTitle) {
-        return NotificationDetails.builder()
-                .createdAt(LocalDateTime.now())
-                .content(notificationMessage)
-                .bookTitle(bookTitle)
-                .userEmail(member.getEmail())
-                .userPhoneNumber(member.getPerson().getPhone())
-                .build();
     }
 }

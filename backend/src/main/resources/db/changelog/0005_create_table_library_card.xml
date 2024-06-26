@@ -12,7 +12,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             </column>
             <column name="barcode" type="VARCHAR(20)"/>
             <column name="issued_at" type="TIMESTAMP"/>
-            <column name="active" type="BOOLEAN"/>
+            <column name="status" type="VARCHAR(20)"/>
         </createTable>
 
         <modifySql dbms="mysql">

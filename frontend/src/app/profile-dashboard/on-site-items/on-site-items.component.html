@@ -1,0 +1,21 @@
+<h1>{{name}}</h1>
+<ng-container *ngIf="onSiteLendings && onSiteLendings.length > 0; else lack">
+    <button class="save-to-file" (click)="saveAsPDF()">Save to file</button>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="c2">Title</th>
+                <th>Date of return</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let lending of onSiteLendings; let i = index">
+                <td>{{i + 1}}.</td>
+                <td><a [routerLink]="['/books', lending.bookItem.book.id]">{{lending.bookItem.book.title}}</a></td>
+                <td>{{lending.dueDate | date: "dd/MM/yyyy"}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
+<ng-template #lack>Lack of documents</ng-template>

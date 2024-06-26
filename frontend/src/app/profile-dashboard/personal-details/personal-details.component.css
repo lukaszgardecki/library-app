@@ -1,0 +1,23 @@
+h2 {
+    margin-bottom: 20px;
+}
+
+.details header {
+    line-height: 4rem;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid #D7D7D7;
+    margin: 0 10px;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+    margin: 20px;
+    font-size: 1.1rem;
+}
+
+.row div {
+    flex: 1;
+    box-sizing: border-box;
+}

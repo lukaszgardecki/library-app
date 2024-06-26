@@ -1,0 +1,35 @@
+h2 {
+    margin-bottom: 20px;
+}
+
+.c2 {
+    width: 100%;
+}
+
+th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filter-container div {
+    margin-right: 20px;
+}
+
+.filter-container label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 0;
+    border-color: #D7D7D7;
+}

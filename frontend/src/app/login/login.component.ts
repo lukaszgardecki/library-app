@@ -31,7 +31,7 @@ export class LoginComponent {
           this.router.navigate(['/userprofile']);
         },
         error: err => {
-          console.error(err.error.message);
+          console.log("Błędne hasło lub email");
         }
       });
     }

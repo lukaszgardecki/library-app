@@ -9,7 +9,7 @@ public class CardMapper {
                 .id(entity.getId())
                 .barcode(entity.getBarcode())
                 .issuedAt(entity.getIssuedAt())
-                .active(entity.isActive())
+                .status(entity.getStatus())
                 .build();
     }
 }

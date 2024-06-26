@@ -1,0 +1,82 @@
+<h1>{{name}}</h1>
+<div class="details">
+    <header>Identifiers</header>
+    <div class="row">
+        <div><strong>User ID:</strong></div>
+        <div>{{user?.id | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>E-mail:</strong></div>
+        <div>{{user?.email | nullPlaceholder}}</div>
+    </div>
+</div>
+<div class="details">
+    <header>Personal details</header>
+    <div class="row">
+        <div><strong>Surname:</strong></div>
+        <div>{{user?.lastName | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Forename:</strong></div>
+        <div>{{user?.firstName | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Date of birth:</strong></div>
+        <div>{{user?.dateOfBirth | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Gender:</strong></div>
+        <div>{{user?.gender | enumName | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Nationality:</strong></div>
+        <div>{{user?.nationality | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Address:</strong></div>
+        <div>{{user?.address | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Names of parents:</strong></div>
+        <div>{{user?.parentsNames | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Pesel:</strong></div>
+        <div>{{user?.pesel | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Phone number:</strong></div>
+        <div>{{user?.phoneNumber | nullPlaceholder}}</div>
+    </div>
+</div>
+<div class="details">
+    <header>Account details</header>
+    <div class="row">
+        <div><strong>User card ID:</strong></div>
+        <div>{{user?.card?.id | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>User card barcode:</strong></div>
+        <div>{{user?.card?.barcode | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>User card issue date:</strong></div>
+        <div>{{user?.card?.issuedAt | date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>User card status:</strong></div>
+        <div>{{user?.card?.status | enumName | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Availability date:</strong></div>
+        <div>{{user?.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Lent items:</strong></div>
+        <div>{{user?.totalBooksBorrowed | nullPlaceholder}}</div>
+    </div>
+    <div class="row">
+        <div><strong>Status:</strong></div>
+        <div>{{user?.status | enumName | nullPlaceholder}}</div>
+    </div>
+</div>

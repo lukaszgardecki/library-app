@@ -13,8 +13,10 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="0002_create_table_member.xml" relativeToChangelogFile="true"/>
     <include file="0004_create_table_reservation.xml" relativeToChangelogFile="true"/>
     <include file="0003_create_table_lending.xml" relativeToChangelogFile="true"/>
-    <include file="0006_create_table_token.xml" relativeToChangelogFile="true"/>
+    <include file="0006_create_tables_access_token_and_refresh_token.xml" relativeToChangelogFile="true"/>
     <include file="0010_create_table_payment.xml" relativeToChangelogFile="true"/>
+    <include file="0011_create_table_action.xml" relativeToChangelogFile="true"/>
+    <include file="0012_create_table_notification.xml" relativeToChangelogFile="true"/>
 
     <include file="../testdata/0001_book.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0002_rack_and_book_item.sql" relativeToChangelogFile="true" context="dev, test"/>
@@ -25,4 +27,6 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="../testdata/0004_lending.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0007_token.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0009_payment.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0010_action.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0011_notification.sql" relativeToChangelogFile="true" context="dev, test"/>
 </databaseChangeLog>

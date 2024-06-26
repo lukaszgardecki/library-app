@@ -1,50 +1,135 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Login } from '../login/login.component';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private baseURL = "http://localhost:8080/api/v1/authenticate";
-  private readonly TOKEN_NAME = "libraryToken";
-  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  private baseURL;
+  private readonly ACCESS_TOKEN_NAME = "access_token";
+  private readonly REFRESH_TOKEN_NAME = "refresh_token";
+  private _isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this._isLoggedInSubject.asObservable();
+  currentUserId: number = -1;
+  private accessTokenSubject: BehaviorSubject<string | null>;
+  private refreshTokenSubject: BehaviorSubject<string | null>;
+  private refreshTokenTimeout: any;
 
-  get token() {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(this.TOKEN_NAME);
+  public get accessToken(): string | null {
+    return this.accessTokenSubject.value;
+  }
+
+  public get refreshToken(): string | null {
+    return this.refreshTokenSubject.value;
+  }
+
+  constructor(
+    private http: HttpClient,
+    private configService: ConfigService
+  ) {
+    this.baseURL = configService.getApiUrl();
+    this.accessTokenSubject = new BehaviorSubject<string | null>(this.getFromStorage(this.ACCESS_TOKEN_NAME));
+    this.refreshTokenSubject = new BehaviorSubject<string | null>(this.getFromStorage(this.REFRESH_TOKEN_NAME));
+
+    let tokensAreValid = this.isValidToken(this.refreshToken) && this.isValidToken(this.accessToken);
+    this._isLoggedInSubject.next(tokensAreValid);
+    this.currentUserId = this.findUserIdInToken(this.refreshToken);
+  }
+
+  authenticate(login: Login): Observable<any> {
+    return this.http.post<Token>(`${this.baseURL}/authenticate`, login, { withCredentials: true }).pipe(
+      tap(response => {
+        this.currentUserId = this.findUserIdInToken(response.refresh_token)
+        sessionStorage.setItem(this.ACCESS_TOKEN_NAME, response.access_token);
+        sessionStorage.setItem(this.REFRESH_TOKEN_NAME, response.refresh_token);
+        this._isLoggedInSubject.next(true);
+        this.accessTokenSubject.next(response.access_token);
+        this.refreshTokenSubject.next(response.refresh_token);
+        this.startRefreshTokenTimer();
+      })
+    );
+  }
+
+  refreshTokenRequest(): Observable<any> {
+    if (!this.refreshToken) {
+      return throwError(() => 'No refresh token available');
     }
-    return null;
-  }
 
-  get isLoggedIn$() {
-    return this._isLoggedIn$.asObservable();
-  }
-
-  constructor(private http: HttpClient) { 
-    this._isLoggedIn$.next(!!this.token);
-  }
-
-  authenticate(login: Login) {
-    return this.http.post<Token>(this.baseURL, login).pipe(
-      tap(token => {
-        localStorage.setItem(this.TOKEN_NAME, token.token);
-        this._isLoggedIn$.next(true);
+    return this.http.post<Token>(`${this.baseURL}/refresh-token`, {}, { withCredentials: true }).pipe(
+      tap(response => {
+        this.currentUserId = this.findUserIdInToken(response.refresh_token)
+        sessionStorage.setItem(this.ACCESS_TOKEN_NAME, response.access_token);
+        sessionStorage.setItem(this.REFRESH_TOKEN_NAME, response.refresh_token);
+        this._isLoggedInSubject.next(true);
+        this.accessTokenSubject.next(response.access_token);
+        this.refreshTokenSubject.next(response.refresh_token);
+        this.startRefreshTokenTimer();
+      }),
+      catchError(error => {
+        this.logout();
+        return throwError(() => error);
       })
     );
   }
 
   logout() {
-    this.http.post(`${this.baseURL}/logout`, undefined).subscribe({
-      next: () => {
-        localStorage.removeItem(this.TOKEN_NAME);
-        this._isLoggedIn$.next(false);
-      }
-    });
+      this.http.post(`${this.baseURL}/authenticate/logout`, {}).subscribe({
+        next: () => {
+          this.currentUserId = -1;
+          sessionStorage.removeItem(this.ACCESS_TOKEN_NAME);
+          sessionStorage.removeItem(this.REFRESH_TOKEN_NAME);
+          this._isLoggedInSubject.next(false);
+          this.accessTokenSubject.next(null);
+          this.refreshTokenSubject.next(null);
+          this.stopRefreshTokenTimer();
+        }
+      });
+    }
+
+  private startRefreshTokenTimer() {
+    const token = this.accessToken;
+    if (token) {
+      const jwtToken = JSON.parse(atob(token.split('.')[1]));
+      const expires = new Date(jwtToken.exp * 1000);
+      const timeout = expires.getTime() - Date.now() - 60000; // 1 minute before expiry
+      this.refreshTokenTimeout = setTimeout(() => this.refreshTokenRequest().subscribe(), timeout);
+    }
+  }
+
+  private findUserIdInToken(token: string | null): number {
+    if (!token) return -1;
+    
+    const payloadBase64 = token.split('.')[1];
+    const payloadJson = atob(payloadBase64);
+    const jwtToken = JSON.parse(payloadJson);
+    return jwtToken.userId;
+  }
+
+  private isValidToken(token: string | null): boolean {
+    if (token) {
+      const jwtToken = JSON.parse(atob(token.split('.')[1]));
+      const expires = new Date(jwtToken.exp * 1000);
+      return expires.getTime() > Date.now();
+    }
+    return false;
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeout);
+  }
+
+  private getFromStorage(tokenName: string) {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem(tokenName);
+    }
+    return null;
   }
 }
 
 class Token {
-  token: string;
+  access_token: string;
+  refresh_token: string;
 }

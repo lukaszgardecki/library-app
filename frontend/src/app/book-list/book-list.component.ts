@@ -1,139 +1,92 @@
 import { Component, OnInit } from '@angular/core';
-import { ListComponent } from '../shared/list-component';
-import { Page } from '../shared/page';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Size, SortType, Sortable } from '../shared/sortable';
+import { Params, Router } from '@angular/router';
 import { BooksService } from '../services/books.service';
-import { Book } from '../models/book';
-import { HypermediaCollection } from '../shared/hypermedia-collection';
-import { Pair } from '../shared/pair';
+import { Language } from '../models/language';
+import { Observable } from 'rxjs';
+import { BooksPage } from '../models/books-page';
+import { Pageable } from '../shared/pageable';
 
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.css'
+  styleUrls: [
+    './book-list.component.css',
+    '../../bootstrap-fragments.css'
+  ]
 })
-export class BookListComponent implements ListComponent, OnInit {
-  page: Page = new Page();
-  routeName: string = "books";
-  links: HypermediaCollection;
-  books: Array<Book>;
-  selectedSortTypeName: string = "Domyślnie";
-  selectedPageSize: number;
-  pageSizes = [10, 20, 50, 100];
-  languages = new Array<Pair>;
-  selectedLanguages = new Array<string>;
-  sortTypes = [
-    {name: this.selectedSortTypeName, queryParam: ""},
-    {name: "Tytuł rosnąco", queryParam: "title,asc"},
-    {name: "Tytuł malejąco", queryParam: "title,desc"},
-    {name: "Wydawca rosnąco", queryParam: "publisher,asc"},
-    {name: "Wydawca malejąco", queryParam: "publisher,desc"},
-    {name: "Strony rosnąco", queryParam: "pages,asc"},
-    {name: "Strony malejąco", queryParam: "pages,desc"}
+export class BookListComponent implements OnInit, Pageable, Sortable {
+  booksPage$: Observable<BooksPage>;
+  languages$: Observable<Language[]>;
+  queryParams$: Observable<Params>;
+  pageSizes: Size[] = [new Size(10), new Size(20), new Size(50), new Size(100)];
+  sortTypes: SortType[] = [
+    new SortType("Domyślnie", ""),
+    new SortType("Tytuł rosnąco", "title,asc"),
+    new SortType("Tytuł malejąco", "title,desc"),
+    new SortType("Wydawca rosnąco", "publisher,asc"),
+    new SortType("Wydawca malejąco", "publisher,desc"),
+    new SortType("Strony rosnąco", "pages,asc"),
+    new SortType("Strony malejąco", "pages,desc")
   ];
 
   constructor(
     private booksService: BooksService,
-    private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) { 
+    this.booksService.refresh();
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const validParams = this.validateParams(params);
-      this.initializeValuesFromParams(validParams);
-      this.getAllByParams(validParams);
-    });
-    this.getAllLanguages();
+    this.booksPage$ = this.booksService.booksPage$;
+    this.languages$ = this.booksService.languages$;
+    this.queryParams$ = this.booksService.queryParams$;
+
+    this.selectSideMenuOptions();
   }
 
-  getAllByParams(queryParams?: Params) {
-    this.booksService.getAllBooks(queryParams).subscribe(p => {
-      this.page = p.page;
-      this.books = p._embedded.bookDtoList;
-      this.links = p._links;
-    });
+  loadPage(pageIndex: number): void {
+    this.booksService.getBooksPage(pageIndex);
   }
 
-  getAllLanguages() {
-    this.booksService.getLanguageListCount().subscribe(list => {
-      this.languages = list;
-    });
+  changeSize(size: Size): void {
+    this.pageSizes.forEach(el => el.selected = false);
+    size.selected = !size.selected;
+    this.booksService.changeSize(size);
   }
 
-  isSelected(langName: string): boolean {
-    return this.selectedLanguages.includes(langName);
+  sort(type: SortType): void {
+    this.sortTypes.forEach(el => el.selected = false);
+    type.selected = !type.selected;
+    this.booksService.sort(type);
   }
 
-  getAllByLanguage(lang: string) {
-    if (this.selectedLanguages.includes(lang)) {
-      let index = this.selectedLanguages.indexOf(lang);
-      this.selectedLanguages.splice(index, 1);
-    } else {
-      this.selectedLanguages.push(lang);
-    }
-
-    let queryParams =  { ...this.route.snapshot.queryParams };
-    queryParams["lang"] = this.selectedLanguages;
-    queryParams["page"] = 0;
-    this.router.navigate([this.routeName], { queryParams: queryParams });
-    this.getAllByParams(queryParams);
-  }
-
-  changeSize(size: number) {
-    this.selectedPageSize = size;
-    const queryParams = this.updateQueryParams("size", size);
-    this.getAllByParams(queryParams);
-  }
-
-  sort(sort: any) {
-    const selectedSortType = this.sortTypes.filter(t => t.queryParam===sort)[0];
-    this.selectedSortTypeName = selectedSortType.name;
-    const queryParams = this.updateQueryParams("sort", sort);
-    this.getAllByParams(queryParams);
+  getAllByLanguage(lang: Language) {
+    lang.selected = !lang.selected;
+    this.booksService.getBooksBySelectedLanguages();
   }
 
   showDetails(bookId: number) {
     this.router.navigate(['books', bookId]);
   }
 
-  private updateQueryParams(paramName: string, value: any): Params {
-    const queryParams = { ...this.route.snapshot.queryParams };
-    queryParams[paramName] = value;
-    this.router.navigate([this.routeName], { queryParams: queryParams });
-    return queryParams;
-  }
-
-  private initializeValuesFromParams(params: Params) {
-    if ('size' in params) {
-      this.selectedPageSize = +params['size'];
-    }
-    if ('lang' in params) {
-      this.selectedLanguages = params['lang'];
-    }
-    if ('sort' in params) {
-      const sortType = this.sortTypes.find(st => st.queryParam === params['sort']);
-      if (sortType) {
-        this.selectedSortTypeName = sortType.name;
+  private selectSideMenuOptions() {
+    this.queryParams$.subscribe({
+      next: params => {
+        const size = params["size"] || 20;
+        const sort = params["sort"] || "";
+        const langs: string[] = params["lang"] || [];
+        
+        this.pageSizes.filter(el => el.value == size).map(el => el.selected = true);
+        this.sortTypes.filter(el => el.queryParam == sort).map(el => el.selected = true);
+        this.languages$.subscribe(langList => {
+          if (langs) {
+            langList.forEach(lang => {
+                lang.selected = langs.includes(lang.name)
+            });
+          }
+        });
       }
-    }
-  }
-
-  private validateParams(params: Params): Params {
-    const validatedParams = { ...params };
-
-    if (!validatedParams['size'] || validatedParams['size'] < 0) {
-      validatedParams['size'] = 20;
-    }
-
-    if (!validatedParams['page'] || validatedParams['page'] < 0) {
-      validatedParams['page'] = 0;
-    }
-
-    const sortType = this.sortTypes.find(st => st.queryParam === validatedParams['sort']);
-    if (!validatedParams['sort'] || !sortType) {
-      validatedParams['sort'] = "";
-    }
-    return validatedParams;
+    })
   }
 }

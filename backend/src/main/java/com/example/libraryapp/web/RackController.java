@@ -2,6 +2,7 @@ package com.example.libraryapp.web;
 
 
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
+import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.rack.RackDto;
 import com.example.libraryapp.domain.rack.RackService;
 import com.example.libraryapp.domain.rack.RackToSaveDto;
@@ -11,15 +12,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.example.libraryapp.domain.member.Role.ADMIN;
+
 @RestController
 @RequestMapping("/api/v1/racks")
-@PreAuthorize("hasRole('ADMIN')")
+@RoleAuthorization({ADMIN})
 @RequiredArgsConstructor
 public class RackController {
     private final RackService rackService;
