@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BooksService } from '../services/books.service';
 import { Book } from '../models/book';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { BookItem } from '../models/book-item';
 import { BookItemStatus } from '../shared/book-item-status';
@@ -12,8 +12,8 @@ import { BookItemStatus } from '../shared/book-item-status';
   styleUrl: './book-details.component.css'
 })
 export class BookDetailsComponent implements OnInit {
-  book: Book;
-  bookItems: Array<BookItem>;
+  book: Book = new Book();
+  bookItems: Array<BookItem> = [];
 
   constructor(
     private bookService: BooksService,
@@ -22,7 +22,6 @@ export class BookDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.book = new Book();
       const id = this.route.snapshot.params['id'];
 
       this.bookService.getBookById(id).subscribe(data => {

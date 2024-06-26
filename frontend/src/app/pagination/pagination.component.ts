@@ -1,6 +1,5 @@
-import { Component, Input} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ListComponent } from '../shared/list-component';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { Page } from '../shared/page';
 
 
 @Component({
@@ -8,24 +7,16 @@ import { ListComponent } from '../shared/list-component';
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent{
-
-  @Input()
-  listComponent: ListComponent;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+export class PaginationComponent {
+  @Input() page: Page;
+  @Output() pageChange = new EventEmitter<number>();
 
   goPrevPage() {
-    const page = this.listComponent.page.number - 1;
-    this.updatePage(page);
+    this.updatePage(this.page.number - 1);
   }
 
   goNextPage() {
-    const page = this.listComponent.page.number + 1;
-    this.updatePage(page);
+    this.updatePage(this.page.number + 1);
   }
 
   /**
@@ -43,23 +34,22 @@ export class PaginationComponent{
   }
 
   private updatePage(pageIndex: number) {
-    const queryParams = { ...this.route.snapshot.queryParams };
-    queryParams["page"] = pageIndex;
-
-    this.router.navigate([this.listComponent.routeName], { queryParams: queryParams });
-    this.listComponent.getAllByParams(queryParams);
+    if (pageIndex < 0 || pageIndex >= this.page.totalPages) {
+      return;
+    }
+    this.pageChange.emit(pageIndex);
   }
   
   isSelectedFirst(): boolean {
-    return this.listComponent.page.number === 0;
+    return this.page.number === 0;
   }
 
   isSelectedLast(): boolean {
-    return this.listComponent.page.number === this.listComponent.page.totalPages-1;
+    return this.page.number === this.page.totalPages-1;
   }
 
   isSelected(count: number): boolean {
-    return this.listComponent.page.number === count-1;
+    return this.page.number === count-1;
   }
 
   isBlankBtn(buttonNo: number): boolean {
@@ -67,11 +57,11 @@ export class PaginationComponent{
   }
 
   arePagesMin(amount: number): boolean {
-    return this.listComponent.page.totalPages >= amount;
+    return this.page.totalPages >= amount;
   }
 
   arePagesMax(amount: number): boolean {
-    return this.listComponent.page.totalPages <= amount;
+    return this.page.totalPages <= amount;
   }
 
   isActive(btnNo: number): boolean {
@@ -87,16 +77,16 @@ export class PaginationComponent{
         isActive = this.isSelected(3);
         break;
       case 4:
-        isActive = (this.listComponent.page.number > 2 && this.listComponent.page.number < this.listComponent.page.totalPages - 3) || (this.arePagesMax(6) && this.isSelected(4));
+        isActive = (this.page.number > 2 && this.page.number < this.page.totalPages - 3) || (this.arePagesMax(6) && this.isSelected(4));
         break;
       case 5:
-        isActive = (this.arePagesMax(6) && this.isSelected(5)) || (this.arePagesMin(7) && this.isSelected(this.listComponent.page.totalPages - 2));
+        isActive = (this.arePagesMax(6) && this.isSelected(5)) || (this.arePagesMin(7) && this.isSelected(this.page.totalPages - 2));
         break;
       case 6:
-        isActive = (this.arePagesMax(6) && this.isSelected(6)) || (this.arePagesMin(7) && this.isSelected(this.listComponent.page.totalPages - 1));
+        isActive = (this.arePagesMax(6) && this.isSelected(6)) || (this.arePagesMin(7) && this.isSelected(this.page.totalPages - 1));
         break;
       case 7:
-        isActive = this.isSelected(this.listComponent.page.totalPages);
+        isActive = this.isSelected(this.page.totalPages);
         break;
     }
     return isActive;
@@ -104,8 +94,8 @@ export class PaginationComponent{
 
   getValueOfBtnNo(number: number): number | string {
     let value: number | string = 0;
-    let pageNum = this.listComponent.page.number + 1; // page.number is an index (numerated from 0)
-    let totalPages = this.listComponent.page.totalPages;
+    let pageNum = this.page.number + 1; // page.number is an index (numerated from 0)
+    let totalPages = this.page.totalPages;
     switch(number) {
       case 1:
         value = 1;
@@ -132,5 +122,4 @@ export class PaginationComponent{
     return value;
   }
 
-  
 }

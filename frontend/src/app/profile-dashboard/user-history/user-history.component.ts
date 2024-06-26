@@ -35,6 +35,7 @@ export class UserHistoryComponent implements ProfileSetting {
     {type: "BOOK_RENEWED", name: "Renewals"},
     {type: "BOOK_RETURNED", name: "Returns"},
     {type: "BOOK_LOST", name: "Lost Documents"},
+    {type: "NOTIFICATION_SYSTEM", name: "System notifications"},
     {type: "NOTIFICATION_EMAIL", name: "E-mail notifications"},
     {type: "NOTIFICATION_SMS", name: "SMS notifications"}
   ]

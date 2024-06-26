@@ -24,6 +24,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpStatus.*;
@@ -366,6 +368,14 @@ public class AuthenticationControllerTest extends BaseTest {
                 "/payments, GET",
                 "/payments/2, GET",
                 "/payments/pay-fine, POST",
+
+                // Notification Controller
+                "/notifications, GET",
+                "/notifications?memberId=5, GET",
+                "/notifications/1, GET",
+                "/notifications/1, POST",
+                "/notifications/1, DELETE",
+                "/notifications, DELETE"
         })
         @DisplayName("Should not return data if there is no access token in the request.")
         void shouldNotReturnDataIfThereIsNoAccessTokenInRequest(String path, String method) {
@@ -516,6 +526,7 @@ public class AuthenticationControllerTest extends BaseTest {
         if (path.contains("/reservations")) return new ActionRequest();
         if (path.contains("/racks") && method.equals("POST")) return new RackToSaveDto();
         if (path.contains("/racks")) return new RackToUpdateDto();
+        if (path.contains("/notifications") && method.equals("DELETE")) return new ArrayList<>();
         else return new PaymentRequest();
     }
 }

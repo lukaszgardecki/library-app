@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-public class PairDto {
-    private String key;
-    private String value;
+public class LanguageDto {
+    private String name;
+    private String amount;
 }

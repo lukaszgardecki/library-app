@@ -6,7 +6,7 @@ import com.example.libraryapp.domain.bookItem.BookItemStatus;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.exception.ErrorMessage;
 import com.example.libraryapp.management.Message;
-import com.example.libraryapp.management.PairDto;
+import com.example.libraryapp.management.LanguageDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -73,7 +73,7 @@ public class BookControllerTest extends BaseTest {
         @DisplayName("Should return a list of books' languages.")
         void shouldReturnListOfBookLanguages() {
             client.testRequest(GET, "/books/languages/count", OK)
-                    .expectBodyList(PairDto.class);
+                    .expectBodyList(LanguageDto.class);
         }
 
         @Test

@@ -35,6 +35,8 @@ public class Message {
 
     public static final String PAYMENT_NOT_FOUND = "No payment with id: %s";
 
+    public static final String NOTIFICATION_NOT_FOUND = "No notification with id: %s";
+
     public static final String BAD_BOOK_BARCODE = "Invalid Barcode";
     public static final String BAD_CARD_NUMBER = "Invalid card number";
     public static final String BAD_EMAIL = "Email must be unique";
@@ -62,8 +64,9 @@ public class Message {
     public static final String ACTION_BOOK_RENEWED = "Prolongata czytelnika %s";
     public static final String ACTION_BOOK_RETURNED = "Zwrócono %s";
     public static final String ACTION_BOOK_LOST = "Zgubiono %s";
-    public static final String ACTION_NOTIFICATION_SENT_EMAIL = "Wysłano e-mail do czytelnika (%s) %s";
-    public static final String ACTION_NOTIFICATION_SENT_SMS = "Wysłano wiadomość SMS do czytelnika (%s) %s";
+    public static final String ACTION_NOTIFICATION_SENT_EMAIL = "Wysłano e-mail do czytelnika (%s)";
+    public static final String ACTION_NOTIFICATION_SENT_SMS = "Wysłano wiadomość SMS do czytelnika (%s)";
+    public static final String ACTION_NOTIFICATION_SENT_SYSTEM = "Wysłano powiadomienie do czytelnika (%s)";
 
     // Notification reasons:
     public static final String REASON_BOOK_BORROWED = "Wypożyczenie dokumentu";

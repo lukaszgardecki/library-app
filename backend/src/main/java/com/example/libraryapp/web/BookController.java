@@ -5,7 +5,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.config.RoleAuthorization;
-import com.example.libraryapp.management.PairDto;
+import com.example.libraryapp.management.LanguageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
@@ -49,7 +49,7 @@ public class BookController {
     }
 
     @GetMapping("/languages/count")
-    public ResponseEntity<List<PairDto>> getBookLanguages() {
+    public ResponseEntity<List<LanguageDto>> getBookLanguages() {
         var languages = bookService.findBookLanguagesWithCount();
         return ResponseEntity.ok(languages);
     }

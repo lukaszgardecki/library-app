@@ -14,8 +14,8 @@ import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
-import com.example.libraryapp.domain.notification.NotificationDetails;
 import com.example.libraryapp.domain.notification.NotificationService;
+import com.example.libraryapp.domain.notification.NotificationType;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,11 +82,8 @@ public class ReservationService {
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
         book.updateAfterReservation();
-        NotificationDetails details = createNotificationDetails(
-                savedReservation, Message.RESERVATION_CREATED, Message.REASON_REQUEST_CREATED
-        );
         actionRepository.save(new RequestNewAction(savedReservation));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, ReservationDtoMapper.map(savedReservation));
         return reservationModelAssembler.toModel(savedReservation);
     }
 
@@ -102,23 +98,16 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
-        NotificationDetails details = createNotificationDetails(
-                reservation, Message.RESERVATION_DELETED, Message.REASON_REQUEST_CANCELED
-        );
         actionRepository.save(new RequestCancelAction(reservation));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CANCELLED, ReservationDtoMapper.map(reservation));
     }
 
     @Transactional
     public ReservationResponse changeReservationStatusToReady(Long reservationId) {
         Reservation reservation = findReservation(reservationId);
         reservation.setStatus(ReservationStatus.READY);
-
-        NotificationDetails details = createNotificationDetails(
-                reservation, Message.RESERVATION_READY, Message.REASON_REQUEST_COMPLETED
-        );
         actionRepository.save(new RequestCompletedAction(reservation));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_COMPLETED, ReservationDtoMapper.map(reservation));
         return reservationModelAssembler.toModel(reservation);
     }
 
@@ -174,19 +163,6 @@ public class ReservationService {
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)
-                .build();
-    }
-
-    private NotificationDetails createNotificationDetails(Reservation reservation, String message, String reason) {
-        return NotificationDetails.builder()
-                .createdAt(LocalDateTime.now())
-                .reason(reason)
-                .content(message)
-                .bookTitle(reservation.getBookItem().getBook().getTitle())
-                .bookBarcode(reservation.getBookItem().getBarcode())
-                .memberId(reservation.getMember().getId())
-                .memberEmail(reservation.getMember().getEmail())
-                .memberPhoneNumber(reservation.getMember().getPerson().getPhone())
                 .build();
     }
 }

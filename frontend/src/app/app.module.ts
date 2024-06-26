@@ -3,7 +3,6 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BookItemListComponent } from './book-item-list/book-item-list.component';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { PaginationComponent } from './pagination/pagination.component';
 import { BookListComponent } from './book-list/book-list.component';
@@ -34,11 +33,12 @@ import { EditPhoneNumberComponent } from './profile-dashboard/edit/edit-phone-nu
 import { EditComponent } from './profile-dashboard/edit/edit.component';
 import { NullPlaceholderPipe } from './shared/pipes/null-placeholder.pipe';
 import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
+import { WebsocketService } from './services/websocket.service';
+import { NotificationDetailsComponent } from './profile-dashboard/notifications/notification-details/notification-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookItemListComponent,
     PaginationComponent,
     BookListComponent,
     BookDetailsComponent,
@@ -65,7 +65,8 @@ import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
     EditEmailComponent,
     EditPhoneNumberComponent,
     NullPlaceholderPipe,
-    EnumNamePipe
+    EnumNamePipe,
+    NotificationDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +77,8 @@ import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    AuthInterceptorProvider
+    AuthInterceptorProvider,
+    WebsocketService
   ],
   bootstrap: [AppComponent]
 })

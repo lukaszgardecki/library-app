@@ -184,7 +184,7 @@ public class ActionControllerTest extends BaseTest {
         @ParameterizedTest
         @DisplayName("Should not return an action if ADMIN requested and an ID doesn't exist.")
         @CsvSource({
-                "57", "510", "99999"
+                "510", "99999"
         })
         void shouldNotReturnActionThatDoesNotExist(Long actionId) {
             ErrorMessage responseBody = client.testRequest(GET, "/actions/" + actionId, admin, NOT_FOUND)

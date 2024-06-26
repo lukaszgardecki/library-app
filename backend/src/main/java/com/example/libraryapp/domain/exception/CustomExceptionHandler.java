@@ -10,6 +10,7 @@ import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberHasNotReturnedBooksException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
+import com.example.libraryapp.domain.exception.notification.NotificationNotFoundException;
 import com.example.libraryapp.domain.exception.payment.PaymentNotFoundException;
 import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.rack.RackException;
@@ -47,7 +48,8 @@ public class CustomExceptionHandler {
             RackNotFoundException.class,
             CardNotFoundException.class,
             PaymentNotFoundException.class,
-            ActionNotFoundException.class
+            ActionNotFoundException.class,
+            NotificationNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(RuntimeException ex, WebRequest request) {

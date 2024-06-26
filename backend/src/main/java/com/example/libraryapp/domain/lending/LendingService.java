@@ -16,9 +16,10 @@ import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
-import com.example.libraryapp.domain.notification.NotificationDetails;
 import com.example.libraryapp.domain.notification.NotificationService;
+import com.example.libraryapp.domain.notification.NotificationType;
 import com.example.libraryapp.domain.reservation.Reservation;
+import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
 import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.management.ActionRequest;
@@ -36,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,11 +85,8 @@ public class LendingService {
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
         reservation.updateAfterLending();
-        NotificationDetails details = createNotificationDetails(
-                savedLending, Message.BOOK_BORROWED, Message.REASON_BOOK_BORROWED
-        );
         actionRepository.save(new BookBorrowedAction(savedLending));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, ReservationDtoMapper.map(reservation));
         return lendingModelAssembler.toModel(savedLending);
     }
 
@@ -98,11 +95,8 @@ public class LendingService {
         Lending lending = findLendingByBookBarcode(bookBarcode);
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
-        NotificationDetails details = createNotificationDetails(
-                lending, Message.BOOK_EXTENDED, Message.REASON_BOOK_EXTENDED
-        );
         actionRepository.save(new BookRenewedAction(lending));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, LendingDtoMapper.map(lending));
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -116,11 +110,8 @@ public class LendingService {
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
-        NotificationDetails details = createNotificationDetails(
-                lending, Message.BOOK_RETURNED,Message.REASON_BOOK_RETURNED
-        );
         actionRepository.save(new BookReturnedAction(lending));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, LendingDtoMapper.map(lending));
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -135,11 +126,8 @@ public class LendingService {
         lending.setStatus(LendingStatus.COMPLETED);
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
-        NotificationDetails details = createNotificationDetails(
-                lending, Message.BOOK_LOST.formatted(book.getPrice()), Message.REASON_BOOK_LOST
-        );
         actionRepository.save(new BookLostAction(lending));
-        notificationService.sendNotification(details);
+        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, LendingDtoMapper.map(lending));
         List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
         cancelReservations(reservationsToCancel);
         sendNotifications(reservationsToCancel);
@@ -147,13 +135,9 @@ public class LendingService {
     }
 
     private void sendNotifications(List<Reservation> reservationsToCancel) {
-        reservationsToCancel.forEach(res -> {
-            NotificationDetails details = createNotificationDetails(
-                    res, Message.RESERVATION_CANCEL_BOOK_ITEM_LOST, Message.REASON_BOOK_LOST
-            );
-            notificationService.sendNotification(details);
-
-        });
+        reservationsToCancel.forEach(
+                res -> notificationService.saveAndSendNotification(NotificationType.RESERVATION_CANCEL_BOOK_ITEM_LOST, ReservationDtoMapper.map(res))
+        );
     }
 
     private void cancelReservations(List<Reservation> reservationsOfLostBook) {
@@ -217,32 +201,5 @@ public class LendingService {
         lendingToSave.setDueDate(endTime);
         lendingToSave.setStatus(LendingStatus.CURRENT);
         return lendingToSave;
-    }
-
-    private NotificationDetails createNotificationDetails(Reservation reservation, String message, String reason) {
-        return createNotificationDetails(message, reason)
-                .bookTitle(reservation.getBookItem().getBook().getTitle())
-                .bookBarcode(reservation.getBookItem().getBarcode())
-                .memberId(reservation.getMember().getId())
-                .memberEmail(reservation.getMember().getEmail())
-                .memberPhoneNumber(reservation.getMember().getPerson().getPhone())
-                .build();
-    }
-
-    private NotificationDetails createNotificationDetails(Lending lending, String message, String reason) {
-        return createNotificationDetails(message, reason)
-                .bookTitle(lending.getBookItem().getBook().getTitle())
-                .bookBarcode(lending.getBookItem().getBarcode())
-                .memberId(lending.getMember().getId())
-                .memberEmail(lending.getMember().getEmail())
-                .memberPhoneNumber(lending.getMember().getPerson().getPhone())
-                .build();
-    }
-
-    private NotificationDetails.NotificationDetailsBuilder createNotificationDetails(String message, String reason) {
-        return NotificationDetails.builder()
-                .createdAt(LocalDateTime.now())
-                .reason(reason)
-                .content(message);
     }
 }

@@ -7,7 +7,7 @@ import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
 import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
-import com.example.libraryapp.management.PairDto;
+import com.example.libraryapp.management.LanguageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,11 +44,11 @@ public class BookService {
                 .toList();
     }
 
-    public List<PairDto> findBookLanguagesWithCount() {
+    public List<LanguageDto> findBookLanguagesWithCount() {
         return bookRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Book::getLanguage, Collectors.counting()))
                 .entrySet().stream()
-                .map(entry -> new PairDto(entry.getKey(), String.valueOf(entry.getValue())))
+                .map(entry -> new LanguageDto(entry.getKey(), String.valueOf(entry.getValue())))
                 .collect(Collectors.toList());
     }
 
