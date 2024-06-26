@@ -76,18 +76,18 @@ export class AuthenticationService {
   }
 
   logout() {
-      this.http.post(`${this.baseURL}/authenticate/logout`, {}).subscribe({
-        next: () => {
-          this.currentUserId = -1;
-          sessionStorage.removeItem(this.ACCESS_TOKEN_NAME);
-          sessionStorage.removeItem(this.REFRESH_TOKEN_NAME);
-          this._isLoggedInSubject.next(false);
-          this.accessTokenSubject.next(null);
-          this.refreshTokenSubject.next(null);
-          this.stopRefreshTokenTimer();
-        }
-      });
-    }
+    this.http.post(`${this.baseURL}/authenticate/logout`, {}).subscribe({
+      next: () => {
+        this.currentUserId = -1;
+        sessionStorage.removeItem(this.ACCESS_TOKEN_NAME);
+        sessionStorage.removeItem(this.REFRESH_TOKEN_NAME);
+        this._isLoggedInSubject.next(false);
+        this.accessTokenSubject.next(null);
+        this.refreshTokenSubject.next(null);
+        this.stopRefreshTokenTimer();
+      }
+    });
+  }
 
   private startRefreshTokenTimer() {
     const token = this.accessToken;

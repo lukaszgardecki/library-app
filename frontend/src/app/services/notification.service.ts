@@ -103,7 +103,6 @@ export class NotificationService {
     this.http.get<NotificationsPage>(`${this.baseURL}`, { params: params, withCredentials: true })
       .subscribe({
         next: notificationPage => {
-          console.log(notificationPage);
           this.notificationsPageSubject.next(notificationPage);
         }
       });

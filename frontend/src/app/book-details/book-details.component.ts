@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { BookItem } from '../models/book-item';
 import { BookItemStatus } from '../shared/book-item-status';
+import { ReservationService } from '../services/reservation.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-book-details',
@@ -17,6 +19,8 @@ export class BookDetailsComponent implements OnInit {
 
   constructor(
     private bookService: BooksService,
+    private reservationService: ReservationService,
+    private authService: AuthenticationService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -37,7 +41,6 @@ export class BookDetailsComponent implements OnInit {
     let st = "";
     switch(status) {
       case BookItemStatus.AVAILABLE:
-      case BookItemStatus.RESERVED:
         st = "Available"; break;
       case BookItemStatus.LOANED:
         st = "On loan"; break;
@@ -56,10 +59,22 @@ export class BookDetailsComponent implements OnInit {
   }
 
   isAvailable(bookItem: BookItem): boolean {
-    return bookItem.status === BookItemStatus.AVAILABLE || bookItem.status === BookItemStatus.RESERVED;
+    return bookItem.status === BookItemStatus.AVAILABLE;
   }
 
   goBack() {
     this.location.back();
+  }
+
+  makeAReservation(bookItem: BookItem) {
+    this.reservationService.makeAReservation(bookItem.barcode).subscribe({
+      next: reservation => {
+        bookItem.status = BookItemStatus.RESERVED;
+      }
+    });
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.currentUserId !== -1;
   }
 }
