@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Login } from '../login/login.component';
+import { Login } from '../user-page/login/login.component';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { ConfigService } from './config.service';
 

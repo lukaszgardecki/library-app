@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { ActionsPage } from '../models/actions-page';
 import { Observable } from 'rxjs';
-import { Page } from '../shared/page';
 import { Params } from '@angular/router';
 
 @Injectable({

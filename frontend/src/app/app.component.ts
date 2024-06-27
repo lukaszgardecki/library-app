@@ -12,10 +12,6 @@ export class AppComponent {
 
   constructor(private authService: AuthenticationService) { }
 
-  scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
