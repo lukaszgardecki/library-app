@@ -22,6 +22,7 @@ import { EditPasswordComponent } from './user-page/profile-dashboard/edit/edit-p
 import { EditPhoneNumberComponent } from './user-page/profile-dashboard/edit/edit-phone-number/edit-phone-number.component';
 import { NotificationDetailsComponent } from './user-page/profile-dashboard/notifications/notification-details/notification-details.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { WarehousePageComponent } from './warehouse-page/warehouse-page.component';
 
 const routes: Routes = [
   {path: "", component: UserPageComponent, children: [
@@ -56,7 +57,7 @@ const routes: Routes = [
       ]
     }
   ]},
-  
+  {path: "warehouse", component: WarehousePageComponent}
   
 ];
 

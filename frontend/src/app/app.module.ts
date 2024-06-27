@@ -36,6 +36,7 @@ import { EnumNamePipe } from './shared/pipes/enum-name.pipe';
 import { WebsocketService } from './services/websocket.service';
 import { NotificationDetailsComponent } from './user-page/profile-dashboard/notifications/notification-details/notification-details.component';
 import { UserPageComponent } from './user-page/user-page.component';
+import { WarehousePageComponent } from './warehouse-page/warehouse-page.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { UserPageComponent } from './user-page/user-page.component';
     NullPlaceholderPipe,
     EnumNamePipe,
     NotificationDetailsComponent,
-    UserPageComponent
+    UserPageComponent,
+    WarehousePageComponent
   ],
   imports: [
     BrowserModule,

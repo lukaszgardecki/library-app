@@ -18,6 +18,7 @@
       <ng-template #loggedIn>
         <ul>
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
+          <li><a [routerLink]="['/warehouse']">Warehouse</a></li>
           <li><a [routerLink]="['/userprofile']">Profile</a></li>
           <li><a [routerLink]="['']" (click)="logout()">Logout</a></li>
         </ul>
