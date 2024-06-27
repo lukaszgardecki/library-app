@@ -13,8 +13,15 @@ import lombok.NoArgsConstructor;
 public class BookBorrowedAction extends Action {
     public BookBorrowedAction(Lending lending) {
         super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_BORROWED.formatted(
-                lending.getBookItem().getBook().getTitle()
-        );
+        if (lending.getBookItem().getIsReferenceOnly()) {
+            this.message = Message.ACTION_BOOK_BORROWED_ON_SITE.formatted(
+                    lending.getBookItem().getBook().getTitle()
+            );
+        } else {
+            this.message = Message.ACTION_BOOK_BORROWED.formatted(
+                    lending.getBookItem().getBook().getTitle()
+            );
+        }
+
     }
 }

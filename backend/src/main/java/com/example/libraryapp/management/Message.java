@@ -61,6 +61,7 @@ public class Message {
     public static final String ACTION_REQUEST_CANCELED = "Anulowano zamówienie %s";
     public static final String ACTION_REQUEST_COMPLETED = "Zrealizowano %s";
     public static final String ACTION_BOOK_BORROWED = "Wypożyczono %s";
+    public static final String ACTION_BOOK_BORROWED_ON_SITE = "Udostępniono %s";
     public static final String ACTION_BOOK_RENEWED = "Prolongata czytelnika %s";
     public static final String ACTION_BOOK_RETURNED = "Zwrócono %s";
     public static final String ACTION_BOOK_LOST = "Zgubiono %s";
