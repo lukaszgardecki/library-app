@@ -26,6 +26,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,7 @@ public class ReservationService {
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
     private final ActionRepository actionRepository;
+    private final SimpMessagingTemplate messagingTemplate;
     private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
@@ -59,11 +61,11 @@ public class ReservationService {
         return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
-    public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
-        List<Reservation> reservations = reservationRepository.findAll(pageable).stream()
+    public List<ReservationResponse> findAllPendingReservations() {
+        return reservationRepository.findAll().stream()
                 .filter(res -> res.getStatus() == ReservationStatus.PENDING)
+                .map(ReservationDtoMapper::map)
                 .toList();
-        return pagedResourcesAssembler.toModel(new PageImpl<>(reservations), reservationModelAssembler);
     }
 
     public ReservationResponse findReservationById(Long id) {
@@ -86,6 +88,9 @@ public class ReservationService {
         actionRepository.save(new RequestNewAction(savedReservationDto));
         notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, savedReservationDto);
 
+
+        // TODO: 29.06.2024 trzeba wysłać utworzoną rezerwację na kolejkę warehousu
+        sendToWarehouse(savedReservationDto);
         return reservationModelAssembler.toModel(savedReservation);
     }
 
@@ -159,6 +164,10 @@ public class ReservationService {
         if (book.getStatus() == BookItemStatus.LOST) {
             throw new ReservationException(Message.RESERVATION_BOOK_ITEM_LOST);
         }
+    }
+
+    private void sendToWarehouse(ReservationResponse reservation) {
+        messagingTemplate.convertAndSend("/queue/warehouse", reservation);
     }
 
     private Reservation prepareNewReservation(Member member, BookItem book) {

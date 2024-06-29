@@ -25,24 +25,16 @@ public class WarehouseControllerTest extends BaseTest {
         @DisplayName("Should return all pending reservations if WAREHOUSE requested.")
         void shouldReturnPendingReservationsIfWarehouseRequested() {
             client.testRequest(GET, "/warehouse/reservations/pending", warehouse, OK)
-                    .expectBody()
-                    .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(4)
-                    .jsonPath("$.page.size").isEqualTo(4)
-                    .jsonPath("$.page.totalElements").isEqualTo(4)
-                    .jsonPath("$.page.totalPages").isEqualTo(1)
-                    .jsonPath("$.page.number").isEqualTo(0);
+                    .expectBodyList(ReservationResponse.class)
+                    .hasSize(4);
         }
 
         @Test
         @DisplayName("Should return all pending reservations if ADMIN requested.")
         void shouldReturnPendingReservationsIfAdminRequested() {
             client.testRequest(GET, "/warehouse/reservations/pending", admin, OK)
-                    .expectBody()
-                    .jsonPath("$._embedded.reservationResponseList.length()").isEqualTo(4)
-                    .jsonPath("$.page.size").isEqualTo(4)
-                    .jsonPath("$.page.totalElements").isEqualTo(4)
-                    .jsonPath("$.page.totalPages").isEqualTo(1)
-                    .jsonPath("$.page.number").isEqualTo(0);
+                    .expectBodyList(ReservationResponse.class)
+                    .hasSize(4);
         }
 
         @Test
