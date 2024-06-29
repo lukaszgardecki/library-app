@@ -19,5 +19,6 @@ export const AUTHORIZED_ENDPOINTS = [
   "/reservations",
   "/authenticate/logout",
   "/actions",
-  "/notifications"
+  "/notifications",
+  "/warehouse"
 ];
