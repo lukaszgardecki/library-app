@@ -10,6 +10,7 @@ import java.security.SecureRandom;
 
 public class SecurityUtils {
     public static final String ID_CLAIM_NAME = "userId";
+    public static final String USER_ROLE = "userRole";
     public static final String FINGERPRINT_NAME = "userFingerprint";
     public static final String FINGERPRINT_COOKIE_NAME = "myCookie";
     //    public static final String FINGERPRINT_COOKIE_NAME = "__Secure-Fgp";

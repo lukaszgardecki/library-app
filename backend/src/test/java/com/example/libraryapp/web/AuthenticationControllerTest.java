@@ -377,7 +377,11 @@ public class AuthenticationControllerTest extends BaseTest {
                 "/notifications/1, GET",
                 "/notifications/1, POST",
                 "/notifications/1, DELETE",
-                "/notifications, DELETE"
+                "/notifications, DELETE",
+
+                // Warehouse Controller
+                "/warehouse/reservations/pending, GET",
+                "/warehouse/reservations/13/ready, POST"
         })
         @DisplayName("Should not return data if there is no access token in the request.")
         void shouldNotReturnDataIfThereIsNoAccessTokenInRequest(String path, String method) {

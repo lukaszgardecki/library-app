@@ -54,6 +54,7 @@ public class TokenService {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put(SecurityUtils.FINGERPRINT_NAME, fingerprint.getHash());
         extraClaims.put(SecurityUtils.ID_CLAIM_NAME, userDetails.getId());
+        extraClaims.put(SecurityUtils.USER_ROLE, userDetails.getRole().name());
         String accessToken = generator.generateAccessToken(extraClaims, userDetails);
         String refreshToken = generator.generateRefreshToken(extraClaims, userDetails);
         return new AuthTokens(accessToken, refreshToken, fingerprint);
