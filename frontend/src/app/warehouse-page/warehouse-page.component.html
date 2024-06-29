@@ -1,1 +1,64 @@
-<p>warehouse-page works!</p>
+<div class="c">
+    <div class="nav_panel">
+        <button class="button btn-1" (click)="exit()">EXIT</button>
+    </div>
+
+    <div class="content">
+        <div class="c-left">
+        
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">NEW</span>
+                    <span *ngIf="ordersPending.length > 0" class="section-amount">{{ordersPending.length}}</span>
+                </div>
+                
+                <div class="cards" *ngIf="ordersPending.length > 0; else lackNewOrders">
+                    <div class="order-card" *ngFor="let order of ordersPending">
+                        <div class="card-content" (click)="active(order)">
+                            <div class="order-id">ID: 1384</div>
+                            <div class="order-rack">II 34 5</div>
+                            <div class="order-date">23.05.2024 19:23:34</div>
+                        </div>
+
+                        <div class="order-actions" [ngStyle]="{'display': order.selected ? 'flex' : 'none'}" >
+                            <div class="order-button order-accept" (click)="accept(order)">ACCEPT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-template #lackNewOrders>
+                    <div class="lack-message">No new orders.</div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="c-right">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">IN PROGRESS</span>
+                    <span *ngIf="ordersInProgress.length > 0" class="section-amount">{{ordersInProgress.length}}</span>
+                </div>
+                <div class="cards" *ngIf="ordersInProgress.length > 0; else lackInProgressOrders">
+                    <div class="order-card" *ngFor="let order of ordersInProgress">
+                        <div class="card-content-in-progress" (click)="active(order)">
+                            <strong>Rack:</strong><strong>II 34 5</strong>
+                            <strong>ID:</strong>234
+                            <strong>Date:</strong>23.05.2024 19:23:34
+                            <strong>Document title:</strong>Test book title
+                            <strong>Document barcode:</strong>5400000001231
+                        </div>
+                        
+                        <div class="order-actions" [ngStyle]="{'display': order.selected ? 'flex' : 'none'}" >
+                            <div class="order-button order-back" (click)="backToPending(order)">BACK TO PENDING</div>
+                            <div class="order-button order-complete" (click)="complete(order)">COMPLETE</div>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-template #lackInProgressOrders>
+                    <div class="lack-message">No orders in progress. Accept a new order.</div>
+                </ng-template>
+            </div>
+        </div>   
+    </div>      
+</div>
