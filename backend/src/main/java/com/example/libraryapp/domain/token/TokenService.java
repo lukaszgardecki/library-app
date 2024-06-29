@@ -28,9 +28,9 @@ public class TokenService {
         refreshTokenRepository.save(new RefreshToken(member, refreshToken));
     }
 
-    public void revokeAllUserTokens(Member member) {
-        List<AccessToken> validUserAccessTokens = accessTokenRepository.findAllValidTokenByUser(member.getId());
-        List<RefreshToken> validUserRefreshTokens = refreshTokenRepository.findAllValidTokenByUser(member.getId());
+    public void revokeAllUserTokens(Long userId) {
+        List<AccessToken> validUserAccessTokens = accessTokenRepository.findAllValidTokenByUser(userId);
+        List<RefreshToken> validUserRefreshTokens = refreshTokenRepository.findAllValidTokenByUser(userId);
 
         if (validUserAccessTokens.isEmpty() && validUserRefreshTokens.isEmpty()) return;
 

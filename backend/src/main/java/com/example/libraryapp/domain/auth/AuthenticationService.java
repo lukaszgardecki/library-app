@@ -12,6 +12,8 @@ import com.example.libraryapp.domain.exception.auth.ForbiddenAccessException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.helper.LibraryGenerator;
 import com.example.libraryapp.domain.member.*;
+import com.example.libraryapp.domain.member.dto.MemberDto;
+import com.example.libraryapp.domain.member.mapper.MemberDtoMapper;
 import com.example.libraryapp.domain.token.TokenService;
 import com.example.libraryapp.management.Message;
 import jakarta.servlet.http.Cookie;
@@ -43,11 +45,12 @@ public class AuthenticationService {
 
     public void register(RegisterRequest request) {
         checkIfEmailIsUnique(request);
-        Member member = createMemberWithUserRole(request);
-        Member savedMember = memberRepository.saveAndFlush(member);
-        LibraryCard card = createMemberLibraryCard(savedMember);
+        Member memberToSave = createMemberWithUserRole(request);
+        Member savedMember = memberRepository.saveAndFlush(memberToSave);
+        LibraryCard card = createMemberLibraryCard(savedMember.getId());
         savedMember.setCard(card);
-        actionRepository.save(new RegisterAction(member));
+        MemberDto savedMemberDto = MemberDtoMapper.map(savedMember);
+        actionRepository.save(new RegisterAction(savedMemberDto));
     }
 
     public LoginResponse authenticate(
@@ -56,16 +59,17 @@ public class AuthenticationService {
     ) {
         Member member = memberRepository.findByEmail(loginRequest.getUsername())
                 .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
-        validatePassword(loginRequest, member);
+        MemberDto memberDto = MemberDtoMapper.map(member);
+        validatePassword(loginRequest, memberDto);
         AuthTokens auth = tokenService.generateAuth(member);
         String accessToken = auth.accessToken();
         String refreshToken = auth.refreshToken();
         Fingerprint fingerprint = auth.fingerprint();
         Cookie fgpCookie = fingerprint.getCookie();
 
-        tokenService.revokeAllUserTokens(member);
+        tokenService.revokeAllUserTokens(memberDto.getId());
         tokenService.saveTokens(member, accessToken, refreshToken);
-        actionRepository.save(new LoginAction(member));
+        actionRepository.save(new LoginAction(memberDto));
         response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -85,7 +89,7 @@ public class AuthenticationService {
         String newRefreshToken = auth.refreshToken();
         Fingerprint newFingerprint = auth.fingerprint();
         Cookie fgpCookie = newFingerprint.getCookie();
-        tokenService.revokeAllUserTokens(member);
+        tokenService.revokeAllUserTokens(member.getId());
         tokenService.saveTokens(member, newAccessToken, newRefreshToken);
         response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
         return new LoginResponse(newAccessToken, newRefreshToken);
@@ -113,7 +117,7 @@ public class AuthenticationService {
         return findMemberByEmail(username).getId();
     }
 
-    private void validatePassword(LoginRequest loginRequest, Member member) {
+    private void validatePassword(LoginRequest loginRequest, MemberDto member) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -143,10 +147,10 @@ public class AuthenticationService {
                 .map(user -> user.getRole().name());
     }
 
-    private LibraryCard createMemberLibraryCard(Member member) {
+    private LibraryCard createMemberLibraryCard(Long userId) {
         return LibraryCard.builder()
                 .status(CardStatus.ACTIVE)
-                .barcode(LibraryGenerator.generateCardNum(member.getId()))
+                .barcode(LibraryGenerator.generateCardNum(userId))
                 .issuedAt(LocalDateTime.now())
                 .build();
     }

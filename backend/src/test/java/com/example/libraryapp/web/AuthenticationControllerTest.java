@@ -7,6 +7,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.config.SecurityUtils;
 import com.example.libraryapp.domain.exception.ErrorMessage;
+import com.example.libraryapp.domain.member.Gender;
 import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
 import com.example.libraryapp.domain.rack.RackToSaveDto;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -506,9 +508,17 @@ public class AuthenticationControllerTest extends BaseTest {
 
     private RegisterRequest getUserRegistrationDto() {
         RegisterRequest dto = new RegisterRequest();
-        dto.setPassword("password");
         dto.setFirstName("Adam");
         dto.setLastName("Lubnie");
+        dto.setPassword("password");
+
+        dto.setPesel("90051912345");
+        dto.setDateOfBirth(LocalDate.of(1990, 5, 19));
+        dto.setGender(Gender.MALE);
+        dto.setNationality("Polish");
+        dto.setMothersName("Apolonia");
+        dto.setFathersName("Kazimierz");
+
         dto.setStreetAddress("ul. Konopacka 1a/23");
         dto.setZipCode("00-000");
         dto.setCity("Warszawa");

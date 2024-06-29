@@ -82,27 +82,30 @@ public class LendingService {
         checkIfMemberCanBorrowABook(member);
         Lending lendingToSave = createLendingToSave(reservation);
         Lending savedLending = lendingRepository.save(lendingToSave);
+        LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
         reservation.updateAfterLending();
-        actionRepository.save(new BookBorrowedAction(savedLending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, ReservationDtoMapper.map(reservation));
+        actionRepository.save(new BookBorrowedAction(savedLendingDto));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, savedLendingDto);
         return lendingModelAssembler.toModel(savedLending);
     }
 
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
-        actionRepository.save(new BookRenewedAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, LendingDtoMapper.map(lending));
+        actionRepository.save(new BookRenewedAction(lendingDto));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, lendingDto);
         return lendingModelAssembler.toModel(lending);
     }
 
     @Transactional
     public LendingDto returnABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
@@ -110,14 +113,15 @@ public class LendingService {
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookReturnedAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, LendingDtoMapper.map(lending));
+        actionRepository.save(new BookReturnedAction(lendingDto));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, lendingDto);
         return lendingModelAssembler.toModel(lending);
     }
 
     @Transactional
     public LendingDto setLendingLost(Long lendingId) {
         Lending lending = findLending(lendingId);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
@@ -126,8 +130,8 @@ public class LendingService {
         lending.setStatus(LendingStatus.COMPLETED);
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookLostAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, LendingDtoMapper.map(lending));
+        actionRepository.save(new BookLostAction(lendingDto));
+        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, lendingDto);
         List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
         cancelReservations(reservationsToCancel);
         sendNotifications(reservationsToCancel);
