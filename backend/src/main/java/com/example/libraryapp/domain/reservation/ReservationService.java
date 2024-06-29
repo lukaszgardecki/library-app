@@ -30,7 +30,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -88,8 +88,6 @@ public class ReservationService {
         actionRepository.save(new RequestNewAction(savedReservationDto));
         notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, savedReservationDto);
 
-
-        // TODO: 29.06.2024 trzeba wysłać utworzoną rezerwację na kolejkę warehousu
         sendToWarehouse(savedReservationDto);
         return reservationModelAssembler.toModel(savedReservation);
     }
@@ -172,7 +170,7 @@ public class ReservationService {
 
     private Reservation prepareNewReservation(Member member, BookItem book) {
         return Reservation.builder()
-                .creationDate(LocalDate.now())
+                .creationDate(LocalDateTime.now())
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)

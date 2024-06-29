@@ -5,7 +5,7 @@ import com.example.libraryapp.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,7 +17,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     // TODO: 05.12.2023 dodać dueDate...
 

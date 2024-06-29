@@ -16,7 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -158,7 +158,7 @@ public class ReservationControllerTest extends BaseTest {
             BookItemDto book = findBookItemById(6L);
 
             assertThat(returnedReservation.getId()).isEqualTo(5L);
-            assertThat(returnedReservation.getCreationDate()).isEqualTo(LocalDate.parse("2023-02-20", DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            assertThat(returnedReservation.getCreationDate()).isEqualTo(LocalDateTime.parse("2023-02-20 04:27:05", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             assertThat(returnedReservation.getStatus()).isEqualTo(ReservationStatus.COMPLETED);
             assertThat(returnedReservation.getMember()).isEqualTo(member);
             assertThat(returnedReservation.getBookItem()).isEqualTo(book);
