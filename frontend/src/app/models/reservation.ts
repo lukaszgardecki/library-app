@@ -7,4 +7,6 @@ export class Reservation {
     status: string;
     member: UserDetails;
     bookItem: BookItem;
+    
+    selected: boolean = false;
 }
