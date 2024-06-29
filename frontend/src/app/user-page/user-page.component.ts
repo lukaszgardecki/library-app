@@ -26,4 +26,8 @@ export class UserPageComponent {
   logout(): void {
     this.authService.logout();
   }
+
+  hasPermissionToWarehouse(): boolean {
+    return this.authService.hasUserPermissionToWarehouse();
+  }
 }

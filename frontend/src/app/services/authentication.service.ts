@@ -94,6 +94,10 @@ export class AuthenticationService {
     });
   }
 
+  hasUserPermissionToWarehouse(): boolean {
+    return ["WAREHOUSE", "ADMIN"].includes(this.currentUserRole);
+  }
+
   private startRefreshTokenTimer() {
     const token = this.accessToken;
     if (token) {
