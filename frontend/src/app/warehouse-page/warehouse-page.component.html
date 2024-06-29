@@ -9,22 +9,27 @@
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">NEW</span>
-                    <span *ngIf="ordersPending.length > 0" class="section-amount">{{ordersPending.length}}</span>
+                    <ng-container *ngIf="pendingReservations$ | async as pendingResevations">
+                        <span *ngIf="pendingResevations.length > 0" class="section-amount">{{pendingResevations.length}}</span>
+                    </ng-container>
                 </div>
                 
-                <div class="cards" *ngIf="ordersPending.length > 0; else lackNewOrders">
-                    <div class="order-card" *ngFor="let order of ordersPending">
-                        <div class="card-content" (click)="active(order)">
-                            <div class="order-id">ID: 1384</div>
-                            <div class="order-rack">II 34 5</div>
-                            <div class="order-date">23.05.2024 19:23:34</div>
-                        </div>
+                <ng-container *ngIf="pendingReservations$ | async as pendingResevations">
+                    <div class="cards" *ngIf="pendingResevations.length > 0; else lackNewOrders">
+                        <div class="order-card" *ngFor="let reservation of pendingResevations">
+                            <div class="card-content" (click)="active(reservation)">
+                                <div class="order-id">ID: {{reservation.id}}</div>
+                                <div class="order-rack">{{reservation.bookItem.rack.locationIdentifier}}</div>
+                                <div class="order-date">{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}</div>
+                            </div>
 
-                        <div class="order-actions" [ngStyle]="{'display': order.selected ? 'flex' : 'none'}" >
-                            <div class="order-button order-accept" (click)="accept(order)">ACCEPT</div>
+                            <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
+                                <div class="order-button order-accept" (click)="accept(reservation)">ACCEPT</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </ng-container>
+                
 
                 <ng-template #lackNewOrders>
                     <div class="lack-message">No new orders.</div>
@@ -36,21 +41,21 @@
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">IN PROGRESS</span>
-                    <span *ngIf="ordersInProgress.length > 0" class="section-amount">{{ordersInProgress.length}}</span>
+                    <span *ngIf="inProgressReservations.length > 0" class="section-amount">{{inProgressReservations.length}}</span>
                 </div>
-                <div class="cards" *ngIf="ordersInProgress.length > 0; else lackInProgressOrders">
-                    <div class="order-card" *ngFor="let order of ordersInProgress">
-                        <div class="card-content-in-progress" (click)="active(order)">
-                            <strong>Rack:</strong><strong>II 34 5</strong>
-                            <strong>ID:</strong>234
-                            <strong>Date:</strong>23.05.2024 19:23:34
-                            <strong>Document title:</strong>Test book title
-                            <strong>Document barcode:</strong>5400000001231
+                <div class="cards" *ngIf="inProgressReservations.length > 0; else lackInProgressOrders">
+                    <div class="order-card" *ngFor="let reservation of inProgressReservations">
+                        <div class="card-content-in-progress" (click)="active(reservation)">
+                            <strong>Rack:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
+                            <strong>ID:</strong>{{reservation.id}}
+                            <strong>Date:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
+                            <strong>Document title:</strong>{{reservation.bookItem.book.title}}
+                            <strong>Document barcode:</strong>{{reservation.bookItem.barcode}}
                         </div>
                         
-                        <div class="order-actions" [ngStyle]="{'display': order.selected ? 'flex' : 'none'}" >
-                            <div class="order-button order-back" (click)="backToPending(order)">BACK TO PENDING</div>
-                            <div class="order-button order-complete" (click)="complete(order)">COMPLETE</div>
+                        <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
+                            <div class="order-button order-back" (click)="backToPending(reservation)">BACK TO PENDING</div>
+                            <div class="order-button order-complete" (click)="complete(reservation)">COMPLETE</div>
                         </div>
                     </div>
                 </div>
