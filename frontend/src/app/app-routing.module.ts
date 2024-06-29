@@ -23,6 +23,8 @@ import { EditPhoneNumberComponent } from './user-page/profile-dashboard/edit/edi
 import { NotificationDetailsComponent } from './user-page/profile-dashboard/notifications/notification-details/notification-details.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { WarehousePageComponent } from './warehouse-page/warehouse-page.component';
+import { RoleGuard } from './services/role-guard';
+import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
 
 const routes: Routes = [
   {path: "", component: UserPageComponent, children: [
@@ -33,6 +35,9 @@ const routes: Routes = [
     {
       path: "userprofile",
       component: ProfileDashboardComponent,
+      canActivate: [RoleGuard],
+      canActivateChild: [RoleGuard],
+
       children: [
         {path: "details", component: PersonalDetailsComponent},
         {path: "notifications", component: NotificationsComponent},
@@ -57,8 +62,13 @@ const routes: Routes = [
       ]
     }
   ]},
-  {path: "warehouse", component: WarehousePageComponent}
-  
+  {
+    path: "warehouse",
+    component: WarehousePageComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: ['ADMIN', 'WAREHOUSE'] }
+  },
+  {path: "not-authorized", component: NotAuthorizedPageComponent}
 ];
 
 @NgModule({
