@@ -49,8 +49,12 @@
 <div class="wrapper row2">
   <nav id="mainav" class="hoc clear">
     <ul class="clear">
-      <li ngClass="{'active': isLinkActive}"><a [routerLink]="['/']">Home</a></li>
-      <li><a [routerLink]="['/books']">Books</a></li>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a [routerLink]="['']" >Home</a>
+      </li>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{ matrixParams: 'exact', queryParams: 'ignored', paths: 'exact', fragment: 'exact' }">
+        <a [routerLink]="['/books']">Books</a>
+      </li>
     </ul>
   </nav>
 </div>
