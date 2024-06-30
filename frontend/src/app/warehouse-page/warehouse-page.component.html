@@ -29,7 +29,6 @@
                         </div>
                     </div>
                 </ng-container>
-                
 
                 <ng-template #lackNewOrders>
                     <div class="lack-message">No new orders.</div>
@@ -41,24 +40,29 @@
             <div class="section">
                 <div class="section-header">
                     <span class="section-title">IN PROGRESS</span>
-                    <span *ngIf="inProgressReservations.length > 0" class="section-amount">{{inProgressReservations.length}}</span>
+                    <ng-container *ngIf="inProgressReservations$ | async as inProgressReservations">
+                        <span *ngIf="inProgressReservations.length > 0" class="section-amount">{{inProgressReservations.length}}</span>
+                    </ng-container>
                 </div>
-                <div class="cards" *ngIf="inProgressReservations.length > 0; else lackInProgressOrders">
-                    <div class="order-card" *ngFor="let reservation of inProgressReservations">
-                        <div class="card-content-in-progress" (click)="active(reservation)">
-                            <strong>Rack:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
-                            <strong>ID:</strong>{{reservation.id}}
-                            <strong>Date:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
-                            <strong>Document title:</strong>{{reservation.bookItem.book.title}}
-                            <strong>Document barcode:</strong>{{reservation.bookItem.barcode}}
-                        </div>
-                        
-                        <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
-                            <div class="order-button order-back" (click)="backToPending(reservation)">BACK TO PENDING</div>
-                            <div class="order-button order-complete" (click)="complete(reservation)">COMPLETE</div>
+
+                <ng-container *ngIf="inProgressReservations$ | async as inProgressReservations">
+                    <div class="cards" *ngIf="inProgressReservations.length > 0; else lackInProgressOrders">
+                        <div class="order-card" *ngFor="let reservation of inProgressReservations">
+                            <div class="card-content-in-progress" (click)="active(reservation)">
+                                <strong>Rack:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
+                                <strong>ID:</strong>{{reservation.id}}
+                                <strong>Date:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
+                                <strong>Document title:</strong>{{reservation.bookItem.book.title}}
+                                <strong>Document barcode:</strong>{{reservation.bookItem.barcode}}
+                            </div>
+                            
+                            <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
+                                <div class="order-button order-back" (click)="backToPending(reservation)">BACK TO PENDING</div>
+                                <div class="order-button order-complete" (click)="complete(reservation)">COMPLETE</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </ng-container> 
 
                 <ng-template #lackInProgressOrders>
                     <div class="lack-message">No orders in progress. Accept a new order.</div>

@@ -12,7 +12,7 @@ import { WarehouseService } from '../services/warehouse.service';
 })
 export class WarehousePageComponent implements OnInit, OnDestroy {
   pendingReservations$: Observable<Reservation[]>;
-  inProgressReservations: Reservation[] = [];
+  inProgressReservations$: Observable<Reservation[]>;
 
   constructor(
     private warehouseService: WarehouseService,
@@ -24,6 +24,7 @@ export class WarehousePageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
       this.renderer.setStyle(this.document.body, 'background-color', "#fff");
       this.pendingReservations$ = this.warehouseService.pendingReservations$;
+      this.inProgressReservations$ = this.warehouseService.inProgressReservations$;
   }
 
   ngOnDestroy(): void {
@@ -31,53 +32,19 @@ export class WarehousePageComponent implements OnInit, OnDestroy {
   }
 
   active(order: Reservation) {
-    if (this.inProgressReservations.includes(order)) {
-      this.inProgressReservations.filter(el => el !== order).forEach(el => el.selected = false);
-    } else {
-      this.pendingReservations$.subscribe({
-        next: notifications => {
-          notifications.filter(el => el !== order).forEach(el => el.selected = false);
-        }
-      })
-    }
-    order.selected = !order.selected;
+    this.warehouseService.select(order);
   }
   
   accept(order: Reservation) {
-    this.pendingReservations$.subscribe({
-      next: notifications => {
-        const index = notifications.indexOf(order);
-        if (index > -1) {
-          notifications.splice(index, 1);
-          order.selected = false;
-          this.inProgressReservations.push(order);
-        }
-      }
-    });
+    this.warehouseService.moveToInProgress(order);
   }
 
   backToPending(order: Reservation) {
-    this.pendingReservations$.subscribe({
-      next: notifications => {
-        const index = this.inProgressReservations.indexOf(order);
-        if (index > -1) {
-          this.inProgressReservations.splice(index, 1);
-          order.selected = false;
-          notifications.push(order);
-        }
-      }
-    });
+    this.warehouseService.backToPendingReservations(order);
   }
 
   complete(order: Reservation) {
-    this.warehouseService.completeReservation(order.id).subscribe({
-      next: reservation => {
-        const index = this.inProgressReservations.indexOf(order);
-        if (index > -1) {
-          this.inProgressReservations.splice(index, 1);
-        }   
-      }
-    });
+    this.warehouseService.complete(order);
   }
 
   exit() {

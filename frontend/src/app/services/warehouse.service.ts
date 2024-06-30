@@ -11,7 +11,9 @@ import { Reservation } from '../models/reservation';
 export class WarehouseService {
   private baseURL;
   private pendingReservationsSubject = new BehaviorSubject<Reservation[]>([]);
+  private inProgressReservationsSubject = new BehaviorSubject<Reservation[]>([]);
   pendingReservations$ = this.pendingReservationsSubject.asObservable();
+  inProgressReservations$ = this.inProgressReservationsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -25,7 +27,53 @@ export class WarehouseService {
     this.subscribePendingReservations();
   }
 
-  completeReservation(reservationId: number): Observable<Reservation> {
+  select(reservation: Reservation): void {
+    const inProgressReservations = this.inProgressReservationsSubject.value;
+    const pendingReservation = this.pendingReservationsSubject.value;
+
+    if (inProgressReservations.includes(reservation)) {
+      inProgressReservations.filter(el => el !== reservation).forEach(el => el.selected = false);
+    } else {
+      pendingReservation.filter(el => el !== reservation).forEach(el => el.selected = false);
+    }
+    reservation.selected = !reservation.selected;
+  }
+
+  moveToInProgress(reservation: Reservation): void {
+    const inProgressReservations = this.inProgressReservationsSubject.value;
+    const pendingReservation = this.pendingReservationsSubject.value;
+    const index = pendingReservation.indexOf(reservation);
+      if (index > -1) {
+        pendingReservation.splice(index, 1);
+        reservation.selected = false;
+        inProgressReservations.push(reservation);
+      }
+  }
+
+  backToPendingReservations(reservation: Reservation): void {
+    const inProgressReservations = this.inProgressReservationsSubject.value;
+    const pendingReservation = this.pendingReservationsSubject.value;
+    const index = inProgressReservations.indexOf(reservation);
+      if (index > -1) {
+        inProgressReservations.splice(index, 1);
+        reservation.selected = false;
+        pendingReservation.push(reservation);
+      }
+  }
+
+  complete(reservation: Reservation): void {
+    const inProgressReservations = this.inProgressReservationsSubject.value;
+    this.completeReservation(reservation.id).subscribe({
+      next: res => {
+        const index = inProgressReservations.indexOf(reservation);
+        if (index > -1) {
+          inProgressReservations.splice(index, 1);
+        }   
+      }
+    });
+  }
+
+  private completeReservation(reservationId: number): Observable<Reservation> {
     return this.http.post<Reservation>(`${this.baseURL}/reservations/${reservationId}/ready`, {}, { withCredentials: true });
   }
 
