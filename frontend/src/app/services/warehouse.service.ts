@@ -52,12 +52,13 @@ export class WarehouseService {
 
   backToPendingReservations(reservation: Reservation): void {
     const inProgressReservations = this.inProgressReservationsSubject.value;
-    const pendingReservation = this.pendingReservationsSubject.value;
+    const pendingReservations = this.pendingReservationsSubject.value;
     const index = inProgressReservations.indexOf(reservation);
       if (index > -1) {
         inProgressReservations.splice(index, 1);
         reservation.selected = false;
-        pendingReservation.push(reservation);
+        pendingReservations.push(reservation);
+        this.sortByDateAsc(pendingReservations);
       }
   }
 
@@ -80,7 +81,10 @@ export class WarehouseService {
   private fetchPendingReservations(): void {
     this.http.get<Reservation[]>(`${this.baseURL}/reservations/pending`, { withCredentials: true })
       .subscribe({
-        next: notifications => this.pendingReservationsSubject.next(notifications)
+        next: reservations => {
+          reservations = this.sortByDateAsc(reservations);
+          this.pendingReservationsSubject.next(reservations);
+        }
       });
   }
 
@@ -93,5 +97,9 @@ export class WarehouseService {
       },
       error: err => console.error('Error in reservation subscription:', err)
     });
+  }
+
+  private sortByDateAsc(reservations: Reservation[]) {
+    return reservations.sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
   }
 }
