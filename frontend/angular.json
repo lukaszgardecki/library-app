@@ -37,17 +37,17 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/app/home-page/styles/layout.css"
+              "src/app/user-page/home-page/styles/layout.css"
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/jquery/dist/jquery.min.js",
 
-              "src/app/login/login.component.main.js",
+              "src/app/user-page/login/login.component.main.js",
               
-              "src/app/home-page/scripts/jquery.flexslider-min.js",
-              "src/app/home-page/scripts/jquery.backtotop.js",
-              "src/app/home-page/scripts/jquery.mobilemenu.js"
+              "src/app/user-page/home-page/scripts/jquery.flexslider-min.js",
+              "src/app/user-page/home-page/scripts/jquery.backtotop.js",
+              "src/app/user-page/home-page/scripts/jquery.mobilemenu.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,

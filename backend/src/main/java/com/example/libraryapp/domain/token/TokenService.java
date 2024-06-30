@@ -28,9 +28,9 @@ public class TokenService {
         refreshTokenRepository.save(new RefreshToken(member, refreshToken));
     }
 
-    public void revokeAllUserTokens(Member member) {
-        List<AccessToken> validUserAccessTokens = accessTokenRepository.findAllValidTokenByUser(member.getId());
-        List<RefreshToken> validUserRefreshTokens = refreshTokenRepository.findAllValidTokenByUser(member.getId());
+    public void revokeAllUserTokens(Long userId) {
+        List<AccessToken> validUserAccessTokens = accessTokenRepository.findAllValidTokenByUser(userId);
+        List<RefreshToken> validUserRefreshTokens = refreshTokenRepository.findAllValidTokenByUser(userId);
 
         if (validUserAccessTokens.isEmpty() && validUserRefreshTokens.isEmpty()) return;
 
@@ -54,6 +54,7 @@ public class TokenService {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put(SecurityUtils.FINGERPRINT_NAME, fingerprint.getHash());
         extraClaims.put(SecurityUtils.ID_CLAIM_NAME, userDetails.getId());
+        extraClaims.put(SecurityUtils.USER_ROLE, userDetails.getRole().name());
         String accessToken = generator.generateAccessToken(extraClaims, userDetails);
         String refreshToken = generator.generateRefreshToken(extraClaims, userDetails);
         return new AuthTokens(accessToken, refreshToken, fingerprint);

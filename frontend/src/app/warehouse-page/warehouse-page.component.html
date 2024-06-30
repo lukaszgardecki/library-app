@@ -1,0 +1,73 @@
+<div class="c">
+    <div class="nav_panel">
+        <button class="button btn-1" (click)="exit()">EXIT</button>
+    </div>
+
+    <div class="content">
+        <div class="c-left">
+        
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">NEW</span>
+                    <ng-container *ngIf="pendingReservations$ | async as pendingResevations">
+                        <span *ngIf="pendingResevations.length > 0" class="section-amount">{{pendingResevations.length}}</span>
+                    </ng-container>
+                </div>
+                
+                <ng-container *ngIf="pendingReservations$ | async as pendingResevations">
+                    <div class="cards" *ngIf="pendingResevations.length > 0; else lackNewOrders">
+                        <div class="order-card" *ngFor="let reservation of pendingResevations">
+                            <div class="card-content" (click)="active(reservation)">
+                                <div class="order-id">ID: {{reservation.id}}</div>
+                                <div class="order-rack">{{reservation.bookItem.rack.locationIdentifier}}</div>
+                                <div class="order-date">{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}</div>
+                            </div>
+
+                            <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
+                                <div class="order-button order-accept" (click)="accept(reservation)">ACCEPT</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #lackNewOrders>
+                    <div class="lack-message">No new orders.</div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="c-right">
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">IN PROGRESS</span>
+                    <ng-container *ngIf="inProgressReservations$ | async as inProgressReservations">
+                        <span *ngIf="inProgressReservations.length > 0" class="section-amount">{{inProgressReservations.length}}</span>
+                    </ng-container>
+                </div>
+
+                <ng-container *ngIf="inProgressReservations$ | async as inProgressReservations">
+                    <div class="cards" *ngIf="inProgressReservations.length > 0; else lackInProgressOrders">
+                        <div class="order-card" *ngFor="let reservation of inProgressReservations">
+                            <div class="card-content-in-progress" (click)="active(reservation)">
+                                <strong>Rack:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
+                                <strong>ID:</strong>{{reservation.id}}
+                                <strong>Date:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
+                                <strong>Document title:</strong>{{reservation.bookItem.book.title}}
+                                <strong>Document barcode:</strong>{{reservation.bookItem.barcode}}
+                            </div>
+                            
+                            <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
+                                <div class="order-button order-back" (click)="backToPending(reservation)">BACK TO PENDING</div>
+                                <div class="order-button order-complete" (click)="complete(reservation)">COMPLETE</div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container> 
+
+                <ng-template #lackInProgressOrders>
+                    <div class="lack-message">No orders in progress. Accept a new order.</div>
+                </ng-template>
+            </div>
+        </div>   
+    </div>      
+</div>

@@ -1,0 +1,192 @@
+.c {
+    width: 100%;
+    height: 100vh;
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav_panel {
+    width: 100%;
+    margin: 10px 10px 5px 10px;
+}
+
+.content {
+    display: flex;
+    height: 50%;
+    flex: 1;
+}
+
+.c-left,
+.c-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.c-left {
+    width: 40%;
+}
+
+.c-right {
+    width: 60%;
+}
+
+.section {
+    height: 50%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid;
+    margin: 5px 10px 10px 10px;
+}
+
+.section-header {
+    position: relative;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.section-title {
+    display: block;
+    padding: 10px;
+}
+
+.section-amount {
+    min-width: 35px;
+    position: absolute;
+    border-radius: 3px;
+    padding: 4px;
+    top: 6px;
+    right: 6px;
+}
+
+.lack-message {
+    flex: 1;
+    text-align: center;
+    align-content: center;
+}
+
+.cards {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.order-card {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 8px 4px 8px;
+    border: 1px solid;
+    border-radius: .7rem;
+    overflow: hidden;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-content-in-progress {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 10px;
+}
+
+.order-id {
+    font-size: .9rem;
+    padding-left: 10px;
+}
+
+.order-rack {
+    font-size: 1.8rem;
+    height: 100%;
+    align-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+.order-date {
+    font-size: .9rem;
+    align-self: flex-end;
+    padding-right: 10px;
+}
+
+.order-actions {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+}
+
+.order-button {
+    width: 100%;
+    cursor: pointer;
+    padding: 14px;
+    align-content: center;
+}
+
+
+@media screen and (max-width:450px){
+
+}
+
+@media screen and (max-width:650px){
+    .content {
+        flex-direction: column;
+    }
+
+    .c-left {
+        height: 40%;
+        width: 100%;
+    }
+
+    .c-right {
+        height: 60%;
+        width: 100%;
+    }
+}
+
+/* ///////////////////////////////////////////////////////////////////// */
+/* COLOURS */
+/* ///////////////////////////////////////////////////////////////////// */
+
+/* SECTION BORDER */
+.section {border-color: var(--main-color);}
+
+/* SECTION HEADER */
+.section-header {background-color: var(--main-color);}
+
+/* SECTION AMOUNT NUMBER */
+.section-amount {background-color: orange;color: #000;}
+
+/* LACK MESSAGE */
+.lack-message {color:#000;}
+
+/* CARD */
+.order-card{color: #000;border-color: #000;box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);}
+
+/* NEW ORDER CARD */
+.card-content {background-color: orange;}
+.card-content:hover {background-color: #df9100;}
+
+/* IN PROGRESS ORDER CARD */
+.card-content-in-progress {background-color: #dbdbdb;}
+.card-content-in-progress:hover {background-color: #c0c0c0;}
+
+/* BUTTON */
+.order-button {color: #fff;}
+
+/* NEW ORDER ACCEPT BUTTON */
+.order-accept {background-color: #007bff98;}
+.order-accept:hover {background-color: #0059b9b7;}
+
+/* IN PROGRESS ORDER BACK TO PENDING BUTTON */
+.order-back {background-color: #c80000;}
+.order-back:hover {background-color: #a00000;}
+
+/* IN PROGRESS ORDER COMPLETE BUTTON */
+.order-complete {background-color: #00b100;}
+.order-complete:hover {background-color: #008d00;}

@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.action.types;
 
 import com.example.libraryapp.domain.action.Action;
-import com.example.libraryapp.domain.reservation.Reservation;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.Message;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @DiscriminatorValue("REQUEST_COMPLETED")
 public class RequestCompletedAction extends Action {
-    public RequestCompletedAction(Reservation reservation) {
+    public RequestCompletedAction(ReservationResponse reservation) {
         super(reservation.getMember().getId());
         this.message = Message.ACTION_REQUEST_COMPLETED.formatted(
                 reservation.getBookItem().getBook().getTitle()

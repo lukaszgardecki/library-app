@@ -26,10 +26,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -42,6 +43,7 @@ public class ReservationService {
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
     private final ActionRepository actionRepository;
+    private final SimpMessagingTemplate messagingTemplate;
     private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
@@ -59,11 +61,11 @@ public class ReservationService {
         return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
-    public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
-        List<Reservation> reservations = reservationRepository.findAll(pageable).stream()
+    public List<ReservationResponse> findAllPendingReservations() {
+        return reservationRepository.findAll().stream()
                 .filter(res -> res.getStatus() == ReservationStatus.PENDING)
+                .map(ReservationDtoMapper::map)
                 .toList();
-        return pagedResourcesAssembler.toModel(new PageImpl<>(reservations), reservationModelAssembler);
     }
 
     public ReservationResponse findReservationById(Long id) {
@@ -80,16 +82,20 @@ public class ReservationService {
         checkIfBookItemIsNotLost(book);
         Reservation reservationToSave = prepareNewReservation(member, book);
         Reservation savedReservation = reservationRepository.save(reservationToSave);
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(savedReservation);
         member.updateAfterReservation();
         book.updateAfterReservation();
-        actionRepository.save(new RequestNewAction(savedReservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, ReservationDtoMapper.map(savedReservation));
+        actionRepository.save(new RequestNewAction(savedReservationDto));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, savedReservationDto);
+
+        sendToWarehouse(savedReservationDto);
         return reservationModelAssembler.toModel(savedReservation);
     }
 
     @Transactional
     public void cancelAReservation(ActionRequest request) {
         Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
         BookItem book = reservation.getBookItem();
         Member member = reservation.getMember();
         boolean isBookReserved = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId())
@@ -98,16 +104,17 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
-        actionRepository.save(new RequestCancelAction(reservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_CANCELLED, ReservationDtoMapper.map(reservation));
+        actionRepository.save(new RequestCancelAction(savedReservationDto));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_CANCELLED, savedReservationDto);
     }
 
     @Transactional
     public ReservationResponse changeReservationStatusToReady(Long reservationId) {
         Reservation reservation = findReservation(reservationId);
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
         reservation.setStatus(ReservationStatus.READY);
-        actionRepository.save(new RequestCompletedAction(reservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_COMPLETED, ReservationDtoMapper.map(reservation));
+        actionRepository.save(new RequestCompletedAction(savedReservationDto));
+        notificationService.saveAndSendNotification(NotificationType.REQUEST_COMPLETED, savedReservationDto);
         return reservationModelAssembler.toModel(reservation);
     }
 
@@ -157,9 +164,13 @@ public class ReservationService {
         }
     }
 
+    private void sendToWarehouse(ReservationResponse reservation) {
+        messagingTemplate.convertAndSend("/queue/warehouse", reservation);
+    }
+
     private Reservation prepareNewReservation(Member member, BookItem book) {
         return Reservation.builder()
-                .creationDate(LocalDate.now())
+                .creationDate(LocalDateTime.now())
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)
