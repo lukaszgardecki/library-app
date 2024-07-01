@@ -145,7 +145,11 @@ public class LendingService {
     }
 
     private void cancelReservations(List<Reservation> reservationsOfLostBook) {
-        reservationsOfLostBook.forEach(res -> res.setStatus(ReservationStatus.CANCELED));
+        reservationsOfLostBook.forEach(res -> {
+            int numOfRes = res.getMember().getTotalBooksReserved();
+            res.setStatus(ReservationStatus.CANCELED);
+            res.getMember().setTotalBooksReserved(numOfRes - 1);
+        });
     }
 
     private Lending findLendingByBookBarcode(String bookBarcode) {

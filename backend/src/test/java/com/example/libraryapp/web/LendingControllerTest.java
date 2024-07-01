@@ -620,10 +620,8 @@ public class LendingControllerTest extends BaseTest {
                     .expectBody(LendingDto.class)
                     .returnResult().getResponseBody();
 
-            MemberDto memberBefore = client.testRequest(GET, "/members/" + memberId, admin, OK)
-                    .expectBody(MemberDto.class)
-                    .returnResult().getResponseBody();
-
+            MemberDto memberBefore = findMemberById(memberId);
+            MemberDto anotherMemberReservedThatBookBefore = findMemberById(6L);
             BookItemDto bookItemBefore = client.testRequest(GET, "/book-items/" + bookItemId, admin, OK)
                     .expectBody(BookItemDto.class)
                     .returnResult().getResponseBody();
@@ -643,10 +641,13 @@ public class LendingControllerTest extends BaseTest {
             assertThat(returnBodyPost.getMember().getCharge()).isEqualTo(bookItemPrice);
             assertThat(returnBodyPost.getBookItem().getStatus()).isEqualTo(BookItemStatus.LOST);
 
+            MemberDto anotherMemberReservedThatBookAfter = findMemberById(6L);
             ReservationResponse anotherReservation = client.testRequest(GET, "/reservations/16", admin, OK)
                     .expectBody(ReservationResponse.class)
                     .returnResult().getResponseBody();
             assertThat(anotherReservation.getStatus()).isEqualTo(ReservationStatus.CANCELED);
+            assertThat(anotherMemberReservedThatBookAfter.getTotalBooksReserved())
+                    .isEqualTo(anotherMemberReservedThatBookBefore.getTotalBooksReserved() - 1);
         }
 
         @Test
