@@ -155,7 +155,9 @@ public class ReservationService {
     private void handleLoanedOrReservedBook(Reservation reservation) {
         Long bookId = reservation.getBookItem().getId();
         Long memberId = reservation.getMember().getId();
-        List<Reservation> otherCurrentReservations = reservationRepository.findAllCurrentReservationsByBookItemId(bookId);
+        List<Reservation> otherCurrentReservations = reservationRepository.findAllPendingReservationByBookItemId(bookId).stream()
+                .filter(res -> !Objects.equals(res.getId(), reservation.getId()))
+                .toList();
         ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
         int queuePosition = getQueuePosition(otherCurrentReservations, reservation);
         Optional<LendingDto> currentLending = lendingRepository.findCurrentLendingByBookItemId(bookId)
@@ -185,15 +187,6 @@ public class ReservationService {
         return reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException(id));
     }
-
-//    private Reservation findReservation(Long memberId, String bookBarcode) {
-//        return reservationRepository.findAllByMemberId(memberId)
-//                .stream()
-//                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
-//                .filter(res -> res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.READY)
-//                .findAny()
-//                .orElseThrow(ReservationNotFoundException::new);
-//    }
 
     private void checkIfReservationAlreadyExist(Long memberId, String bookBarcode) {
         Optional<Reservation> reservation = reservationRepository.findAllByMemberId(memberId)

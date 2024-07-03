@@ -12,20 +12,30 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query(
             value = """
-            select * from Reservation
-            where book_item_id = :bookItemId
-            and (status = 'PENDING' or status = 'READY')
-            """,
+                    select * from Reservation
+                    where book_item_id = :bookItemId
+                    and (status = 'PENDING' or status = 'READY')
+                    """,
             nativeQuery = true
     )
     List<Reservation> findAllCurrentReservationsByBookItemId(@Param("bookItemId") Long bookItemId);
 
     @Query(
             value = """
-            select * from Reservation
-            where member_id = :memberId
-            and (status = 'PENDING' or status = 'READY')
-            """,
+                    select * from Reservation
+                    where book_item_id = :bookItemId
+                    and status = 'PENDING'
+                    """,
+            nativeQuery = true
+    )
+    List<Reservation> findAllPendingReservationByBookItemId(@Param("bookItemId") Long bookItemId);
+
+    @Query(
+            value = """
+                    select * from Reservation
+                    where member_id = :memberId
+                    and (status = 'PENDING' or status = 'READY')
+                    """,
             nativeQuery = true
     )
     List<Reservation> findAllCurrentReservationsByMemberId(Long memberId);
