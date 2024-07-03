@@ -69,6 +69,12 @@ public class ReservationService {
                 .toList();
     }
 
+    public List<ReservationResponse> findAllPendingReservationsByBookItemId(Long bookItemId) {
+        return reservationRepository.findAllPendingReservationByBookItemId(bookItemId).stream()
+                .map(ReservationDtoMapper::map)
+                .toList();
+    }
+
     public ReservationResponse findReservationById(Long id) {
         Reservation reservation = findReservation(id);
         return reservationModelAssembler.toModel(reservation);

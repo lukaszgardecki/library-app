@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.lending;
 
-import com.example.libraryapp.domain.action.ActionRepository;
 import com.example.libraryapp.domain.action.ActionService;
 import com.example.libraryapp.domain.action.types.ActionBookBorrowed;
 import com.example.libraryapp.domain.action.types.ActionBookLost;
@@ -14,12 +13,13 @@ import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundExceptio
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
-import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.notification.NotificationService;
 import com.example.libraryapp.domain.notification.types.*;
-import com.example.libraryapp.domain.reservation.*;
+import com.example.libraryapp.domain.reservation.Reservation;
+import com.example.libraryapp.domain.reservation.ReservationService;
+import com.example.libraryapp.domain.reservation.ReservationStatus;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
@@ -36,9 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,6 +115,13 @@ public class LendingService {
         member.updateAfterReturning(fine);
         actionService.save(new ActionBookReturned(lendingDto));
         notificationService.sendToUser(new NotificationBookReturned(lendingDto), lendingDto.getMember());
+
+        reservationService.findAllPendingReservationsByBookItemId(book.getId()).stream()
+                .min(Comparator.comparing(ReservationResponse::getCreationDate))
+                .ifPresent(res ->
+                        notificationService.sendToUser(new NotificationBookAvailableToBorrow(res),
+                        res.getMember())
+                );
         return lendingModelAssembler.toModel(lending);
     }
 

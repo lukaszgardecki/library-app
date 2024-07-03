@@ -56,6 +56,11 @@ public class Message {
             
             We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
             """;
+    public static final String BOOK_AVAILABLE_TO_BORROW = """
+            We are pleased to inform you that the book you reserved, titled "%s", has been returned and is now available for borrowing. You can visit the library to check it out at your earliest convenience.
+            
+            Thank you for using our library services.
+            """;
     public static final String BOOK_RENEWED = "The book has been successfully extended";
     public static final String BOOK_RETURNED = "The book has been successfully returned";
     public static final String BOOK_LOST = "The book has been lost. Your account has been charged an additional fee of %s";
@@ -84,6 +89,7 @@ public class Message {
 
     // Notification reasons:
     public static final String REASON_BOOK_BORROWED = "Wypożyczenie dokumentu";
+    public static final String REASON_BOOK_AVAILABLE_TO_BORROW = "Dokument możliwy do wypożyczenia";
     public static final String REASON_BOOK_RESERVED = "Rezerwacja dokumentu";
     public static final String REASON_BOOK_RENEWED = "Prolongata dokumentu";
     public static final String REASON_BOOK_RETURNED = "Zwrócenie dokumentu";
