@@ -21,7 +21,7 @@ values
     (1, 'NOTIFICATION_SMS', 'Wysłano wiadomość SMS do czytelnika (Zwrócenie dokumentu) 540200000002', '2024-06-05 22:40:35.496349'),
     (1, 'LOGOUT', 'Wylogowanie czytelnika Kasia Lubiczytać, Nr karty 540100000001', '2024-06-05 22:40:35.555349'),
 
-    (2, 'LOGIN', 'Zalogowanie czytelnika Kamil Nielubi, Nr karty 540100000001', '2024-06-05 22:40:34.730348'),
+    (2, 'LOGIN', 'Zalogowanie czytelnika Kamil Nielubi, Nr karty 540100000002', '2024-06-05 22:40:34.730348'),
     (2, 'REQUEST_NEW', 'Wysłano zamówienie Araya', '2024-06-05 22:40:34.845347'),
     (2, 'NOTIFICATION_EMAIL', 'Wysłano e-mail do czytelnika (Utworzenie zamówienia) 540200000002', '2024-06-05 22:40:34.846347'),
     (2, 'NOTIFICATION_SMS', 'Wysłano wiadomość SMS do czytelnika (Utworzenie zamówienia) 540200000002', '2024-06-05 22:40:34.847346'),
@@ -37,6 +37,6 @@ values
     (2, 'BOOK_RETURNED', 'Zwrócono Araya', '2024-06-05 22:40:35.494348'),
     (2, 'NOTIFICATION_EMAIL', 'Wysłano e-mail do czytelnika (Zwrócenie dokumentu) 540200000002', '2024-06-05 22:40:35.495347'),
     (2, 'NOTIFICATION_SMS', 'Wysłano wiadomość SMS do czytelnika (Zwrócenie dokumentu) 540200000002', '2024-06-05 22:40:35.496349'),
-    (2, 'LOGOUT', 'Wylogowanie czytelnika Kamil Nielubi, Nr karty 540100000001', '2024-06-05 22:40:35.555349');
+    (2, 'LOGOUT', 'Wylogowanie czytelnika Kamil Nielubi, Nr karty 540100000002', '2024-06-05 22:40:35.555349');
 
 
