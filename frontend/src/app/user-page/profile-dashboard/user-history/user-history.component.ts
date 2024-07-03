@@ -32,6 +32,7 @@ export class UserHistoryComponent implements ProfileSetting {
     {type: "REQUEST_COMPLETED", name: "Completed requests"},
     {type: "REQUEST_CANCEL", name: "Canceled requests"},
     {type: "BOOK_BORROWED", name: "Borrowings"},
+    {type: "BOOK_AVAILABLE_TO_BORROW", name: "Availability notifications"},
     {type: "BOOK_RESERVED_FIRST", name: "Reservations"},
     {type: "BOOK_RESERVED_QUEUE", name: "Reservations - queue"},
     {type: "BOOK_RENEWED", name: "Renewals"},
