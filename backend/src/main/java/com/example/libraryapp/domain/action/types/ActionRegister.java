@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("LOGOUT")
-public class LogoutAction extends Action {
-    public LogoutAction(MemberDto member) {
+@DiscriminatorValue("REGISTER")
+public class ActionRegister extends Action {
+    public ActionRegister(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_LOGOUT.formatted(
+        this.message = Message.ACTION_REGISTER.formatted(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

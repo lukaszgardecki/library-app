@@ -7,13 +7,16 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 
+import java.time.format.DateTimeFormatter;
+
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("BOOK_LOST")
-public class BookLostAction extends Action {
-    public BookLostAction(LendingDto lending) {
-        super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_LOST.formatted(
+@DiscriminatorValue("BOOK_RESERVED_FIRST")
+public class ActionBookReservedFirstPerson extends Action {
+    public ActionBookReservedFirstPerson(Long userId, LendingDto lending) {
+        super(userId);
+        this.message = Message.ACTION_BOOK_RESERVED_FIRST_PERSON.formatted(
+                lending.getDueDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 lending.getBookItem().getBook().getTitle()
         );
     }

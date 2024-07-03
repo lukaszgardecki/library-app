@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("LOGIN_FAILED")
-public class LoginFailedAction extends Action {
-    public LoginFailedAction(MemberDto member) {
+@DiscriminatorValue("LOGOUT")
+public class ActionLogout extends Action {
+    public ActionLogout(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_LOGIN_FAILED.formatted(
+        this.message = Message.ACTION_LOGOUT.formatted(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

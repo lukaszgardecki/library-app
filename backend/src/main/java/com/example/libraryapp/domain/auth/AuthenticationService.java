@@ -1,9 +1,9 @@
 package com.example.libraryapp.domain.auth;
 
-import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.LoginAction;
-import com.example.libraryapp.domain.action.types.LoginFailedAction;
-import com.example.libraryapp.domain.action.types.RegisterAction;
+import com.example.libraryapp.domain.action.ActionService;
+import com.example.libraryapp.domain.action.types.ActionLogin;
+import com.example.libraryapp.domain.action.types.ActionLoginFailed;
+import com.example.libraryapp.domain.action.types.ActionRegister;
 import com.example.libraryapp.domain.card.CardStatus;
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.config.AuthTokens;
@@ -38,7 +38,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final MemberRepository memberRepository;
-    private final ActionRepository actionRepository;
+    private final ActionService actionService;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
@@ -50,7 +50,7 @@ public class AuthenticationService {
         LibraryCard card = createMemberLibraryCard(savedMember.getId());
         savedMember.setCard(card);
         MemberDto savedMemberDto = MemberDtoMapper.map(savedMember);
-        actionRepository.save(new RegisterAction(savedMemberDto));
+        actionService.save(new ActionRegister(savedMemberDto));
     }
 
     public LoginResponse authenticate(
@@ -69,7 +69,7 @@ public class AuthenticationService {
 
         tokenService.revokeAllUserTokens(memberDto.getId());
         tokenService.saveTokens(member, accessToken, refreshToken);
-        actionRepository.save(new LoginAction(memberDto));
+        actionService.save(new ActionLogin(memberDto));
         response.addHeader(fgpCookie.getName(), fgpCookie.getValue());
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -126,7 +126,7 @@ public class AuthenticationService {
                     )
             );
         } catch (RuntimeException ex){
-            actionRepository.save(new LoginFailedAction(member));
+            actionService.save(new ActionLoginFailed(member));
             throw ex;
         }
     }

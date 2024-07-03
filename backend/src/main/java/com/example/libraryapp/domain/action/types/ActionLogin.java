@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("REGISTER")
-public class RegisterAction extends Action {
-    public RegisterAction(MemberDto member) {
+@DiscriminatorValue("LOGIN")
+public class ActionLogin extends Action {
+    public ActionLogin(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_REGISTER.formatted(
+        this.message = Message.ACTION_LOGIN.formatted(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

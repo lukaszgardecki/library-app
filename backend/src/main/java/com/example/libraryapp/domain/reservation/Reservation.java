@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reservation {
@@ -35,7 +36,5 @@ public class Reservation {
     public void updateAfterCancelling() {
         status = ReservationStatus.CANCELED;
     }
-    public void updateAfterLending() {
-        status = ReservationStatus.COMPLETED;
-    }
+
 }

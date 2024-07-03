@@ -1,10 +1,11 @@
 package com.example.libraryapp.domain.lending;
 
 import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.BookBorrowedAction;
-import com.example.libraryapp.domain.action.types.BookLostAction;
-import com.example.libraryapp.domain.action.types.BookRenewedAction;
-import com.example.libraryapp.domain.action.types.BookReturnedAction;
+import com.example.libraryapp.domain.action.ActionService;
+import com.example.libraryapp.domain.action.types.ActionBookBorrowed;
+import com.example.libraryapp.domain.action.types.ActionBookLost;
+import com.example.libraryapp.domain.action.types.ActionBookRenewed;
+import com.example.libraryapp.domain.action.types.ActionBookReturned;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -17,11 +18,9 @@ import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundEx
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.notification.NotificationService;
-import com.example.libraryapp.domain.notification.NotificationType;
-import com.example.libraryapp.domain.reservation.Reservation;
-import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
-import com.example.libraryapp.domain.reservation.ReservationRepository;
-import com.example.libraryapp.domain.reservation.ReservationStatus;
+import com.example.libraryapp.domain.notification.types.*;
+import com.example.libraryapp.domain.reservation.*;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.FineService;
@@ -39,6 +38,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
 public class LendingService {
     private final LendingRepository lendingRepository;
     private final BookItemRepository bookItemRepository;
-    private final ReservationRepository reservationRepository;
-    private final ActionRepository actionRepository;
+    private final ReservationService reservationService;
+    private final ActionService actionService;
     private final FineService fineService;
     private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
@@ -76,7 +76,7 @@ public class LendingService {
 
     @Transactional
     public LendingDto borrowABook(ActionRequest request) {
-        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
+        Reservation reservation = reservationService.findReservation(request.getMemberId(), request.getBookBarcode(), ReservationStatus.READY);
         Member member = reservation.getMember();
         BookItem book = reservation.getBookItem();
         checkIfMemberCanBorrowABook(member);
@@ -85,9 +85,9 @@ public class LendingService {
         LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
-        reservation.updateAfterLending();
-        actionRepository.save(new BookBorrowedAction(savedLendingDto));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, savedLendingDto);
+        reservation.setStatus(ReservationStatus.COMPLETED);
+        actionService.save(new ActionBookBorrowed(savedLendingDto));
+        notificationService.sendToUser(new NotificationBookBorrowed(savedLendingDto), savedLendingDto.getMember());
         return lendingModelAssembler.toModel(savedLending);
     }
 
@@ -97,8 +97,8 @@ public class LendingService {
         LendingDto lendingDto = LendingDtoMapper.map(lending);
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
-        actionRepository.save(new BookRenewedAction(lendingDto));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, lendingDto);
+        actionService.save(new ActionBookRenewed(lendingDto));
+        notificationService.sendToUser(new NotificationBookRenewed(lendingDto), lendingDto.getMember());
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -111,10 +111,10 @@ public class LendingService {
         Member member = lending.getMember();
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
         lending.updateAfterReturning();
-        book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
+        book.updateAfterReturning(lending.getReturnDate(), reservationService.isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookReturnedAction(lendingDto));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, lendingDto);
+        actionService.save(new ActionBookReturned(lendingDto));
+        notificationService.sendToUser(new NotificationBookReturned(lendingDto), lendingDto.getMember());
         return lendingModelAssembler.toModel(lending);
     }
 
@@ -130,26 +130,10 @@ public class LendingService {
         lending.setStatus(LendingStatus.COMPLETED);
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookLostAction(lendingDto));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, lendingDto);
-        List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
-        cancelReservations(reservationsToCancel);
-        sendNotifications(reservationsToCancel);
+        actionService.save(new ActionBookLost(lendingDto));
+        notificationService.sendToUser(new NotificationBookLost(lendingDto), lendingDto.getMember());
+        reservationService.cancelReservations(book.getId());
         return lendingModelAssembler.toModel(lending);
-    }
-
-    private void sendNotifications(List<Reservation> reservationsToCancel) {
-        reservationsToCancel.forEach(
-                res -> notificationService.saveAndSendNotification(NotificationType.RESERVATION_CANCEL_BOOK_ITEM_LOST, ReservationDtoMapper.map(res))
-        );
-    }
-
-    private void cancelReservations(List<Reservation> reservationsOfLostBook) {
-        reservationsOfLostBook.forEach(res -> {
-            int numOfRes = res.getMember().getTotalBooksReserved();
-            res.setStatus(ReservationStatus.CANCELED);
-            res.getMember().setTotalBooksReserved(numOfRes - 1);
-        });
     }
 
     private Lending findLendingByBookBarcode(String bookBarcode) {
@@ -160,26 +144,13 @@ public class LendingService {
                 .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
-    private Reservation findReservation(Long memberId, String bookBarcode) {
-        return reservationRepository.findAllByMemberId(memberId)
-                .stream()
-                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
-                .filter(res -> res.getStatus() == ReservationStatus.READY)
-                .findFirst()
-                .orElseThrow(ReservationNotFoundException::new);
-    }
-
     private Lending findLending(Long id) {
         return lendingRepository.findById(id)
                 .orElseThrow(() -> new LendingNotFoundException(id));
     }
 
-    private boolean isBookReserved(Long bookItemId) {
-        return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
-    }
-
     private boolean isRenewable(Lending len) {
-        return !isBookReserved(len.getBookItem().getId())
+        return !reservationService.isBookReserved(len.getBookItem().getId())
              && len.getDueDate().isAfter(LocalDate.now());
     }
 
@@ -193,7 +164,7 @@ public class LendingService {
     }
 
     private void checkIfLendingCanBeRenewed(Lending lending) {
-        boolean bookIsReserved = isBookReserved(lending.getBookItem().getId());
+        boolean bookIsReserved = reservationService.isBookReserved(lending.getBookItem().getId());
         if (bookIsReserved || lending.isAfterDueDate()) {
             throw new CheckoutException(Message.LENDING_CANNOT_BE_RENEWED);
         }

@@ -46,9 +46,20 @@ public class Message {
     public static final String RESERVATION_DELETED = "The reservation has been successfully cancelled.";
     public static final String RESERVATION_READY = "The reservation has been successfully completed.";
     public static final String BOOK_BORROWED = "The book has been successfully borrowed.";
-    public static final String BOOK_EXTENDED = "The book has been successfully extended";
+    public static final String BOOK_RESERVED_FIRST_PERSON = """
+            Your reservation for the book "%s" has been accepted. The book is currently on loan to another reader, and its expected return date is %s.
+            
+            We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
+            """;
+    public static final String BOOK_RESERVED_QUEUE = """
+            Your reservation for the book "%s" has been accepted. There are %s people ahead of you in the waiting queue.
+            
+            We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
+            """;
+    public static final String BOOK_RENEWED = "The book has been successfully extended";
     public static final String BOOK_RETURNED = "The book has been successfully returned";
     public static final String BOOK_LOST = "The book has been lost. Your account has been charged an additional fee of %s";
+    public static final String RENEWAL_IMPOSSIBLE = "The document %s has been reserved by another user. Renewal is not possible.";
 
     // Action templates:
     public static final String ACTION_NOT_FOUND_BY_ID = "No action with id: %s";
@@ -56,25 +67,29 @@ public class Message {
     public static final String ACTION_LOGIN = "Zalogowanie czytelnika %s %s, Nr karty %s";
     public static final String ACTION_LOGOUT = "Wylogowanie czytelnika %s %s, Nr karty %s";
     public static final String ACTION_LOGIN_FAILED = "Nieudane logowanie czytelnika %s %s, Nr karty %s";
-    public static final String ACTION_REQUEST_NEW = "Zamówiono %s";
-    public static final String ACTION_REQUEST_SENT = "Wysłano zamówienie %s";
-    public static final String ACTION_REQUEST_CANCELED = "Anulowano zamówienie %s";
-    public static final String ACTION_REQUEST_COMPLETED = "Zrealizowano %s";
-    public static final String ACTION_BOOK_BORROWED = "Wypożyczono %s";
-    public static final String ACTION_BOOK_BORROWED_ON_SITE = "Udostępniono %s";
-    public static final String ACTION_BOOK_RENEWED = "Prolongata czytelnika %s";
-    public static final String ACTION_BOOK_RETURNED = "Zwrócono %s";
-    public static final String ACTION_BOOK_LOST = "Zgubiono %s";
+    public static final String ACTION_REQUEST_NEW = "Zamówiono '%s'";
+    public static final String ACTION_REQUEST_SENT = "Wysłano zamówienie '%s'";
+    public static final String ACTION_REQUEST_CANCELED = "Anulowano zamówienie '%s'";
+    public static final String ACTION_REQUEST_COMPLETED = "Zrealizowano '%s'";
+    public static final String ACTION_BOOK_BORROWED = "Wypożyczono '%s'";
+    public static final String ACTION_BOOK_BORROWED_ON_SITE = "Udostępniono '%s'";
+    public static final String ACTION_BOOK_RESERVED_FIRST_PERSON = "Rezerwacja do dnia %s. Dokument: '%s'";
+    public static final String ACTION_BOOK_RESERVED_QUEUE = "Rezerwacja dokumentu: '%s'. Pozycja w kolejce oczekujących: %s.";
+    public static final String ACTION_BOOK_RENEWED = "Prolongata czytelnika '%s'";
+    public static final String ACTION_BOOK_RETURNED = "Zwrócono '%s'";
+    public static final String ACTION_BOOK_LOST = "Zgubiono '%s'";
     public static final String ACTION_NOTIFICATION_SENT_EMAIL = "Wysłano e-mail do czytelnika (%s)";
     public static final String ACTION_NOTIFICATION_SENT_SMS = "Wysłano wiadomość SMS do czytelnika (%s)";
     public static final String ACTION_NOTIFICATION_SENT_SYSTEM = "Wysłano powiadomienie do czytelnika (%s)";
 
     // Notification reasons:
     public static final String REASON_BOOK_BORROWED = "Wypożyczenie dokumentu";
-    public static final String REASON_BOOK_EXTENDED = "Prolongata dokumentu";
+    public static final String REASON_BOOK_RESERVED = "Rezerwacja dokumentu";
+    public static final String REASON_BOOK_RENEWED = "Prolongata dokumentu";
     public static final String REASON_BOOK_RETURNED = "Zwrócenie dokumentu";
     public static final String REASON_BOOK_LOST = "Zgubienie dokumentu";
     public static final String REASON_REQUEST_COMPLETED = "Zrealizowanie zamówienia";
     public static final String REASON_REQUEST_CANCELED = "Anulowanie zamówienia";
     public static final String REASON_REQUEST_CREATED = "Utworzenie zamówienia";
+    public static final String REASON_RENEWAL_IMPOSSIBLE = "Utworzenie rezerwacji na wypożyczony dokument";
 }
