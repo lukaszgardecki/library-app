@@ -82,6 +82,7 @@ public class LendingService {
         checkIfMemberCanBorrowABook(member);
         Lending lendingToSave = createLendingToSave(reservation);
         Lending savedLending = lendingRepository.save(lendingToSave);
+        member.addLoanedItemId(savedLending.getId());
         LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
@@ -109,6 +110,7 @@ public class LendingService {
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
+        member.removeLoanedItemId(lending.getId());
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
         lending.updateAfterReturning();
         book.updateAfterReturning(lending.getReturnDate(), reservationService.isBookReserved(book.getId()));
@@ -132,6 +134,7 @@ public class LendingService {
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
+        member.removeLoanedItemId(lending.getId());
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
         fine = fine.add(book.getPrice());
         lending.setStatus(LendingStatus.COMPLETED);

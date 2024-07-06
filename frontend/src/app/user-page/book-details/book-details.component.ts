@@ -7,6 +7,7 @@ import { BookItem } from '../../models/book-item';
 import { BookItemStatus } from '../../shared/book-item-status';
 import { ReservationService } from '../../services/reservation.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-book-details',
@@ -69,12 +70,20 @@ export class BookDetailsComponent implements OnInit {
   makeAReservation(bookItem: BookItem) {
     this.reservationService.makeAReservation(bookItem.barcode).subscribe({
       next: reservation => {
-        bookItem.status = BookItemStatus.RESERVED;
+        this.authService.addToReservedItemsIds(bookItem.id);
       }
     });
   }
 
-  isAuthenticated(): boolean {
-    return this.authService.currentUserId !== -1;
+  isAuthenticated(): Observable<boolean> {
+    return this.authService.isLoggedIn$;
+  }
+
+  hasUserBorrowed(bookItem: BookItem): Observable<boolean> {
+    return this.authService.hasUserBorrowed(bookItem);
+  }
+
+  hasUserReserved(bookItem: BookItem): Observable<boolean> {
+    return this.authService.hasUserReserved(bookItem);
   }
 }

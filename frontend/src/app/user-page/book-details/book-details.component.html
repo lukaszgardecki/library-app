@@ -100,7 +100,14 @@
                             </div>
                             <div></div>
                             <div></div>
-                            <button *ngIf="isAvailable(bookItem) && isAuthenticated()" (click)="makeAReservation(bookItem)">Request</button>
+                            <ng-container *ngIf="isAuthenticated() | async">
+                                <button *ngIf="!(hasUserBorrowed(bookItem) | async) && !(hasUserReserved(bookItem) | async)"
+                                        (click)="makeAReservation(bookItem)">
+                                    {{ isAvailable(bookItem) ? 'Request' : 'Reserve' }}
+                                </button>
+                                <div class="reserved-label" *ngIf="hasUserBorrowed(bookItem) | async"><i class="fa fa-home"></i><span>Borrowed</span></div>
+                                <div class="reserved-label" *ngIf="hasUserReserved(bookItem) | async"><i class="fa fa-calendar-check-o"></i><span>Reserved</span></div>
+                            </ng-container>
                         </div>
                     </li>
                 </ul>
@@ -128,7 +135,15 @@
                             </div>
                             <div></div>
                             <div></div>
-                            <button *ngIf="isAvailable(bookItem) && isAuthenticated()" (click)="makeAReservation(bookItem)">Request</button>
+                            <ng-container *ngIf="isAuthenticated() | async">
+                                <button *ngIf="!(hasUserBorrowed(bookItem) | async) && !(hasUserReserved(bookItem) | async)"
+                                        (click)="makeAReservation(bookItem)">
+                                    {{ isAvailable(bookItem) ? 'Request' : 'Reserve' }}
+                                </button>
+                                <div class="reserved-label" *ngIf="hasUserBorrowed(bookItem) | async"><i class="fa fa-home"></i><span>Borrowed</span></div>
+                                <div class="reserved-label" *ngIf="hasUserReserved(bookItem) | async"><i class="fa fa-calendar-check-o"></i><span>Reserved</span></div>
+                            </ng-container>
+                            
                         </div>
                     </li>
                 </ul>

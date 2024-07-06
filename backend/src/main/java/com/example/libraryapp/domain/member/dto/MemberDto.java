@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +30,6 @@ public class MemberDto extends RepresentationModel<MemberDto> {
     private int totalBooksReserved;
     private BigDecimal charge;
     private AccountStatus status;
+    private List<Long> loanedItemsIds;
+    private List<Long> reservedItemsIds;
 }

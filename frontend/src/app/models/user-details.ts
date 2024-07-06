@@ -18,4 +18,6 @@ export class UserDetails {
     totalBooksReserved: number;
     charge: BigInt;
     status: string;
+    loanedItemsIds: Array<number>;
+    reservedItemsIds: Array<number>;
 }

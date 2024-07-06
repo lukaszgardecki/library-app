@@ -99,6 +99,7 @@ public class ReservationService {
         Reservation reservationToSave = prepareNewReservation(member, book);
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
+        member.addReservedItemId(book.getId());
 
         switch (book.getStatus()) {
             case AVAILABLE -> handleAvailableBook(savedReservation);
@@ -119,6 +120,7 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
+        member.removeReservedItemId(book.getId());
         actionService.save(new ActionRequestCancel(savedReservationDto));
         notificationService.sendToUser(new NotificationRequestCancelled(savedReservationDto), savedReservationDto.getMember());
     }
@@ -131,6 +133,7 @@ public class ReservationService {
                     int numOfRes = res.getMember().getTotalBooksReserved();
                     res.setStatus(ReservationStatus.CANCELED);
                     res.getMember().setTotalBooksReserved(numOfRes - 1);
+                    res.getMember().removeReservedItemId(res.getBookItem().getId());
 
                     notificationService.sendToUser(new NotificationReservationCancelBookItemLost(savedReservationDto), savedReservationDto.getMember());
                 });

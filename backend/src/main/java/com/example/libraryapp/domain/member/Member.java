@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -30,6 +32,18 @@ public class Member extends Account {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "library_card_id")
     private LibraryCard card;
+
+    @ElementCollection
+    @CollectionTable(name = "loaned_items_ids", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "book_item_id")
+    private List<Long> loanedItemsIds = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "reserved_items_ids", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "book_item_id")
+    private List<Long> reservedItemsIds = new ArrayList<>();
+
+
 
     public void incrementTotalBooksBorrowed() {
         totalBooksBorrowed++;
@@ -71,6 +85,22 @@ public class Member extends Account {
     public void updateAfterReturning(BigDecimal fine) {
         addCharge(fine);
         decrementTotalBooksBorrowed();
+    }
+
+    public void addLoanedItemId(Long bookItemId) {
+        loanedItemsIds.add(bookItemId);
+    }
+
+    public void removeLoanedItemId(Long bookItemId) {
+        loanedItemsIds.remove(bookItemId);
+    }
+
+    public void addReservedItemId(Long bookItemId) {
+        reservedItemsIds.add(bookItemId);
+    }
+
+    public void removeReservedItemId(Long bookItemId) {
+        reservedItemsIds.remove(bookItemId);
     }
 
 //    @OneToMany(mappedBy = "member", orphanRemoval = true)
