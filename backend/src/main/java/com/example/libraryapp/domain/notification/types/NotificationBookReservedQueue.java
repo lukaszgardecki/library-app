@@ -14,10 +14,9 @@ public class NotificationBookReservedQueue extends Notification {
     public NotificationBookReservedQueue(ReservationResponse reservation, int queuePosition) {
         super(reservation.getMember().getId());
         this.subject = Message.REASON_BOOK_RESERVED;
-        this.content = Message.BOOK_RESERVED_QUEUE.formatted(
-                reservation.getBookItem().getBook().getTitle(),
-                queuePosition - 1
-        );
+        this.content = queuePosition == 2
+                ? Message.BOOK_RESERVED_QUEUE_1_AHEAD.formatted(reservation.getBookItem().getBook().getTitle())
+                : Message.BOOK_RESERVED_QUEUE_2_AHEAD.formatted(reservation.getBookItem().getBook().getTitle(), queuePosition - 1);
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

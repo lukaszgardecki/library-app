@@ -51,7 +51,12 @@ public class Message {
             
             We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
             """;
-    public static final String BOOK_RESERVED_QUEUE = """
+    public static final String BOOK_RESERVED_QUEUE_1_AHEAD = """
+            Your reservation for the book "%s" has been accepted. There is 1 person ahead of you in the waiting queue.
+            
+            We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
+            """;
+    public static final String BOOK_RESERVED_QUEUE_2_AHEAD = """
             Your reservation for the book "%s" has been accepted. There are %s people ahead of you in the waiting queue.
             
             We will notify you as soon as the book becomes available for you to borrow. Thank you for using our library services.
