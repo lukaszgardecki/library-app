@@ -1,12 +1,11 @@
 package com.example.libraryapp.domain.notification;
 
-import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.NotificationSentEmailAction;
-import com.example.libraryapp.domain.action.types.NotificationSentSmsAction;
-import com.example.libraryapp.domain.action.types.NotificationSentSystemAction;
+import com.example.libraryapp.domain.action.ActionService;
+import com.example.libraryapp.domain.action.types.ActionNotificationSentEmail;
+import com.example.libraryapp.domain.action.types.ActionNotificationSentSms;
+import com.example.libraryapp.domain.action.types.ActionNotificationSentSystem;
 import com.example.libraryapp.domain.config.assembler.NotificationModelAssembler;
 import com.example.libraryapp.domain.exception.notification.NotificationNotFoundException;
-import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.dto.MemberDto;
 import com.example.libraryapp.domain.notification.dto.NotificationDto;
 import com.example.libraryapp.domain.notification.strategies.EmailNotificationStrategy;
@@ -27,8 +26,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
-    private final ActionRepository actionRepository;
     private final NotificationRepository notificationRepository;
+    private final ActionService actionService;
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificationModelAssembler notificationModelAssembler;
     private final PagedResourcesAssembler<Notification> pagedResourcesAssembler;
@@ -44,26 +43,9 @@ public class NotificationService {
         return notificationModelAssembler.toModel(notification);
     }
 
-    public void saveAndSendNotification(NotificationType notificationType, ReservationResponse reservation) {
-        Notification notificationToSave = new Notification(notificationType);
-        notificationToSave.setMemberId(reservation.getMember().getId());
-        notificationToSave.setBookTitle(reservation.getBookItem().getBook().getTitle());
-        notificationToSave.setSubject(notificationType.getReason());
-        notificationToSave.setContent(notificationType.getContent());
-        Notification savedNotification = notificationRepository.save(notificationToSave);
-        NotificationDto notification = NotificationDtoMapper.map(savedNotification);
-        sendTo(reservation.getMember(), notification);
-    }
-
-    public void saveAndSendNotification(NotificationType notificationType, LendingDto lending) {
-        Notification notificationToSave = new Notification(notificationType);
-        notificationToSave.setMemberId(lending.getMember().getId());
-        notificationToSave.setBookTitle(lending.getBookItem().getBook().getTitle());
-        notificationToSave.setSubject(notificationType.getReason());
-        notificationToSave.setContent(notificationType.getContent());
-        Notification savedNotification = notificationRepository.save(notificationToSave);
-        NotificationDto notification = NotificationDtoMapper.map(savedNotification);
-        sendTo(lending.getMember(), notification);
+    public void sendToUser(Notification notification, MemberDto user) {
+        Notification savedNotification = notificationRepository.save(notification);
+        sendNotificationToUser(savedNotification, user);
     }
 
     @Transactional
@@ -85,25 +67,30 @@ public class NotificationService {
         notificationRepository.deleteAll(notificationsToDelete);
     }
 
-    private void sendTo(MemberDto member, NotificationDto content) {
-        sendSystemNotification(content);
-        sendEmailNotification(member, content);
-        sendSmsNotification(member, content);
+    public void sendToWarehouse(ReservationResponse reservation) {
+        messagingTemplate.convertAndSend("/queue/warehouse", reservation);
+    }
+
+    private void sendNotificationToUser(Notification notification, MemberDto user) {
+        NotificationDto notificationDto = NotificationDtoMapper.map(notification);
+        sendSystemNotification(notificationDto);
+        sendEmailNotification(user.getEmail(), notificationDto);
+        sendSmsNotification(user.getPhoneNumber(), notificationDto);
     }
 
     private void sendSystemNotification(NotificationDto notification) {
         new SystemNotificationStrategy(messagingTemplate).send(notification);
-        actionRepository.save(new NotificationSentSystemAction(notification));
+        actionService.save(new ActionNotificationSentSystem(notification));
     }
 
-    private void sendEmailNotification(MemberDto member, NotificationDto notification) {
-        new EmailNotificationStrategy(member.getEmail()).send(notification);
-        actionRepository.save(new NotificationSentEmailAction(notification));
+    private void sendEmailNotification(String email, NotificationDto notification) {
+        new EmailNotificationStrategy(email).send(notification);
+        actionService.save(new ActionNotificationSentEmail(notification));
     }
 
-    private void sendSmsNotification(MemberDto member, NotificationDto notification) {
-        new SmsNotificationStrategy(member.getPhoneNumber()).send(notification);
-        actionRepository.save(new NotificationSentSmsAction(notification));
+    private void sendSmsNotification(String phoneNumber, NotificationDto notification) {
+        new SmsNotificationStrategy(phoneNumber).send(notification);
+        actionService.save(new ActionNotificationSentSms(notification));
     }
 
     private Notification findNotification(Long id) {

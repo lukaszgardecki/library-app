@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-page',
@@ -10,8 +11,10 @@ export class UserPageComponent {
   isLoggedIn: boolean;
   title = 'Library Management System';
 
-  constructor(private authService: AuthenticationService) { }
-  
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
@@ -29,5 +32,13 @@ export class UserPageComponent {
 
   hasPermissionToWarehouse(): boolean {
     return this.authService.hasUserPermissionToWarehouse();
+  }
+
+  onNavigate(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value;
+    if (value) {
+      this.router.navigate([value]);
+    }
   }
 }

@@ -305,18 +305,14 @@ public class ReservationControllerTest extends BaseTest {
     @DisplayName("Tests for DELETE endpoints")
     class DeleteReservationsTests {
         @ParameterizedTest
-        @DisplayName("Should cancel a reservation if ADMIN requested.")
+        @DisplayName("Should cancel a reservation if its status is still PENDING and ADMIN requested.")
         @CsvSource({
-                "3, 1, 4, 540200000004, false",
-                "4, 1, 5, 540200000005, false",
-                "6, 2, 7, 540200000007, false",
-                "12, 3, 13, 540200000013, false",
                 "13, 4, 1, 540200000001, false",
                 "14, 5, 21, 540200000021, false",
                 "15, 6, 3, 540200000003, false",
                 "16, 6, 8, 540200000008, false",
         })
-        void shouldCancelAReservationIfAdminRequested(
+        void shouldCancelAReservationIfItsStatusIsStillPendingAndIfAdminRequested(
                 Long reservationId,
                 Long memberId,
                 Long bookItemId,
@@ -346,9 +342,9 @@ public class ReservationControllerTest extends BaseTest {
         }
 
         @ParameterizedTest
-        @DisplayName("Should cancel a reservation if USER requested and the reservation is theirs.")
+        @DisplayName("Should cancel a reservation if its status is still PENDING, USER requested and the reservation is theirs.")
         @CsvSource({
-                "6, 2, 7, 540200000007, false"
+                "14, 5, 21, 540200000021, false"
         })
         void shouldCancelAReservationIfUserRequestedAndReservationBelongsToTheir(
                 Long reservationId,
@@ -360,7 +356,7 @@ public class ReservationControllerTest extends BaseTest {
             ActionRequest reservationToCancel = createPostRequestBody(memberId, bookBarcode);
             MemberDto memberBeforeResCanceling = findMemberById(memberId);
 
-            client.testRequest(DELETE, "/reservations", reservationToCancel, user, NO_CONTENT);
+            client.testRequest(DELETE, "/reservations", reservationToCancel, user5, NO_CONTENT);
             client.testRequest(GET, "/reservations/" + reservationId, admin, OK)
                     .expectBody(ReservationResponse.class);
 
@@ -373,6 +369,43 @@ public class ReservationControllerTest extends BaseTest {
             } else {
                 assertThat(bookItemAfterResCanceling.getStatus()).isIn(BookItemStatus.AVAILABLE, BookItemStatus.LOANED);
             }
+        }
+
+        @ParameterizedTest
+        @DisplayName("Should not cancel a reservation if its status is READY")
+        @CsvSource({
+                "3, 1, 4, 540200000004",
+                "6, 2, 7, 540200000007",
+        })
+        void shouldNotCancelAReservationIfStatusIsReady(
+                Long reservationId,
+                Long memberId,
+                Long bookItemId,
+                String bookBarcode
+        ) {
+            ActionRequest reservationToCancel = createPostRequestBody(memberId, bookBarcode);
+            MemberDto memberBeforeResCanceling = findMemberById(memberId);
+            BookItemDto bookItemBeforeResCanceling = findBookItemById(bookItemId);
+
+            ReservationResponse reservationBeforeCanceling = client.testRequest(GET, "/reservations/" + reservationId, admin, OK)
+                    .expectBody(ReservationResponse.class)
+                    .returnResult().getResponseBody();
+
+            ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", reservationToCancel, admin, NOT_FOUND)
+                    .expectBody(ErrorMessage.class)
+                    .returnResult().getResponseBody();
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+
+            ReservationResponse reservationAfterCanceling = client.testRequest(GET, "/reservations/" + reservationId, admin, OK)
+                    .expectBody(ReservationResponse.class)
+                    .returnResult().getResponseBody();
+
+            MemberDto memberAfterResCanceling = findMemberById(memberId);
+            BookItemDto bookItemAfterResCanceling = findBookItemById(bookItemId);
+
+            assertThat(reservationBeforeCanceling).isEqualTo(reservationAfterCanceling);
+            assertThat(memberBeforeResCanceling).isEqualTo(memberAfterResCanceling);
+            assertThat(bookItemBeforeResCanceling).isEqualTo(bookItemAfterResCanceling);
         }
 
         @ParameterizedTest

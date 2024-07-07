@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("NOTIFICATION_SMS")
-public class NotificationSentSmsAction extends Action {
-    public NotificationSentSmsAction(NotificationDto notification) {
+@DiscriminatorValue("NOTIFICATION_EMAIL")
+public class ActionNotificationSentEmail extends Action {
+    public ActionNotificationSentEmail(NotificationDto notification) {
         super(notification.getMemberId());
-        this.message = Message.ACTION_NOTIFICATION_SENT_SMS.formatted(notification.getSubject());
+        this.message = Message.ACTION_NOTIFICATION_SENT_EMAIL.formatted(notification.getSubject());
     }
 }

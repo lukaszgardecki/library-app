@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0013" author="lukas">
+        <createTable tableName="loaned_items_ids" >
+            <column name="member_id" type="BIGINT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             foreignKeyName="fk_loaned_items_ids_member_id"
+                             referencedTableName="member"
+                             referencedColumnNames="id"
+                             primaryKeyName="pk_loaned_items_ids"
+                />
+            </column>
+            <column name="book_item_id" type="BIGINT">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             foreignKeyName="fk_loaned_items_ids_book_item_id"
+                             referencedTableName="book_item"
+                             referencedColumnNames="id"
+                             primaryKeyName="pk_loaned_items_ids"
+                />
+            </column>
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
+        </modifySql>
+    </changeSet>
+</databaseChangeLog>

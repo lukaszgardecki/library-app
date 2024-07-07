@@ -51,7 +51,6 @@ public class RoleAuthorizationAspect {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new AccessDeniedException(Message.ACCESS_DENIED);
         } else {
-
             boolean userIsAllowedToGetData = checkUserHasRole(authentication, allowedRoles) || isMemberAdmin();
             if (!userIsAllowedToGetData) {
                 throw new ForbiddenAccessException();
@@ -61,11 +60,21 @@ public class RoleAuthorizationAspect {
 
     private boolean checkUserHasRole(Authentication authentication, Role[] allowedRoles) {
         List<String> rolesStr = Arrays.stream(allowedRoles).map(Enum::name).toList();
+        boolean isUserAccess = rolesStr.contains(Role.USER.name());
+
+        boolean isAdminOrCashierOrWarehouse = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(authority -> authority.startsWith(ROLE_PREFIX) ? authority.substring(ROLE_PREFIX.length()) : authority)
+                .anyMatch(authority ->
+                        authority.equals(Role.ADMIN.name())
+                     || authority.equals(Role.CASHIER.name())
+                     || authority.equals(Role.WAREHOUSE.name())
+                );
 
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .map(authority -> authority.startsWith(ROLE_PREFIX) ? authority.substring(ROLE_PREFIX.length()) : authority)
-                .anyMatch(rolesStr::contains);
+                .anyMatch(role -> rolesStr.contains(role) || (isUserAccess && isAdminOrCashierOrWarehouse));
     }
 
     private Long getCurrentLoggedInUserId() {

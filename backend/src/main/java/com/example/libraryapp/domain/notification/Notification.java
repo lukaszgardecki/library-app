@@ -4,32 +4,35 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notification")
-@NoArgsConstructor
 @Getter
 @Setter
-public class Notification {
+@NoArgsConstructor
+@Table(name = "notification")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
+public abstract class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private LocalDateTime createdAt;
-    private String subject;
-    private String content;
-    @Enumerated(EnumType.STRING)
-    private NotificationType type;
-    private Boolean read;
+    protected Long id;
+    protected LocalDateTime createdAt;
+    protected String subject;
+    protected String content;
+    @Formula("type")
+    protected String type;
+    protected Boolean read;
 
-    private Long bookId;
-    private String bookTitle;
+    protected Long bookId;
+    protected String bookTitle;
 
-    private Long memberId;
+    protected Long memberId;
 
-    public Notification(NotificationType type) {
-        this.type = type;
+    protected Notification(Long memberId) {
+        this.memberId = memberId;
         this.createdAt = LocalDateTime.now();
         this.read = false;
     }

@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("REQUEST_COMPLETED")
-public class RequestCompletedAction extends Action {
-    public RequestCompletedAction(ReservationResponse reservation) {
+@DiscriminatorValue("REQUEST_CANCEL")
+public class ActionRequestCancel extends Action {
+    public ActionRequestCancel(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.message = Message.ACTION_REQUEST_COMPLETED.formatted(
+        this.message = Message.ACTION_REQUEST_CANCELED.formatted(
                 reservation.getBookItem().getBook().getTitle()
         );
     }

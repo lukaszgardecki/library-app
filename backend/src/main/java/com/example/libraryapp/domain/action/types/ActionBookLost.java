@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("BOOK_RETURNED")
-public class BookReturnedAction extends Action {
-    public BookReturnedAction(LendingDto lending) {
+@DiscriminatorValue("BOOK_LOST")
+public class ActionBookLost extends Action {
+    public ActionBookLost(LendingDto lending) {
         super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_RETURNED.formatted(
+        this.message = Message.ACTION_BOOK_LOST.formatted(
                 lending.getBookItem().getBook().getTitle()
         );
     }

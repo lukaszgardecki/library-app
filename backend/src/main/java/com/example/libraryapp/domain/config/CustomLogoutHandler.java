@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.config;
 
 import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.LogoutAction;
+import com.example.libraryapp.domain.action.types.ActionLogout;
 import com.example.libraryapp.domain.member.mapper.MemberDtoMapper;
 import com.example.libraryapp.domain.token.AccessToken;
 import com.example.libraryapp.domain.token.AccessTokenRepository;
@@ -40,7 +40,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
             accessTokenRepository.save(storedToken);
-            actionRepository.save(new LogoutAction(MemberDtoMapper.map(storedToken.getMember())));
+            actionRepository.save(new ActionLogout(MemberDtoMapper.map(storedToken.getMember())));
             SecurityContextHolder.clearContext();
         }
     }

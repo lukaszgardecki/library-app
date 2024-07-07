@@ -37,6 +37,8 @@ public class MemberDtoMapper {
         dto.setTotalBooksReserved(member.getTotalBooksReserved());
         dto.setCharge(member.getCharge());
         dto.setStatus(member.getStatus());
+        dto.setLoanedItemsIds(member.getLoanedItemsIds());
+        dto.setReservedItemsIds(member.getReservedItemsIds());
         return dto;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.exception.ErrorMessage;
-import com.example.libraryapp.domain.notification.NotificationType;
 import com.example.libraryapp.domain.notification.dto.NotificationDto;
 import com.example.libraryapp.management.Message;
 import org.junit.jupiter.api.DisplayName;
@@ -124,7 +123,6 @@ public class NotificationControllerTest extends BaseTest {
 
             assertThat(responseBody.getId()).isEqualTo(notificationId);
             assertThat(responseBody.getCreatedAt()).isNotNull();
-            assertThat(responseBody.getType()).isEqualTo(NotificationType.REQUEST_COMPLETED);
             assertThat(responseBody.getMemberId()).isEqualTo(memberId);
         }
 
@@ -137,7 +135,6 @@ public class NotificationControllerTest extends BaseTest {
 
             assertThat(responseBody.getId()).isEqualTo(3);
             assertThat(responseBody.getCreatedAt()).isNotNull();
-            assertThat(responseBody.getType()).isEqualTo(NotificationType.REQUEST_COMPLETED);
             assertThat(responseBody.getMemberId()).isEqualTo(2);
         }
 

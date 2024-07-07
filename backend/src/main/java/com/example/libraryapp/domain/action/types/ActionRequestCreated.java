@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue("REQUEST_NEW")
-public class RequestNewAction extends Action {
-    public RequestNewAction(ReservationResponse reservation) {
+public class ActionRequestCreated extends Action {
+    public ActionRequestCreated(ReservationResponse reservation) {
         super(reservation.getMember().getId());
         this.message = Message.ACTION_REQUEST_SENT.formatted(
                 reservation.getBookItem().getBook().getTitle()

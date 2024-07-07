@@ -8,7 +8,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <changeSet id="0002" author="lukas">
         <createTable tableName="member">
             <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
 
             <column name="password" type="VARCHAR(255)"/>

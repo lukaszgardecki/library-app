@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @DiscriminatorValue("BOOK_BORROWED")
-public class BookBorrowedAction extends Action {
-    public BookBorrowedAction(LendingDto lending) {
+public class ActionBookBorrowed extends Action {
+    public ActionBookBorrowed(LendingDto lending) {
         super(lending.getMember().getId());
         if (lending.getBookItem().getIsReferenceOnly()) {
             this.message = Message.ACTION_BOOK_BORROWED_ON_SITE.formatted(

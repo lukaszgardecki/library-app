@@ -20,7 +20,7 @@
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
           <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">Warehouse</a></li>
           <li><a [routerLink]="['/userprofile']">Profile</a></li>
-          <li><a [routerLink]="['']" (click)="logout()">Logout</a></li>
+          <li><a [routerLink]="['/login']" (click)="logout()">Logout</a></li>
         </ul>
       </ng-template>
     </div>
@@ -49,9 +49,19 @@
 <div class="wrapper row2">
   <nav id="mainav" class="hoc clear">
     <ul class="clear">
-      <li ngClass="{'active': isLinkActive}"><a [routerLink]="['/']">Home</a></li>
-      <li><a [routerLink]="['/books']">Books</a></li>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a [routerLink]="['']" >Home</a>
+      </li>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{ matrixParams: 'exact', queryParams: 'ignored', paths: 'exact', fragment: 'exact' }">
+        <a [routerLink]="['/books']">Books</a>
+      </li>
     </ul>
+    <form (change)="onNavigate($event)">
+      <select>
+        <option value="/">Home</option>
+        <option value="/books">Books</option>
+      </select>
+    </form>
   </nav>
 </div>
   

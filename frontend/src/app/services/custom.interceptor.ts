@@ -3,13 +3,17 @@ import { BehaviorSubject, Observable, catchError, filter, switchMap, take, throw
 import { AuthenticationService } from './authentication.service';
 import { Injectable } from '@angular/core';
 import { AUTHORIZED_ENDPOINTS } from './config.service';
+import { StorageService } from './storage.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private authService: AuthenticationService){}
+  constructor(
+    private authService: AuthenticationService,
+    private storageService: StorageService
+  ){}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.getToken(req);
@@ -33,9 +37,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private getToken(req: HttpRequest<any>) {
     if (req.url.endsWith("/refresh-token")) {
-      return this.authService.refreshToken;
+      return this.storageService.getRefreshToken();
     } else {
-      return this.authService.accessToken;
+      return this.storageService.getAccessToken();
     }
   }
 
