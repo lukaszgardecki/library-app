@@ -15,7 +15,7 @@ public class NotificationBookLost extends Notification {
         super(lending.getMember().getId());
         this.subject = Message.REASON_BOOK_LOST;
         this.content = Message.BOOK_LOST.formatted(lending.getBookItem().getPrice());
-        this.bookId = lending.getBookItem().getId();
+        this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }
 }

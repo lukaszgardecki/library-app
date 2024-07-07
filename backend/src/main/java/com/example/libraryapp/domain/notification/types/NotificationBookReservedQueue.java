@@ -18,7 +18,7 @@ public class NotificationBookReservedQueue extends Notification {
                 reservation.getBookItem().getBook().getTitle(),
                 queuePosition - 1
         );
-        this.bookId = reservation.getBookItem().getId();
+        this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }
 }

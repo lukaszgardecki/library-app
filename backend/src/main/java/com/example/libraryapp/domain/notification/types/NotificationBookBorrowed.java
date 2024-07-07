@@ -15,7 +15,7 @@ public class NotificationBookBorrowed extends Notification {
         super(lending.getMember().getId());
         this.subject = Message.REASON_BOOK_BORROWED;
         this.content = Message.BOOK_BORROWED;
-        this.bookId = lending.getBookItem().getId();
+        this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }
 }

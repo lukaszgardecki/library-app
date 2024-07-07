@@ -18,7 +18,7 @@ public class NotificationBookReservedFirstPerson extends Notification {
                 currentLending.getBookItem().getBook().getTitle(),
                 currentLending.getDueDate()
         );
-        this.bookId = currentLending.getBookItem().getId();
+        this.bookId = currentLending.getBookItem().getBook().getId();
         this.bookTitle = currentLending.getBookItem().getBook().getTitle();
     }
 }

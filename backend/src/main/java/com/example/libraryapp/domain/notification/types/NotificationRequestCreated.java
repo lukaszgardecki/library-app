@@ -15,7 +15,7 @@ public class NotificationRequestCreated extends Notification {
         super(reservation.getMember().getId());
         this.subject = Message.REASON_REQUEST_CREATED;
         this.content = Message.RESERVATION_CREATED;
-        this.bookId = reservation.getBookItem().getId();
+        this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }
 }

@@ -15,7 +15,7 @@ public class NotificationRequestCompleted extends Notification {
         super(reservation.getMember().getId());
         this.subject = Message.REASON_REQUEST_COMPLETED;
         this.content = Message.RESERVATION_READY;
-        this.bookId = reservation.getBookItem().getId();
+        this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }
 }

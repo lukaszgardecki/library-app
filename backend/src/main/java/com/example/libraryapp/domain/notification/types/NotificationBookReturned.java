@@ -15,7 +15,7 @@ public class NotificationBookReturned extends Notification {
         super(lending.getMember().getId());
         this.subject = Message.REASON_BOOK_RETURNED;
         this.content = Message.BOOK_RETURNED;
-        this.bookId = lending.getBookItem().getId();
+        this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }
 }

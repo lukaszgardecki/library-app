@@ -15,7 +15,7 @@ public class NotificationRenewalImpossible extends Notification {
         super(lending.getMember().getId());
         this.subject = Message.REASON_RENEWAL_IMPOSSIBLE;
         this.content = Message.RENEWAL_IMPOSSIBLE.formatted(lending.getBookItem().getBook().getTitle());
-        this.bookId = lending.getBookItem().getId();
+        this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }
 }

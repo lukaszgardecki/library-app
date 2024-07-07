@@ -15,7 +15,7 @@ public class NotificationReservationCancelBookItemLost extends Notification {
         super(reservation.getMember().getId());
         this.subject = Message.REASON_BOOK_LOST;
         this.content = Message.RESERVATION_CANCEL_BOOK_ITEM_LOST;
-        this.bookId = reservation.getBookItem().getId();
+        this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }
 }

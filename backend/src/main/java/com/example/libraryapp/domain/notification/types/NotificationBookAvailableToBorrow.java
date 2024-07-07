@@ -15,7 +15,7 @@ public class NotificationBookAvailableToBorrow extends Notification {
         super(reservation.getMember().getId());
         this.subject = Message.REASON_BOOK_AVAILABLE_TO_BORROW;
         this.content = Message.BOOK_AVAILABLE_TO_BORROW.formatted(reservation.getBookItem().getBook().getTitle());
-        this.bookId = reservation.getBookItem().getId();
+        this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }
 }

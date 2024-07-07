@@ -15,7 +15,7 @@ public class NotificationBookRenewed extends Notification {
         super(lending.getMember().getId());
         this.subject = Message.REASON_BOOK_RENEWED;
         this.content = Message.BOOK_RENEWED;
-        this.bookId = lending.getBookItem().getId();
+        this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }
 }
