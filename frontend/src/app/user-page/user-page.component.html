@@ -56,6 +56,12 @@
         <a [routerLink]="['/books']">Books</a>
       </li>
     </ul>
+    <form (change)="onNavigate($event)">
+      <select>
+        <option value="/">Home</option>
+        <option value="/books">Books</option>
+      </select>
+    </form>
   </nav>
 </div>
   

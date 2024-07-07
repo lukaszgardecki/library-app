@@ -46,8 +46,7 @@
               "src/app/user-page/login/login.component.main.js",
               
               "src/app/user-page/home-page/scripts/jquery.flexslider-min.js",
-              "src/app/user-page/home-page/scripts/jquery.backtotop.js",
-              "src/app/user-page/home-page/scripts/jquery.mobilemenu.js"
+              "src/app/user-page/home-page/scripts/jquery.backtotop.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,
