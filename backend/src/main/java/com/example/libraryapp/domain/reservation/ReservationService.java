@@ -164,19 +164,23 @@ public class ReservationService {
     private void handleLoanedOrReservedBook(Reservation reservation) {
         Long bookId = reservation.getBookItem().getId();
         Long memberId = reservation.getMember().getId();
-        List<Reservation> otherCurrentReservations = reservationRepository.findAllPendingReservationByBookItemId(bookId).stream()
-                .filter(res -> !Objects.equals(res.getId(), reservation.getId()))
-                .toList();
+
+        int queuePosition = reservationRepository.findAllCurrentReservationsByBookItemId(bookId).stream()
+                .sorted(Comparator.comparing(Reservation::getCreationDate))
+                .toList()
+                .indexOf(reservation) + 1;
+
         ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
-        int queuePosition = getQueuePosition(otherCurrentReservations, reservation);
         Optional<LendingDto> currentLending = lendingRepository.findCurrentLendingByBookItemId(bookId)
                 .map(LendingDtoMapper::map);
 
-        if (otherCurrentReservations.isEmpty() && currentLending.isPresent()) {
+        if (queuePosition == 1 && currentLending.isPresent()) {
+            // book is loaned - no reservations
             notificationService.sendToUser(new NotificationRenewalImpossible(currentLending.get()), savedReservationDto.getMember());
             actionService.save(new ActionBookReservedFirstPerson(memberId, currentLending.get()));
             notificationService.sendToUser(new NotificationBookReservedFirstPerson(memberId, currentLending.get()), savedReservationDto.getMember());
-        } else if (currentLending.isPresent()) {
+        } else {
+            // book is loaned or not - there are reservations
             actionService.save(new ActionBookReservedQueue(memberId, reservation.getBookItem().getBook().getTitle(), queuePosition));
             notificationService.sendToUser(new NotificationBookReservedQueue(savedReservationDto, queuePosition), savedReservationDto.getMember());
         }
@@ -217,13 +221,6 @@ public class ReservationService {
         if (book.getStatus() == BookItemStatus.LOST) {
             throw new ReservationException(Message.RESERVATION_BOOK_ITEM_LOST);
         }
-    }
-
-    private int getQueuePosition(List<Reservation> reservations, Reservation savedReservation) {
-        return reservations.stream()
-                .sorted(Comparator.comparing(Reservation::getCreationDate))
-                .toList()
-                .indexOf(savedReservation) + 1;
     }
 
     private Reservation prepareNewReservation(Member member, BookItem book) {
