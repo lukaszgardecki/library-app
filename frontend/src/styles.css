@@ -5,6 +5,10 @@
     margin-bottom: 20px;
 }
 
+#book-details .btn-bar {
+    margin-bottom: 50px;
+}
+
 .right-side {
     display: flex;
     justify-content: flex-end;
