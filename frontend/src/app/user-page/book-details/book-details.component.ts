@@ -70,6 +70,7 @@ export class BookDetailsComponent implements OnInit {
   makeAReservation(bookItem: BookItem) {
     this.reservationService.makeAReservation(bookItem.barcode).subscribe({
       next: reservation => {
+        bookItem.status = reservation.bookItem.status;
         this.authService.addToReservedItemsIds(bookItem.id);
       }
     });
