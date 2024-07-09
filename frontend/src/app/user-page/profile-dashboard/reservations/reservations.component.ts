@@ -11,7 +11,7 @@ import { ReservationService } from '../../../services/reservation.service';
   styleUrl: './reservations.component.css'
 })
 export class ReservationsComponent implements ProfileSetting {
-  name: string = "Reservations";
+  name: string = "PROFILE.RESERVATIONS.NAME";
   routerLink: string = "reservations";
   reservationService = inject(ReservationService);
   reservedItems: Array<Reservation>;
