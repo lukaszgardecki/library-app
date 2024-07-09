@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
+import { TranslationService } from '../services/translation.service';
 
 @Component({
   selector: 'app-user-page',
@@ -10,9 +11,14 @@ import { Router } from '@angular/router';
 export class UserPageComponent {
   isLoggedIn: boolean;
   title = 'Library Management System';
+  languages: { name: string, short: string }[];
+  selectedLangName: string;
 
   constructor(
     private authService: AuthenticationService,
+    private langService: TranslationService,
+    private renderer: Renderer2,
+    private el: ElementRef,
     private router: Router
   ) { }
 
@@ -20,6 +26,8 @@ export class UserPageComponent {
     this.authService.isLoggedIn$.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
+    this.languages = this.langService.getAvailableLangs();
+    this.selectedLangName = this.langService.getUserLanguage().name;
   }
 
   scrollToTop() {
@@ -40,5 +48,19 @@ export class UserPageComponent {
     if (value) {
       this.router.navigate([value]);
     }
+  }
+
+  dropdown() {
+    const dropdownElement = this.el.nativeElement.querySelector('.dropdown-menu');
+    if (dropdownElement.classList.contains('opened')) {
+      this.renderer.removeClass(dropdownElement, 'opened');
+    } else {
+      this.renderer.addClass(dropdownElement, 'opened');
+    }
+  }
+
+  switchLanguage(language: { name: string, short: string }) {
+    this.selectedLangName = language.name;
+    this.langService.setLanguage(language.short);
   }
 }
