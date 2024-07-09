@@ -1,16 +1,20 @@
-<h1>{{name}}</h1>
+<h1>{{ name | translate }}</h1>
 <ng-container *ngIf="notificationsPage$ | async as notificationsPage">
   <ng-container *ngIf="notificationsPage._embedded; else lack">
       <div class="btn-bar right-side"> 
-        <button class="button btn-2 btn-delete" (click)="deleteSelected()">Delete</button>
-        <button #all_btn class="button btn-2" (click)="selectAll()">Select all</button>
+        <button class="button btn-2 btn-delete" (click)="deleteSelected()">
+          {{ 'PROFILE.NOTIFICATIONS.BTN.DELETE' | translate }}
+        </button>
+        <button #all_btn class="button btn-2" (click)="selectAll()">
+          {{ 'PROFILE.NOTIFICATIONS.BTN.SELECT_ALL' | translate }}
+        </button>
       </div>
            
       <table id="table" >
           <thead>
               <tr>
-                  <th>Creation date</th>
-                  <th>Subject</th>
+                  <th>{{ 'PROFILE.NOTIFICATIONS.CREATION_DATE' | translate }}</th>
+                  <th>{{ 'PROFILE.NOTIFICATIONS.SUBJECT' | translate }}</th>
               </tr>
           </thead>
           <tbody>
@@ -32,5 +36,5 @@
       
       <div id="bottom"></div>
   </ng-container>
-  <ng-template #lack>Lack of notifications</ng-template>
+  <ng-template #lack>{{ 'PROFILE.NOTIFICATIONS.LACK' | translate }}</ng-template>
 </ng-container>

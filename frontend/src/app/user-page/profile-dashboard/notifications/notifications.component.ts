@@ -13,7 +13,7 @@ import { NotificationsPage } from '../../../models/notifications-page';
   styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent implements ProfileSetting, OnInit, Pageable {
-  name: string = "Notifications";
+  name: string = "PROFILE.NOTIFICATIONS.NAME";
   routerLink: string = "notifications";
   notificationsPage$: Observable<NotificationsPage>;
   allAreSelected: boolean = false;
