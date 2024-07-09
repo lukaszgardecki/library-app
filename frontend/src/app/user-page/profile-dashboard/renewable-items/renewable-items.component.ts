@@ -11,7 +11,7 @@ import { RequestBody } from '../../../shared/request-body';
   styleUrl: './renewable-items.component.css'
 })
 export class RenewableItemsComponent implements ProfileSetting {
-  name: string = "Renewable items";
+  name: string = "PROFILE.RENEWABLE_ITEMS.NAME";
   routerLink: string = "renewable-items";
   renewableLendings: Array<Lending>;
   lendingService = inject(LendingService);
