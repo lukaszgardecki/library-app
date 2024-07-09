@@ -10,7 +10,7 @@ import { RequestedItemsCompletedComponent } from './requested-items-completed/re
   styleUrl: './requested-items.component.css'
 })
 export class RequestedItemsComponent implements ProfileSetting {
-  name: string = "Requested items";
+  name: string = "PROFILE.REQUESTED_ITEMS.NAME";
   routerLink: string;
   elements?: ProfileSetting[] = [
     new RequestedItemsUnsentComponent(),
