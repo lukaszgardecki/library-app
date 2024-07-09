@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './personal-details.component.css'
 })
 export class PersonalDetailsComponent implements ProfileSetting, OnInit {
-  name: string = "Personal details";
+  name: string = "PROFILE.DETAILS.NAME";
   routerLink: string = "details";
   user?: UserDetails;
   private userService = inject(UserService);

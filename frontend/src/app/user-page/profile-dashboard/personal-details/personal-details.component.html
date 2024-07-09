@@ -1,82 +1,82 @@
-<h1>{{name}}</h1>
+<h1>{{ name | translate }}</h1>
 <div class="details">
-    <header>Identifiers</header>
+    <header>{{ 'PROFILE.DETAILS.HEADER.ID' | translate }}</header>
     <div class="row">
-        <div><strong>User ID:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.USER_ID' | translate }}:</strong></div>
         <div>{{user?.id | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>E-mail:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.EMAIL' | translate }}:</strong></div>
         <div>{{user?.email | nullPlaceholder}}</div>
     </div>
 </div>
 <div class="details">
-    <header>Personal details</header>
+    <header>{{ 'PROFILE.DETAILS.HEADER.PERSONAL' | translate }}</header>
     <div class="row">
-        <div><strong>Surname:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.SURNAME' | translate }}:</strong></div>
         <div>{{user?.lastName | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Forename:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.FORENAME' | translate }}:</strong></div>
         <div>{{user?.firstName | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Date of birth:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.BIRTH_DATE' | translate }}:</strong></div>
         <div>{{user?.dateOfBirth | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Gender:</strong></div>
-        <div>{{user?.gender | enumName | nullPlaceholder}}</div>
+        <div><strong>{{ 'PROFILE.DETAILS.GENDER.NAME' | translate }}:</strong></div>
+        <div>{{user?.gender | enumName: "gender" | nullPlaceholder | translate}}</div>
     </div>
     <div class="row">
-        <div><strong>Nationality:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.NATIONALITY' | translate }}:</strong></div>
         <div>{{user?.nationality | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Address:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.ADDRESS' | translate }}:</strong></div>
         <div>{{user?.address | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Names of parents:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.PARENTS' | translate }}:</strong></div>
         <div>{{user?.parentsNames | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Pesel:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.PESEL' | translate }}:</strong></div>
         <div>{{user?.pesel | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Phone number:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.PHONE' | translate }}:</strong></div>
         <div>{{user?.phoneNumber | nullPlaceholder}}</div>
     </div>
 </div>
 <div class="details">
-    <header>Account details</header>
+    <header>{{ 'PROFILE.DETAILS.HEADER.ACCOUNT' | translate }}</header>
     <div class="row">
-        <div><strong>User card ID:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.CARD.ID' | translate }}:</strong></div>
         <div>{{user?.card?.id | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>User card barcode:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.CARD.NUM' | translate }}:</strong></div>
         <div>{{user?.card?.barcode | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>User card issue date:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.CARD.ISSUE_DATE' | translate }}:</strong></div>
         <div>{{user?.card?.issuedAt | date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>User card status:</strong></div>
-        <div>{{user?.card?.status | enumName | nullPlaceholder}}</div>
+        <div><strong>{{ 'PROFILE.DETAILS.CARD.STATUS.NAME' | translate }}:</strong></div>
+        <div>{{user?.card?.status | enumName: "card" | nullPlaceholder | translate}}</div>
     </div>
     <div class="row">
-        <div><strong>Availability date:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.ACCOUNT.AVAILABILITY_DATE' | translate }}:</strong></div>
         <div>{{user?.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Lent items:</strong></div>
+        <div><strong>{{ 'PROFILE.DETAILS.ACCOUNT.LENT_ITEMS' | translate }}:</strong></div>
         <div>{{user?.totalBooksBorrowed | nullPlaceholder}}</div>
     </div>
     <div class="row">
-        <div><strong>Status:</strong></div>
-        <div>{{user?.status | enumName | nullPlaceholder}}</div>
+        <div><strong>{{ 'PROFILE.DETAILS.ACCOUNT.STATUS.NAME' | translate }}:</strong></div>
+        <div>{{user?.status | enumName: "account" | nullPlaceholder | translate}}</div>
     </div>
 </div>
