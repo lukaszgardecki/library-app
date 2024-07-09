@@ -1,6 +1,6 @@
 <div class="c">
     <div class="nav_panel">
-        <button class="button btn-1" (click)="exit()">EXIT</button>
+        <button class="button btn-1" (click)="exit()">{{ 'WAREHOUSE.EXIT' | translate }}</button>
     </div>
 
     <div class="content">
@@ -8,7 +8,7 @@
         
             <div class="section">
                 <div class="section-header">
-                    <span class="section-title">NEW</span>
+                    <span class="section-title">{{ 'WAREHOUSE.HEADER.NEW' | translate }}</span>
                     <ng-container *ngIf="pendingReservations$ | async as pendingResevations">
                         <span *ngIf="pendingResevations.length > 0" class="section-amount">{{pendingResevations.length}}</span>
                     </ng-container>
@@ -18,20 +18,20 @@
                     <div class="cards" *ngIf="pendingResevations.length > 0; else lackNewOrders">
                         <div class="order-card" *ngFor="let reservation of pendingResevations">
                             <div class="card-content" (click)="active(reservation)">
-                                <div class="order-id">ID: {{reservation.id}}</div>
+                                <div class="order-id">{{ 'WAREHOUSE.LABEL.ID' | translate }}: {{reservation.id}}</div>
                                 <div class="order-rack">{{reservation.bookItem.rack.locationIdentifier}}</div>
                                 <div class="order-date">{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}</div>
                             </div>
 
                             <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
-                                <div class="order-button order-accept" (click)="accept(reservation)">ACCEPT</div>
+                                <div class="order-button order-accept" (click)="accept(reservation)">{{ 'WAREHOUSE.BTN.ACCEPT' | translate }}</div>
                             </div>
                         </div>
                     </div>
                 </ng-container>
 
                 <ng-template #lackNewOrders>
-                    <div class="lack-message">No new orders.</div>
+                    <div class="lack-message">{{ 'WAREHOUSE.LABEL.NO_NEW_ORDERS' | translate }}</div>
                 </ng-template>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="c-right">
             <div class="section">
                 <div class="section-header">
-                    <span class="section-title">IN PROGRESS</span>
+                    <span class="section-title">{{ 'WAREHOUSE.HEADER.IN_PROGRESS' | translate }}</span>
                     <ng-container *ngIf="inProgressReservations$ | async as inProgressReservations">
                         <span *ngIf="inProgressReservations.length > 0" class="section-amount">{{inProgressReservations.length}}</span>
                     </ng-container>
@@ -49,23 +49,23 @@
                     <div class="cards" *ngIf="inProgressReservations.length > 0; else lackInProgressOrders">
                         <div class="order-card" *ngFor="let reservation of inProgressReservations">
                             <div class="card-content-in-progress" (click)="active(reservation)">
-                                <strong>Rack:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
-                                <strong>ID:</strong>{{reservation.id}}
-                                <strong>Date:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
-                                <strong>Document title:</strong>{{reservation.bookItem.book.title}}
-                                <strong>Document barcode:</strong>{{reservation.bookItem.barcode}}
+                                <strong>{{ 'WAREHOUSE.LABEL.LOCATION' | translate }}:</strong><strong>{{reservation.bookItem.rack.locationIdentifier}}</strong>
+                                <strong>{{ 'WAREHOUSE.LABEL.ID' | translate }}:</strong>{{reservation.id}}
+                                <strong>{{ 'WAREHOUSE.LABEL.DATE' | translate }}:</strong>{{reservation.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
+                                <strong>{{ 'WAREHOUSE.LABEL.TITLE' | translate }}:</strong>{{reservation.bookItem.book.title}}
+                                <strong>{{ 'WAREHOUSE.LABEL.CALL_NUMBER' | translate }}:</strong>{{reservation.bookItem.barcode}}
                             </div>
                             
                             <div class="order-actions" [ngStyle]="{'display': reservation.selected ? 'flex' : 'none'}" >
-                                <div class="order-button order-back" (click)="backToPending(reservation)">BACK TO PENDING</div>
-                                <div class="order-button order-complete" (click)="complete(reservation)">COMPLETE</div>
+                                <div class="order-button order-back" (click)="backToPending(reservation)">{{ 'WAREHOUSE.BTN.BACK_TO_PENDING' | translate }}</div>
+                                <div class="order-button order-complete" (click)="complete(reservation)">{{ 'WAREHOUSE.BTN.COMPLETE' | translate }}</div>
                             </div>
                         </div>
                     </div>
                 </ng-container> 
 
                 <ng-template #lackInProgressOrders>
-                    <div class="lack-message">No orders in progress. Accept a new order.</div>
+                    <div class="lack-message">{{ 'WAREHOUSE.LABEL.NO_IN_PROGRESS' | translate }}</div>
                 </ng-template>
             </div>
         </div>   
