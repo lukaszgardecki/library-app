@@ -42,11 +42,11 @@ export class BookDetailsComponent implements OnInit {
     let st = "";
     switch(status) {
       case BookItemStatus.AVAILABLE:
-        st = "Available"; break;
+        st = "BOOK_DETAILS.STATUS.AVAILABLE"; break;
       case BookItemStatus.LOANED:
-        st = "On loan"; break;
+        st = "BOOK_DETAILS.STATUS.LOANED"; break;
       default:
-        st = "Unavailable";
+        st = "BOOK_DETAILS.STATUS.UNAVAILABLE";
     }
     return st;
   }
