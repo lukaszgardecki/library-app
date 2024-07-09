@@ -10,7 +10,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
   styleUrl: './edit.component.css'
 })
 export class EditComponent implements ProfileSetting {
-  name: string = "Change personal details"
+  name: string = "PROFILE.EDIT.NAME"
   routerLink: string;
   elements?: ProfileSetting[] = [
     new EditPasswordComponent(),

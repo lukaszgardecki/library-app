@@ -10,8 +10,12 @@ import { UserUpdate } from '../../../../shared/user-update';
   styleUrl: './edit-password.component.css'
 })
 export class EditPasswordComponent implements ProfileSetting {
-  name: string = "Password";
+  name: string = "PROFILE.EDIT.PASSWORD.NAME";
   routerLink: string = "edit/password";
+  minPassLength = 8;
+  minLowerCaseChars = 1;
+  minUpperCaseChars = 1;
+  minDigitChars = 1;
   userService = inject(UserService);
   authService = inject(AuthenticationService);
 
@@ -28,11 +32,11 @@ export class EditPasswordComponent implements ProfileSetting {
     const passwordsMatch = this.newPass === this.newPassRepeat;
    
     if (!isValidPassword && !passwordsMatch) {
-      this.errorMsg = "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one digit. Passwords do not match.";
+      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_VALID_AND_NOT_MATCH";
     } else if (!isValidPassword) {
-      this.errorMsg = "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one digit.";
+      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_VALID";
     } else if (!passwordsMatch) {
-      this.errorMsg = "Passwords do not match.";
+      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_MATCH";
     } else {
       this.errorMsg = "";
     }
@@ -45,7 +49,7 @@ export class EditPasswordComponent implements ProfileSetting {
     if (!this.newPass || !this.newPassRepeat || !this.checkPasswords()) {
       this.passIsChanged = false;
       this.passIsWrong = true;
-      this.errorMsg = 'Please fill in all fields and make sure the passwords match and meet the criteria.';
+      this.errorMsg = 'PROFILE.EDIT.PASSWORD.ERROR_MSG.EMPTY_FIELD';
       return;
     }
     this.changePassword();
@@ -74,18 +78,21 @@ export class EditPasswordComponent implements ProfileSetting {
   }
 
   checkPasswordLength() {
-    return this.newPass.length >= 8;
+    return this.newPass.length >= this.minPassLength;
   }
   
   checkIsOneLowerCaseLetter() {
-    return /[a-z]/.test(this.newPass);
+    const digitCount = (this.newPass.match(/[a-z]/g) || []).length;
+    return digitCount >= this.minLowerCaseChars;
   }
 
   checkIsOneUpperCaseLetter() {
-    return /[A-Z]/.test(this.newPass);
+    const digitCount = (this.newPass.match(/[A-Z]/g) || []).length;
+    return digitCount >= this.minUpperCaseChars;
   }
 
   checkIsOneDigitCharacter() {
-    return /[0-9]/.test(this.newPass);
+    const digitCount = (this.newPass.match(/[0-9]/g) || []).length;
+    return digitCount >= this.minDigitChars;
   }
 }

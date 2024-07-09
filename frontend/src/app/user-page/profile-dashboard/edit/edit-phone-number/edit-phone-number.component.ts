@@ -10,7 +10,7 @@ import { UserUpdate } from '../../../../shared/user-update';
   styleUrl: './edit-phone-number.component.css'
 })
 export class EditPhoneNumberComponent implements ProfileSetting {
-  name: string = "Phone number"
+  name: string = "PROFILE.EDIT.PHONE.NAME"
   routerLink: string = "edit/phone";
   userService = inject(UserService);
   authService = inject(AuthenticationService);
@@ -34,12 +34,12 @@ export class EditPhoneNumberComponent implements ProfileSetting {
 
   onSubmit(): void {
     if (!this.newPhone) {
-      this.setError('Phone number field cannot be empty.');
+      this.setError('PROFILE.EDIT.PHONE.ERROR_MSG.EMPTY_FIELD');
       return;
     }
   
     if (!this.checkPhoneNumber()) {
-      this.setError('Please enter a valid phone number.');
+      this.setError('PROFILE.EDIT.PHONE.ERROR_MSG.NOT_VALID');
       return;
     }
   

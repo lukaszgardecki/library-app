@@ -1,16 +1,23 @@
-<h1>{{name}}</h1>
+<h1>{{ name | translate }}</h1>
 <form (ngSubmit)="onSubmit()" method="post">
     <div *ngIf="emailIsWrong" class="msg error">
-        <p>{{errorMsg}}</p>
+        <p>{{ errorMsg | translate }}</p>
     </div>
     <div *ngIf="emailIsChanged" class="msg success">
-        <p>Your e-mail has been successfully changed.</p>
+        <p>{{ 'PROFILE.EDIT.EMAIL.SUCCESS_MSG' | translate }}</p>
     </div>
     <div class="form-group">
-        <label for="new-email">New email address:<span class="required">*</span></label>
-        <input type="email" id="new-email" name="new-email" [(ngModel)]="newEmail" (input)="checkEmail()" placeholder="New email address" required>
+        <label for="new-email">
+            {{ 'PROFILE.EDIT.EMAIL.NEW.LABEL' | translate }}:<span class="required">*</span>
+        </label>
+        <input type="email" id="new-email" name="new-email"
+            [(ngModel)]="newEmail"
+            [attr.placeholder]="'PROFILE.EDIT.EMAIL.NEW.PLACEHOLDER' | translate"
+            (input)="checkEmail()"
+            required
+        >
     </div>
     <div class="save-button">
-        <button type="submit">Change Email</button>
+        <button type="submit">{{ 'PROFILE.EDIT.EMAIL.CHANGE_BTN' | translate }}</button>
     </div>
 </form>

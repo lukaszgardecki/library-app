@@ -1,16 +1,23 @@
-<h1>{{name}}</h1>
+<h1>{{ name | translate }}</h1>
 <form (ngSubmit)="onSubmit()" method="post">
     <div *ngIf="phoneIsWrong" class="msg error">
-        <p>{{errorMsg}}</p>
+        <p>{{ errorMsg | translate }}</p>
     </div>
     <div *ngIf="phoneIsChanged" class="msg success">
-        <p>Your phone number has been successfully changed.</p>
+        <p>{{ 'PROFILE.EDIT.PHONE.SUCCESS_MSG' | translate }}</p>
     </div>
     <div class="form-group">
-        <label for="new-phone">New phone number:<span class="required">*</span></label>
-        <input type="tel" id="new-phone" name="new-phone" [(ngModel)]="newPhone" (input)="checkPhoneNumber()" placeholder="New phone number" required>
+        <label for="new-phone">
+            {{ 'PROFILE.EDIT.PHONE.NEW.LABEL' | translate }}:<span class="required">*</span>
+        </label>
+        <input type="tel" id="new-phone" name="new-phone"
+            [(ngModel)]="newPhone"
+            [attr.placeholder]="'PROFILE.EDIT.PHONE.NEW.PLACEHOLDER' | translate"
+            (input)="checkPhoneNumber()"
+            required
+        >
     </div>
     <div class="save-button">
-        <button type="submit">Change phone number</button>
+        <button type="submit">{{ 'PROFILE.EDIT.PHONE.CHANGE_BTN' | translate }}</button>
     </div>
 </form>
