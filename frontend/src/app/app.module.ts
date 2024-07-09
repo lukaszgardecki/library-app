@@ -3,7 +3,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { PaginationComponent } from './pagination/pagination.component';
 import { BookListComponent } from './user-page/book-list/book-list.component';
 import { BookDetailsComponent } from './user-page/book-details/book-details.component';
@@ -38,6 +38,13 @@ import { NotificationDetailsComponent } from './user-page/profile-dashboard/noti
 import { UserPageComponent } from './user-page/user-page.component';
 import { WarehousePageComponent } from './warehouse-page/warehouse-page.component';
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -78,7 +85,14 @@ import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     provideClientHydration(),
