@@ -8,6 +8,7 @@ export class StorageService {
   private readonly REFRESH_TOKEN_NAME = "refresh_token";
   private readonly LOANED_IDS = "loaned_ids";
   private readonly RESERVED_IDS = "reserved_ids";
+  public static readonly SELECTED_LANG = "selected_language";
 
   constructor() { }
 
@@ -24,22 +25,30 @@ export class StorageService {
     sessionStorage.setItem(this.RESERVED_IDS, JSON.stringify(ids));
   }
 
+  saveUserLanguage(lang: string) {
+    localStorage.setItem(StorageService.SELECTED_LANG, lang);
+  }
+
   getAccessToken() {
-    return this.getFromStorage(this.ACCESS_TOKEN_NAME);
+    return this.getFromSessionStorage(this.ACCESS_TOKEN_NAME);
   }
 
   getRefreshToken() {
-    return this.getFromStorage(this.REFRESH_TOKEN_NAME);
+    return this.getFromSessionStorage(this.REFRESH_TOKEN_NAME);
   }
 
   getLoanedIds() {
-    const storedArray = this.getFromStorage(this.LOANED_IDS);
+    const storedArray = this.getFromSessionStorage(this.LOANED_IDS);
     return storedArray ? JSON.parse(storedArray) : [];
   }
 
   getReservedIds() {
-    const storedArray = this.getFromStorage(this.RESERVED_IDS);
+    const storedArray = this.getFromSessionStorage(this.RESERVED_IDS);
     return storedArray ? JSON.parse(storedArray) : [];
+  }
+
+  getUserLanguage() {
+    return this.getFromLocalStorage(StorageService.SELECTED_LANG);
   }
 
   clearStorage() {
@@ -48,10 +57,17 @@ export class StorageService {
     sessionStorage.removeItem(this.LOANED_IDS);
     sessionStorage.removeItem(this.RESERVED_IDS);
   }
-  
-  private getFromStorage(tokenName: string) {
+
+  private getFromLocalStorage(name: string) {
     if (typeof window !== 'undefined') {
-      return sessionStorage.getItem(tokenName);
+      return localStorage.getItem(name);
+    }
+    return null;
+  }
+  
+  private getFromSessionStorage(name: string) {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem(name);
     }
     return null;
   }
