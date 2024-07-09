@@ -21,13 +21,13 @@ export class BookListComponent implements OnInit, Pageable, Sortable {
   queryParams$: Observable<Params>;
   pageSizes: Size[] = [new Size(10), new Size(20), new Size(50), new Size(100)];
   sortTypes: SortType[] = [
-    new SortType("Domyślnie", ""),
-    new SortType("Tytuł rosnąco", "title,asc"),
-    new SortType("Tytuł malejąco", "title,desc"),
-    new SortType("Wydawca rosnąco", "publisher,asc"),
-    new SortType("Wydawca malejąco", "publisher,desc"),
-    new SortType("Strony rosnąco", "pages,asc"),
-    new SortType("Strony malejąco", "pages,desc")
+    new SortType("BOOK_LIST.SORT_TYPE.DEFAULT", ""),
+    new SortType("BOOK_LIST.SORT_TYPE.TITLE_ASC", "title,asc"),
+    new SortType("BOOK_LIST.SORT_TYPE.TITLE_DESC", "title,desc"),
+    new SortType("BOOK_LIST.SORT_TYPE.PUBLISHER_ASC", "publisher,asc"),
+    new SortType("BOOK_LIST.SORT_TYPE.PUBLISHER_DESC", "publisher,desc"),
+    new SortType("BOOK_LIST.SORT_TYPE.PAGES_ASC", "pages,asc"),
+    new SortType("BOOK_LIST.SORT_TYPE.PAGES_DESC", "pages,desc")
   ];
 
   constructor(
