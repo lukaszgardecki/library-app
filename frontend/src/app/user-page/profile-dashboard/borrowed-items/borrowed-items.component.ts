@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ProfileSetting } from '../profile-dashboard/profile-dashboard.component';
-import { LendingService } from '../../services/lending.service';
-import { AuthenticationService } from '../../services/authentication.service';
-import { Lending } from '../../models/lending';
-import { PdfService } from '../../services/pdf.service';
+import { ProfileSetting } from '../profile-dashboard.component';
+import { LendingService } from '../../../services/lending.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { Lending } from '../../../models/lending';
+import { PdfService } from '../../../services/pdf.service';
 
 @Component({
   selector: 'app-borrowed-items',
@@ -11,7 +11,7 @@ import { PdfService } from '../../services/pdf.service';
   styleUrl: './borrowed-items.component.css'
 })
 export class BorrowedItemsComponent implements ProfileSetting, OnInit {
-  name: string = "Borrowed items";
+  name: string = "PROFILE.BORROWED_ITEMS.NAME";
   routerLink: string = "borrowed-items";
   lendings: Array<Lending>;
   lendingService = inject(LendingService);

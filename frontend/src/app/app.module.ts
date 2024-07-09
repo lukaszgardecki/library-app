@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthInterceptorProvider } from './services/custom.interceptor';
 import { PersonalDetailsComponent } from './user-page/profile-dashboard/personal-details/personal-details.component';
 import { NotificationsComponent } from './user-page/profile-dashboard/notifications/notifications.component';
-import { BorrowedItemsComponent } from './user-page/borrowed-items/borrowed-items.component';
+import { BorrowedItemsComponent } from './user-page/profile-dashboard/borrowed-items/borrowed-items.component';
 import { OnSiteItemsComponent } from './user-page/profile-dashboard/on-site-items/on-site-items.component';
 import { RequestedItemsCompletedComponent } from './user-page/profile-dashboard/requested-items/requested-items-completed/requested-items-completed.component';
 import { RequestedItemsPendingComponent } from './user-page/profile-dashboard/requested-items/requested-items-pending/requested-items-pending.component';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { PersonalDetailsComponent } from './personal-details/personal-details.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { BorrowedItemsComponent } from '../borrowed-items/borrowed-items.component';
+import { BorrowedItemsComponent } from './borrowed-items/borrowed-items.component';
 import { OnSiteItemsComponent } from './on-site-items/on-site-items.component';
 import { RequestedItemsComponent } from './requested-items/requested-items.component';
 import { ReservationsComponent } from './reservations/reservations.component';
