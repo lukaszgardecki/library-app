@@ -11,7 +11,7 @@ import { PdfService } from '../../../services/pdf.service';
   styleUrl: './on-site-items.component.css'
 })
 export class OnSiteItemsComponent implements ProfileSetting {
-  name: string = "On-site items";
+  name: string = "PROFILE.ON_SITE_ITEMS.NAME";
   routerLink: string = "on-site-items";
 
   onSiteLendings: Array<Lending>;
