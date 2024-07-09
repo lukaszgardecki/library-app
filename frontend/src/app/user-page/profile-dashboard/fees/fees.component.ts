@@ -9,7 +9,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
   styleUrl: './fees.component.css'
 })
 export class FeesComponent implements ProfileSetting {
-  name: string = "Fees";
+  name: string = "PROFILE.FEES.NAME";
   routerLink: string;
   elements?: ProfileSetting[] = [
     new FeesNotAccountedComponent(),

@@ -7,6 +7,6 @@ import { ProfileSetting } from '../../profile-dashboard.component';
   styleUrl: './fees-accounted.component.css'
 })
 export class FeesAccountedComponent implements ProfileSetting {
-  name: string = "Accounted fees"
+  name: string = "PROFILE.FEES.ACCOUNTED.NAME"
   routerLink: string = "fees/accounted";
 }
