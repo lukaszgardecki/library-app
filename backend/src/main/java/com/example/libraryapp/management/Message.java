@@ -123,8 +123,7 @@ public enum Message {
     }
 
     public String getMessage(Object... params) {
-        return getMessage(Locale.ENGLISH, params);
-//        return getMessage(new Locale("pl"), params);
+        return getMessage(Locale.getDefault(), params);
     }
 
     public String getMessage(Locale locale, Object... params) {
