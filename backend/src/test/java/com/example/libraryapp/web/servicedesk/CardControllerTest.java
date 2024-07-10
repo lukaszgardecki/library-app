@@ -52,7 +52,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -61,7 +61,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards", warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -70,7 +70,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -106,7 +106,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards/" + cardId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -116,7 +116,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards/" + cardId, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -126,7 +126,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/cards/" + cardId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -166,7 +166,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/activate", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -176,7 +176,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/activate", warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -186,7 +186,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/activate", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -222,7 +222,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/deactivate", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -232,7 +232,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/deactivate", warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -242,7 +242,7 @@ public class CardControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/cards/" + cardId + "/deactivate", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 }

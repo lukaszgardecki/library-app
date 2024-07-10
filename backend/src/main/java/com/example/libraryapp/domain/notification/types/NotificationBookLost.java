@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationBookLost extends Notification {
     public NotificationBookLost(LendingDto lending) {
         super(lending.getMember().getId());
-        this.subject = Message.REASON_BOOK_LOST;
-        this.content = Message.BOOK_LOST.formatted(lending.getBookItem().getPrice());
+        this.subject = Message.NOTIFICATION_BOOK_LOST_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_BOOK_LOST_CONTENT.getMessage(lending.getBookItem().getPrice());
         this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }

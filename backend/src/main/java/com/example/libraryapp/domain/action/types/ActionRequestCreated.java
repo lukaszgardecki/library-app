@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionRequestCreated extends Action {
     public ActionRequestCreated(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.message = Message.ACTION_REQUEST_SENT.formatted(
+        this.message = Message.ACTION_REQUEST_SENT.getMessage(
                 reservation.getBookItem().getBook().getTitle()
         );
     }

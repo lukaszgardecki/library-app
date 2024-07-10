@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationReservationCancelBookItemLost extends Notification {
     public NotificationReservationCancelBookItemLost(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.subject = Message.REASON_BOOK_LOST;
-        this.content = Message.RESERVATION_CANCEL_BOOK_ITEM_LOST;
+        this.subject = Message.NOTIFICATION_BOOK_LOST_SUBJECT.getMessage();
+        this.content = Message.RESERVATION_CANCELLATION_BOOK_ITEM_LOST.getMessage();
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

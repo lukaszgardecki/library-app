@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationRequestCreated extends Notification {
     public NotificationRequestCreated(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.subject = Message.REASON_REQUEST_CREATED;
-        this.content = Message.RESERVATION_CREATED;
+        this.subject = Message.NOTIFICATION_REQUEST_CREATED_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_REQUEST_CREATED_CONTENT.getMessage();
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

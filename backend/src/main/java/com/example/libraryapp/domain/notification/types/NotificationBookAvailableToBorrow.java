@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationBookAvailableToBorrow extends Notification {
     public NotificationBookAvailableToBorrow(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.subject = Message.REASON_BOOK_AVAILABLE_TO_BORROW;
-        this.content = Message.BOOK_AVAILABLE_TO_BORROW.formatted(reservation.getBookItem().getBook().getTitle());
+        this.subject = Message.NOTIFICATION_BOOK_AVAILABLE_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_BOOK_AVAILABLE_CONTENT.getMessage(reservation.getBookItem().getBook().getTitle());
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

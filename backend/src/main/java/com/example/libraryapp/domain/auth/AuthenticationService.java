@@ -58,7 +58,7 @@ public class AuthenticationService {
             HttpServletResponse response
     ) {
         Member member = memberRepository.findByEmail(loginRequest.getUsername())
-                .orElseThrow(() -> new BadCredentialsException(Message.BAD_CREDENTIALS));
+                .orElseThrow(() -> new BadCredentialsException(Message.VALIDATION_BAD_CREDENTIALS.getMessage()));
         MemberDto memberDto = MemberDtoMapper.map(member);
         validatePassword(loginRequest, memberDto);
         AuthTokens auth = tokenService.generateAuth(member);
@@ -79,7 +79,7 @@ public class AuthenticationService {
             HttpServletResponse response
     ) {
         String refreshToken = tokenService.findToken(request)
-                .orElseThrow(() -> new AccessDeniedException(Message.ACCESS_DENIED));
+                .orElseThrow(() -> new AccessDeniedException(Message.ACCESS_DENIED.getMessage()));
         String memberEmail = tokenService.extractUsername(refreshToken);
         Member member = memberRepository.findByEmail(memberEmail)
                 .orElseThrow(MemberNotFoundException::new);
@@ -199,7 +199,7 @@ public class AuthenticationService {
                 .filter(member -> member.getEmail().equals(request.getEmail()))
                 .findAny()
                 .ifPresent(email -> {
-                    throw new BadCredentialsException(Message.BAD_EMAIL);
+                    throw new BadCredentialsException(Message.VALIDATION_EMAIL_UNIQUE.getMessage());
                 });
     }
 }

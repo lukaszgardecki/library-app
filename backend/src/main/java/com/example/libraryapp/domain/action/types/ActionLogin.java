@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionLogin extends Action {
     public ActionLogin(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_LOGIN.formatted(
+        this.message = Message.ACTION_LOGIN_SUCCEEDED.getMessage(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

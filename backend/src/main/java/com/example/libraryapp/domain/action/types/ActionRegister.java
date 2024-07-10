@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionRegister extends Action {
     public ActionRegister(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_REGISTER.formatted(
+        this.message = Message.ACTION_REGISTER.getMessage(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

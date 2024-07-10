@@ -113,7 +113,7 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/actions?memberId=" + memberId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -122,7 +122,7 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/actions", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -131,12 +131,12 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(GET, "/actions", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(GET, "/actions?memberId=1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -178,7 +178,7 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/actions/" + actionId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -190,7 +190,7 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/actions/" + actionId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACTION_NOT_FOUND_BY_ID.formatted(actionId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACTION_NOT_FOUND_ID.getMessage(actionId));
         }
 
         @ParameterizedTest
@@ -202,7 +202,7 @@ public class ActionControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/actions/" + actionId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 }

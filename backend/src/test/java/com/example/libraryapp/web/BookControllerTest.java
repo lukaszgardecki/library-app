@@ -146,7 +146,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/books", bookToSaveDto, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -156,7 +156,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/books", bookToSaveDto, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -165,7 +165,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/books", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -201,7 +201,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/books/3", bookToReplace, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -211,7 +211,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/books/3", bookToReplace, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -222,7 +222,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/books/" + bookId, bookToReplace, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.formatted(bookId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.getMessage(bookId));
         }
 
         @Test
@@ -231,7 +231,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/books/3", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -274,7 +274,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/books/" + bookId, bookFieldsToUpdate, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -287,7 +287,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/books/" + bookId, bookFieldsToUpdate, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -298,7 +298,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/books/" + bookId, bookFieldsToUpdate, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.formatted(bookId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.getMessage(bookId));
         }
 
         @Test
@@ -307,7 +307,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/books/99999", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -324,7 +324,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/books/" + bookId, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.formatted(bookId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.getMessage(bookId));
         }
 
         @ParameterizedTest
@@ -336,7 +336,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/books/" + bookId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -346,7 +346,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/books/" + bookId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.formatted(bookId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_NOT_FOUND.getMessage(bookId));
         }
 
         @Test
@@ -355,7 +355,7 @@ public class BookControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/books/4", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 

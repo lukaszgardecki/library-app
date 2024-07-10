@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationRequestCancelled extends Notification {
     public NotificationRequestCancelled(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.subject = Message.REASON_REQUEST_CANCELED;
-        this.content = Message.RESERVATION_DELETED;
+        this.subject = Message.NOTIFICATION_REQUEST_CANCELLED_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_REQUEST_CANCELLED_CONTENT.getMessage();
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

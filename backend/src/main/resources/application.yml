@@ -6,6 +6,9 @@ spring:
       ddl-auto: validate
   profiles:
     default: prod
+  web:
+    locale: en
+    locale-resolver: accept_header
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

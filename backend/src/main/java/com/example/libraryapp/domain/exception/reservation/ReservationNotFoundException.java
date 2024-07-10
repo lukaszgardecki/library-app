@@ -5,10 +5,10 @@ import com.example.libraryapp.management.Message;
 public class ReservationNotFoundException extends RuntimeException {
 
     public ReservationNotFoundException() {
-        super(Message.RESERVATION_NOT_FOUND);
+        super(Message.RESERVATION_NOT_FOUND.getMessage());
     }
 
     public ReservationNotFoundException(Long id) {
-        super(String.format(Message.RESERVATION_NOT_FOUND_BY_ID, id));
+        super(Message.RESERVATION_NOT_FOUND_ID.getMessage(id));
     }
 }

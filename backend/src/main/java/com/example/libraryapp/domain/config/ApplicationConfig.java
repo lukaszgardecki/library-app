@@ -1,10 +1,13 @@
 package com.example.libraryapp.domain.config;
 
 import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.management.Message;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +27,12 @@ public class ApplicationConfig {
     private final MemberRepository memberRepository;
     @Value("${jwt.secret}")
     private String secret;
+    private final MessageSource messageSource;
+
+    @PostConstruct
+    public void init() {
+        Message.setMessageSource(messageSource);
+    }
 
     @Bean
     Key getSigningKey() {

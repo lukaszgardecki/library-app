@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionBookRenewed extends Action {
     public ActionBookRenewed(LendingDto lending) {
         super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_RENEWED.formatted(
+        this.message = Message.ACTION_BOOK_RENEWED.getMessage(
                 lending.getBookItem().getBook().getTitle()
         );
     }

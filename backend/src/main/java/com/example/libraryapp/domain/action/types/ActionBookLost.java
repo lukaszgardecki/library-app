@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionBookLost extends Action {
     public ActionBookLost(LendingDto lending) {
         super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_LOST.formatted(
+        this.message = Message.ACTION_BOOK_LOST.getMessage(
                 lending.getBookItem().getBook().getTitle()
         );
     }

@@ -102,7 +102,7 @@ public class BookItemService {
     public void deleteBookItemById(Long bookItemId) {
         BookItem bookItem = findBookItem(bookItemId);
         if (bookItem.getStatus() == BookItemStatus.LOANED || bookItem.getStatus() == BookItemStatus.RESERVED) {
-            throw new BookItemException(Message.BOOK_ITEM_CANNOT_BE_DELETED);
+            throw new BookItemException(Message.BOOK_ITEM_DELETION_FAILED.getMessage());
         }
         bookItemRepository.delete(bookItem);
     }

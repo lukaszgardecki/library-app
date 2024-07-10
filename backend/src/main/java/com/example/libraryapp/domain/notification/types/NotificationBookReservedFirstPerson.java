@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationBookReservedFirstPerson extends Notification {
     public NotificationBookReservedFirstPerson(Long userId, LendingDto currentLending) {
         super(userId);
-        this.subject = Message.REASON_BOOK_RESERVED;
-        this.content = Message.BOOK_RESERVED_FIRST_PERSON.formatted(
+        this.subject = Message.NOTIFICATION_BOOK_RESERVED_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_BOOK_RESERVED_CONTENT_FIRST_PERSON.getMessage(
                 currentLending.getBookItem().getBook().getTitle(),
                 currentLending.getDueDate()
         );

@@ -92,7 +92,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/reservations?memberId=" + memberId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -101,7 +101,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/reservations", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -110,12 +110,12 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(GET, "/reservations", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(GET, "/reservations?memberId=1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -173,7 +173,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/reservations/" + reservationId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -185,7 +185,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/reservations/" + reservationId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND_BY_ID.formatted(reservationId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND_ID.getMessage(reservationId));
         }
 
         @ParameterizedTest
@@ -197,7 +197,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/reservations/" + reservationId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -234,7 +234,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", reservationToSave, user, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -251,7 +251,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", reservationToSave, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_LIMIT_EXCEEDED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_LIMIT_EXCEEDED.getMessage());
         }
 
         @ParameterizedTest
@@ -264,7 +264,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", reservationToSave, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -278,7 +278,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", reservationToSave, user, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_BOOK_ITEM_LOST);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_CREATION_FAILED_BOOK_ITEM_LOST.getMessage());
         }
 
         @Test
@@ -288,7 +288,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", reservationToSave, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -297,7 +297,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/reservations", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -394,7 +394,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", reservationToCancel, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
 
             ReservationResponse reservationAfterCanceling = client.testRequest(GET, "/reservations/" + reservationId, admin, OK)
                     .expectBody(ReservationResponse.class)
@@ -436,7 +436,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", reservationToCancel, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
 
             ReservationResponse reservationAfterCanceling = client.testRequest(GET, "/reservations/" + reservationId, admin, OK)
                     .expectBody(ReservationResponse.class)
@@ -457,7 +457,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", reservationToCancel, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -471,7 +471,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", reservationToCancel, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -480,7 +480,7 @@ public class ReservationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/reservations", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
