@@ -7,7 +7,12 @@
         <li class="dropdown" (click)="dropdown()">
           <span class="dropdown-toggle">{{selectedLangName}}</span><i class="fa fa-caret-down"></i>
           <ul class="dropdown-menu">
-              <li *ngFor="let lang of languages" (click)="switchLanguage(lang)">{{lang.name}}</li>
+            <li *ngFor="let lang of languages" 
+                (click)="switchLanguage(lang)" 
+                [ngClass]="{selected: selectedLangName == lang.name}"
+            >
+              {{lang.name}}
+            </li>
           </ul>
         </li>
       </ul>

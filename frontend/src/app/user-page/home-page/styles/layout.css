@@ -40,7 +40,7 @@ File: Layout CSS
 #topbar .dropdown {cursor:pointer; position:relative;}
 #topbar .dropdown i {margin-left:10px;}
 #topbar .dropdown-menu {padding:0; margin:0; position:absolute; z-index:100; display:none; left:50%; transform:translateX(-50%);}
-#topbar .dropdown-menu li {margin: 0;padding: 0;white-space: nowrap;width: 100%;text-align: center;}
+#topbar .dropdown-menu li, #topbar .dropdown-menu li:last-child {margin: 0;padding: 0 10px;white-space: nowrap;width: 100%;text-align: center;}
 #topbar .dropdown-menu.opened {display: block;}
 
 
@@ -353,7 +353,7 @@ blockquote::before{color:rgba(0,0,0,.05);}
 #topbar, #topbar ul li{border-color:rgba(255,255,255,.2);}
 #topbar > div:last-of-type li:first-child a{color:var(--main-color);}
 #topbar .dropdown-menu {background-color: #fff;color: black;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);}
-#topbar .dropdown-menu li:hover {background-color:var(--main-color); color:#fff;}
+#topbar .dropdown-menu li:hover, #topbar .dropdown-menu .selected {background-color:var(--main-color); color:#fff;}
 
 
 /* Header */
