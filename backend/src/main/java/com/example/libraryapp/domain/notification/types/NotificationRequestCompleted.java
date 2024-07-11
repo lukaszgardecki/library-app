@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationRequestCompleted extends Notification {
     public NotificationRequestCompleted(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.subject = Message.REASON_REQUEST_COMPLETED;
-        this.content = Message.RESERVATION_READY;
+        this.subject = Message.NOTIFICATION_REQUEST_COMPLETED_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_REQUEST_COMPLETED_CONTENT.getMessage();
         this.bookId = reservation.getBookItem().getBook().getId();
         this.bookTitle = reservation.getBookItem().getBook().getTitle();
     }

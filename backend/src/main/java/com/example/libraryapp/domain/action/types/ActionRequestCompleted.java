@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionRequestCompleted extends Action {
     public ActionRequestCompleted(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.message = Message.ACTION_REQUEST_COMPLETED.formatted(
+        this.message = Message.ACTION_REQUEST_COMPLETED.getMessage(
                 reservation.getBookItem().getBook().getTitle()
         );
     }

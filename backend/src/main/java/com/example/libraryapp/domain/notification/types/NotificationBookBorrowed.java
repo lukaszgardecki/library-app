@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class NotificationBookBorrowed extends Notification {
     public NotificationBookBorrowed(LendingDto lending) {
         super(lending.getMember().getId());
-        this.subject = Message.REASON_BOOK_BORROWED;
-        this.content = Message.BOOK_BORROWED;
+        this.subject = Message.NOTIFICATION_BOOK_BORROWED_SUBJECT.getMessage();
+        this.content = Message.NOTIFICATION_BOOK_BORROWED_CONTENT.getMessage();
         this.bookId = lending.getBookItem().getBook().getId();
         this.bookTitle = lending.getBookItem().getBook().getTitle();
     }

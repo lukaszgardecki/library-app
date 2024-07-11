@@ -4,6 +4,7 @@ import { Lending } from '../../../models/lending';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LendingService } from '../../../services/lending.service';
 import { RequestBody } from '../../../shared/request-body';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-renewable-items',
@@ -11,7 +12,8 @@ import { RequestBody } from '../../../shared/request-body';
   styleUrl: './renewable-items.component.css'
 })
 export class RenewableItemsComponent implements ProfileSetting {
-  name: string = "Renewable items";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_RENEWABLE_ITEMS_NAME;
   routerLink: string = "renewable-items";
   renewableLendings: Array<Lending>;
   lendingService = inject(LendingService);

@@ -8,6 +8,7 @@ import { BookItemStatus } from '../../shared/book-item-status';
 import { ReservationService } from '../../services/reservation.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Observable } from 'rxjs';
+import { TEXT } from '../../shared/messages';
 
 @Component({
   selector: 'app-book-details',
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs';
   styleUrl: './book-details.component.css'
 })
 export class BookDetailsComponent implements OnInit {
+  TEXT = TEXT;
   book: Book = new Book();
   bookItems: Array<BookItem> = [];
 
@@ -42,11 +44,11 @@ export class BookDetailsComponent implements OnInit {
     let st = "";
     switch(status) {
       case BookItemStatus.AVAILABLE:
-        st = "Available"; break;
+        st = TEXT.BOOK_DETAILS_STATUS_AVAILABLE; break;
       case BookItemStatus.LOANED:
-        st = "On loan"; break;
+        st = TEXT.BOOK_DETAILS_STATUS_LOANED; break;
       default:
-        st = "Unavailable";
+        st = TEXT.BOOK_DETAILS_STATUS_UNAVAILABLE;
     }
     return st;
   }

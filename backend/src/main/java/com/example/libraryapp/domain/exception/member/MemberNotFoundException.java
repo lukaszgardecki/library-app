@@ -8,6 +8,6 @@ public class MemberNotFoundException extends RuntimeException {
     }
 
     public MemberNotFoundException(Long memberId) {
-        super(String.format(Message.MEMBER_NOT_FOUND, memberId));
+        super(Message.MEMBER_NOT_FOUND.getMessage(memberId));
     }
 }

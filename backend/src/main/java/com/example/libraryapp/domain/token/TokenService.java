@@ -42,12 +42,12 @@ public class TokenService {
 
     public boolean isAccessTokenValidInDB(String token) {
         if (accessTokenRepository.existsValidToken(token)) return true;
-        else throw new JwtException(Message.ACCESS_DENIED);
+        else throw new JwtException(Message.ACCESS_DENIED.getMessage());
     }
 
     public boolean isRefreshTokenValidInDB(String token) {
         if (refreshTokenRepository.existsValidToken(token)) return true;
-        else throw new JwtException(Message.ACCESS_DENIED);
+        else throw new JwtException(Message.ACCESS_DENIED.getMessage());
     }
     public AuthTokens generateAuth(Member userDetails) {
         Fingerprint fingerprint = new Fingerprint();
@@ -64,7 +64,7 @@ public class TokenService {
         boolean fgpIsValid = validator.validateFgp(token, fingerprint);
         boolean tokenIsValid = validator.validateToken(token);
         if (fgpIsValid && tokenIsValid) return true;
-        else throw new JwtException(Message.ACCESS_DENIED);
+        else throw new JwtException(Message.ACCESS_DENIED.getMessage());
     }
 
     public String extractUsername(String token) {
@@ -76,7 +76,7 @@ public class TokenService {
         Optional<String> token = Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith(BEARER_PREFIX))
                 .map(authHeader -> authHeader.substring(BEARER_PREFIX.length()));
-        if (token.isEmpty()) throw new JwtException(Message.ACCESS_DENIED);
+        if (token.isEmpty()) throw new JwtException(Message.ACCESS_DENIED.getMessage());
         else return token;
     }
 
@@ -85,7 +85,7 @@ public class TokenService {
                 .filter(cookie -> SecurityUtils.FINGERPRINT_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue);
-        if (fingerprint.isEmpty()) throw new JwtException(Message.ACCESS_DENIED);
+        if (fingerprint.isEmpty()) throw new JwtException(Message.ACCESS_DENIED.getMessage());
         else return fingerprint;
     }
 }

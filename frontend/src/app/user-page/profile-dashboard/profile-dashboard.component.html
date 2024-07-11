@@ -13,7 +13,7 @@
                                 [attr.data-bs-target]="'#el-' + i" 
                                 [attr.aria-controls]="'el-' + i"
                                 >
-                            {{option.name}}
+                            {{ option.name | translate }}
                         </button>
                     </h2>
                     <div *ngIf="option.elements" [id]="'el-' + i" class="accordion-collapse collapse" [attr.data-bs-parent]="'#op-' + i">
@@ -23,7 +23,7 @@
                                     [ngClass]="{'selected':  false}"
                                     [routerLink]="el.routerLink"
                                     >
-                                    {{el.name}}
+                                    {{ el.name | translate }}
                                 </li>
                             </ul>
                         </div>

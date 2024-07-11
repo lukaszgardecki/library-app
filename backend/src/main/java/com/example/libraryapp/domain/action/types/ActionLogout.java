@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionLogout extends Action {
     public ActionLogout(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_LOGOUT.formatted(
+        this.message = Message.ACTION_LOGOUT.getMessage(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

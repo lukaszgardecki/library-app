@@ -43,7 +43,7 @@ public class WarehouseControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/warehouse/reservations/pending", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -52,7 +52,7 @@ public class WarehouseControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/warehouse/reservations/pending", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public class WarehouseControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/warehouse/reservations/" + reservationId + "/ready", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -118,7 +118,7 @@ public class WarehouseControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/warehouse/reservations/" + reservationId + "/ready", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -130,7 +130,7 @@ public class WarehouseControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/warehouse/reservations/" + reservationId + "/ready", warehouse, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND_BY_ID.formatted(reservationId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND_ID.getMessage(reservationId));
         }
     }
 }

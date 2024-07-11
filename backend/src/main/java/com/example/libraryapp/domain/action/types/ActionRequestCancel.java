@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionRequestCancel extends Action {
     public ActionRequestCancel(ReservationResponse reservation) {
         super(reservation.getMember().getId());
-        this.message = Message.ACTION_REQUEST_CANCELED.formatted(
+        this.message = Message.ACTION_REQUEST_CANCELLED.getMessage(
                 reservation.getBookItem().getBook().getTitle()
         );
     }

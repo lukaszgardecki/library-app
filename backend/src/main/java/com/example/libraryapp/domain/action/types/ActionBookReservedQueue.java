@@ -13,6 +13,6 @@ public class ActionBookReservedQueue extends Action {
     public ActionBookReservedQueue(Long userId, String bookTitle, int queuePosition) {
         super(userId);
         this.message = Message.ACTION_BOOK_RESERVED_QUEUE
-                .formatted(bookTitle, queuePosition);
+                .getMessage(bookTitle, queuePosition);
     }
 }

@@ -5,6 +5,6 @@ import com.example.libraryapp.management.Message;
 public class ForbiddenAccessException extends RuntimeException {
 
     public ForbiddenAccessException() {
-        super(Message.FORBIDDEN);
+        super(Message.FORBIDDEN.getMessage());
     }
 }

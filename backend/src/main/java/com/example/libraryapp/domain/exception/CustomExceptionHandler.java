@@ -92,7 +92,7 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorMessage requestBodyIsMissing(WebRequest request) {
         return new ErrorMessage(
-                HttpStatus.BAD_REQUEST, new HttpMessageNotReadableException(Message.BODY_MISSING), request
+                HttpStatus.BAD_REQUEST, new HttpMessageNotReadableException(Message.BODY_MISSING.getMessage()), request
         );
     }
 

@@ -4,6 +4,7 @@ import { Reservation } from '../../../../models/reservation';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { PdfService } from '../../../../services/pdf.service';
 import { ReservationService } from '../../../../services/reservation.service';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-requested-items-completed',
@@ -11,7 +12,8 @@ import { ReservationService } from '../../../../services/reservation.service';
   styleUrl: './requested-items-completed.component.css'
 })
 export class RequestedItemsCompletedComponent implements ProfileSetting, OnInit {
-  name: string = "Completed";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_REQUESTED_ITEMS_COMPLETED_NAME;
   routerLink: string = "requested-items/completed";
   reservationService = inject(ReservationService);
   completedReservations: Array<Reservation>;

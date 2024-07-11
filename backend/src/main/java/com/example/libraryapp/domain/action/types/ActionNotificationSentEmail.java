@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class ActionNotificationSentEmail extends Action {
     public ActionNotificationSentEmail(NotificationDto notification) {
         super(notification.getMemberId());
-        this.message = Message.ACTION_NOTIFICATION_SENT_EMAIL.formatted(notification.getSubject());
+        this.message = Message.ACTION_NOTIFICATION_SENT_EMAIL.getMessage(notification.getSubject());
     }
 }

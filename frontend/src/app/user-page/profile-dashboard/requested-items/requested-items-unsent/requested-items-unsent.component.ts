@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProfileSetting } from '../../profile-dashboard.component';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-requested-items-unsent',
@@ -7,6 +8,7 @@ import { ProfileSetting } from '../../profile-dashboard.component';
   styleUrl: './requested-items-unsent.component.css'
 })
 export class RequestedItemsUnsentComponent implements ProfileSetting {
-  name: string = "Unsent";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_REQUESTED_ITEMS_UNSENT_NAME;
   routerLink: string = "requested-items/unsent";
 }

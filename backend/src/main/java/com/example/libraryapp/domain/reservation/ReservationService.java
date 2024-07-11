@@ -208,18 +208,18 @@ public class ReservationService {
                 .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
                 .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
                 .findAny();
-        if (reservation.isPresent()) throw new ReservationException(Message.RESERVATION_ALREADY_CREATED);
+        if (reservation.isPresent()) throw new ReservationException(Message.RESERVATION_ALREADY_CREATED.getMessage());
     }
 
     private void checkMemberReservationLimit(Member member) {
         if (member.getTotalBooksReserved() >= Constants.MAX_BOOKS_RESERVED_BY_USER) {
-            throw new ReservationException(Message.RESERVATION_LIMIT_EXCEEDED);
+            throw new ReservationException(Message.RESERVATION_LIMIT_EXCEEDED.getMessage());
         }
     }
 
     private void checkIfBookItemIsNotLost(BookItem book) {
         if (book.getStatus() == BookItemStatus.LOST) {
-            throw new ReservationException(Message.RESERVATION_BOOK_ITEM_LOST);
+            throw new ReservationException(Message.RESERVATION_CREATION_FAILED_BOOK_ITEM_LOST.getMessage());
         }
     }
 

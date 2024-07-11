@@ -1,17 +1,17 @@
-<h1>{{name}}</h1>
+<h1>{{ name | translate }}</h1>
 
 <div class="filter-container">
         <div>
-            <label for="sort">Sort by Date:</label>
+            <label for="sort">{{ TEXT.PROFILE_USER_HISTORY_SORT_BY_DATE | translate }}:</label>
             <select id="sort" (change)="onSortChange($event)">
-                <option value="desc">Newest First</option>
-                <option value="asc">Oldest First</option>`
+                <option value="desc">{{ TEXT.PROFILE_USER_HISTORY_SORT_DESC | translate }}</option>
+                <option value="asc">{{ TEXT.PROFILE_USER_HISTORY_SORT_ASC | translate }}</option>`
             </select>
         </div>
         <div>
-            <label for="group">Kind of History:</label>
+            <label for="group">{{ TEXT.PROFILE_USER_HISTORY_KIND | translate }}:</label>
             <select id="group" (change)="onGroupChange($event)">
-                <option *ngFor="let type of actionTypes" [value]="type.type">{{type.name}}</option>
+                <option *ngFor="let type of actionTypes" [value]="type.type">{{ type.name | translate }}</option>
             </select>
         </div>
     </div>
@@ -20,19 +20,19 @@
     <table id="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th class="c2">Description</th>
+                <th>{{ TEXT.PROFILE_USER_HISTORY_DATE | translate }}</th>
+                <th>{{ TEXT.PROFILE_USER_HISTORY_TIME | translate }}</th>
+                <th class="c2">{{ TEXT.PROFILE_USER_HISTORY_DESCRIPTION | translate }}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let action of actions; let i = index">
-                <td>{{action.createdAt| date: "dd/MM/yyyy"}}</td>
-                <td>{{action.createdAt| date: "HH:mm:ss"}}</td>
+                <td>{{action.createdAt | date: "dd/MM/yyyy"}}</td>
+                <td>{{action.createdAt | date: "HH:mm:ss"}}</td>
                 <td>{{action.message}}</td>
             </tr>
         </tbody>
     </table>
     <div id="bottom"></div>
 </ng-container>
-<ng-template #lack>Lack of actions</ng-template>
+<ng-template #lack>{{ TEXT.PROFILE_USER_HISTORY_LACK | translate }}</ng-template>

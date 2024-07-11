@@ -4,6 +4,6 @@ import com.example.libraryapp.management.Message;
 
 public class UnsettledFineException extends RuntimeException{
     public UnsettledFineException() {
-        super(Message.UNSETTLED_CHARGES);
+        super(Message.MEMBER_UNSETTLED_CHARGES.getMessage());
     }
 }

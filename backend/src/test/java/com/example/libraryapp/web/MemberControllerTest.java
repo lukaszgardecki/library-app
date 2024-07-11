@@ -43,7 +43,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -52,7 +52,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -105,7 +105,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members/1", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -115,7 +115,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members/" + memberId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.getMessage(memberId));
         }
 
         @Test
@@ -124,12 +124,12 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(GET, "/members/1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(GET, "/members/9999999", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -176,7 +176,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/members/3", userFieldsToUpdate, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -222,7 +222,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/members/" + memberId, userFieldsToUpdate, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.getMessage(memberId));
         }
 
         @Test
@@ -232,7 +232,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/members/999999", userFieldsToUpdate, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -241,7 +241,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/members/2", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -259,7 +259,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members/" + memberId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.getMessage(memberId));
 
             client.testRequest(GET, "/reservations/13", admin, OK)
                     .expectBody()
@@ -276,12 +276,12 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(DELETE, "/members/1", admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.NOT_RETURNED_BOOKS);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.MEMBER_NOT_RETURNED_BOOKS.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(DELETE, "/members/3", admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.NOT_RETURNED_BOOKS);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.MEMBER_NOT_RETURNED_BOOKS.getMessage());
         }
 
         @Test
@@ -290,7 +290,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/members/8", admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.UNSETTLED_CHARGES);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_UNSETTLED_CHARGES.getMessage());
         }
 
         @Test
@@ -299,7 +299,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/members/1", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -313,7 +313,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/members/" + memberId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.getMessage(memberId));
 
             client.testRequest(GET, "/reservations/14", admin, OK)
                     .expectBody()
@@ -331,7 +331,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/members/" + memberId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.formatted(memberId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.MEMBER_NOT_FOUND.getMessage(memberId));
         }
 
         @Test
@@ -340,7 +340,7 @@ public class MemberControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/members/1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 

@@ -3,6 +3,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
 import { RequestedItemsUnsentComponent } from './requested-items-unsent/requested-items-unsent.component';
 import { RequestedItemsPendingComponent } from './requested-items-pending/requested-items-pending.component';
 import { RequestedItemsCompletedComponent } from './requested-items-completed/requested-items-completed.component';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-requested-items',
@@ -10,7 +11,8 @@ import { RequestedItemsCompletedComponent } from './requested-items-completed/re
   styleUrl: './requested-items.component.css'
 })
 export class RequestedItemsComponent implements ProfileSetting {
-  name: string = "Requested items";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_REQUESTED_ITEMS_NAME;
   routerLink: string;
   elements?: ProfileSetting[] = [
     new RequestedItemsUnsentComponent(),

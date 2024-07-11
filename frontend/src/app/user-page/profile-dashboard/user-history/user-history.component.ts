@@ -3,6 +3,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
 import { Action } from '../../../models/action';
 import { ActionService } from '../../../services/action.service';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-user-history',
@@ -10,10 +11,8 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './user-history.component.css'
 })
 export class UserHistoryComponent implements ProfileSetting {
-  selectedSortTypeName: string = "Domyślnie";
-  selectedPageSize: number;
-
-  name: string = "User history";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_USER_HISTORY_NAME;
   routerLink: string = "history";
   actions = new Array<Action>;
   actionService = inject(ActionService);
@@ -23,24 +22,24 @@ export class UserHistoryComponent implements ProfileSetting {
   currentSort = "desc";
   currentType = "ALL"
   actionTypes = [
-    {type: this.currentType, name: "All"},
-    {type: "LOGIN", name: "Logins"},
-    {type: "LOGOUT", name: "Logouts"},
-    {type: "LOGIN_FAILED", name: "Failed logins"},
-    {type: "REGISTER", name: "Register"},
-    {type: "REQUEST_NEW", name: "New requests"},
-    {type: "REQUEST_COMPLETED", name: "Completed requests"},
-    {type: "REQUEST_CANCEL", name: "Canceled requests"},
-    {type: "BOOK_BORROWED", name: "Borrowings"},
-    {type: "BOOK_AVAILABLE_TO_BORROW", name: "Availability notifications"},
-    {type: "BOOK_RESERVED_FIRST", name: "Reservations"},
-    {type: "BOOK_RESERVED_QUEUE", name: "Reservations - queue"},
-    {type: "BOOK_RENEWED", name: "Renewals"},
-    {type: "BOOK_RETURNED", name: "Returns"},
-    {type: "BOOK_LOST", name: "Lost Documents"},
-    {type: "NOTIFICATION_SYSTEM", name: "System notifications"},
-    {type: "NOTIFICATION_EMAIL", name: "E-mail notifications"},
-    {type: "NOTIFICATION_SMS", name: "SMS notifications"}
+    {type: this.currentType, name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_ALL},
+    {type: "LOGIN", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGIN},
+    {type: "LOGOUT", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGOUT},
+    {type: "LOGIN_FAILED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGIN_FAILED},
+    {type: "REGISTER", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REGISTER},
+    {type: "REQUEST_NEW", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_NEW},
+    {type: "REQUEST_COMPLETED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_COMPLETED},
+    {type: "REQUEST_CANCEL", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_CANCEL},
+    {type: "BOOK_BORROWED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_BORROWED},
+    {type: "BOOK_AVAILABLE_TO_BORROW", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_AVAILABLE_TO_BORROW},
+    {type: "BOOK_RESERVED_FIRST", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RESERVED_FIRST},
+    {type: "BOOK_RESERVED_QUEUE", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RESERVED_QUEUE},
+    {type: "BOOK_RENEWED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RENEWED},
+    {type: "BOOK_RETURNED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RETURNED},
+    {type: "BOOK_LOST", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_LOST},
+    {type: "NOTIFICATION_SYSTEM", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_SYSTEM},
+    {type: "NOTIFICATION_EMAIL", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_EMAIL},
+    {type: "NOTIFICATION_SMS", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_SMS}
   ]
 
   ngOnInit(): void {

@@ -3,6 +3,7 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { UserService } from '../../../../services/user.service';
 import { UserUpdate } from '../../../../shared/user-update';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-edit-phone-number',
@@ -10,7 +11,8 @@ import { UserUpdate } from '../../../../shared/user-update';
   styleUrl: './edit-phone-number.component.css'
 })
 export class EditPhoneNumberComponent implements ProfileSetting {
-  name: string = "Phone number"
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_EDIT_PHONE_NAME;
   routerLink: string = "edit/phone";
   userService = inject(UserService);
   authService = inject(AuthenticationService);
@@ -34,12 +36,12 @@ export class EditPhoneNumberComponent implements ProfileSetting {
 
   onSubmit(): void {
     if (!this.newPhone) {
-      this.setError('Phone number field cannot be empty.');
+      this.setError(TEXT.PROFILE_EDIT_PHONE_ERROR_MSG_EMPTY_FIELD);
       return;
     }
   
     if (!this.checkPhoneNumber()) {
-      this.setError('Please enter a valid phone number.');
+      this.setError(TEXT.PROFILE_EDIT_PHONE_ERROR_MSG_NOT_VALID);
       return;
     }
   

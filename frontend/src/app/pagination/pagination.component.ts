@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output} from '@angular/core';
 import { Page } from '../shared/page';
+import { TEXT } from '../shared/messages';
 
 
 @Component({
@@ -8,6 +9,7 @@ import { Page } from '../shared/page';
   styleUrl: './pagination.component.css'
 })
 export class PaginationComponent {
+  TEXT = TEXT;
   @Input() page: Page;
   @Output() pageChange = new EventEmitter<number>();
 

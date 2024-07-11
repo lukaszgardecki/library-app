@@ -169,14 +169,14 @@ public class LendingService {
             throw new UnsettledFineException();
         }
         if (member.getTotalBooksBorrowed() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
-            throw new CheckoutException(Message.LENDING_LIMIT_EXCEEDED);
+            throw new CheckoutException(Message.LENDING_LIMIT_EXCEEDED.getMessage());
         }
     }
 
     private void checkIfLendingCanBeRenewed(Lending lending) {
         boolean bookIsReserved = reservationService.isBookReserved(lending.getBookItem().getId());
         if (bookIsReserved || lending.isAfterDueDate()) {
-            throw new CheckoutException(Message.LENDING_CANNOT_BE_RENEWED);
+            throw new CheckoutException(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
     }
 

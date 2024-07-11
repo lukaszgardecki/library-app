@@ -58,7 +58,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -67,7 +67,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments", warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -76,7 +76,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -120,7 +120,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -130,7 +130,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -140,7 +140,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/payments/" + paymentId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -212,7 +212,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -222,7 +222,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -232,7 +232,7 @@ public class PaymentControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/payments/pay-fine", paymentToSave, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 

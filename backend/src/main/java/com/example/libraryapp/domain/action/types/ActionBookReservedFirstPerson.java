@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class ActionBookReservedFirstPerson extends Action {
     public ActionBookReservedFirstPerson(Long userId, LendingDto lending) {
         super(userId);
-        this.message = Message.ACTION_BOOK_RESERVED_FIRST_PERSON.formatted(
+        this.message = Message.ACTION_BOOK_RESERVED_FIRST_PERSON.getMessage(
                 lending.getDueDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 lending.getBookItem().getBook().getTitle()
         );

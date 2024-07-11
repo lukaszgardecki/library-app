@@ -75,14 +75,14 @@ public class RackService {
             Rack rackToSave = RackMapper.map(rack);
             Rack savedRack = rackRepository.save(rackToSave);
             return rackModelAssembler.toModel(savedRack);
-        } else throw new RackException(Message.RACK_LOCATION_ALREADY_EXISTS, rack.getLocationIdentifier());
+        } else throw new RackException(Message.RACK_LOCATION_ALREADY_EXISTS.getMessage(rack.getLocationIdentifier()));
     }
 
     public void deleteRackById(Long id) {
         Rack rack = findRack(id);
         if (rack.getBookItems().size() == 0) {
             rackRepository.deleteById(id);
-        } else throw new RackException(Message.RACK_CANNOT_BE_DELETED, rack.getLocationIdentifier());
+        } else throw new RackException(Message.RACK_DELETION_FAILED.getMessage(rack.getLocationIdentifier()));
     }
 
     private Rack findRack(Long id) {

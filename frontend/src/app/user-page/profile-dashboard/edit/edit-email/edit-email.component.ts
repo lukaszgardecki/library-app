@@ -3,6 +3,7 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 import { UserService } from '../../../../services/user.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { UserUpdate } from '../../../../shared/user-update';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-edit-email',
@@ -10,7 +11,8 @@ import { UserUpdate } from '../../../../shared/user-update';
   styleUrl: './edit-email.component.css'
 })
 export class EditEmailComponent implements ProfileSetting {
-  name: string = "Email address"
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_EDIT_EMAIL_NAME;
   routerLink: string = "edit/email";
   userService = inject(UserService);
   authService = inject(AuthenticationService);
@@ -34,12 +36,12 @@ export class EditEmailComponent implements ProfileSetting {
 
   onSubmit(): void {
     if (!this.newEmail) {
-      this.setError('Email field cannot be empty.');
+      this.setError(TEXT.PROFILE_EDIT_EMAIL_ERROR_MSG_EMPTY_FIELD);
       return;
     }
   
     if (!this.checkEmail()) {
-      this.setError('Please enter a valid email address.');
+      this.setError(TEXT.PROFILE_EDIT_EMAIL_ERROR_MSG_NOT_VALID);
       return;
     }
   

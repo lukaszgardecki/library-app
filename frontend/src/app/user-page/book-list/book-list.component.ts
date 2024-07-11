@@ -6,6 +6,7 @@ import { Language } from '../../models/language';
 import { Observable } from 'rxjs';
 import { BooksPage } from '../../models/books-page';
 import { Pageable } from '../../shared/pageable';
+import { TEXT } from '../../shared/messages';
 
 @Component({
   selector: 'app-book-list',
@@ -16,18 +17,19 @@ import { Pageable } from '../../shared/pageable';
   ]
 })
 export class BookListComponent implements OnInit, Pageable, Sortable {
+  TEXT = TEXT;
   booksPage$: Observable<BooksPage>;
   languages$: Observable<Language[]>;
   queryParams$: Observable<Params>;
   pageSizes: Size[] = [new Size(10), new Size(20), new Size(50), new Size(100)];
   sortTypes: SortType[] = [
-    new SortType("Domyślnie", ""),
-    new SortType("Tytuł rosnąco", "title,asc"),
-    new SortType("Tytuł malejąco", "title,desc"),
-    new SortType("Wydawca rosnąco", "publisher,asc"),
-    new SortType("Wydawca malejąco", "publisher,desc"),
-    new SortType("Strony rosnąco", "pages,asc"),
-    new SortType("Strony malejąco", "pages,desc")
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_DEFAULT, ""),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_TITLE_ASC, "title,asc"),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_TITLE_DESC, "title,desc"),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_PUBLISHER_ASC, "publisher,asc"),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_PUBLISHER_DESC, "publisher,desc"),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_PAGES_ASC, "pages,asc"),
+    new SortType(TEXT.BOOK_LIST_SORT_TYPE_PAGES_DESC, "pages,desc")
   ];
 
   constructor(

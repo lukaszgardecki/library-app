@@ -4,6 +4,17 @@
       <ul>
         <li><i class="fa fa-phone"></i> +00 (123) 456 7890</li>
         <li><i class="fa fa-envelope-o"></i> info&#64;domain.com</li>
+        <li class="dropdown" (click)="dropdown()">
+          <span class="dropdown-toggle">{{selectedLangName}}</span><i class="fa fa-caret-down"></i>
+          <ul class="dropdown-menu">
+            <li *ngFor="let lang of languages" 
+                (click)="switchLanguage(lang)" 
+                [ngClass]="{selected: selectedLangName == lang.name}"
+            >
+              {{lang.name}}
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
 
@@ -11,16 +22,16 @@
       <ng-container>
         <ul *ngIf="!isLoggedIn; else loggedIn">
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
-          <li><a href="/login">Login</a></li>
-          <li><a href="#">Register</a></li>
+          <li><a href="/login">{{ TEXT.TOP_BAR_LOGIN | translate }}</a></li>
+          <li><a href="#">{{ TEXT.TOP_BAR_REGISTER | translate }}</a></li>
         </ul>
       </ng-container>
       <ng-template #loggedIn>
         <ul>
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
-          <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">Warehouse</a></li>
-          <li><a [routerLink]="['/userprofile']">Profile</a></li>
-          <li><a [routerLink]="['/login']" (click)="logout()">Logout</a></li>
+          <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">{{ TEXT.TOP_BAR_WAREHOUSE | translate }}</a></li>
+          <li><a [routerLink]="['/userprofile']">{{ TEXT.TOP_BAR_PROFILE | translate }}</a></li>
+          <li><a [routerLink]="['/login']" (click)="logout()">{{ TEXT.TOP_BAR_LOGOUT | translate }}</a></li>
         </ul>
       </ng-template>
     </div>
@@ -50,16 +61,16 @@
   <nav id="mainav" class="hoc clear">
     <ul class="clear">
       <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a [routerLink]="['']" >Home</a>
+        <a [routerLink]="['']" >{{ TEXT.MAIN_NAV_HOME | translate }}</a>
       </li>
       <li routerLinkActive="active" [routerLinkActiveOptions]="{ matrixParams: 'exact', queryParams: 'ignored', paths: 'exact', fragment: 'exact' }">
-        <a [routerLink]="['/books']">Books</a>
+        <a [routerLink]="['/books']">{{ TEXT.MAIN_NAV_BOOKS | translate }}</a>
       </li>
     </ul>
     <form (change)="onNavigate($event)">
       <select>
-        <option value="/">Home</option>
-        <option value="/books">Books</option>
+        <option value="/">{{ TEXT.MAIN_NAV_HOME | translate }}</option>
+        <option value="/books">{{ TEXT.MAIN_NAV_BOOKS | translate }}</option>
       </select>
     </form>
   </nav>

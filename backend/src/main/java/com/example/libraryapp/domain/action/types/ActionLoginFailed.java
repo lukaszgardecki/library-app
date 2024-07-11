@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionLoginFailed extends Action {
     public ActionLoginFailed(MemberDto member) {
         super(member.getId());
-        this.message = Message.ACTION_LOGIN_FAILED.formatted(
+        this.message = Message.ACTION_LOGIN_FAILED.getMessage(
                 member.getFirstName(),
                 member.getLastName(),
                 member.getCard().getBarcode()

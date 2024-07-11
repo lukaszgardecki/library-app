@@ -80,7 +80,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/notifications?memberId=" + memberId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -89,7 +89,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/notifications", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -98,12 +98,12 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(GET, "/notifications", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(GET, "/notifications?memberId=2", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -147,7 +147,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/notifications/" + notificationId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -159,7 +159,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/notifications/" + notificationId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.NOTIFICATION_NOT_FOUND.formatted(notificationId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.NOTIFICATION_NOT_FOUND.getMessage(notificationId));
         }
 
         @ParameterizedTest
@@ -171,7 +171,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/notifications/" + notificationId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -216,7 +216,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/notifications/" + notificationId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
 
             NotificationDto response = client.testRequest(GET, "/notifications/" + notificationId, admin, OK)
                     .expectBody(NotificationDto.class)
@@ -236,7 +236,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/notifications/" + notificationId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             NotificationDto response = client.testRequest(GET, "/notifications/" + notificationId, admin, OK)
                     .expectBody(NotificationDto.class)
@@ -273,7 +273,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/notifications/" + notificationId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
             assertThatNotificationExists(notificationId);
         }
 
@@ -284,7 +284,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/notifications/" + notificationId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
             assertThatNotificationExists(notificationId);
         }
 
@@ -340,7 +340,7 @@ public class NotificationControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/notifications", notificationIds, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             notificationIds.forEach(el -> assertThatNotificationExists(el));
         }
@@ -358,6 +358,6 @@ public class NotificationControllerTest extends BaseTest {
         ErrorMessage responseBody = client.testRequest(GET, "/notifications/" + notificationId, admin, NOT_FOUND)
                 .expectBody(ErrorMessage.class)
                 .returnResult().getResponseBody();
-        assertThat(responseBody.getMessage()).isEqualTo(Message.NOTIFICATION_NOT_FOUND.formatted(notificationId));
+        assertThat(responseBody.getMessage()).isEqualTo(Message.NOTIFICATION_NOT_FOUND.getMessage(notificationId));
     }
 }

@@ -14,11 +14,11 @@ public class ActionBookBorrowed extends Action {
     public ActionBookBorrowed(LendingDto lending) {
         super(lending.getMember().getId());
         if (lending.getBookItem().getIsReferenceOnly()) {
-            this.message = Message.ACTION_BOOK_BORROWED_ON_SITE.formatted(
+            this.message = Message.ACTION_BOOK_BORROWED_ON_SITE.getMessage(
                     lending.getBookItem().getBook().getTitle()
             );
         } else {
-            this.message = Message.ACTION_BOOK_BORROWED.formatted(
+            this.message = Message.ACTION_BOOK_BORROWED.getMessage(
                     lending.getBookItem().getBook().getTitle()
             );
         }

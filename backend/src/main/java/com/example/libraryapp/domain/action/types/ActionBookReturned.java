@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class ActionBookReturned extends Action {
     public ActionBookReturned(LendingDto lending) {
         super(lending.getMember().getId());
-        this.message = Message.ACTION_BOOK_RETURNED.formatted(
+        this.message = Message.ACTION_BOOK_RETURNED.getMessage(
                 lending.getBookItem().getBook().getTitle()
         );
     }

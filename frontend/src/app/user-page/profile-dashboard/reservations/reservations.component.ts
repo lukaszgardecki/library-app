@@ -4,6 +4,7 @@ import { Reservation } from '../../../models/reservation';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { PdfService } from '../../../services/pdf.service';
 import { ReservationService } from '../../../services/reservation.service';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-reservations',
@@ -11,7 +12,8 @@ import { ReservationService } from '../../../services/reservation.service';
   styleUrl: './reservations.component.css'
 })
 export class ReservationsComponent implements ProfileSetting {
-  name: string = "Reservations";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_RESERVATIONS_NAME;
   routerLink: string = "reservations";
   reservationService = inject(ReservationService);
   reservedItems: Array<Reservation>;
