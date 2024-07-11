@@ -51,7 +51,7 @@ public class NotificationService {
     @Transactional
     public void markAsRead(Long id) {
         Notification notification = findNotification(id);
-        notification.setRead(true);
+        notification.setIsRead(true);
     }
 
     public void deleteNotification(Long id) {

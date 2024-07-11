@@ -12,7 +12,7 @@ public class NotificationDtoMapper {
                 .subject(notification.getSubject())
                 .content(notification.getContent())
                 .memberId(notification.getMemberId())
-                .read(notification.getRead())
+                .read(notification.getIsRead())
                 .bookId(notification.getBookId())
                 .bookTitle(notification.getBookTitle())
                 .build();
