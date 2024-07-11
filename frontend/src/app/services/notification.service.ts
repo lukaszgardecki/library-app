@@ -87,9 +87,9 @@ export class NotificationService {
 
   markNotificationAsRead(notification: Notification) {
     this.currentNotificationSubject.next(notification);
-    if (notification.read === false) {
+    if (notification.isRead === false) {
       this.http.post<void>(`${this.baseURL}/${notification.id}`, {}, { withCredentials: true }).subscribe({
-        next: () =>  notification.read = true
+        next: () =>  notification.isRead = true
       });
     }
   }

@@ -7,6 +7,6 @@ export class Notification {
     bookTitle: string;
     memberId: number;
     type: string;
-    read: boolean;
+    isRead: boolean;
     selected: boolean = false;
 }

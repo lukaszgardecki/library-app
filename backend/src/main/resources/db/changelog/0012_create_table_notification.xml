@@ -17,7 +17,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="book_title" type="VARCHAR(500)"/>
             <column name="member_id" type="BIGINT"/>
             <column name="type" type="VARCHAR(50)"/>
-            <column name="read" type="BOOLEAN"/>
+            <column name="is_read" type="BOOLEAN"/>
         </createTable>
         <modifySql dbms="mysql">
             <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>

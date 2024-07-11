@@ -1,6 +1,7 @@
 package com.example.libraryapp;
 
 import com.example.libraryapp.web.BaseTest;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class TestHelper {
         return client.method(method)
                 .uri(BaseTest.API_PREFIX + URI)
                 .header(HttpHeaders.AUTHORIZATION, auth.getAccessToken())
+                .header(HttpHeaders.ACCEPT_LANGUAGE, LocaleContextHolder.getLocale().getLanguage())
                 .cookie(auth.getFgpCookie().getName(), auth.getFgpCookie().getValue())
                 .body(BodyInserters.fromValue(body))
                 .exchange()
@@ -33,6 +35,7 @@ public class TestHelper {
         return client.method(method)
                 .uri(BaseTest.API_PREFIX + URI)
                 .header(HttpHeaders.AUTHORIZATION, auth.getAccessToken())
+                .header(HttpHeaders.ACCEPT_LANGUAGE, LocaleContextHolder.getLocale().getLanguage())
                 .cookie(auth.getFgpCookie().getName(), auth.getFgpCookie().getValue())
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus);
@@ -43,6 +46,7 @@ public class TestHelper {
     ) {
         return client.method(method)
                 .uri(BaseTest.API_PREFIX + URI)
+                .header(HttpHeaders.ACCEPT_LANGUAGE, LocaleContextHolder.getLocale().getLanguage())
                 .body(BodyInserters.fromValue(body))
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus);
@@ -53,6 +57,7 @@ public class TestHelper {
     ) {
         return client.method(method)
                 .uri(BaseTest.API_PREFIX + URI)
+                .header(HttpHeaders.ACCEPT_LANGUAGE, LocaleContextHolder.getLocale().getLanguage())
                 .exchange()
                 .expectStatus().isEqualTo(expectedStatus);
     }

@@ -24,7 +24,7 @@ public abstract class Notification {
     protected String content;
     @Formula("type")
     protected String type;
-    protected Boolean read;
+    protected Boolean isRead;
 
     protected Long bookId;
     protected String bookTitle;
@@ -34,6 +34,6 @@ public abstract class Notification {
     protected Notification(Long memberId) {
         this.memberId = memberId;
         this.createdAt = LocalDateTime.now();
-        this.read = false;
+        this.isRead = false;
     }
 }
