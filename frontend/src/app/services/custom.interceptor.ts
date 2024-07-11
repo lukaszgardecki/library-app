@@ -46,7 +46,8 @@ export class AuthInterceptor implements HttpInterceptor {
   private addTokenHeader(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Accept-Language': `${this.storageService.getUserLanguage()}`
         }
       });
   }

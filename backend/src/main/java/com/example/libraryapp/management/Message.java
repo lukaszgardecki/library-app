@@ -1,8 +1,7 @@
 package com.example.libraryapp.management;
 
 import org.springframework.context.MessageSource;
-
-import java.util.Locale;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 public enum Message {
 
@@ -123,10 +122,6 @@ public enum Message {
     }
 
     public String getMessage(Object... params) {
-        return getMessage(Locale.getDefault(), params);
-    }
-
-    public String getMessage(Locale locale, Object... params) {
-        return messageSource.getMessage(key, params, locale);
+        return messageSource.getMessage(key, params, LocaleContextHolder.getLocale());
     }
 }
