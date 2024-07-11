@@ -1,0 +1,23 @@
+<h1>{{ name | translate }}</h1>
+<ng-container *ngIf="reservedItems && reservedItems.length > 0; else lack">
+    <button class="save-to-file" (click)="saveAsPDF()">
+        {{ TEXT.BTN_SAVE_TO_FILE | translate }}
+    </button>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="c2">{{ TEXT.PROFILE_RESERVATIONS_TITLE | translate }}</th>
+                <th>{{ TEXT.PROFILE_RESERVATIONS_RETURN_DATE | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let reservedItem of reservedItems; let i = index">
+                <td>{{i + 1}}.</td>
+                <td><a [routerLink]="['/books', reservedItem.bookItem.book.id]">{{reservedItem.bookItem.book.title}}</a></td>
+                <td>{{reservedItem.bookItem.dueDate | date: "dd/MM/yyyy"}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
+<ng-template #lack>{{ TEXT.PROFILE_RESERVATIONS_LACK | translate }}</ng-template>

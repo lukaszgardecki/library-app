@@ -32,7 +32,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -41,7 +41,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -61,7 +61,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/1", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -70,7 +70,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -87,7 +87,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/5/book-items", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -96,7 +96,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/5/book-items", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -121,7 +121,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/search?q=123-I-12", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -130,7 +130,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/search?q=123-I-12", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -161,7 +161,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/racks/1", rackToUpdate, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -171,7 +171,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PUT, "/racks/1", rackToUpdate, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -202,7 +202,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/racks/1", rackToUpdate, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -212,7 +212,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/racks/1", rackToUpdate, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -235,7 +235,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/racks", rackToAdd, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_LOCATION_ALREADY_EXISTS.formatted(rackLocation));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_LOCATION_ALREADY_EXISTS.getMessage(rackLocation));
         }
 
         @Test
@@ -245,7 +245,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/racks", rackToAdd, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -255,7 +255,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/racks", rackToAdd, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -275,7 +275,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/racks/" + rackId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_NOT_FOUND.formatted(rackId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_NOT_FOUND.getMessage(rackId));
         }
 
         @Test
@@ -289,7 +289,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/racks/" + rackId, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_CANNOT_BE_DELETED.formatted(rackDto.getLocationIdentifier()));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RACK_DELETION_FAILED.getMessage(rackDto.getLocationIdentifier()));
 
             client.testRequest(GET, "/racks/" + rackId, admin, OK)
                     .expectBody(RackDto.class);
@@ -301,7 +301,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/racks/1", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -310,7 +310,7 @@ public class RackControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(DELETE, "/racks/1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 

@@ -1,0 +1,30 @@
+<h1>{{notification.subject}}</h1>
+
+<div class="btn-bar">
+  <button class="button btn-1" (click)="goBack()">
+    {{ TEXT.BTN_BACK | translate }}
+  </button>
+  <div class="right-side">
+    <button class="button btn-2 btn-delete" (click)="delete(notification.id)">
+      {{ TEXT.PROFILE_NOTIFICATIONS_BTN_DELETE | translate }}
+    </button>
+  </div>
+</div>
+
+<div class="notification-details">
+  <div class="notification-info">
+    <div class="row">
+      <strong>{{ TEXT.PROFILE_NOTIFICATIONS_CREATION_DATE | translate }}:</strong>
+      <span>{{notification.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</span>
+    </div>
+    <div class="row">
+      <strong>{{ TEXT.PROFILE_NOTIFICATIONS_CONTENT | translate }}:</strong>
+      <span style="white-space: pre-line;">{{notification.content}}</span>
+    </div>
+    <div class="row">
+      <strong>{{ TEXT.PROFILE_NOTIFICATIONS_DOCUMENT | translate }}:</strong>
+      <span><a [routerLink]="['/books', notification.bookId]">{{notification.bookTitle}}</a></span>
+    </div>
+  </div>
+</div>
+

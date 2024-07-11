@@ -1,7 +1,7 @@
 <div class="pagination no-select">
   <ul>
     <li>
-      <a (click)="isSelectedFirst() ? '' : goPrevPage()" [ngStyle]="{'cursor': isSelectedFirst() ? 'not-allowed' : 'pointer'}">&laquo; Previous</a>
+      <a (click)="isSelectedFirst() ? '' : goPrevPage()" [ngStyle]="{'cursor': isSelectedFirst() ? 'not-allowed' : 'pointer'}">&laquo; {{ TEXT.PAGINATION_PREV | translate }}</a>
     </li>
     <!-- 1 element -->
     <li [ngClass]="{'current': isActive(1)}">
@@ -33,7 +33,7 @@
     </li>
 
     <li>
-      <a (click)="isSelectedLast() ? '' : goNextPage()" [ngStyle]="{'cursor': isSelectedLast() ? 'not-allowed' : 'pointer'}">Next &raquo;</a>
+      <a (click)="isSelectedLast() ? '' : goNextPage()" [ngStyle]="{'cursor': isSelectedLast() ? 'not-allowed' : 'pointer'}">{{ TEXT.PAGINATION_NEXT | translate }} &raquo;</a>
     </li>
   </ul>
 </div> 

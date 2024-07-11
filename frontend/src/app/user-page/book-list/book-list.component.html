@@ -1,0 +1,121 @@
+<div class="bgded overlay imgcenter" style="background-image:url('../images/demo/backgrounds/b2.jpg');">
+    <div id="breadcrumb" class="hoc clear"> 
+      <!-- ################################################################################################ -->
+      <h6 class="heading">{{ TEXT.MAIN_NAV_BOOKS | translate }}</h6>
+      <!-- ################################################################################################ -->
+      <ul>
+        <li><a routerLink="" routerLinkActive="active">{{ TEXT.MAIN_NAV_HOME | translate }}</a></li>
+        <li><a>{{ TEXT.MAIN_NAV_BOOKS | translate }}</a></li>
+      </ul>
+      <!-- ################################################################################################ -->
+    </div>
+</div>
+    <!-- ################################################################################################ -->
+    <!-- ################################################################################################ -->
+    <!-- ################################################################################################ -->
+    <div class="wrapper row3">
+      <main class="hoc container clear"> 
+        <!-- main body -->
+        <!-- ################################################################################################ -->
+        <div class="sidebar one_quarter first"> 
+          <!-- ################################################################################################ -->
+          <!-- <h6>Books</h6> -->
+          
+          <div class="accordion" id="filtering">
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sorting-body" aria-expanded="false" aria-controls="sorting-body">
+                  {{ TEXT.BOOK_LIST_SORT_BY | translate }}
+                </button>
+              </h2>
+              <div id="sorting-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
+                <div class="accordion-body">
+                  <ul>
+                    <li *ngFor="let sortType of sortTypes" (click)="sort(sortType)" [ngClass]="{'selected': sortType.selected}">{{ sortType.name | translate }}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sizing-body" aria-expanded="false" aria-controls="sizing-body">
+                  {{ TEXT.BOOK_LIST_PAGE_SIZE | translate }}
+                </button>
+              </h2>
+              <div id="sizing-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
+                <div class="accordion-body">
+                  <ul>
+                    <li *ngFor="let size of pageSizes" (click)="changeSize(size)" [ngClass]="{'selected': size.selected }">{{size.value}}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" *ngIf="languages$ | async as languages">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#language-body" aria-expanded="false" aria-controls="language-body">
+                  {{ TEXT.BOOK_LIST_LANGUAGE | translate }}
+                </button>
+              </h2>
+              <div id="language-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
+                <div class="accordion-body">
+                  <ul>
+                    <li *ngFor="let language of languages" (click)="getAllByLanguage(language)" [ngClass]="{'selected': language.selected}">
+                      <span>{{language.name}}</span>
+                      <div>{{language.amount}}</div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- ################################################################################################ -->
+        <!-- ################################################################################################ -->
+
+        
+        <div class="content three_quarter" *ngIf="booksPage$ | async as booksPage">
+
+          <ng-container *ngIf="booksPage._embedded; else noBooks">
+
+            <app-pagination (pageChange)="loadPage($event)" [page]="booksPage.page"></app-pagination>
+          
+            <div id="list">
+              <ul>
+                <li *ngFor="let book of booksPage._embedded.bookDtoList">
+                  <div class="img-container">
+                      <img src="./../../../images/book_placeholder.png" alt="Zdjęcie">
+                  </div>
+  
+                  
+                  <div class="list-cont">
+                      <header><a [routerLink]="['/books', book.id]">{{book.title}}</a></header>
+                      <div class="list-cont-row">
+                          <div><b>{{ TEXT.BOOK_LIST_PUBLISHER | translate }}:</b></div>
+                          <div>{{book.publisher}}</div>
+                      </div>
+                      <div class="list-cont-row">
+                          <div><strong>{{ TEXT.BOOK_LIST_SUBJECT | translate }}:</strong></div>
+                          <div>{{book.subject}}</div>
+                      </div>
+                  </div>
+                  
+                  <div class="list-actions">
+
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <app-pagination (pageChange)="loadPage($event)" [page]="booksPage.page"></app-pagination>
+
+          </ng-container>
+
+          <ng-template #noBooks>{{ TEXT.BOOK_LIST_LACK | translate }}</ng-template>
+        </div>
+
+        <div class="clear"></div>
+      </main>
+    </div>

@@ -21,7 +21,7 @@ export class NotificationService {
     private configService: ConfigService,
     private authenticationService: AuthenticationService,
     private websocketService: WebsocketService
-  ) { 
+  ) {
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/notifications`;
 
@@ -57,7 +57,7 @@ export class NotificationService {
           currentPage.page.totalPages = Math.ceil(currentPage.page.totalElements / currentPage.page.size);
 
           this.notificationsPageSubject.next(currentPage);
-        } 
+        }
       })
     );
   }
@@ -67,7 +67,7 @@ export class NotificationService {
         .filter(el => el.selected)
         .map(el => el.id);
     if (ids.length > 0) {
-      
+
       this.http.delete<void>(`${this.baseURL}`, { body: ids, withCredentials: true }).subscribe({
         next: () => {
           const currentPageNum = this.notificationsPageSubject.value.page.number;
@@ -103,7 +103,6 @@ export class NotificationService {
     this.http.get<NotificationsPage>(`${this.baseURL}`, { params: params, withCredentials: true })
       .subscribe({
         next: notificationPage => {
-          console.log(notificationPage);
           this.notificationsPageSubject.next(notificationPage);
         }
       });
@@ -118,22 +117,28 @@ export class NotificationService {
     });
   }
 
-
-
   private addNotification(newNotification: Notification): void {
     const currentPage = this.notificationsPageSubject.value;
-    
+
     if (currentPage.page.number == 0) {
-      // add the new element, delete the last element
-      let currentNotifications = currentPage._embedded.notificationDtoList;
-      currentNotifications = currentNotifications.slice(0, currentNotifications.length-1);
-      currentNotifications = [...currentNotifications, newNotification];
-      currentPage.page.totalElements = currentPage.page.totalElements + 1;
-      currentPage.page.totalPages = Math.ceil(currentPage.page.totalElements / currentPage.page.size);
-      currentPage._embedded.notificationDtoList = this.sortByDateDesc(currentNotifications);
+      this.updateNotificationsPage(currentPage, newNotification);
+      this.notificationsPageSubject.next(currentPage);
     }
-    
-    this.notificationsPageSubject.next(currentPage);
+  }
+
+  private updateNotificationsPage(currentPage: NotificationsPage, newNotification: Notification): void {
+    let currentNotifications: Array<Notification> = currentPage._embedded?.notificationDtoList || [];
+
+    if (currentNotifications.length >= currentPage.page.size) {
+      currentNotifications = currentNotifications.slice(0, -1);
+    }
+
+    currentNotifications = [...currentNotifications, newNotification];
+    currentNotifications = this.sortByDateDesc(currentNotifications);
+
+    currentPage._embedded = { notificationDtoList: currentNotifications };
+    currentPage.page.totalElements += 1;
+    currentPage.page.totalPages = Math.ceil(currentPage.page.totalElements / currentPage.page.size);
   }
 
   private sortByDateDesc(notifications: Notification[]) {

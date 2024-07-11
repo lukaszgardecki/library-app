@@ -6,7 +6,7 @@ import com.example.libraryapp.domain.reservation.ReservationStatus;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ReservationResponse extends RepresentationModel<ReservationResponse> {
     private Long id;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
     private ReservationStatus status;
     private MemberDto member;
     private BookItemDto bookItem;

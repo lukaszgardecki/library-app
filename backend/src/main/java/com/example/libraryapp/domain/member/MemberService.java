@@ -24,6 +24,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -79,6 +80,7 @@ public class MemberService {
         checkIfUserHasAnyCharges(member);
         updateBookItemsStatus(member);
         cancelAllReservations(member);
+        deleteItemsIds(member);
         memberRepository.deleteById(id);
     }
 
@@ -107,6 +109,11 @@ public class MemberService {
                 .stream()
                 .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
                 .forEach(Reservation::updateAfterCancelling);
+    }
+
+    private void deleteItemsIds(Member member) {
+        member.setLoanedItemsIds(Collections.emptyList());
+        member.setReservedItemsIds(Collections.emptyList());
     }
 
     private void updateBookItemsStatus(Member member) {

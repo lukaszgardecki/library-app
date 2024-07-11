@@ -5,7 +5,7 @@ import com.example.libraryapp.management.Message;
 public class RackNotFoundException extends RuntimeException {
 
     public RackNotFoundException(Long id) {
-        super(String.format(Message.RACK_NOT_FOUND, id));
+        super(Message.RACK_NOT_FOUND.getMessage(id));
     }
 
 }

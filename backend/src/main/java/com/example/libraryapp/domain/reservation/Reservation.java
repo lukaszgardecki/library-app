@@ -5,19 +5,20 @@ import com.example.libraryapp.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     // TODO: 05.12.2023 dodać dueDate...
 
@@ -35,7 +36,5 @@ public class Reservation {
     public void updateAfterCancelling() {
         status = ReservationStatus.CANCELED;
     }
-    public void updateAfterLending() {
-        status = ReservationStatus.COMPLETED;
-    }
+
 }

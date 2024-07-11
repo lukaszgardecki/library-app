@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.notification.dto;
 
-import com.example.libraryapp.domain.notification.NotificationType;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -19,6 +18,6 @@ public class NotificationDto extends RepresentationModel<NotificationDto> {
     private Long bookId;
     private String bookTitle;
     private Long memberId;
-    private NotificationType type;
+    private String type;
     private Boolean read;
 }

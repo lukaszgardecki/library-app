@@ -1,0 +1,323 @@
+{
+    "BTN": {
+        "BACK": "Wróć",
+        "SAVE_TO_FILE": "Zapisz do pliku"
+    },
+
+    "TOP_BAR": {
+        "LOGIN": "Logowanie",
+        "LOGOUT": "Wyloguj",
+        "REGISTER": "Rejestracja",
+        "PROFILE": "Profil",
+        "WAREHOUSE": "Magazyn"
+    },
+    
+    "MAIN_NAV": {
+        "HOME": "Strona główna",
+        "BOOKS": "Książki"
+    },
+
+    "LOGIN": {
+        "HEADER": "Logowanie",
+        "USERNAME": {
+            "LABEL": "Nazwa użytkownika",
+            "VALID_MSG": "Nazwa użytkownika wymagana",
+            "PLACEHOLDER": "Wpisz nazwę użytkownika"
+        },
+        "PASSWORD": {
+            "LABEL": "Hasło",
+            "VALID_MSG": "Hasło jest wymagane",
+            "PLACEHOLDER": "Wpisz hasło",
+            "FORGOT": "Nie pamiętasz hasła?"
+        },
+        "BTN": "Zaloguj",
+        "NOT_HAVE_ACCOUNT": "Nie masz konta?",
+        "SIGN_UP": "Zarejestruj się",
+        "SIGN_UP_ALSO": "Możesz również dołączyć przez"
+    },
+
+    "BOOK_LIST": {
+        "SORT_BY": "Sortuj",
+        "SORT_TYPE": {
+            "DEFAULT": "Domyślnie",
+            "TITLE_ASC": "Tytuł rosnąco",
+            "TITLE_DESC": "Tytuł malejąco",
+            "PUBLISHER_ASC": "Wydawca rosnąco",
+            "PUBLISHER_DESC": "Wydawca malejąco",
+            "PAGES_ASC": "Strony rosnąco",
+            "PAGES_DESC": "Strony malejąco"
+        },
+        "PAGE_SIZE": "Rozmiar strony",
+        "LANGUAGE": "Język",
+        "PUBLISHER": "Wydawca",
+        "SUBJECT": "Temat",
+        "LACK": "Brak książek"
+    },
+
+    "BOOK_DETAILS": {
+        "HEADER": "Szczegóły",
+        "TITLE": "Tytuł",
+        "AUTHORS": "Autorzy",
+        "PUBLISHER": "Wydawca",
+        "PUBLICATION": "Wydanie",
+        "PUBLICATION_YEAR": "Rok wydania",
+        "LANGUAGE": "Język",
+        "PAGES": "Strony",
+        "ISBN": "ISBN",
+        "NOTES": "Uwagi",
+        "SUBJECT": "Temat",
+        "GENRE": "Gatunek/Forma",
+        "LOANABLE_ITEMS": "Dokumenty przeznaczone do wypożyczenia",
+        "ON_SITE_ITEMS": "Dokumenty przeznaczone do udostępnienia na miejscu",
+        "CALL_NUMBER": "Sygnatura",
+        "STATUS": {
+            "NAME": "Status",
+            "AVAILABLE": "Dostępny",
+            "UNAVAILABLE": "Niedostępny",
+            "LOANED": "Wypożyczony",
+            "RESERVED": "Zarezerwowano",
+            "BORROWED": "Wypożyczono"
+        },
+        "LOCATION": "Lokalizacja",
+        "BTN_REQUEST": "Zamów",
+        "BTN_RESERVE": "Rezerwuj"
+    },
+
+    "PROFILE": {
+        "DETAILS": {
+            "NAME": "Dane osobowe",
+            "HEADER": {
+                "ID": "Identyfikatory",
+                "PERSONAL": "Dane osobowe",
+                "ACCOUNT": "Szczegóły konta"
+            },
+            "USER_ID": "ID czytelnika",
+            "EMAIL": "Adres e-mail",
+            "SURNAME": "Nazwisko",
+            "FORENAME": "Imię",
+            "BIRTH_DATE": "Data urodzenia",
+            "GENDER": {
+                "NAME": "Płeć",
+                "MALE": "Mężczyzna",
+                "FEMALE": "Kobieta",
+                "OTHER": "Inna"
+            },
+            "NATIONALITY": "Narodowość",
+            "ADDRESS": "Adres zamieszkania",
+            "PARENTS": "Imiona rodziców",
+            "PESEL": "Pesel",
+            "PHONE": "Telefon",
+            "CARD": {
+                "ID": "Karta czytelnika",
+                "NUM": "Numer karty",
+                "ISSUE_DATE": "Termin ważności karty",
+                "STATUS": {
+                    "NAME": "Status karty",
+                    "ACTIVE": "Aktywna",
+                    "INACTIVE": "Nieaktywna",
+                    "LOST": "Zgubiona"
+                }
+            },
+            "ACCOUNT": {
+                "AVAILABILITY_DATE": "Termin ważności",
+                "LENT_ITEMS": "Wypożyczenia",
+                "STATUS": {
+                    "NAME": "Status konta",
+                    "ACTIVE": "Aktywne",
+                    "INACTIVE": "Nieaktywne",
+                    "CLOSED": "Zamknięte",
+                    "SUSPENDED": "Zawieszone",
+                    "PENDING": "Oczekuje na potwierdzenie"
+                }
+            }
+        },
+        "NOTIFICATIONS": {
+            "NAME": "Powiadomienia",
+            "CREATION_DATE": "Data utworzenia",
+            "SUBJECT": "Temat",
+            "BTN": {
+                "DELETE": "Usuń",
+                "SELECT_ALL": "Zaznacz wszystkie",
+                "UNSELECT_ALL": "Odznacz wszystkie"
+            },
+            "CONTENT": "Treść",
+            "DOCUMENT": "Dokument",
+            "LACK": "Brak powiadomień"
+        },
+        "BORROWED_ITEMS": {
+            "NAME": "Dokumenty wypożyczone",
+            "TITLE": "Tytuł",
+            "RETURN_DATE": "Data zwrotu",
+            "LACK": "Brak dokumentów"
+        },
+        "ON_SITE_ITEMS": {
+            "NAME": "Dokumenty udostępnione",
+            "TITLE": "Tytuł",
+            "RETURN_DATE": "Data zwrotu",
+            "LACK": "Brak dokumentów"
+        },
+        "REQUESTED_ITEMS": {
+            "NAME": "Dokumenty zamówione",
+            "UNSENT": {
+                "NAME": "Przed wysłaniem zamówienia"
+            },
+            "PENDING": {
+                "NAME": "W trakcie realizacji",
+                "TITLE": "Tytuł",
+                "LACK": "Brak dokumentów"
+            },
+            "COMPLETED": {
+                "NAME": "Zrealizowane",
+                "TITLE": "Tytuł",
+                "LACK": "Brak dokumentów"
+            }
+        },
+        "RESERVATIONS": {
+            "NAME": "Rezerwacje",
+            "TITLE": "Tytuł",
+            "RETURN_DATE": "Data zwrotu",
+            "LACK": "Brak dokumentów"
+        },
+        "RENEWABLE_ITEMS": {
+            "NAME": "Prolongaty",
+            "TITLE": "Tytuł",
+            "RETURN_DATE": "Data zwrotu",
+            "ACTION": "Akcja",
+            "BTN": {
+                "RENEW": "Prolonguj"
+            },
+            "LACK": "Brak dokumentów"
+        },
+        "USER_HISTORY": {
+            "NAME": "Historia czytelnika",
+            "SORT": {
+                "BY_DATE": "Sortuj",
+                "DESC": "Od najnowszych",
+                "ASC": "Od najstarszych"
+            },
+            "KIND": "Rodzaj historii",
+            "ACTION_TYPE": {
+                "ALL": "Wszystko",
+                "LOGIN": "Logowania",
+                "LOGOUT": "Wylogowania",
+                "LOGIN_FAILED": "Nieudane logowania",
+                "REGISTER": "Utworzenie konta",
+                "REQUEST_NEW": "Nowe zamówienie",
+                "REQUEST_COMPLETED": "Zamówienia zrealizowane",
+                "REQUEST_CANCEL": "Zamówienia anulowane",
+                "BOOK_BORROWED": "Wypożyczenia",
+                "BOOK_AVAILABLE_TO_BORROW": "Powiadomienia o dostępności",
+                "BOOK_RESERVED_FIRST": "Rezerwacje",
+                "BOOK_RESERVED_QUEUE": "Rezerwacje - kolejka",
+                "BOOK_RENEWED": "Prolongaty",
+                "BOOK_RETURNED": "Zwroty",
+                "BOOK_LOST": "Dokumenty zgubione",
+                "NOTIFICATION_SYSTEM": "Powiadomienia systemowe",
+                "NOTIFICATION_EMAIL": "Powiadomienia email",
+                "NOTIFICATION_SMS": "Powiadomienia SMS"
+            },
+            "DATE": "Data",
+            "TIME": "Godzina",
+            "DESCRIPTION": "Opis",
+            "LACK": "Brak aktywności"
+        },
+        "FEES": {
+            "NAME": "Opłaty",
+            "NOT_ACCOUNTED": {
+                "NAME": "Nierozliczone"
+            },
+            "ACCOUNTED": {
+                "NAME": "Rozliczone"
+            }
+        },
+        "EDIT": {
+            "NAME": "Zmiana danych",
+            "PASSWORD": {
+                "NAME": "Zmiana hasła",
+                "NEW": {
+                    "LABEL": "Nowe hasło",
+                    "PLACEHOLDER": "Nowe hasło"
+                },
+                "REPEAT": {
+                    "LABEL": "Powtórz hasło",
+                    "PLACEHOLDER": "Powtórz hasło"
+                },
+                "REQ": {
+                    "MIN_LENGTH": "Minimalna liczba znaków: {{minPassLength}}.",
+                    "LOW_CASE_LETTER": "Minimalna liczba małych liter: {{minLowerCaseChars}}.",
+                    "UP_CASE_LETTER": "Minimalna liczba wielkich liter: {{minUpperCaseChars}}.",
+                    "DIGIT": "Minimalna liczba cyfr: {{minDigitChars}}."
+                },
+                "VALID_MSG": {
+                    "NOT_MATCH": "Hasła się nie zgadzają.",
+                    "NOT_VALID": "Hasło musi mieć co najmniej {{minPassLength}} znaków i zawierać co najmniej {{minLowerCaseChars}} małą literę, {{minUpperCaseChars}} wielką literę oraz {{minDigitChars}} cyfrę.",
+                    "NOT_VALID_AND_NOT_MATCH": "Hasło musi mieć co najmniej {{minPassLength}} znaków i zawierać co najmniej {{minLowerCaseChars}} małą literę, {{minUpperCaseChars}} wielką literę oraz {{minDigitChars}} cyfrę. Hasła się nie zgadzają.",
+                    "EMPTY_FIELD": "Proszę wypełnić wszystkie pola i upewnić się, że hasła się zgadzają i spełniają kryteria."
+                },
+                "SUCCESS_MSG": "Twoje hasło zostało pomyślnie zmienione.",
+                "CHANGE_BTN": "Zmień hasło"
+            },
+            "EMAIL": {
+                "NAME": "Zmiana adresu email",
+                "NEW": {
+                    "LABEL": "Nowy adres email",
+                    "PLACEHOLDER": "Nowy adres email"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Proszę wprowadzić poprawny adres email.",
+                    "EMPTY_FIELD": "Pole nie może być puste."
+                },
+                "SUCCESS_MSG": "Twój email został pomyślnie zmieniony.",
+                "CHANGE_BTN": "Zmień email"
+            },
+            "PHONE": {
+                "NAME": "Zmiana numeru telefonu",
+                "NEW": {
+                    "LABEL": "Nowy numer telefonu",
+                    "PLACEHOLDER": "Nowy numer telefonu"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Proszę wprowadzić poprawny numer telefonu.",
+                    "EMPTY_FIELD": "Pole nie może być puste."
+                    },
+                "SUCCESS_MSG": "Twój numer telefonu został pomyślnie zmieniony.",
+                "CHANGE_BTN": "Zmień numer telefonu"
+            }
+        }
+    },
+
+    "WAREHOUSE": {
+        "EXIT": "Wyjdź",
+        "HEADER": {
+            "NEW": "Oczekujące",
+            "IN_PROGRESS": "W trakcie realizacji"
+        },
+        "BTN": {
+            "ACCEPT": "Akceptuj",
+            "BACK_TO_PENDING": "Przenieś do oczekujących",
+            "COMPLETE": "Zakończ"
+        },
+        "LABEL": {
+            "LOCATION": "Lokalizacja",
+            "ID": "ID",
+            "DATE": "Data",
+            "TITLE": "Tytuł",
+            "CALL_NUMBER": "Sygnatura"
+        },
+        "INFO": {
+            "NO_NEW_ORDERS": "Brak nowych zamówień.",
+            "NO_IN_PROGRESS": "Brak zamówień w trakcie realizacji. Zaakceptuj nowe zamówienie."
+        }
+    },
+
+    "PAGE_403": {
+        "HEADER": "Dostęp do tej strony jest ograniczony",
+        "MSG": "Jeśli uważasz, że to pomyłka, skontaktuj się z administratorem witryny."
+    },
+
+    "PAGINATION": {
+        "NEXT": "Następna",
+        "PREV": "Poprzednia"
+    }
+
+}

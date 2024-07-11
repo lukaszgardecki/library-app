@@ -1,9 +1,7 @@
 package com.example.libraryapp.domain.reservation;
 
-import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.RequestCancelAction;
-import com.example.libraryapp.domain.action.types.RequestCompletedAction;
-import com.example.libraryapp.domain.action.types.RequestNewAction;
+import com.example.libraryapp.domain.action.ActionService;
+import com.example.libraryapp.domain.action.types.*;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -12,10 +10,13 @@ import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundExceptio
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationException;
 import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
+import com.example.libraryapp.domain.lending.LendingDtoMapper;
+import com.example.libraryapp.domain.lending.LendingRepository;
+import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
 import com.example.libraryapp.domain.notification.NotificationService;
-import com.example.libraryapp.domain.notification.NotificationType;
+import com.example.libraryapp.domain.notification.types.*;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
@@ -29,7 +30,8 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,9 +41,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationService {
     private final ReservationRepository reservationRepository;
+    private final LendingRepository lendingRepository;
     private final BookItemRepository bookItemRepository;
     private final MemberRepository memberRepository;
-    private final ActionRepository actionRepository;
+    private final ActionService actionService;
     private final NotificationService notificationService;
     private final ReservationModelAssembler reservationModelAssembler;
     private final PagedResourcesAssembler<Reservation> pagedResourcesAssembler;
@@ -59,16 +62,31 @@ public class ReservationService {
         return pagedResourcesAssembler.toModel(reservationPage, reservationModelAssembler);
     }
 
-    public PagedModel<ReservationResponse> findAllPendingReservations(Pageable pageable) {
-        List<Reservation> reservations = reservationRepository.findAll(pageable).stream()
+    public List<ReservationResponse> findAllPendingReservations() {
+        return reservationRepository.findAll().stream()
                 .filter(res -> res.getStatus() == ReservationStatus.PENDING)
+                .map(ReservationDtoMapper::map)
                 .toList();
-        return pagedResourcesAssembler.toModel(new PageImpl<>(reservations), reservationModelAssembler);
+    }
+
+    public List<ReservationResponse> findAllPendingReservationsByBookItemId(Long bookItemId) {
+        return reservationRepository.findAllPendingReservationByBookItemId(bookItemId).stream()
+                .map(ReservationDtoMapper::map)
+                .toList();
     }
 
     public ReservationResponse findReservationById(Long id) {
         Reservation reservation = findReservation(id);
         return reservationModelAssembler.toModel(reservation);
+    }
+
+    public Reservation findReservation(Long memberId, String bookBarcode, ReservationStatus status) {
+        return reservationRepository.findAllByMemberId(memberId)
+                .stream()
+                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
+                .filter(res -> res.getStatus() == status)
+                .findFirst()
+                .orElseThrow(ReservationNotFoundException::new);
     }
 
     @Transactional
@@ -81,15 +99,19 @@ public class ReservationService {
         Reservation reservationToSave = prepareNewReservation(member, book);
         Reservation savedReservation = reservationRepository.save(reservationToSave);
         member.updateAfterReservation();
-        book.updateAfterReservation();
-        actionRepository.save(new RequestNewAction(savedReservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_CREATED, ReservationDtoMapper.map(savedReservation));
+        member.addReservedItemId(book.getId());
+
+        switch (book.getStatus()) {
+            case AVAILABLE -> handleAvailableBook(savedReservation);
+            case LOANED, RESERVED -> handleLoanedOrReservedBook(savedReservation);
+        }
         return reservationModelAssembler.toModel(savedReservation);
     }
 
     @Transactional
     public void cancelAReservation(ActionRequest request) {
-        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
+        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode(), ReservationStatus.PENDING);
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
         BookItem book = reservation.getBookItem();
         Member member = reservation.getMember();
         boolean isBookReserved = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId())
@@ -98,17 +120,70 @@ public class ReservationService {
         reservation.updateAfterCancelling();
         book.updateAfterReservationCancelling(isBookReserved);
         member.updateAfterReservationCancelling();
-        actionRepository.save(new RequestCancelAction(reservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_CANCELLED, ReservationDtoMapper.map(reservation));
+        member.removeReservedItemId(book.getId());
+        actionService.save(new ActionRequestCancel(savedReservationDto));
+        notificationService.sendToUser(new NotificationRequestCancelled(savedReservationDto), savedReservationDto.getMember());
+    }
+
+    @Transactional
+    public void cancelReservations(Long bookId) {
+        reservationRepository.findAllCurrentReservationsByBookItemId(bookId)
+                .forEach(res -> {
+                    ReservationResponse savedReservationDto = ReservationDtoMapper.map(res);
+                    int numOfRes = res.getMember().getTotalBooksReserved();
+                    res.setStatus(ReservationStatus.CANCELED);
+                    res.getMember().setTotalBooksReserved(numOfRes - 1);
+                    res.getMember().removeReservedItemId(res.getBookItem().getId());
+
+                    notificationService.sendToUser(new NotificationReservationCancelBookItemLost(savedReservationDto), savedReservationDto.getMember());
+                });
     }
 
     @Transactional
     public ReservationResponse changeReservationStatusToReady(Long reservationId) {
         Reservation reservation = findReservation(reservationId);
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
         reservation.setStatus(ReservationStatus.READY);
-        actionRepository.save(new RequestCompletedAction(reservation));
-        notificationService.saveAndSendNotification(NotificationType.REQUEST_COMPLETED, ReservationDtoMapper.map(reservation));
+        actionService.save(new ActionRequestCompleted(savedReservationDto));
+        notificationService.sendToUser(new NotificationRequestCompleted(savedReservationDto), savedReservationDto.getMember());
         return reservationModelAssembler.toModel(reservation);
+    }
+
+    public boolean isBookReserved(Long bookItemId) {
+        return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
+    }
+
+    private void handleAvailableBook(Reservation reservation) {
+        reservation.getBookItem().setStatus(BookItemStatus.RESERVED);
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
+        actionService.save(new ActionRequestCreated(savedReservationDto));
+        notificationService.sendToUser(new NotificationRequestCreated(savedReservationDto), savedReservationDto.getMember());
+        notificationService.sendToWarehouse(savedReservationDto);
+    }
+
+    private void handleLoanedOrReservedBook(Reservation reservation) {
+        Long bookId = reservation.getBookItem().getId();
+        Long memberId = reservation.getMember().getId();
+
+        int queuePosition = reservationRepository.findAllCurrentReservationsByBookItemId(bookId).stream()
+                .sorted(Comparator.comparing(Reservation::getCreationDate))
+                .toList()
+                .indexOf(reservation) + 1;
+
+        ReservationResponse savedReservationDto = ReservationDtoMapper.map(reservation);
+        Optional<LendingDto> currentLending = lendingRepository.findCurrentLendingByBookItemId(bookId)
+                .map(LendingDtoMapper::map);
+
+        if (queuePosition == 1 && currentLending.isPresent()) {
+            // book is loaned - no reservations
+            notificationService.sendToUser(new NotificationRenewalImpossible(currentLending.get()), savedReservationDto.getMember());
+            actionService.save(new ActionBookReservedFirstPerson(memberId, currentLending.get()));
+            notificationService.sendToUser(new NotificationBookReservedFirstPerson(memberId, currentLending.get()), savedReservationDto.getMember());
+        } else {
+            // book is loaned or not - there are reservations
+            actionService.save(new ActionBookReservedQueue(memberId, reservation.getBookItem().getBook().getTitle(), queuePosition));
+            notificationService.sendToUser(new NotificationBookReservedQueue(savedReservationDto, queuePosition), savedReservationDto.getMember());
+        }
     }
 
     private BookItem findBookByBarcode(String bookBarcode) {
@@ -126,15 +201,6 @@ public class ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException(id));
     }
 
-    private Reservation findReservation(Long memberId, String bookBarcode) {
-        return reservationRepository.findAllByMemberId(memberId)
-                .stream()
-                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
-                .filter(res -> res.getStatus() == ReservationStatus.PENDING || res.getStatus() == ReservationStatus.READY)
-                .findAny()
-                .orElseThrow(ReservationNotFoundException::new);
-    }
-
     private void checkIfReservationAlreadyExist(Long memberId, String bookBarcode) {
         Optional<Reservation> reservation = reservationRepository.findAllByMemberId(memberId)
                 .stream()
@@ -142,24 +208,24 @@ public class ReservationService {
                 .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
                 .filter(res -> res.getStatus() == ReservationStatus.READY || res.getStatus() == ReservationStatus.PENDING)
                 .findAny();
-        if (reservation.isPresent()) throw new ReservationException(Message.RESERVATION_ALREADY_CREATED);
+        if (reservation.isPresent()) throw new ReservationException(Message.RESERVATION_ALREADY_CREATED.getMessage());
     }
 
     private void checkMemberReservationLimit(Member member) {
         if (member.getTotalBooksReserved() >= Constants.MAX_BOOKS_RESERVED_BY_USER) {
-            throw new ReservationException(Message.RESERVATION_LIMIT_EXCEEDED);
+            throw new ReservationException(Message.RESERVATION_LIMIT_EXCEEDED.getMessage());
         }
     }
 
     private void checkIfBookItemIsNotLost(BookItem book) {
         if (book.getStatus() == BookItemStatus.LOST) {
-            throw new ReservationException(Message.RESERVATION_BOOK_ITEM_LOST);
+            throw new ReservationException(Message.RESERVATION_CREATION_FAILED_BOOK_ITEM_LOST.getMessage());
         }
     }
 
     private Reservation prepareNewReservation(Member member, BookItem book) {
         return Reservation.builder()
-                .creationDate(LocalDate.now())
+                .creationDate(LocalDateTime.now())
                 .status(ReservationStatus.PENDING)
                 .bookItem(book)
                 .member(member)

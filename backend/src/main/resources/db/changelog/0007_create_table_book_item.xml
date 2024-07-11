@@ -8,7 +8,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <changeSet id="0007" author="lukas">
         <createTable tableName="book_item">
             <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true" unique="true"/>
             </column>
             <column name="barcode" type="VARCHAR(255)"/>
             <column name="is_reference_only" type="BOOLEAN"/>

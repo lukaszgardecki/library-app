@@ -21,6 +21,7 @@ public class TokenValidator {
             && hasIssuer(token)
             && hasIssuedDate(token)
             && hasUserID(token)
+            && hasUserRole(token)
             && !isExpired(token)
             && !isBeforeDate(token);
     }
@@ -66,6 +67,10 @@ public class TokenValidator {
 
     private boolean hasUserID(String token) {
         return extractAllClaims(token).getBody().containsKey(SecurityUtils.ID_CLAIM_NAME);
+    }
+
+    private boolean hasUserRole(String token) {
+        return extractAllClaims(token).getBody().containsKey(SecurityUtils.USER_ROLE);
     }
 
     private boolean isExpired(String token) {

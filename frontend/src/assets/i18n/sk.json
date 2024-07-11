@@ -1,0 +1,322 @@
+{
+    "BTN": {
+        "BACK": "Späť",
+        "SAVE_TO_FILE": "Uložiť do súboru"
+    },
+
+    "TOP_BAR": {
+        "LOGIN": "Prihlásiť sa",
+        "LOGOUT": "Odhlásiť sa",
+        "REGISTER": "Registrovať sa",
+        "PROFILE": "Profil",
+        "WAREHOUSE": "Sklad"
+    },
+
+    "MAIN_NAV": {
+        "HOME": "Domov",
+        "BOOKS": "Knihy"
+    },
+
+    "LOGIN": {
+        "HEADER": "Prihlásenie",
+        "USERNAME": {
+            "LABEL": "Užívateľské meno",
+            "VALID_MSG": "Užívateľské meno je povinné",
+            "PLACEHOLDER": "Zadajte užívateľské meno"
+        },
+        "PASSWORD": {
+            "LABEL": "Heslo",
+            "VALID_MSG": "Heslo je povinné",
+            "PLACEHOLDER": "Zadajte heslo",
+            "FORGOT": "Zabudnuté heslo?"
+        },
+        "BTN": "Prihlásiť sa",
+        "NOT_HAVE_ACCOUNT": "Nemáte účet?",
+        "SIGN_UP": "Registrovať sa",
+        "SIGN_UP_ALSO": "Môžete sa tiež prihlásiť pomocou"
+    },
+
+    "BOOK_LIST": {
+        "SORT_BY": "Zoradiť podľa",
+        "SORT_TYPE": {
+            "DEFAULT": "Štandardné",
+            "TITLE_ASC": "Názov vzostupne",
+            "TITLE_DESC": "Názov zostupne",
+            "PUBLISHER_ASC": "Vydavateľ vzostupne",
+            "PUBLISHER_DESC": "Vydavateľ zostupne",
+            "PAGES_ASC": "Počet strán vzostupne",
+            "PAGES_DESC": "Počet strán zostupne"
+        },
+        "PAGE_SIZE": "Veľkosť stránky",
+        "LANGUAGE": "Jazyk",
+        "PUBLISHER": "Vydavateľ",
+        "SUBJECT": "Predmet",
+        "LACK": "Žiadne knihy"
+    },
+
+    "BOOK_DETAILS": {
+        "HEADER": "Detaily",
+        "TITLE": "Názov",
+        "AUTHORS": "Autori",
+        "PUBLISHER": "Vydavateľ",
+        "PUBLICATION": "Publikácia",
+        "PUBLICATION_YEAR": "Rok publikácie",
+        "LANGUAGE": "Jazyk",
+        "PAGES": "Stránky",
+        "ISBN": "ISBN",
+        "NOTES": "Poznámky",
+        "SUBJECT": "Predmet",
+        "GENRE": "Žáner/Formát",
+        "LOANABLE_ITEMS": "Požičateľné položky",
+        "ON_SITE_ITEMS": "Položky k dispozícii iba na mieste",
+        "CALL_NUMBER": "Číslo volania",
+        "STATUS": {
+            "NAME": "Stav",
+            "AVAILABLE": "K dispozícii",
+            "UNAVAILABLE": "Nedostupné",
+            "LOANED": "Požičané",
+            "RESERVED": "Rezervované",
+            "BORROWED": "Pôžičané"
+        },
+        "LOCATION": "Umiestnenie na poličke",
+        "BTN_REQUEST": "Žiadosť",
+        "BTN_RESERVE": "Rezervovať"
+    },
+
+    "PROFILE": {
+        "DETAILS": {
+            "NAME": "Osobné údaje",
+            "HEADER": {
+                "ID": "Identifikátory",
+                "PERSONAL": "Osobné údaje",
+                "ACCOUNT": "Detaily účtu"
+            },
+            "USER_ID": "ID užívateľa",
+            "EMAIL": "E-mail",
+            "SURNAME": "Priezvisko",
+            "FORENAME": "Meno",
+            "BIRTH_DATE": "Dátum narodenia",
+            "GENDER": {
+                "NAME": "Pohlavie",
+                "MALE": "Muž",
+                "FEMALE": "Žena",
+                "OTHER": "Iné"
+            },
+            "NATIONALITY": "Národnosť",
+            "ADDRESS": "Adresa",
+            "PARENTS": "Meno rodičov",
+            "PESEL": "PESEL",
+            "PHONE": "Telefónne číslo",
+            "CARD": {
+                "ID": "ID karty",
+                "NUM": "Číslo karty",
+                "ISSUE_DATE": "Dátum vydania karty",
+                "STATUS": {
+                    "NAME": "Stav karty",
+                    "ACTIVE": "Aktívna",
+                    "INACTIVE": "Neaktívna",
+                    "LOST": "Stratená"
+                }
+            },
+            "ACCOUNT": {
+                "AVAILABILITY_DATE": "Dátum dostupnosti",
+                "LENT_ITEMS": "Požičané položky",
+                "STATUS": {
+                    "NAME": "Stav účtu",
+                    "ACTIVE": "Aktívny",
+                    "INACTIVE": "Neaktívny",
+                    "CLOSED": "Zatvorený",
+                    "SUSPENDED": "Pozastavený",
+                    "PENDING": "Čakajúci"
+                }
+            }
+        },
+        "NOTIFICATIONS": {
+            "NAME": "Notifikácie",
+            "CREATION_DATE": "Dátum vytvorenia",
+            "SUBJECT": "Predmet",
+            "BTN": {
+                "DELETE": "Vymazať",
+                "SELECT_ALL": "Vybrať všetko",
+                "UNSELECT_ALL": "Zrušiť výber všetkých"
+            },
+            "CONTENT": "Obsah",
+            "DOCUMENT": "Dokument",
+            "LACK": "Nedostatok notifikácií"
+        },
+        "BORROWED_ITEMS": {
+            "NAME": "Požičané dokumenty",
+            "TITLE": "Názov",
+            "RETURN_DATE": "Dátum vrátenia",
+            "LACK": "Nedostatok dokumentov"
+        },
+        "ON_SITE_ITEMS": {
+            "NAME": "Dokumenty na mieste",
+            "TITLE": "Názov",
+            "RETURN_DATE": "Dátum vrátenia",
+            "LACK": "Nedostatok dokumentov"
+        },
+        "REQUESTED_ITEMS": {
+            "NAME": "Požadované dokumenty",
+            "UNSENT": {
+                "NAME": "Nenájdené"
+            },
+            "PENDING": {
+                "NAME": "Nevybavené",
+                "TITLE": "Názov",
+                "LACK": "Nedostatok dokumentov"
+            },
+            "COMPLETED": {
+                "NAME": "Dokončené",
+                "TITLE": "Názov",
+                "LACK": "Nedostatok dokumentov"
+            }
+        },
+        "RESERVATIONS": {
+            "NAME": "Rezervácie",
+            "TITLE": "Názov",
+            "RETURN_DATE": "Dátum vrátenia",
+            "LACK": "Nedostatok dokumentov"
+        },
+        "RENEWABLE_ITEMS": {
+            "NAME": "Obnoviteľné dokumenty",
+            "TITLE": "Názov",
+            "RETURN_DATE": "Dátum vrátenia",
+            "ACTION": "Akcia",
+            "BTN": {
+                "RENEW": "Obnoviť"
+            },
+            "LACK": "Nedostatok dokumentov"
+        },
+        "USER_HISTORY": {
+            "NAME": "História užívateľa",
+            "SORT": {
+                "BY_DATE": "Zoradiť podľa dátumu",
+                "DESC": "Najnovšie najskôr",
+                "ASC": "Najstaršie najskôr"
+            },
+            "KIND": "Druh histórie",
+            "ACTION_TYPE": {
+                "ALL": "Všetky",
+                "LOGIN": "Prihlásenia",
+                "LOGOUT": "Odhlásenia",
+                "LOGIN_FAILED": "Neúspešné prihlásenia",
+                "REGISTER": "Registrácia",
+                "REQUEST_NEW": "Nové žiadosti",
+                "REQUEST_COMPLETED": "Dokončené žiadosti",
+                "REQUEST_CANCEL": "Zrušené žiadosti",
+                "BOOK_BORROWED": "Výpožičky",
+                "BOOK_AVAILABLE_TO_BORROW": "Oznámenia o dostupnosti",
+                "BOOK_RESERVED_FIRST": "Rezervácie",
+                "BOOK_RESERVED_QUEUE": "Rezervácie - fronta",
+                "BOOK_RENEWED": "Obnovené",
+                "BOOK_RETURNED": "Vrátené dokumenty",
+                "BOOK_LOST": "Stratené dokumenty",
+                "NOTIFICATION_SYSTEM": "Systémové oznámenia",
+                "NOTIFICATION_EMAIL": "E-mailové oznámenia",
+                "NOTIFICATION_SMS": "SMS oznámenia"
+            },
+            "DATE": "Dátum",
+            "TIME": "Čas",
+            "DESCRIPTION": "Popis",
+            "LACK": "Nedostatok akcií"
+        },
+        "FEES": {
+            "NAME": "Poplatky",
+            "NOT_ACCOUNTED": {
+                "NAME": "Nekontabilizované poplatky"
+            },
+            "ACCOUNTED": {
+                "NAME": "Kontabilizované poplatky"
+            }
+        },
+        "EDIT": {
+            "NAME": "Zmeniť osobné údaje",
+            "PASSWORD": {
+                "NAME": "Zmeniť heslo",
+                "NEW": {
+                    "LABEL": "Nové heslo",
+                    "PLACEHOLDER": "Nové heslo"
+                },
+                "REPEAT": {
+                    "LABEL": "Zopakovať heslo",
+                    "PLACEHOLDER": "Zopakovať heslo"
+                },
+                "REQ": {
+                    "MIN_LENGTH": "Minimálna dĺžka hesla: {{minPassLength}}.",
+                    "LOW_CASE_LETTER": "Minimálny počet malých písmen: {{minLowerCaseChars}}.",
+                    "UP_CASE_LETTER": "Minimálny počet veľkých písmen: {{minUpperCaseChars}}.",
+                    "DIGIT": "Minimálny počet číselných znakov: {{minDigitChars}}."
+                },
+                "ERROR_MSG": {
+                    "NOT_MATCH": "Heslá sa nezhodujú.",
+                    "NOT_VALID": "Heslo musí mať minimálne {{minPassLength}} znakov a obsahovať minimálne {{minLowerCaseChars}} malé písmeno, {{minUpperCaseChars}} veľké písmeno a {{minDigitChars}} číslo.",
+                    "NOT_VALID_AND_NOT_MATCH": "Heslo musí mať minimálne {{minPassLength}} znakov a obsahovať minimálne {{minLowerCaseChars}} malé písmeno, {{minUpperCaseChars}} veľké písmeno a {{minDigitChars}} číslo. Heslá sa nezhodujú.",
+                    "EMPTY_FIELD": "Prosím, vyplňte všetky polia a uistite sa, že heslá sa zhodujú a spĺňajú kritériá."
+                },
+                "SUCCESS_MSG": "Vaše heslo bolo úspešne zmenené.",
+                "CHANGE_BTN": "Zmeniť heslo účtu"
+            },
+            "EMAIL": {
+                "NAME": "Zmeniť e-mail",
+                "NEW": {
+                    "LABEL": "Nová e-mailová adresa",
+                    "PLACEHOLDER": "Nová e-mailová adresa"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Zadajte platnú e-mailovú adresu.",
+                    "EMPTY_FIELD": "Pole e-mailu nemôže byť prázdne."
+                },
+                "SUCCESS_MSG": "Váš e-mail bol úspešne zmenený.",
+                "CHANGE_BTN": "Zmeniť e-mail"
+            },
+            "PHONE": {
+                "NAME": "Zmeniť telefónne číslo",
+                "NEW": {
+                    "LABEL": "Nové telefónne číslo",
+                    "PLACEHOLDER": "Nové telefónne číslo"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Zadajte platné telefónne číslo.",
+                    "EMPTY_FIELD": "Pole telefónneho čísla nemôže byť prázdne."
+                },
+                "SUCCESS_MSG": "Vaše telefónne číslo bolo úspešne zmenené.",
+                "CHANGE_BTN": "Zmeniť telefónne číslo"
+            }
+        }
+    },
+    
+    "WAREHOUSE": {
+        "EXIT": "Opustiť",
+        "HEADER": {
+            "NEW": "Nové",
+            "IN_PROGRESS": "V procese"
+        },
+        "BTN": {
+            "ACCEPT": "Prijať",
+            "BACK_TO_PENDING": "Späť na čakajúce",
+            "COMPLETE": "Dokončiť"
+        },
+        "LABEL": {
+            "LOCATION": "Umiestnenie",
+            "ID": "ID",
+            "DATE": "Dátum",
+            "TITLE": "Názov dokumentu",
+            "CALL_NUMBER": "Číslo volania dokumentu"
+        },
+        "INFO": {
+            "NO_NEW_ORDERS": "Žiadne nové objednávky.",
+            "NO_IN_PROGRESS": "Žiadne objednávky v procese. Prijať novú objednávku."
+        }
+    },
+    
+    "PAGE_403": {
+        "HEADER": "Prístup na túto stránku je obmedzený",
+        "MSG": "Ak si myslíte, že ide o chybu, obráťte sa na správcu webovej stránky."
+    },
+
+    "PAGINATION": {
+        "NEXT": "Ďalší",
+        "PREV": "Predchádzajúci"
+    }
+}

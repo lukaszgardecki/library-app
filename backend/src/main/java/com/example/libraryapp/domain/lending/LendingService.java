@@ -1,10 +1,10 @@
 package com.example.libraryapp.domain.lending;
 
-import com.example.libraryapp.domain.action.ActionRepository;
-import com.example.libraryapp.domain.action.types.BookBorrowedAction;
-import com.example.libraryapp.domain.action.types.BookLostAction;
-import com.example.libraryapp.domain.action.types.BookRenewedAction;
-import com.example.libraryapp.domain.action.types.BookReturnedAction;
+import com.example.libraryapp.domain.action.ActionService;
+import com.example.libraryapp.domain.action.types.ActionBookBorrowed;
+import com.example.libraryapp.domain.action.types.ActionBookLost;
+import com.example.libraryapp.domain.action.types.ActionBookRenewed;
+import com.example.libraryapp.domain.action.types.ActionBookReturned;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
@@ -13,15 +13,14 @@ import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundExceptio
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
-import com.example.libraryapp.domain.exception.reservation.ReservationNotFoundException;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.notification.NotificationService;
-import com.example.libraryapp.domain.notification.NotificationType;
+import com.example.libraryapp.domain.notification.types.*;
 import com.example.libraryapp.domain.reservation.Reservation;
-import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
-import com.example.libraryapp.domain.reservation.ReservationRepository;
+import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
+import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.management.ActionRequest;
 import com.example.libraryapp.management.Constants;
 import com.example.libraryapp.management.FineService;
@@ -37,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -46,8 +46,8 @@ import java.util.stream.Collectors;
 public class LendingService {
     private final LendingRepository lendingRepository;
     private final BookItemRepository bookItemRepository;
-    private final ReservationRepository reservationRepository;
-    private final ActionRepository actionRepository;
+    private final ReservationService reservationService;
+    private final ActionService actionService;
     private final FineService fineService;
     private final NotificationService notificationService;
     private final LendingModelAssembler lendingModelAssembler;
@@ -76,72 +76,74 @@ public class LendingService {
 
     @Transactional
     public LendingDto borrowABook(ActionRequest request) {
-        Reservation reservation = findReservation(request.getMemberId(), request.getBookBarcode());
+        Reservation reservation = reservationService.findReservation(request.getMemberId(), request.getBookBarcode(), ReservationStatus.READY);
         Member member = reservation.getMember();
         BookItem book = reservation.getBookItem();
         checkIfMemberCanBorrowABook(member);
         Lending lendingToSave = createLendingToSave(reservation);
         Lending savedLending = lendingRepository.save(lendingToSave);
+        member.addLoanedItemId(savedLending.getId());
+        LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
         member.updateAfterLending();
-        reservation.updateAfterLending();
-        actionRepository.save(new BookBorrowedAction(savedLending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_BORROWED, ReservationDtoMapper.map(reservation));
+        reservation.setStatus(ReservationStatus.COMPLETED);
+        actionService.save(new ActionBookBorrowed(savedLendingDto));
+        notificationService.sendToUser(new NotificationBookBorrowed(savedLendingDto), savedLendingDto.getMember());
         return lendingModelAssembler.toModel(savedLending);
     }
 
     @Transactional
     public LendingDto renewABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         checkIfLendingCanBeRenewed(lending);
         lending.updateAfterRenewing();
-        actionRepository.save(new BookRenewedAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_EXTENDED, LendingDtoMapper.map(lending));
+        actionService.save(new ActionBookRenewed(lendingDto));
+        notificationService.sendToUser(new NotificationBookRenewed(lendingDto), lendingDto.getMember());
         return lendingModelAssembler.toModel(lending);
     }
 
     @Transactional
     public LendingDto returnABook(String bookBarcode) {
         Lending lending = findLendingByBookBarcode(bookBarcode);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
+        member.removeLoanedItemId(lending.getId());
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
         lending.updateAfterReturning();
-        book.updateAfterReturning(lending.getReturnDate(), isBookReserved(book.getId()));
+        book.updateAfterReturning(lending.getReturnDate(), reservationService.isBookReserved(book.getId()));
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookReturnedAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_RETURNED, LendingDtoMapper.map(lending));
+        actionService.save(new ActionBookReturned(lendingDto));
+        notificationService.sendToUser(new NotificationBookReturned(lendingDto), lendingDto.getMember());
+
+        reservationService.findAllPendingReservationsByBookItemId(book.getId()).stream()
+                .min(Comparator.comparing(ReservationResponse::getCreationDate))
+                .ifPresent(res ->
+                        notificationService.sendToUser(new NotificationBookAvailableToBorrow(res),
+                        res.getMember())
+                );
         return lendingModelAssembler.toModel(lending);
     }
 
     @Transactional
     public LendingDto setLendingLost(Long lendingId) {
         Lending lending = findLending(lendingId);
+        LendingDto lendingDto = LendingDtoMapper.map(lending);
         lending.setReturnDate(LocalDate.now());
         BookItem book = lending.getBookItem();
         Member member = lending.getMember();
+        member.removeLoanedItemId(lending.getId());
         BigDecimal fine = fineService.countFine(lending.getDueDate(), lending.getReturnDate());
         fine = fine.add(book.getPrice());
         lending.setStatus(LendingStatus.COMPLETED);
         book.setStatus(BookItemStatus.LOST);
         member.updateAfterReturning(fine);
-        actionRepository.save(new BookLostAction(lending));
-        notificationService.saveAndSendNotification(NotificationType.BOOK_LOST, LendingDtoMapper.map(lending));
-        List<Reservation> reservationsToCancel = reservationRepository.findAllCurrentReservationsByBookItemId(book.getId());
-        cancelReservations(reservationsToCancel);
-        sendNotifications(reservationsToCancel);
+        actionService.save(new ActionBookLost(lendingDto));
+        notificationService.sendToUser(new NotificationBookLost(lendingDto), lendingDto.getMember());
+        reservationService.cancelReservations(book.getId());
         return lendingModelAssembler.toModel(lending);
-    }
-
-    private void sendNotifications(List<Reservation> reservationsToCancel) {
-        reservationsToCancel.forEach(
-                res -> notificationService.saveAndSendNotification(NotificationType.RESERVATION_CANCEL_BOOK_ITEM_LOST, ReservationDtoMapper.map(res))
-        );
-    }
-
-    private void cancelReservations(List<Reservation> reservationsOfLostBook) {
-        reservationsOfLostBook.forEach(res -> res.setStatus(ReservationStatus.CANCELED));
     }
 
     private Lending findLendingByBookBarcode(String bookBarcode) {
@@ -152,26 +154,13 @@ public class LendingService {
                 .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
-    private Reservation findReservation(Long memberId, String bookBarcode) {
-        return reservationRepository.findAllByMemberId(memberId)
-                .stream()
-                .filter(res -> res.getBookItem().getBarcode().equals(bookBarcode))
-                .filter(res -> res.getStatus() == ReservationStatus.READY)
-                .findFirst()
-                .orElseThrow(ReservationNotFoundException::new);
-    }
-
     private Lending findLending(Long id) {
         return lendingRepository.findById(id)
                 .orElseThrow(() -> new LendingNotFoundException(id));
     }
 
-    private boolean isBookReserved(Long bookItemId) {
-        return reservationRepository.findAllCurrentReservationsByBookItemId(bookItemId).size() > 0;
-    }
-
     private boolean isRenewable(Lending len) {
-        return !isBookReserved(len.getBookItem().getId())
+        return !reservationService.isBookReserved(len.getBookItem().getId())
              && len.getDueDate().isAfter(LocalDate.now());
     }
 
@@ -180,14 +169,14 @@ public class LendingService {
             throw new UnsettledFineException();
         }
         if (member.getTotalBooksBorrowed() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
-            throw new CheckoutException(Message.LENDING_LIMIT_EXCEEDED);
+            throw new CheckoutException(Message.LENDING_LIMIT_EXCEEDED.getMessage());
         }
     }
 
     private void checkIfLendingCanBeRenewed(Lending lending) {
-        boolean bookIsReserved = isBookReserved(lending.getBookItem().getId());
+        boolean bookIsReserved = reservationService.isBookReserved(lending.getBookItem().getId());
         if (bookIsReserved || lending.isAfterDueDate()) {
-            throw new CheckoutException(Message.LENDING_CANNOT_BE_RENEWED);
+            throw new CheckoutException(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
     }
 

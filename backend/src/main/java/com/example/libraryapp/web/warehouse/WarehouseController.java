@@ -4,14 +4,13 @@ import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.reservation.ReservationService;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.example.libraryapp.domain.member.Role.ADMIN;
 import static com.example.libraryapp.domain.member.Role.WAREHOUSE;
@@ -24,8 +23,8 @@ public class WarehouseController {
     private final ReservationService reservationService;
 
     @GetMapping("/reservations/pending")
-    public ResponseEntity<PagedModel<ReservationResponse>> getAllPendingReservations(Pageable pageable) {
-        PagedModel<ReservationResponse> allPendingReservations = reservationService.findAllPendingReservations(pageable);
+    public ResponseEntity<List<ReservationResponse>> getAllPendingReservations() {
+        List<ReservationResponse> allPendingReservations = reservationService.findAllPendingReservations();
         return ResponseEntity.ok(allPendingReservations);
     }
 

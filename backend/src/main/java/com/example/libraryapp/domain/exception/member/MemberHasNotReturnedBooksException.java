@@ -4,6 +4,6 @@ import com.example.libraryapp.management.Message;
 
 public class MemberHasNotReturnedBooksException extends RuntimeException {
     public MemberHasNotReturnedBooksException() {
-        super(Message.NOT_RETURNED_BOOKS);
+        super(Message.MEMBER_NOT_RETURNED_BOOKS.getMessage());
     }
 }

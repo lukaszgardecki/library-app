@@ -21,6 +21,10 @@ public class ActionService {
         return pagedResourcesAssembler.toModel(actionPage, actionModelAssembler);
     }
 
+    public void save(Action action) {
+        actionRepository.save(action);
+    }
+
     public ActionDto findActionById(Long id) {
         Action action = findAction(id);
         return actionModelAssembler.toModel(action);

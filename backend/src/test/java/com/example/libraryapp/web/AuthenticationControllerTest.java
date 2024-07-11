@@ -7,6 +7,7 @@ import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.config.SecurityUtils;
 import com.example.libraryapp.domain.exception.ErrorMessage;
+import com.example.libraryapp.domain.member.Gender;
 import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
 import com.example.libraryapp.domain.rack.RackToSaveDto;
@@ -24,6 +25,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +61,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(respBody1.getMessage()).isEqualTo(Message.BAD_CREDENTIALS);
+            assertThat(respBody1.getMessage()).isEqualTo(Message.VALIDATION_BAD_CREDENTIALS.getMessage());
         }
 
         @Test
@@ -70,7 +72,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(respBody2.getMessage()).isEqualTo(Message.BAD_CREDENTIALS);
+            assertThat(respBody2.getMessage()).isEqualTo(Message.VALIDATION_BAD_CREDENTIALS.getMessage());
         }
 
         @Test
@@ -119,7 +121,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -143,7 +145,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BAD_EMAIL);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.VALIDATION_EMAIL_UNIQUE.getMessage());
         }
 
         @Test
@@ -153,7 +155,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -192,7 +194,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
         @Test
         @DisplayName("Should not refresh a token if token expired.")
@@ -248,7 +250,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -262,7 +264,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -277,7 +279,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -292,7 +294,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectAll(resp -> resp.expectCookie().doesNotExist(SecurityUtils.FINGERPRINT_COOKIE_NAME))
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(respBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(respBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -375,7 +377,11 @@ public class AuthenticationControllerTest extends BaseTest {
                 "/notifications/1, GET",
                 "/notifications/1, POST",
                 "/notifications/1, DELETE",
-                "/notifications, DELETE"
+                "/notifications, DELETE",
+
+                // Warehouse Controller
+                "/warehouse/reservations/pending, GET",
+                "/warehouse/reservations/13/ready, POST"
         })
         @DisplayName("Should not return data if there is no access token in the request.")
         void shouldNotReturnDataIfThereIsNoAccessTokenInRequest(String path, String method) {
@@ -387,7 +393,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -398,7 +404,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody3 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -409,7 +415,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody3.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody3.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody4 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -419,7 +425,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody4.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody4.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody5 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -430,7 +436,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody5.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody5.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody6 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -441,7 +447,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody6.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody6.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody7 = testClient.method(HttpMethod.valueOf(method))
                     .uri(path)
@@ -452,7 +458,7 @@ public class AuthenticationControllerTest extends BaseTest {
                     .expectStatus().isUnauthorized()
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody7.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody7.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -506,9 +512,17 @@ public class AuthenticationControllerTest extends BaseTest {
 
     private RegisterRequest getUserRegistrationDto() {
         RegisterRequest dto = new RegisterRequest();
-        dto.setPassword("password");
         dto.setFirstName("Adam");
         dto.setLastName("Lubnie");
+        dto.setPassword("password");
+
+        dto.setPesel("90051912345");
+        dto.setDateOfBirth(LocalDate.of(1990, 5, 19));
+        dto.setGender(Gender.MALE);
+        dto.setNationality("Polish");
+        dto.setMothersName("Apolonia");
+        dto.setFathersName("Kazimierz");
+
         dto.setStreetAddress("ul. Konopacka 1a/23");
         dto.setZipCode("00-000");
         dto.setCity("Warszawa");

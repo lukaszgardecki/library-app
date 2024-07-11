@@ -1,0 +1,322 @@
+{
+    "BTN": {
+        "BACK": "Volver",
+        "SAVE_TO_FILE": "Guardar en archivo"
+    },
+
+    "TOP_BAR": {
+        "LOGIN": "Iniciar sesión",
+        "LOGOUT": "Cerrar sesión",
+        "REGISTER": "Registrarse",
+        "PROFILE": "Perfil",
+        "WAREHOUSE": "Almacén"
+    },
+
+    "MAIN_NAV": {
+        "HOME": "Inicio",
+        "BOOKS": "Libros"
+    },
+
+    "LOGIN": {
+        "HEADER": "Iniciar sesión",
+        "USERNAME": {
+            "LABEL": "Nombre de usuario",
+            "VALID_MSG": "El nombre de usuario es obligatorio",
+            "PLACEHOLDER": "Escribe tu nombre de usuario"
+        },
+        "PASSWORD": {
+            "LABEL": "Contraseña",
+            "VALID_MSG": "La contraseña es obligatoria",
+            "PLACEHOLDER": "Escribe tu contraseña",
+            "FORGOT": "¿Olvidaste tu contraseña?"
+        },
+        "BTN": "Iniciar sesión",
+        "NOT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
+        "SIGN_UP": "Regístrate",
+        "SIGN_UP_ALSO": "También puedes registrarte con"
+    },
+
+    "BOOK_LIST": {
+        "SORT_BY": "Ordenar por",
+        "SORT_TYPE": {
+            "DEFAULT": "Por defecto",
+            "TITLE_ASC": "Título ascendente",
+            "TITLE_DESC": "Título descendente",
+            "PUBLISHER_ASC": "Editor ascendente",
+            "PUBLISHER_DESC": "Editor descendente",
+            "PAGES_ASC": "Páginas ascendente",
+            "PAGES_DESC": "Páginas descendente"
+        },
+        "PAGE_SIZE": "Tamaño de página",
+        "LANGUAGE": "Idioma",
+        "PUBLISHER": "Editorial",
+        "SUBJECT": "Asunto",
+        "LACK": "No hay libros"
+    },
+
+    "BOOK_DETAILS": {
+        "HEADER": "Detalles",
+        "TITLE": "Título",
+        "AUTHORS": "Autores",
+        "PUBLISHER": "Editorial",
+        "PUBLICATION": "Publicación",
+        "PUBLICATION_YEAR": "Año de publicación",
+        "LANGUAGE": "Idioma",
+        "PAGES": "Páginas",
+        "ISBN": "ISBN",
+        "NOTES": "Notas",
+        "SUBJECT": "Asunto",
+        "GENRE": "Género/Formato",
+        "LOANABLE_ITEMS": "Artículos disponibles para préstamo",
+        "ON_SITE_ITEMS": "Artículos disponibles solo en el sitio",
+        "CALL_NUMBER": "Número de llamada",
+        "STATUS": {
+            "NAME": "Estado",
+            "AVAILABLE": "Disponible",
+            "UNAVAILABLE": "No disponible",
+            "LOANED": "Prestado",
+            "RESERVED": "Reservado",
+            "BORROWED": "En préstamo"
+        },
+        "LOCATION": "Ubicación en estantería",
+        "BTN_REQUEST": "Solicitar",
+        "BTN_RESERVE": "Reservar"
+    },
+
+    "PROFILE": {
+        "DETAILS": {
+            "NAME": "Detalles personales",
+            "HEADER": {
+                "ID": "Identificadores",
+                "PERSONAL": "Detalles personales",
+                "ACCOUNT": "Detalles de cuenta"
+            },
+            "USER_ID": "ID de usuario",
+            "EMAIL": "Correo electrónico",
+            "SURNAME": "Apellido",
+            "FORENAME": "Nombre",
+            "BIRTH_DATE": "Fecha de nacimiento",
+            "GENDER": {
+                "NAME": "Género",
+                "MALE": "Masculino",
+                "FEMALE": "Femenino",
+                "OTHER": "Otro"
+            },
+            "NATIONALITY": "Nacionalidad",
+            "ADDRESS": "Dirección",
+            "PARENTS": "Nombres de los padres",
+            "PESEL": "PESEL",
+            "PHONE": "Número de teléfono",
+            "CARD": {
+                "ID": "ID de tarjeta",
+                "NUM": "Número de tarjeta",
+                "ISSUE_DATE": "Fecha de emisión de la tarjeta",
+                "STATUS": {
+                    "NAME": "Estado de la tarjeta",
+                    "ACTIVE": "Activa",
+                    "INACTIVE": "Inactiva",
+                    "LOST": "Perdida"
+                }
+            },
+            "ACCOUNT": {
+                "AVAILABILITY_DATE": "Fecha de disponibilidad",
+                "LENT_ITEMS": "Artículos prestados",
+                "STATUS": {
+                    "NAME": "Estado de la cuenta",
+                    "ACTIVE": "Activa",
+                    "INACTIVE": "Inactiva",
+                    "CLOSED": "Cerrada",
+                    "SUSPENDED": "Suspendida",
+                    "PENDING": "Pendiente"
+                }
+            }
+        },
+        "NOTIFICATIONS": {
+            "NAME": "Notificaciones",
+            "CREATION_DATE": "Fecha de creación",
+            "SUBJECT": "Asunto",
+            "BTN": {
+                "DELETE": "Eliminar",
+                "SELECT_ALL": "Seleccionar todo",
+                "UNSELECT_ALL": "Anular selección de todo"
+            },
+            "CONTENT": "Contenido",
+            "DOCUMENT": "Documento",
+            "LACK": "Falta de notificaciones"
+        },
+        "BORROWED_ITEMS": {
+            "NAME": "Documentos prestados",
+            "TITLE": "Título",
+            "RETURN_DATE": "Fecha de devolución",
+            "LACK": "Falta de documentos"
+        },
+        "ON_SITE_ITEMS": {
+            "NAME": "Documentos en el sitio",
+            "TITLE": "Título",
+            "RETURN_DATE": "Fecha de devolución",
+            "LACK": "Falta de documentos"
+        },
+        "REQUESTED_ITEMS": {
+            "NAME": "Documentos solicitados",
+            "UNSENT": {
+                "NAME": "No enviados"
+            },
+            "PENDING": {
+                "NAME": "Pendientes",
+                "TITLE": "Título",
+                "LACK": "Falta de documentos"
+            },
+            "COMPLETED": {
+                "NAME": "Completados",
+                "TITLE": "Título",
+                "LACK": "Falta de documentos"
+            }
+        },
+        "RESERVATIONS": {
+            "NAME": "Reservas",
+            "TITLE": "Título",
+            "RETURN_DATE": "Fecha de devolución",
+            "LACK": "Falta de documentos"
+        },
+        "RENEWABLE_ITEMS": {
+            "NAME": "Documentos renovables",
+            "TITLE": "Título",
+            "RETURN_DATE": "Fecha de devolución",
+            "ACTION": "Acción",
+            "BTN": {
+                "RENEW": "Renovar"
+            },
+            "LACK": "Falta de documentos"
+        },
+        "USER_HISTORY": {
+            "NAME": "Historial de usuario",
+            "SORT": {
+                "BY_DATE": "Ordenar por fecha",
+                "DESC": "Más recientes primero",
+                "ASC": "Más antiguos primero"
+            },
+            "KIND": "Tipo de historial",
+            "ACTION_TYPE": {
+                "ALL": "Todos",
+                "LOGIN": "Inicios de sesión",
+                "LOGOUT": "Cierres de sesión",
+                "LOGIN_FAILED": "Inicios de sesión fallidos",
+                "REGISTER": "Registro",
+                "REQUEST_NEW": "Nuevas solicitudes",
+                "REQUEST_COMPLETED": "Solicitudes completadas",
+                "REQUEST_CANCEL": "Solicitudes canceladas",
+                "BOOK_BORROWED": "Préstamos",
+                "BOOK_AVAILABLE_TO_BORROW": "Notificaciones de disponibilidad",
+                "BOOK_RESERVED_FIRST": "Reservas",
+                "BOOK_RESERVED_QUEUE": "Reservas - cola",
+                "BOOK_RENEWED": "Renovaciones",
+                "BOOK_RETURNED": "Devoluciones",
+                "BOOK_LOST": "Documentos perdidos",
+                "NOTIFICATION_SYSTEM": "Notificaciones del sistema",
+                "NOTIFICATION_EMAIL": "Notificaciones por correo electrónico",
+                "NOTIFICATION_SMS": "Notificaciones por SMS"
+            },
+            "DATE": "Fecha",
+            "TIME": "Hora",
+            "DESCRIPTION": "Descripción",
+            "LACK": "Falta de acciones"
+        },
+        "FEES": {
+            "NAME": "Tarifas",
+            "NOT_ACCOUNTED": {
+                "NAME": "Tarifas no contabilizadas"
+            },
+            "ACCOUNTED": {
+                "NAME": "Tarifas contabilizadas"
+            }
+        },
+        "EDIT": {
+            "NAME": "Cambiar detalles personales",
+            "PASSWORD": {
+                "NAME": "Cambiar contraseña",
+                "NEW": {
+                    "LABEL": "Nueva contraseña",
+                    "PLACEHOLDER": "Nueva contraseña"
+                },
+                "REPEAT": {
+                    "LABEL": "Repetir contraseña",
+                    "PLACEHOLDER": "Repetir contraseña"
+                },
+                "REQ": {
+                    "MIN_LENGTH": "Número mínimo de caracteres: {{minPassLength}}.",
+                    "LOW_CASE_LETTER": "Número mínimo de letras minúsculas: {{minLowerCaseChars}}.",
+                    "UP_CASE_LETTER": "Número mínimo de letras mayúsculas: {{minUpperCaseChars}}.",
+                    "DIGIT": "Número mínimo de caracteres numéricos: {{minDigitChars}}."
+                },
+                "ERROR_MSG": {
+                    "NOT_MATCH": "Las contraseñas no coinciden.",
+                    "NOT_VALID": "La contraseña debe tener al menos {{minPassLength}} caracteres y contener al menos {{minLowerCaseChars}} letra minúscula, {{minUpperCaseChars}} letra mayúscula y {{minDigitChars}} número.",
+                    "NOT_VALID_AND_NOT_MATCH": "La contraseña debe tener al menos {{minPassLength}} caracteres y contener al menos {{minLowerCaseChars}} letra minúscula, {{minUpperCaseChars}} letra mayúscula y {{minDigitChars}} número. Las contraseñas no coinciden.",
+                    "EMPTY_FIELD": "Por favor, completa todos los campos y asegúrate de que las contraseñas coincidan y cumplan con los criterios."
+                },
+                "SUCCESS_MSG": "Tu contraseña se ha cambiado correctamente.",
+                "CHANGE_BTN": "Cambiar contraseña de la cuenta"
+            },
+            "EMAIL": {
+                "NAME": "Cambiar correo electrónico",
+                "NEW": {
+                    "LABEL": "Nuevo correo electrónico",
+                    "PLACEHOLDER": "Nuevo correo electrónico"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Por favor, introduce una dirección de correo electrónico válida.",
+                    "EMPTY_FIELD": "El campo de correo electrónico no puede estar vacío."
+                },
+                "SUCCESS_MSG": "Tu correo electrónico se ha cambiado correctamente.",
+                "CHANGE_BTN": "Cambiar correo electrónico"
+            },
+            "PHONE": {
+                "NAME": "Cambiar número de teléfono",
+                "NEW": {
+                    "LABEL": "Nuevo número de teléfono",
+                    "PLACEHOLDER": "Nuevo número de teléfono"
+                },
+                "ERROR_MSG": {
+                    "NOT_VALID": "Por favor, introduce un número de teléfono válido.",
+                    "EMPTY_FIELD": "El campo de número de teléfono no puede estar vacío."
+                },
+                "SUCCESS_MSG": "Tu número de teléfono se ha cambiado correctamente.",
+                "CHANGE_BTN": "Cambiar número de teléfono"
+            }
+        }
+    },
+    
+    "WAREHOUSE": {
+        "EXIT": "Salir",
+        "HEADER": {
+            "NEW": "Nuevo",
+            "IN_PROGRESS": "En progreso"
+        },
+        "BTN": {
+            "ACCEPT": "Aceptar",
+            "BACK_TO_PENDING": "Volver a pendientes",
+            "COMPLETE": "Completar"
+        },
+        "LABEL": {
+            "LOCATION": "Ubicación",
+            "ID": "ID",
+            "DATE": "Fecha",
+            "TITLE": "Título del documento",
+            "CALL_NUMBER": "Número de llamada del documento"
+        },
+        "INFO": {
+            "NO_NEW_ORDERS": "No hay pedidos nuevos.",
+            "NO_IN_PROGRESS": "No hay pedidos en progreso. Acepta un nuevo pedido."
+        }
+    },
+    
+    "PAGE_403": {
+        "HEADER": "Acceso a esta página está restringido",
+        "MSG": "Por favor, consulta con el administrador del sitio si crees que esto es un error."
+    },
+
+    "PAGINATION": {
+        "NEXT": "Siguiente",
+        "PREV": "Anterior"
+    }
+}

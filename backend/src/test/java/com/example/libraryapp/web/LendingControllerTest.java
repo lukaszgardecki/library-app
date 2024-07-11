@@ -96,7 +96,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/lendings?memberId=" + memberId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -105,7 +105,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/lendings", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -114,12 +114,12 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody1 = client.testRequest(GET, "/lendings", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody1.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
 
             ErrorMessage responseBody2 = client.testRequest(GET, "/lendings?memberId=1", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody2.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @ParameterizedTest
@@ -173,7 +173,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/lendings/" + lendingId, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @ParameterizedTest
@@ -185,7 +185,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/lendings/" + lendingId, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND.formatted(lendingId));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND.getMessage(lendingId));
         }
 
         @ParameterizedTest
@@ -197,7 +197,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(GET, "/lendings/" + lendingId, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -269,7 +269,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
         }
 
         @ParameterizedTest
@@ -284,7 +284,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -294,7 +294,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_LIMIT_EXCEEDED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_LIMIT_EXCEEDED.getMessage());
         }
 
         @Test
@@ -305,7 +305,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -316,7 +316,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.RESERVATION_NOT_FOUND.getMessage());
         }
 
         @Test
@@ -326,7 +326,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -336,7 +336,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, cashier, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -346,7 +346,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -356,7 +356,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", lendingToSave, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -365,7 +365,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings", admin, BAD_REQUEST)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BODY_MISSING.getMessage());
         }
     }
 
@@ -400,7 +400,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_CANNOT_BE_RENEWED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
 
         @Test
@@ -411,7 +411,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, CONFLICT)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_CANNOT_BE_RENEWED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
 
         @Test
@@ -422,7 +422,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -433,7 +433,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -453,7 +453,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -464,7 +464,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, cashier, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -475,7 +475,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -486,7 +486,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/renew", requestBody, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -542,7 +542,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, lendingToSave, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -552,7 +552,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.BOOK_ITEM_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -562,7 +562,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, admin, NOT_FOUND)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BY_BARCODE.formatted(bookBarcode));
+            assertThat(responseBody.getMessage()).isEqualTo(Message.LENDING_NOT_FOUND_BARCODE.getMessage(bookBarcode));
         }
 
         @Test
@@ -572,7 +572,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -582,7 +582,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, cashier, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -592,7 +592,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -602,7 +602,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(PATCH, "/lendings/return?bookBarcode=" + bookBarcode, UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
     }
 
@@ -620,10 +620,8 @@ public class LendingControllerTest extends BaseTest {
                     .expectBody(LendingDto.class)
                     .returnResult().getResponseBody();
 
-            MemberDto memberBefore = client.testRequest(GET, "/members/" + memberId, admin, OK)
-                    .expectBody(MemberDto.class)
-                    .returnResult().getResponseBody();
-
+            MemberDto memberBefore = findMemberById(memberId);
+            MemberDto anotherMemberReservedThatBookBefore = findMemberById(6L);
             BookItemDto bookItemBefore = client.testRequest(GET, "/book-items/" + bookItemId, admin, OK)
                     .expectBody(BookItemDto.class)
                     .returnResult().getResponseBody();
@@ -643,10 +641,13 @@ public class LendingControllerTest extends BaseTest {
             assertThat(returnBodyPost.getMember().getCharge()).isEqualTo(bookItemPrice);
             assertThat(returnBodyPost.getBookItem().getStatus()).isEqualTo(BookItemStatus.LOST);
 
+            MemberDto anotherMemberReservedThatBookAfter = findMemberById(6L);
             ReservationResponse anotherReservation = client.testRequest(GET, "/reservations/16", admin, OK)
                     .expectBody(ReservationResponse.class)
                     .returnResult().getResponseBody();
             assertThat(anotherReservation.getStatus()).isEqualTo(ReservationStatus.CANCELED);
+            assertThat(anotherMemberReservedThatBookAfter.getTotalBooksReserved())
+                    .isEqualTo(anotherMemberReservedThatBookBefore.getTotalBooksReserved() - 1);
         }
 
         @Test
@@ -656,7 +657,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/" + lendingId + "/lost", user, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -666,7 +667,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/" + lendingId + "/lost", UNAUTHORIZED)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.ACCESS_DENIED.getMessage());
         }
 
         @Test
@@ -676,7 +677,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/" + lendingId + "/lost", cashier, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
 
         @Test
@@ -686,7 +687,7 @@ public class LendingControllerTest extends BaseTest {
             ErrorMessage responseBody = client.testRequest(POST, "/lendings/" + lendingId + "/lost", warehouse, FORBIDDEN)
                     .expectBody(ErrorMessage.class)
                     .returnResult().getResponseBody();
-            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN);
+            assertThat(responseBody.getMessage()).isEqualTo(Message.FORBIDDEN.getMessage());
         }
     }
 

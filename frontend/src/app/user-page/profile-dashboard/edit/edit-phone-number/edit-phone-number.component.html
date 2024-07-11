@@ -1,0 +1,23 @@
+<h1>{{ name | translate }}</h1>
+<form (ngSubmit)="onSubmit()" method="post">
+    <div *ngIf="phoneIsWrong" class="msg error">
+        <p>{{ errorMsg | translate }}</p>
+    </div>
+    <div *ngIf="phoneIsChanged" class="msg success">
+        <p>{{ TEXT.PROFILE_EDIT_PHONE_SUCCESS_MSG | translate }}</p>
+    </div>
+    <div class="form-group">
+        <label for="new-phone">
+            {{ TEXT.PROFILE_EDIT_PHONE_NEW_LABEL | translate }}:<span class="required">*</span>
+        </label>
+        <input type="tel" id="new-phone" name="new-phone"
+            [(ngModel)]="newPhone"
+            [attr.placeholder]="TEXT.PROFILE_EDIT_PHONE_NEW_PLACEHOLDER | translate"
+            (input)="checkPhoneNumber()"
+            required
+        >
+    </div>
+    <div class="save-button">
+        <button type="submit">{{ TEXT.PROFILE_EDIT_PHONE_CHANGE_BTN | translate }}</button>
+    </div>
+</form>

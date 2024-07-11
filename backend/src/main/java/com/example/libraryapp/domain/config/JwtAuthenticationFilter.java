@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             handlerExceptionResolver.resolveException(
-                    request, response,null, new JwtException(Message.ACCESS_DENIED)
+                    request, response,null, new JwtException(Message.ACCESS_DENIED.getMessage())
             );
         }
     }
@@ -68,12 +68,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String extractToken(HttpServletRequest request) {
         return tokenService.findToken(request)
                 .filter(getTokenValidator(request.getRequestURI()))
-                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED));
+                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED.getMessage()));
     }
 
     private String extractFingerprint(HttpServletRequest request) {
         return tokenService.findFingerprint(request)
-                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED));
+                .orElseThrow(() -> new JwtException(Message.ACCESS_DENIED.getMessage()));
     }
 
     private Predicate<String> getTokenValidator(String requestURI) {
