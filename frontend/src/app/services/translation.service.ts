@@ -8,8 +8,13 @@ import { StorageService } from './storage.service';
 export class TranslationService {
   private readonly LANGUAGES = [
     { name: "English", short: "en" },
-    { name: "Polski", short: "pl" }
-  ];
+    { name: "Polski", short: "pl" },
+    { name: "Українська", short: "uk" },
+    { name: "Deutsch", short: "de" },
+    { name: "Español", short: "es" },
+    { name: "Čeština", short: "cs" },
+    { name: "Slovenčina", short: "sk" }
+];
 
   constructor(
     private translateService: TranslateService,
