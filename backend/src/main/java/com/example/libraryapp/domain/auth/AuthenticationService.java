@@ -125,6 +125,9 @@ public class AuthenticationService {
                             loginRequest.getPassword()
                     )
             );
+        } catch (BadCredentialsException ex) {
+            actionService.save(new ActionLoginFailed(member));
+            throw new BadCredentialsException(Message.VALIDATION_BAD_CREDENTIALS.getMessage());
         } catch (RuntimeException ex){
             actionService.save(new ActionLoginFailed(member));
             throw ex;
