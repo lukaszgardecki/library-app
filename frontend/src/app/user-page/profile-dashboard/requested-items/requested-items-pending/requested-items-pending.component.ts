@@ -4,6 +4,7 @@ import { ReservationService } from '../../../../services/reservation.service';
 import { Reservation } from '../../../../models/reservation';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { PdfService } from '../../../../services/pdf.service';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-requested-items-pending',
@@ -11,7 +12,8 @@ import { PdfService } from '../../../../services/pdf.service';
   styleUrl: './requested-items-pending.component.css'
 })
 export class RequestedItemsPendingComponent implements ProfileSetting, OnInit {
-  name: string = "PROFILE.REQUESTED_ITEMS.PENDING.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_REQUESTED_ITEMS_PENDING_NAME;
   routerLink: string = "requested-items/pending";
   reservationService = inject(ReservationService);
   pendingReservations: Array<Reservation>;

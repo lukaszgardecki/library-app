@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ProfileSetting } from '../profile-dashboard.component';
 import { UserService } from '../../../services/user.service';
 import { UserDetails } from '../../../models/user-details';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-personal-details',
@@ -10,7 +11,8 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './personal-details.component.css'
 })
 export class PersonalDetailsComponent implements ProfileSetting, OnInit {
-  name: string = "PROFILE.DETAILS.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_DETAILS_NAME;
   routerLink: string = "details";
   user?: UserDetails;
   private userService = inject(UserService);

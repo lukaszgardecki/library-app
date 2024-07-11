@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { TEXT } from '../../shared/messages';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
   ]
 })
 export class LoginComponent {
+  TEXT = TEXT;
   loginObj: Login;
 
   constructor(

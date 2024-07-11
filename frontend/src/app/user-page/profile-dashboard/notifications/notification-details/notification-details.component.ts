@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Notification } from '../../../../models/notification';
 import { NotificationService } from '../../../../services/notification.service';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-notification-details',
@@ -9,6 +10,7 @@ import { NotificationService } from '../../../../services/notification.service';
   styleUrl: './notification-details.component.css'
 })
 export class NotificationDetailsComponent implements OnInit {
+  TEXT = TEXT;
   notification: Notification;
 
   constructor(

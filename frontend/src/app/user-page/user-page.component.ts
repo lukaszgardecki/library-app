@@ -2,6 +2,7 @@ import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 import { TranslationService } from '../services/translation.service';
+import { TEXT } from '../shared/messages';
 
 @Component({
   selector: 'app-user-page',
@@ -9,6 +10,7 @@ import { TranslationService } from '../services/translation.service';
   styleUrl: './user-page.component.css'
 })
 export class UserPageComponent {
+  TEXT = TEXT;
   isLoggedIn: boolean;
   title = 'Library Management System';
   languages: { name: string, short: string }[];

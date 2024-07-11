@@ -3,6 +3,7 @@ import { ProfileSetting } from '../profile-dashboard.component';
 import { Action } from '../../../models/action';
 import { ActionService } from '../../../services/action.service';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-user-history',
@@ -10,7 +11,8 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './user-history.component.css'
 })
 export class UserHistoryComponent implements ProfileSetting {
-  name: string = "PROFILE.USER_HISTORY.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_USER_HISTORY_NAME;
   routerLink: string = "history";
   actions = new Array<Action>;
   actionService = inject(ActionService);
@@ -20,24 +22,24 @@ export class UserHistoryComponent implements ProfileSetting {
   currentSort = "desc";
   currentType = "ALL"
   actionTypes = [
-    {type: this.currentType, name: "PROFILE.USER_HISTORY.ACTION_TYPE.ALL"},
-    {type: "LOGIN", name: "PROFILE.USER_HISTORY.ACTION_TYPE.LOGIN"},
-    {type: "LOGOUT", name: "PROFILE.USER_HISTORY.ACTION_TYPE.LOGOUT"},
-    {type: "LOGIN_FAILED", name: "PROFILE.USER_HISTORY.ACTION_TYPE.LOGIN_FAILED"},
-    {type: "REGISTER", name: "PROFILE.USER_HISTORY.ACTION_TYPE.REGISTER"},
-    {type: "REQUEST_NEW", name: "PROFILE.USER_HISTORY.ACTION_TYPE.REQUEST_NEW"},
-    {type: "REQUEST_COMPLETED", name: "PROFILE.USER_HISTORY.ACTION_TYPE.REQUEST_COMPLETED"},
-    {type: "REQUEST_CANCEL", name: "PROFILE.USER_HISTORY.ACTION_TYPE.REQUEST_CANCEL"},
-    {type: "BOOK_BORROWED", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_BORROWED"},
-    {type: "BOOK_AVAILABLE_TO_BORROW", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_AVAILABLE_TO_BORROW"},
-    {type: "BOOK_RESERVED_FIRST", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_RESERVED_FIRST"},
-    {type: "BOOK_RESERVED_QUEUE", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_RESERVED_QUEUE"},
-    {type: "BOOK_RENEWED", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_RENEWED"},
-    {type: "BOOK_RETURNED", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_RETURNED"},
-    {type: "BOOK_LOST", name: "PROFILE.USER_HISTORY.ACTION_TYPE.BOOK_LOST"},
-    {type: "NOTIFICATION_SYSTEM", name: "PROFILE.USER_HISTORY.ACTION_TYPE.NOTIFICATION_SYSTEM"},
-    {type: "NOTIFICATION_EMAIL", name: "PROFILE.USER_HISTORY.ACTION_TYPE.NOTIFICATION_EMAIL"},
-    {type: "NOTIFICATION_SMS", name: "PROFILE.USER_HISTORY.ACTION_TYPE.NOTIFICATION_SMS"}
+    {type: this.currentType, name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_ALL},
+    {type: "LOGIN", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGIN},
+    {type: "LOGOUT", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGOUT},
+    {type: "LOGIN_FAILED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_LOGIN_FAILED},
+    {type: "REGISTER", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REGISTER},
+    {type: "REQUEST_NEW", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_NEW},
+    {type: "REQUEST_COMPLETED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_COMPLETED},
+    {type: "REQUEST_CANCEL", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_REQUEST_CANCEL},
+    {type: "BOOK_BORROWED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_BORROWED},
+    {type: "BOOK_AVAILABLE_TO_BORROW", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_AVAILABLE_TO_BORROW},
+    {type: "BOOK_RESERVED_FIRST", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RESERVED_FIRST},
+    {type: "BOOK_RESERVED_QUEUE", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RESERVED_QUEUE},
+    {type: "BOOK_RENEWED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RENEWED},
+    {type: "BOOK_RETURNED", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_RETURNED},
+    {type: "BOOK_LOST", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_BOOK_LOST},
+    {type: "NOTIFICATION_SYSTEM", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_SYSTEM},
+    {type: "NOTIFICATION_EMAIL", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_EMAIL},
+    {type: "NOTIFICATION_SMS", name: TEXT.PROFILE_USER_HISTORY_ACTION_TYPE_NOTIFICATION_SMS}
   ]
 
   ngOnInit(): void {

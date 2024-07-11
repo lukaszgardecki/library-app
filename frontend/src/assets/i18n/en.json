@@ -71,7 +71,7 @@
         "ON_SITE_ITEMS": "Items available on-site only",
         "CALL_NUMBER": "Call number",
         "STATUS": {
-            "NAME:": "Status",
+            "NAME": "Status",
             "AVAILABLE": "Available",
             "UNAVAILABLE": "Unavailable",
             "LOANED": "On loan",
@@ -122,7 +122,7 @@
                 "AVAILABILITY_DATE": "Availability date",
                 "LENT_ITEMS": "Lent items",
                 "STATUS": {
-                    "NAME": "Status",
+                    "NAME": "Account status",
                     "ACTIVE": "Active",
                     "INACTIVE": "Inactive",
                     "CLOSED": "Closed",
@@ -137,7 +137,8 @@
             "SUBJECT": "Subject",
             "BTN": {
                 "DELETE": "Delete",
-                "SELECT_ALL": "Select all"
+                "SELECT_ALL": "Select all",
+                "UNSELECT_ALL": "Unselect all"
             },
             "CONTENT": "Content",
             "DOCUMENT": "Document",
@@ -302,6 +303,10 @@
             "DATE": "Date",
             "TITLE": "Document title",
             "CALL_NUMBER": "Document call number"
+        },
+        "INFO": {
+            "NO_NEW_ORDERS": "No new orders.",
+            "NO_IN_PROGRESS": "No orders in progress. Accept a new order."
         }
     },
     

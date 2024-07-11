@@ -1,11 +1,11 @@
 <div class="bgded overlay imgcenter" style="background-image:url('../images/demo/backgrounds/b2.jpg');">
     <div id="breadcrumb" class="hoc clear"> 
       <!-- ################################################################################################ -->
-      <h6 class="heading">{{ 'MAIN_NAV.BOOKS' | translate }}</h6>
+      <h6 class="heading">{{ TEXT.MAIN_NAV_BOOKS | translate }}</h6>
       <!-- ################################################################################################ -->
       <ul>
-        <li><a routerLink="" routerLinkActive="active">{{ 'MAIN_NAV.HOME' | translate }}</a></li>
-        <li><a (click)="goBack()" style="cursor: pointer;">{{ 'MAIN_NAV.BOOKS' | translate }}</a></li>
+        <li><a routerLink="" routerLinkActive="active">{{ TEXT.MAIN_NAV_HOME | translate }}</a></li>
+        <li><a (click)="goBack()" style="cursor: pointer;">{{ TEXT.MAIN_NAV_BOOKS | translate }}</a></li>
         <li><a>{{book.title}}</a></li>
       </ul>
       <!-- ################################################################################################ -->
@@ -16,7 +16,7 @@
 
         <div class="content">
             <div class="btn-bar">
-                <button class="button btn-1" (click)="goBack()">{{ 'BTN.BACK' | translate }}</button>
+                <button class="button btn-1" (click)="goBack()">{{ TEXT.BTN_BACK | translate }}</button>
                 <!-- <div class="right-side">
                   <button class="button btn-2 btn-delete" >Delete</button>
                 </div> -->
@@ -33,51 +33,51 @@
             
             
             <div class="item-section">
-                <h1>{{ 'BOOK_DETAILS.HEADER' | translate }}</h1>
+                <h1>{{ TEXT.BOOK_DETAILS_HEADER | translate }}</h1>
                 <table>
                     <tbody>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.TITLE' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_TITLE | translate }}:</td>
                             <td>{{book.title}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.AUTHORS' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_AUTHORS | translate }}:</td>
                             <td>Author 1, Author 2, Author 3</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.PUBLISHER' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_PUBLISHER | translate }}:</td>
                             <td>{{book.publisher}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.PUBLICATION' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_PUBLICATION | translate }}:</td>
                             <td>Wydanie 1.</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.PUBLICATION_YEAR' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_PUBLICATION_YEAR | translate }}:</td>
                             <td>2024</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.LANGUAGE' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_LANGUAGE | translate }}:</td>
                             <td>{{book.language}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.PAGES' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_PAGES | translate }}:</td>
                             <td>{{book.pages}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.ISBN' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_ISBN | translate }}:</td>
                             <td>{{book.isbn}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.NOTES' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_NOTES | translate }}:</td>
                             <td>Książka dostępna również jako e-book</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.SUBJECT' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_SUBJECT | translate }}:</td>
                             <td>{{book.subject}}</td>
                         </tr>
                         <tr>
-                            <td>{{ 'BOOK_DETAILS.GENRE' | translate }}:</td>
+                            <td>{{ TEXT.BOOK_DETAILS_GENRE | translate }}:</td>
                             <td>Book</td>
                         </tr>
                     </tbody>
@@ -85,17 +85,17 @@
             </div>
 
             <div class="item-section" *ngIf="getLoanableItems().length > 0">
-                <h1>{{ 'BOOK_DETAILS.LOANABLE_ITEMS' | translate }}</h1>
+                <h1>{{ TEXT.BOOK_DETAILS_LOANABLE_ITEMS | translate }}</h1>
                 <ul>
                     <li *ngFor="let bookItem of getLoanableItems()">
                         <div class="item-section-info">
-                            <span><strong>{{ 'BOOK_DETAILS.CALL_NUMBER' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_CALL_NUMBER | translate }}:</strong></span>
                             <span>{{bookItem.barcode}}</span>
 
-                            <span><strong>{{ 'BOOK_DETAILS.STATUS.NAME' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_STATUS_NAME | translate }}:</strong></span>
                             <span>{{ getStatusLabel(bookItem.status) | translate }}</span>
 
-                            <span><strong>{{ 'BOOK_DETAILS.LOCATION' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_LOCATION | translate }}:</strong></span>
                             <span>{{bookItem.rack.locationIdentifier}}</span>
                         </div>
                         <div class="item-section-actions">
@@ -103,7 +103,7 @@
                                 <i class="fa fa-2x fa-check" *ngIf="isAvailable(bookItem)"></i>
                                 <i class="fa fa-2x fa-remove" *ngIf="!isAvailable(bookItem)"></i>
                                 <span>
-                                    {{isAvailable(bookItem) ? ('BOOK_DETAILS.STATUS.AVAILABLE' | translate) : ('BOOK_DETAILS.STATUS.UNAVAILABLE' | translate)}}
+                                    {{isAvailable(bookItem) ? (TEXT.BOOK_DETAILS_STATUS_AVAILABLE | translate) : (TEXT.BOOK_DETAILS_STATUS_UNAVAILABLE | translate)}}
                                 </span>
                             </div>
                             <div></div>
@@ -111,15 +111,15 @@
                             <ng-container *ngIf="isAuthenticated() | async">
                                 <button *ngIf="!(hasUserBorrowed(bookItem) | async) && !(hasUserReserved(bookItem) | async)"
                                         (click)="makeAReservation(bookItem)">
-                                    {{ isAvailable(bookItem) ? ('BOOK_DETAILS.BTN_REQUEST' | translate) : ('BOOK_DETAILS.BTN_RESERVE' | translate) }}
+                                    {{ isAvailable(bookItem) ? (TEXT.BOOK_DETAILS_BTN_REQUEST | translate) : (TEXT.BOOK_DETAILS_BTN_RESERVE | translate) }}
                                 </button>
                                 <div class="reserved-label" *ngIf="hasUserBorrowed(bookItem) | async">
                                     <i class="fa fa-home"></i>
-                                    <span>{{ 'BOOK_DETAILS.STATUS.BORROWED' | translate }}</span>
+                                    <span>{{ TEXT.BOOK_DETAILS_STATUS_BORROWED | translate }}</span>
                                 </div>
                                 <div class="reserved-label" *ngIf="hasUserReserved(bookItem) | async">
                                     <i class="fa fa-calendar-check-o"></i>
-                                    <span>{{ 'BOOK_DETAILS.STATUS.RESERVED' | translate }}</span>
+                                    <span>{{ TEXT.BOOK_DETAILS_STATUS_RESERVED | translate }}</span>
                                 </div>
                             </ng-container>
                         </div>
@@ -128,17 +128,17 @@
             </div>
 
             <div class="item-section" *ngIf="getOnSiteItems().length > 0">
-                <h1>{{ 'BOOK_DETAILS.ON_SITE_ITEMS' | translate }}</h1>
+                <h1>{{ TEXT.BOOK_DETAILS_ON_SITE_ITEMS | translate }}</h1>
                 <ul>
                     <li *ngFor="let bookItem of getOnSiteItems()">
                         <div class="item-section-info">
-                            <span><strong>{{ 'BOOK_DETAILS.CALL_NUMBER' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_CALL_NUMBER | translate }}:</strong></span>
                             <span>{{bookItem.barcode}}</span>
 
-                            <span><strong>{{ 'BOOK_DETAILS.STATUS.NAME' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_STATUS_NAME | translate }}:</strong></span>
                             <span>{{ getStatusLabel(bookItem.status) | translate }}</span>
                             
-                            <span><strong>{{ 'BOOK_DETAILS.LOCATION' | translate }}:</strong></span>
+                            <span><strong>{{ TEXT.BOOK_DETAILS_LOCATION | translate }}:</strong></span>
                             <span>{{bookItem.rack.locationIdentifier}}</span>
                         </div>
                         <div class="item-section-actions">
@@ -146,7 +146,7 @@
                                 <i class="fa fa-2x fa-check" *ngIf="isAvailable(bookItem)"></i>
                                 <i class="fa fa-2x fa-remove" *ngIf="!isAvailable(bookItem)"></i>
                                 <span>
-                                    {{isAvailable(bookItem) ? ('BOOK_DETAILS.STATUS.AVAILABLE' | translate) : ('BOOK_DETAILS.STATUS.UNAVAILABLE' | translate)}}
+                                    {{isAvailable(bookItem) ? (TEXT.BOOK_DETAILS_STATUS_AVAILABLE | translate) : (TEXT.BOOK_DETAILS_STATUS_UNAVAILABLE | translate)}}
                                 </span>
                             </div>
                             <div></div>
@@ -154,15 +154,15 @@
                             <ng-container *ngIf="isAuthenticated() | async">
                                 <button *ngIf="!(hasUserBorrowed(bookItem) | async) && !(hasUserReserved(bookItem) | async)"
                                         (click)="makeAReservation(bookItem)">
-                                    {{ isAvailable(bookItem) ? ('BOOK_DETAILS.BTN_REQUEST' | translate) : ('BOOK_DETAILS.BTN_RESERVE' | translate) }}
+                                    {{ isAvailable(bookItem) ? (TEXT.BOOK_DETAILS_BTN_REQUEST | translate) : (TEXT.BOOK_DETAILS_BTN_RESERVE | translate) }}
                                 </button>
                                 <div class="reserved-label" *ngIf="hasUserBorrowed(bookItem) | async">
                                     <i class="fa fa-home"></i>
-                                    <span>{{ 'BOOK_DETAILS.STATUS.BORROWED' | translate }}</span>
+                                    <span>{{ TEXT.BOOK_DETAILS_STATUS_BORROWED | translate }}</span>
                                 </div>
                                 <div class="reserved-label" *ngIf="hasUserReserved(bookItem) | async">
                                     <i class="fa fa-calendar-check-o"></i>
-                                    <span>{{ 'BOOK_DETAILS.STATUS.RESERVED' | translate }}</span>
+                                    <span>{{ TEXT.BOOK_DETAILS_STATUS_RESERVED | translate }}</span>
                                 </div>
                             </ng-container>
                             

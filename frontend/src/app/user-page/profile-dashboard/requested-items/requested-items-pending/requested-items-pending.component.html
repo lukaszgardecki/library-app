@@ -1,13 +1,13 @@
 <h1>{{ name | translate }}</h1>
 <ng-container *ngIf="pendingReservations && pendingReservations.length > 0; else lack">
     <button class="save-to-file" (click)="saveAsPDF()">
-        {{ 'BTN.SAVE_TO_FILE' | translate }}
+        {{ TEXT.BTN_SAVE_TO_FILE | translate }}
     </button>
     <table id="table">
         <thead>
             <tr>
                 <th>#</th>
-                <th class="c2">{{ 'PROFILE.REQUESTED_ITEMS.PENDING.TITLE' | translate }}</th>
+                <th class="c2">{{ TEXT.PROFILE_REQUESTED_ITEMS_PENDING_TITLE | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -18,4 +18,4 @@
         </tbody>
     </table>
 </ng-container>
-<ng-template #lack>{{ 'PROFILE.REQUESTED_ITEMS.PENDING.LACK' | translate }}</ng-template>
+<ng-template #lack>{{ TEXT.PROFILE_REQUESTED_ITEMS_PENDING_LACK | translate }}</ng-template>

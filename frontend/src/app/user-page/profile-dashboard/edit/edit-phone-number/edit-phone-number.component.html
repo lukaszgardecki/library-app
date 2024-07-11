@@ -4,20 +4,20 @@
         <p>{{ errorMsg | translate }}</p>
     </div>
     <div *ngIf="phoneIsChanged" class="msg success">
-        <p>{{ 'PROFILE.EDIT.PHONE.SUCCESS_MSG' | translate }}</p>
+        <p>{{ TEXT.PROFILE_EDIT_PHONE_SUCCESS_MSG | translate }}</p>
     </div>
     <div class="form-group">
         <label for="new-phone">
-            {{ 'PROFILE.EDIT.PHONE.NEW.LABEL' | translate }}:<span class="required">*</span>
+            {{ TEXT.PROFILE_EDIT_PHONE_NEW_LABEL | translate }}:<span class="required">*</span>
         </label>
         <input type="tel" id="new-phone" name="new-phone"
             [(ngModel)]="newPhone"
-            [attr.placeholder]="'PROFILE.EDIT.PHONE.NEW.PLACEHOLDER' | translate"
+            [attr.placeholder]="TEXT.PROFILE_EDIT_PHONE_NEW_PLACEHOLDER | translate"
             (input)="checkPhoneNumber()"
             required
         >
     </div>
     <div class="save-button">
-        <button type="submit">{{ 'PROFILE.EDIT.PHONE.CHANGE_BTN' | translate }}</button>
+        <button type="submit">{{ TEXT.PROFILE_EDIT_PHONE_CHANGE_BTN | translate }}</button>
     </div>
 </form>

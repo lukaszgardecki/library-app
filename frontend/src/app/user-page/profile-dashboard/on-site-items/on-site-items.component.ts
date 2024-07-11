@@ -4,6 +4,7 @@ import { Lending } from '../../../models/lending';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LendingService } from '../../../services/lending.service';
 import { PdfService } from '../../../services/pdf.service';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-on-site-items',
@@ -11,7 +12,8 @@ import { PdfService } from '../../../services/pdf.service';
   styleUrl: './on-site-items.component.css'
 })
 export class OnSiteItemsComponent implements ProfileSetting {
-  name: string = "PROFILE.ON_SITE_ITEMS.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_ON_SITE_ITEMS_NAME;
   routerLink: string = "on-site-items";
 
   onSiteLendings: Array<Lending>;

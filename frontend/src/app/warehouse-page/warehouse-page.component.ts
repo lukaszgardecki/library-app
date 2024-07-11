@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Reservation } from '../models/reservation';
 import { WarehouseService } from '../services/warehouse.service';
+import { TEXT } from '../shared/messages';
 
 @Component({
   selector: 'app-warehouse-page',
@@ -11,6 +12,7 @@ import { WarehouseService } from '../services/warehouse.service';
   styleUrl: './warehouse-page.component.css'
 })
 export class WarehousePageComponent implements OnInit, OnDestroy {
+  TEXT = TEXT;
   pendingReservations$: Observable<Reservation[]>;
   inProgressReservations$: Observable<Reservation[]>;
 

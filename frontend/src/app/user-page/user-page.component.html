@@ -17,16 +17,16 @@
       <ng-container>
         <ul *ngIf="!isLoggedIn; else loggedIn">
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
-          <li><a href="/login">{{ 'TOP_BAR.LOGIN' | translate }}</a></li>
-          <li><a href="#">{{ 'TOP_BAR.REGISTER' | translate }}</a></li>
+          <li><a href="/login">{{ TEXT.TOP_BAR_LOGIN | translate }}</a></li>
+          <li><a href="#">{{ TEXT.TOP_BAR_REGISTER | translate }}</a></li>
         </ul>
       </ng-container>
       <ng-template #loggedIn>
         <ul>
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
-          <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">{{ 'TOP_BAR.WAREHOUSE' | translate }}</a></li>
-          <li><a [routerLink]="['/userprofile']">{{ 'TOP_BAR.PROFILE' | translate }}</a></li>
-          <li><a [routerLink]="['/login']" (click)="logout()">{{ 'TOP_BAR.LOGOUT' | translate }}</a></li>
+          <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">{{ TEXT.TOP_BAR_WAREHOUSE | translate }}</a></li>
+          <li><a [routerLink]="['/userprofile']">{{ TEXT.TOP_BAR_PROFILE | translate }}</a></li>
+          <li><a [routerLink]="['/login']" (click)="logout()">{{ TEXT.TOP_BAR_LOGOUT | translate }}</a></li>
         </ul>
       </ng-template>
     </div>
@@ -56,16 +56,16 @@
   <nav id="mainav" class="hoc clear">
     <ul class="clear">
       <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <a [routerLink]="['']" >{{ 'MAIN_NAV.HOME' | translate }}</a>
+        <a [routerLink]="['']" >{{ TEXT.MAIN_NAV_HOME | translate }}</a>
       </li>
       <li routerLinkActive="active" [routerLinkActiveOptions]="{ matrixParams: 'exact', queryParams: 'ignored', paths: 'exact', fragment: 'exact' }">
-        <a [routerLink]="['/books']">{{ 'MAIN_NAV.BOOKS' | translate }}</a>
+        <a [routerLink]="['/books']">{{ TEXT.MAIN_NAV_BOOKS | translate }}</a>
       </li>
     </ul>
     <form (change)="onNavigate($event)">
       <select>
-        <option value="/">{{ 'MAIN_NAV.HOME' | translate }}</option>
-        <option value="/books">{{ 'MAIN_NAV.BOOKS' | translate }}</option>
+        <option value="/">{{ TEXT.MAIN_NAV_HOME | translate }}</option>
+        <option value="/books">{{ TEXT.MAIN_NAV_BOOKS | translate }}</option>
       </select>
     </form>
   </nav>

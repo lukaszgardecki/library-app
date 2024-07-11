@@ -122,7 +122,7 @@
                 "AVAILABILITY_DATE": "Termin ważności",
                 "LENT_ITEMS": "Wypożyczenia",
                 "STATUS": {
-                    "NAME": "Status",
+                    "NAME": "Status konta",
                     "ACTIVE": "Aktywne",
                     "INACTIVE": "Nieaktywne",
                     "CLOSED": "Zamknięte",
@@ -137,7 +137,8 @@
             "SUBJECT": "Temat",
             "BTN": {
                 "DELETE": "Usuń",
-                "SELECT_ALL": "Zaznacz wszystkie"
+                "SELECT_ALL": "Zaznacz wszystkie",
+                "UNSELECT_ALL": "Odznacz wszystkie"
             },
             "CONTENT": "Treść",
             "DOCUMENT": "Dokument",
@@ -301,7 +302,9 @@
             "ID": "ID",
             "DATE": "Data",
             "TITLE": "Tytuł",
-            "CALL_NUMBER": "Sygnatura",
+            "CALL_NUMBER": "Sygnatura"
+        },
+        "INFO": {
             "NO_NEW_ORDERS": "Brak nowych zamówień.",
             "NO_IN_PROGRESS": "Brak zamówień w trakcie realizacji. Zaakceptuj nowe zamówienie."
         }

@@ -4,9 +4,9 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th class="c2">{{ 'PROFILE.RENEWABLE_ITEMS.TITLE' | translate }}</th>
-                <th>{{ 'PROFILE.RENEWABLE_ITEMS.RETURN_DATE' | translate }}</th>
-                <th>{{ 'PROFILE.RENEWABLE_ITEMS.ACTION' | translate }}</th>
+                <th class="c2">{{ TEXT.PROFILE_RENEWABLE_ITEMS_TITLE | translate }}</th>
+                <th>{{ TEXT.PROFILE_RENEWABLE_ITEMS_RETURN_DATE | translate }}</th>
+                <th>{{ TEXT.PROFILE_RENEWABLE_ITEMS_ACTION | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -15,10 +15,10 @@
                 <td><a [routerLink]="['/books', lending.bookItem.book.id]">{{lending.bookItem.book.title}}</a></td>
                 <td>{{lending.dueDate | date: "dd/MM/yyyy"}}</td>
                 <td><button (click)="renew(lending.bookItem.barcode)">
-                    {{ 'PROFILE.RENEWABLE_ITEMS.BTN.RENEW' | translate }}
+                    {{ TEXT.PROFILE_RENEWABLE_ITEMS_BTN_RENEW | translate }}
                 </button></td>
             </tr>
         </tbody>
     </table>
 </ng-container>
-<ng-template #lack>{{ 'PROFILE.RENEWABLE_ITEMS.LACK' | translate }}</ng-template>
+<ng-template #lack>{{ TEXT.PROFILE_RENEWABLE_ITEMS_LACK | translate }}</ng-template>

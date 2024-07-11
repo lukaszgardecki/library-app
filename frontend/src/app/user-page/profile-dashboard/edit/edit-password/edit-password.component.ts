@@ -3,6 +3,7 @@ import { ProfileSetting } from '../../profile-dashboard.component';
 import { UserService } from '../../../../services/user.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { UserUpdate } from '../../../../shared/user-update';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-edit-password',
@@ -10,7 +11,8 @@ import { UserUpdate } from '../../../../shared/user-update';
   styleUrl: './edit-password.component.css'
 })
 export class EditPasswordComponent implements ProfileSetting {
-  name: string = "PROFILE.EDIT.PASSWORD.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_EDIT_PASSWORD_NAME;
   routerLink: string = "edit/password";
   minPassLength = 8;
   minLowerCaseChars = 1;
@@ -32,11 +34,11 @@ export class EditPasswordComponent implements ProfileSetting {
     const passwordsMatch = this.newPass === this.newPassRepeat;
    
     if (!isValidPassword && !passwordsMatch) {
-      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_VALID_AND_NOT_MATCH";
+      this.errorMsg = TEXT.PROFILE_EDIT_PASSWORD_ERROR_MSG_NOT_VALID_AND_NOT_MATCH;
     } else if (!isValidPassword) {
-      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_VALID";
+      this.errorMsg = TEXT.PROFILE_EDIT_PASSWORD_ERROR_MSG_NOT_VALID;
     } else if (!passwordsMatch) {
-      this.errorMsg = "PROFILE.EDIT.PASSWORD.ERROR_MSG.NOT_MATCH";
+      this.errorMsg = TEXT.PROFILE_EDIT_PASSWORD_ERROR_MSG_NOT_MATCH;
     } else {
       this.errorMsg = "";
     }
@@ -49,13 +51,12 @@ export class EditPasswordComponent implements ProfileSetting {
     if (!this.newPass || !this.newPassRepeat || !this.checkPasswords()) {
       this.passIsChanged = false;
       this.passIsWrong = true;
-      this.errorMsg = 'PROFILE.EDIT.PASSWORD.ERROR_MSG.EMPTY_FIELD';
+      this.errorMsg = TEXT.PROFILE_EDIT_PASSWORD_ERROR_MSG_EMPTY_FIELD;
       return;
     }
     this.changePassword();
     this.newPass="";
     this.newPassRepeat="";
-     
   }
 
   private changePassword() {

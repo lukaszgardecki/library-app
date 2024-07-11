@@ -1,11 +1,11 @@
 <div class="bgded overlay imgcenter" style="background-image:url('../images/demo/backgrounds/b2.jpg');">
     <div id="breadcrumb" class="hoc clear"> 
       <!-- ################################################################################################ -->
-      <h6 class="heading">{{ 'MAIN_NAV.BOOKS' | translate }}</h6>
+      <h6 class="heading">{{ TEXT.MAIN_NAV_BOOKS | translate }}</h6>
       <!-- ################################################################################################ -->
       <ul>
-        <li><a routerLink="" routerLinkActive="active">{{ 'MAIN_NAV.HOME' | translate }}</a></li>
-        <li><a>{{ 'MAIN_NAV.BOOKS' | translate }}</a></li>
+        <li><a routerLink="" routerLinkActive="active">{{ TEXT.MAIN_NAV_HOME | translate }}</a></li>
+        <li><a>{{ TEXT.MAIN_NAV_BOOKS | translate }}</a></li>
       </ul>
       <!-- ################################################################################################ -->
     </div>
@@ -26,7 +26,7 @@
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sorting-body" aria-expanded="false" aria-controls="sorting-body">
-                  {{ 'BOOK_LIST.SORT_BY' | translate }}
+                  {{ TEXT.BOOK_LIST_SORT_BY | translate }}
                 </button>
               </h2>
               <div id="sorting-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
@@ -40,7 +40,7 @@
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sizing-body" aria-expanded="false" aria-controls="sizing-body">
-                  {{ 'BOOK_LIST.PAGE_SIZE' | translate }}
+                  {{ TEXT.BOOK_LIST_PAGE_SIZE | translate }}
                 </button>
               </h2>
               <div id="sizing-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
@@ -55,7 +55,7 @@
             <div class="accordion-item" *ngIf="languages$ | async as languages">
               <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#language-body" aria-expanded="false" aria-controls="language-body">
-                  {{ 'BOOK_LIST.LANGUAGE' | translate }}
+                  {{ TEXT.BOOK_LIST_LANGUAGE | translate }}
                 </button>
               </h2>
               <div id="language-body" class="accordion-collapse collapse" data-bs-parent="#filtering">
@@ -93,11 +93,11 @@
                   <div class="list-cont">
                       <header><a [routerLink]="['/books', book.id]">{{book.title}}</a></header>
                       <div class="list-cont-row">
-                          <div><b>{{ 'BOOK_LIST.PUBLISHER' | translate }}:</b></div>
+                          <div><b>{{ TEXT.BOOK_LIST_PUBLISHER | translate }}:</b></div>
                           <div>{{book.publisher}}</div>
                       </div>
                       <div class="list-cont-row">
-                          <div><strong>{{ 'BOOK_LIST.SUBJECT' | translate }}:</strong></div>
+                          <div><strong>{{ TEXT.BOOK_LIST_SUBJECT | translate }}:</strong></div>
                           <div>{{book.subject}}</div>
                       </div>
                   </div>
@@ -113,7 +113,7 @@
 
           </ng-container>
 
-          <ng-template #noBooks>{{ 'BOOK_LIST.LACK' | translate }}</ng-template>
+          <ng-template #noBooks>{{ TEXT.BOOK_LIST_LACK | translate }}</ng-template>
         </div>
 
         <div class="clear"></div>

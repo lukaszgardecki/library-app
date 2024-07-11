@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Pageable } from '../../../shared/pageable';
 import { NotificationsPage } from '../../../models/notifications-page';
+import { TEXT } from '../../../shared/messages';
 
 @Component({
   selector: 'app-notifications',
@@ -13,7 +14,8 @@ import { NotificationsPage } from '../../../models/notifications-page';
   styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent implements ProfileSetting, OnInit, Pageable {
-  name: string = "PROFILE.NOTIFICATIONS.NAME";
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_NOTIFICATIONS_NAME;
   routerLink: string = "notifications";
   notificationsPage$: Observable<NotificationsPage>;
   allAreSelected: boolean = false;
@@ -52,12 +54,12 @@ export class NotificationsComponent implements ProfileSetting, OnInit, Pageable 
   private _unselectAll() {
     this.allAreSelected = false;
     this.notificationsPage$.subscribe(list => list._embedded.notificationDtoList.forEach(el => el.selected = false));
-    this.selectAllBtn.nativeElement.innerText = "Select all"
+    this.selectAllBtn.nativeElement.innerText = TEXT.PROFILE_NOTIFICATIONS_BTN_SELECT_ALL
   }
 
   private _selectAll() {
     this.allAreSelected = true;
     this.notificationsPage$.subscribe(list => list._embedded.notificationDtoList.forEach(el => el.selected = true));
-    this.selectAllBtn.nativeElement.innerText = "Unselect all"
+    this.selectAllBtn.nativeElement.innerText = TEXT.PROFILE_NOTIFICATIONS_BTN_UNSELECT_ALL
   }
 }

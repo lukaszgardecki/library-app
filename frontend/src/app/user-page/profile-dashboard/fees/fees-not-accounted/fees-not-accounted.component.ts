@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProfileSetting } from '../../profile-dashboard.component';
+import { TEXT } from '../../../../shared/messages';
 
 @Component({
   selector: 'app-fees-not-accounted',
@@ -7,6 +8,7 @@ import { ProfileSetting } from '../../profile-dashboard.component';
   styleUrl: './fees-not-accounted.component.css'
 })
 export class FeesNotAccountedComponent implements ProfileSetting {
-  name: string = "PROFILE.FEES.NOT_ACCOUNTED.NAME"
+  TEXT = TEXT;
+  name: string = TEXT.PROFILE_FEES_ACCOUNTED_NAME;
   routerLink: string = "fees/not-accounted";
 }
