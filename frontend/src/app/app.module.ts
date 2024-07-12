@@ -40,6 +40,8 @@ import { WarehousePageComponent } from './warehouse-page/warehouse-page.componen
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { SideAccordionComponent } from './side-accordion/side-accordion.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -79,7 +81,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     NotificationDetailsComponent,
     UserPageComponent,
     WarehousePageComponent,
-    NotAuthorizedPageComponent
+    NotAuthorizedPageComponent,
+    AdminPageComponent,
+    SideAccordionComponent
   ],
   imports: [
     BrowserModule,
