@@ -12,13 +12,6 @@ File: Layout CSS
 @import url("custom.flexslider.css");
 @import url("framework.css");
 
-:root {
-	--main-color: #1C7AA8;
-	--button-hover-color: #155A7D;
-	--font-family-1: Georgia, "Times New Roman", Times, serif;
-	--font-family-2: Verdana, Geneva, sans-serif;
-}
-
 /* Rows
 --------------------------------------------------------------------------------------------------------------- */
 .row0, .row0 a{}
@@ -277,6 +270,7 @@ nav ul, nav ol{margin:0; padding:0; list-style:none;}
 table, th, td{border:1px solid; border-collapse:collapse; vertical-align:top;}
 table, th{table-layout:auto;}
 table{width:100%; margin-bottom:15px;}
+th {vertical-align: middle; text-align: center;}
 th, td{padding:5px 8px;}
 td{border-width:0 1px;}
 

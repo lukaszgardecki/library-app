@@ -38,6 +38,46 @@ public class MemberControllerTest extends BaseTest {
         }
 
         @Test
+        @DisplayName("Should return a filtered list of members if ADMIN requested.")
+        void shouldReturnFilteredListOfMembersWhenAdminRequested() {
+            String queryString1 = "kle";
+            client.testRequest(GET, "/members?q=" + queryString1, admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(1)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+
+            String queryString2 = "kas";
+            client.testRequest(GET, "/members?q=" + queryString2, admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(1)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+
+            String queryString3 = ".com";
+            client.testRequest(GET, "/members?q=" + queryString3, admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(8)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(8)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+
+            String queryString4 = "2";
+            client.testRequest(GET, "/members?q=" + queryString4, admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(1)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+        }
+
+        @Test
         @DisplayName("Should not return all members if USER requested.")
         void shouldNotReturnAllUsersWhenUserRequested() {
             ErrorMessage responseBody = client.testRequest(GET, "/members", user, FORBIDDEN)

@@ -27,6 +27,7 @@ import { RoleGuard } from './services/role-guard';
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { UserListComponent } from './admin-page/user-list/user-list.component';
+import { UserDetailsComponent } from './admin-page/user-list/user-details/user-details.component';
 
 const routes: Routes = [
   {path: "", component: UserPageComponent, children: [
@@ -69,7 +70,8 @@ const routes: Routes = [
       canActivate: [RoleGuard],
       data: { expectedRoles: 'ADMIN'},
       children: [
-        {path: "users", component: UserListComponent}
+        {path: "users", component: UserListComponent},
+        {path: "users/:id", component: UserDetailsComponent}
       ]
     }
   ]},

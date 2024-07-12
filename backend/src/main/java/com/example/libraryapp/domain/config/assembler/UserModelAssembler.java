@@ -27,7 +27,7 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<Memb
     public MemberDto toModel(@NonNull Member member) {
         MemberDto memberDto = MemberDtoMapper.map(member);
         memberDto.add(linkTo(methodOn(MemberController.class).getUserById(member.getId())).withSelfRel());
-        memberDto.add(linkTo(methodOn(MemberController.class).getAllUsers(null)).withRel(IanaLinkRelations.COLLECTION));
+        memberDto.add(linkTo(methodOn(MemberController.class).getAllUsers(null, null)).withRel(IanaLinkRelations.COLLECTION));
         memberDto.add(linkTo(methodOn(LendingController.class).getAllLendings(member.getId(),null, null, null)).withRel("checkouts"));
         memberDto.add(linkTo(methodOn(ReservationController.class).getAllReservations(member.getId(), null, null)).withRel("reservations"));
         return memberDto;
@@ -37,7 +37,7 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<Memb
     @NonNull
     public CollectionModel<MemberDto> toCollectionModel(@NonNull Iterable<? extends Member> entities) {
         CollectionModel<MemberDto> entityModel = super.toCollectionModel(entities);
-        entityModel.add(linkTo(methodOn(MemberController.class).getAllUsers(null)).withSelfRel());
+        entityModel.add(linkTo(methodOn(MemberController.class).getAllUsers(null, null)).withSelfRel());
         return entityModel;
     }
 }

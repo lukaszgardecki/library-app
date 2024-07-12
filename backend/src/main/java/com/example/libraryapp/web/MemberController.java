@@ -24,8 +24,12 @@ public class MemberController {
 
     @GetMapping
     @RoleAuthorization({ADMIN})
-    public ResponseEntity<PagedModel<MemberDto>> getAllUsers(Pageable pageable) {
-        PagedModel<MemberDto> collectionModel = memberService.findAllUsers(pageable);
+    public ResponseEntity<PagedModel<MemberDto>> getAllUsers(
+            @RequestParam(name = "q", required = false)
+            String usersToSearch,
+            Pageable pageable
+    ) {
+        PagedModel<MemberDto> collectionModel = memberService.findAllUsers(usersToSearch, pageable);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 

@@ -314,12 +314,16 @@
     "ADMIN": {
         "USERS": {
             "NAME": "Manage Users",
+            "SEARCH": {
+                "LABEL": "Search user",
+                "PLACEHOLDER": "Search user"
+            },
             "LABEL": {
-                "ID": "Identifier",
+                "ID": "ID",
                 "NAME": "Name",
-                "EMAIL": "Email",
                 "REGISTERED": "Registered"
-            }
+            },
+            "LACK": "No users"
         }
     },
     

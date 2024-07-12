@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,10 +39,13 @@ public class MemberService {
     private final UserModelAssembler userModelAssembler;
     private final PagedResourcesAssembler<Member> pagedResourcesAssembler;
 
-    public PagedModel<MemberDto> findAllUsers(Pageable pageable) {
-        Page<Member> userDtoPage =
-                pageable.isUnpaged() ? new PageImpl<>(memberRepository.findAll()) : memberRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(userDtoPage, userModelAssembler);
+    public PagedModel<MemberDto> findAllUsers(String usersToSearch, Pageable pageable) {
+        List<Member> users = memberRepository.findAllByString(usersToSearch);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), users.size());
+        List<Member> paginatedList = users.subList(start, end);
+        Page<Member> page = new PageImpl<>(paginatedList, pageable, users.size());
+        return pagedResourcesAssembler.toModel(page, userModelAssembler);
     }
 
     public MemberDto findMemberById(Long id) {

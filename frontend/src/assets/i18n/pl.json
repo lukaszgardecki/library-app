@@ -128,7 +128,7 @@
                     "INACTIVE": "Nieaktywne",
                     "CLOSED": "Zamknięte",
                     "SUSPENDED": "Zawieszone",
-                    "PENDING": "Oczekuje na potwierdzenie"
+                    "PENDING": "Potwierdzanie"
                 }
             }
         },
@@ -314,12 +314,16 @@
     "ADMIN": {
         "USERS": {
             "NAME": "Zarządzaj użytkownikami",
+            "SEARCH": {
+                "LABEL": "Wyszukaj użytkownika",
+                "PLACEHOLDER": "Wyszukaj użytkownika"
+            },
             "LABEL": {
-                "ID": "Identyfikator",
+                "ID": "ID",
                 "NAME": "Nazwa",
-                "EMAIL": "Email",
                 "REGISTERED": "Zarejestrowany"
-            }
+            },
+            "LACK": "Brak użytkowników"
         }
     },
 

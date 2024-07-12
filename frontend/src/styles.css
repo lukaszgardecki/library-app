@@ -1,3 +1,16 @@
+:root {
+	--main-color: #1C7AA8;
+	--button-hover-color: #155A7D;
+    --red-color: #c80000;
+    --yellow-color: #FF9800; 
+    --green-color: #4CAF50;
+    --grey-color: #696969;
+    --blue-color: #2196F3;
+
+	--font-family-1: Georgia, "Times New Roman", Times, serif;
+	--font-family-2: Verdana, Geneva, sans-serif;
+}
+
 .btn-bar {
     display: flex;
     justify-content: space-between;
@@ -40,5 +53,5 @@
 }
 
 .btn-delete:hover {
-    background-color: #c80000;
+    background-color: var(--red-color);
 }

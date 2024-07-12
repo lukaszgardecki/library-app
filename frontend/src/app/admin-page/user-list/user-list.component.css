@@ -1,4 +1,63 @@
-tr td {
+.form-group {display: flex;margin-bottom: 15px;}
+
+label {
+    display: flex;
     align-items: center;
-    vertical-align: middle;
+    margin-bottom: 0;
+    margin-right: 15px;
+    text-wrap: nowrap;
+    width: fit-content;
+    height: 40px;
+    font-weight: bold;
+}
+
+input {
+    height: 40px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d7d7d7;
+    box-sizing: border-box;
+}
+
+input:focus {border: 1.2px solid var(--main-color);box-shadow: 0 0 8px rgba(28, 122, 168, 0.5);}
+input::placeholder {color: #d7d7d7;}
+input::-webkit-input-placeholder {color: #d7d7d7;}
+input:-moz-placeholder {color: #d7d7d7;}
+input::-moz-placeholder {color: #d7d7d7;}
+input:-ms-input-placeholder {color: #d7d7d7;}
+
+tr td {align-items: center;vertical-align: middle;}
+.c1 {width: 100%;}
+
+.account-status {
+    color: #fff;
+    text-wrap: nowrap;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0 10px;
+    border: solid 1px #000;
+    border-radius: 7px;
+    justify-content: center;
+}
+
+.status-active {background-color: var(--green-color);}
+.status-inactive {background-color: var(--yellow-color);}
+.status-suspended {background-color: var(--red-color);}
+.status-closed {background-color: var(--grey-color);}
+.status-pending {background-color: var(--blue-color);}
+
+@media (max-width: 450px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    label {
+        width: 100%;
+    }
+
+    .form-group input {
+        width: 100%;
+        margin-top: 5px;
+    }
 }

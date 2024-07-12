@@ -314,12 +314,16 @@
     "ADMIN": {
         "USERS": {
             "NAME": "Benutzer verwalten",
+            "SEARCH": {
+                "LABEL": "Benutzer suchen",
+                "PLACEHOLDER": "Benutzer suchen"
+            },
             "LABEL": {
-                "ID": "Kennzeichen",
+                "ID": "ID",
                 "NAME": "Name",
-                "EMAIL": "E-Mail",
                 "REGISTERED": "Registriert"
-            }
+            },
+            "LACK": "Keine Benutzer"
         }
     },
     

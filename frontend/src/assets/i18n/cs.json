@@ -314,12 +314,16 @@
     "ADMIN": {
         "USERS": {
             "NAME": "Spravovat uživatele",
+            "SEARCH": {
+                "LABEL": "Vyhledat uživatele",
+                "PLACEHOLDER": "Vyhledat uživatele"
+            },
             "LABEL": {
-                "ID": "Identifikátor",
+                "ID": "ID",
                 "NAME": "Jméno",
-                "EMAIL": "E-mail",
                 "REGISTERED": "Registrován"
-            }
+            },
+            "LACK": "Žádní uživatelé"
         }
     },
     
