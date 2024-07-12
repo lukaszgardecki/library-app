@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProfileSetting } from '../user-page/profile-dashboard/profile-dashboard.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -8,5 +9,7 @@ import { ProfileSetting } from '../user-page/profile-dashboard/profile-dashboard
 })
 export class AdminPageComponent {
 
-  options: ProfileSetting[] = [];
+  options: ProfileSetting[] = [
+    new UserListComponent()
+  ];
 }

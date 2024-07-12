@@ -310,6 +310,18 @@
             "NO_IN_PROGRESS": "Keine Bestellungen in Bearbeitung. Akzeptieren Sie eine neue Bestellung."
         }
     },
+
+    "ADMIN": {
+        "USERS": {
+            "NAME": "Benutzer verwalten",
+            "LABEL": {
+                "ID": "Kennzeichen",
+                "NAME": "Name",
+                "EMAIL": "E-Mail",
+                "REGISTERED": "Registriert"
+            }
+        }
+    },
     
     "PAGE_403": {
         "HEADER": "Der Zugriff auf diese Seite ist eingeschränkt",

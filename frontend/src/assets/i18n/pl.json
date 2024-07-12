@@ -311,6 +311,18 @@
         }
     },
 
+    "ADMIN": {
+        "USERS": {
+            "NAME": "Zarządzaj użytkownikami",
+            "LABEL": {
+                "ID": "Identyfikator",
+                "NAME": "Nazwa",
+                "EMAIL": "Email",
+                "REGISTERED": "Zarejestrowany"
+            }
+        }
+    },
+
     "PAGE_403": {
         "HEADER": "Dostęp do tej strony jest ograniczony",
         "MSG": "Jeśli uważasz, że to pomyłka, skontaktuj się z administratorem witryny."

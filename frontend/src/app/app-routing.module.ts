@@ -26,6 +26,7 @@ import { WarehousePageComponent } from './warehouse-page/warehouse-page.componen
 import { RoleGuard } from './services/role-guard';
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { UserListComponent } from './admin-page/user-list/user-list.component';
 
 const routes: Routes = [
   {path: "", component: UserPageComponent, children: [
@@ -66,7 +67,10 @@ const routes: Routes = [
       path: "admin",
       component: AdminPageComponent,
       canActivate: [RoleGuard],
-      data: { expectedRoles: 'ADMIN' }
+      data: { expectedRoles: 'ADMIN'},
+      children: [
+        {path: "users", component: UserListComponent}
+      ]
     }
   ]},
   {

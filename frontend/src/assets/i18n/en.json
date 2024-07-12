@@ -310,6 +310,18 @@
             "NO_IN_PROGRESS": "No orders in progress. Accept a new order."
         }
     },
+
+    "ADMIN": {
+        "USERS": {
+            "NAME": "Manage Users",
+            "LABEL": {
+                "ID": "Identifier",
+                "NAME": "Name",
+                "EMAIL": "Email",
+                "REGISTERED": "Registered"
+            }
+        }
+    },
     
     "PAGE_403": {
         "HEADER": "Access to this page is restricted",

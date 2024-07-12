@@ -42,6 +42,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { SideAccordionComponent } from './side-accordion/side-accordion.component';
+import { UserListComponent } from './admin-page/user-list/user-list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -83,7 +84,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WarehousePageComponent,
     NotAuthorizedPageComponent,
     AdminPageComponent,
-    SideAccordionComponent
+    SideAccordionComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,

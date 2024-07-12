@@ -310,6 +310,18 @@
             "NO_IN_PROGRESS": "Žiadne objednávky v procese. Prijať novú objednávku."
         }
     },
+
+    "ADMIN": {
+        "USERS": {
+            "NAME": "Spravovať používateľov",
+            "LABEL": {
+                "ID": "Identifikátor",
+                "NAME": "Meno",
+                "EMAIL": "E-mail",
+                "REGISTERED": "Registrovaný"
+            }
+        }
+    },
     
     "PAGE_403": {
         "HEADER": "Prístup na túto stránku je obmedzený",

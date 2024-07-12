@@ -310,6 +310,18 @@
             "NO_IN_PROGRESS": "No hay pedidos en progreso. Acepta un nuevo pedido."
         }
     },
+
+    "ADMIN": {
+        "USERS": {
+            "NAME": "Gestionar usuarios",
+            "LABEL": {
+                "ID": "Identificador",
+                "NAME": "Nombre",
+                "EMAIL": "Correo electrónico",
+                "REGISTERED": "Registrado"
+            }
+        }
+    },
     
     "PAGE_403": {
         "HEADER": "Acceso a esta página está restringido",
