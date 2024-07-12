@@ -9,7 +9,8 @@
         "LOGOUT": "Logout",
         "REGISTER": "Register",
         "PROFILE": "Profile",
-        "WAREHOUSE": "Warehouse"
+        "WAREHOUSE": "Warehouse",
+        "ADMIN": "Administrator"
     },
 
     "MAIN_NAV": {

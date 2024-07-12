@@ -30,6 +30,7 @@
         <ul>
           <li><a routerLink=""><i class="fa fa-lg fa-home"></i></a></li>
           <li *ngIf="hasPermissionToWarehouse()"><a [routerLink]="['/warehouse']">{{ TEXT.TOP_BAR_WAREHOUSE | translate }}</a></li>
+          <li *ngIf="isAdmin()"><a [routerLink]="['/admin']">{{ TEXT.TOP_BAR_ADMIN | translate }}</a></li>
           <li><a [routerLink]="['/userprofile']">{{ TEXT.TOP_BAR_PROFILE | translate }}</a></li>
           <li><a [routerLink]="['/login']" (click)="logout()">{{ TEXT.TOP_BAR_LOGOUT | translate }}</a></li>
         </ul>

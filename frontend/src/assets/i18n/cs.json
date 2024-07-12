@@ -9,7 +9,8 @@
         "LOGOUT": "Odhlásit",
         "REGISTER": "Registrovat",
         "PROFILE": "Profil",
-        "WAREHOUSE": "Sklad"
+        "WAREHOUSE": "Sklad",
+        "ADMIN": "Administrátor"
     },
 
     "MAIN_NAV": {

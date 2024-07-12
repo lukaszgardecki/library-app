@@ -44,6 +44,10 @@ export class UserPageComponent {
     return this.authService.hasUserPermissionToWarehouse();
   }
 
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   onNavigate(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const value = target.value;

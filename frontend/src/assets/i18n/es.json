@@ -9,7 +9,8 @@
         "LOGOUT": "Cerrar sesión",
         "REGISTER": "Registrarse",
         "PROFILE": "Perfil",
-        "WAREHOUSE": "Almacén"
+        "WAREHOUSE": "Almacén",
+        "ADMIN": "Administrador"
     },
 
     "MAIN_NAV": {

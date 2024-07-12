@@ -9,7 +9,8 @@
         "LOGOUT": "Вийти",
         "REGISTER": "Зареєструватися",
         "PROFILE": "Профіль",
-        "WAREHOUSE": "Склад"
+        "WAREHOUSE": "Склад",
+        "ADMIN": "Адміністратор"
     },
 
     "MAIN_NAV": {
