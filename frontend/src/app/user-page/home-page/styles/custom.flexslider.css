@@ -13,6 +13,8 @@ File: Custom Flexslider CSS => For FlexSlider v2.6.1
 .flex-container a:hover, .flex-slider a:hover{outline:none;}
 .slides, .slides > li, .flex-direction-nav{margin:0; padding:0; list-style:none;}
 .flex-direction-nav a{font-family:"FontAwesome";}
+.flex-direction-nav a, .flex-direction-nav .flex-disabled:hover{color:#FFFFFF; }
+.flex-direction-nav a:hover{color: var(--main-color);}
 
 
 /* Necessary Styles

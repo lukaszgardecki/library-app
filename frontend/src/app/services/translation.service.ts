@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from './storage.service';
+import { UserLang } from '../shared/user-lang';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranslationService {
-  private readonly LANGUAGES = [
-    { name: "English", short: "en" },
-    { name: "Polski", short: "pl" },
-    { name: "Українська", short: "uk" },
-    { name: "Deutsch", short: "de" },
-    { name: "Español", short: "es" },
-    { name: "Čeština", short: "cs" },
-    { name: "Slovenčina", short: "sk" }
+  private readonly LANGUAGES: UserLang[] = [
+    new UserLang("English", "en", "flag-en-gb.png"),
+    new UserLang("Polski", "pl", "flag-pl.png"),
+    new UserLang("Українська", "uk", "flag-uk.png"),
+    new UserLang("Deutsch", "de", "flag-de.png"),
+    new UserLang("Español", "es", "flag-es.png"),
+    new UserLang("Čeština", "cs", "flag-cs.png"),
+    new UserLang("Slovenčina", "sk", "flag-sk.png")
 ];
 
   constructor(

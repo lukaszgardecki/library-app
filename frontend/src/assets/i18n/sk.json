@@ -312,16 +312,20 @@
     },
 
     "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Dashboard"
+        },
         "USERS": {
-            "NAME": "Spravovať používateľov",
+            "NAME": "Používatelia",
             "SEARCH": {
-                "LABEL": "Vyhľadať používateľa",
-                "PLACEHOLDER": "Vyhľadať používateľa"
+                "PLACEHOLDER": "Vyhľadávať..."
             },
             "LABEL": {
                 "ID": "ID",
                 "NAME": "Meno",
-                "REGISTERED": "Registrovaný"
+                "EMAIL": "Emailová adresa",
+                "REGISTERED": "Registrovaný",
+                "STATUS": "Status"
             },
             "LACK": "Žiadni používatelia"
         }

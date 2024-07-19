@@ -312,16 +312,20 @@
     },
 
     "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Dashboard"
+        },
         "USERS": {
-            "NAME": "Manage Users",
+            "NAME": "Users",
             "SEARCH": {
-                "LABEL": "Search user",
-                "PLACEHOLDER": "Search user"
+                "PLACEHOLDER": "Search..."
             },
             "LABEL": {
                 "ID": "ID",
                 "NAME": "Name",
-                "REGISTERED": "Registered"
+                "EMAIL": "Email Address",
+                "REGISTERED": "Registered",
+                "STATUS": "Status"
             },
             "LACK": "No users"
         }

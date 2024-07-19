@@ -3,6 +3,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
 import { TranslationService } from '../services/translation.service';
 import { TEXT } from '../shared/messages';
+import { UserLang } from '../shared/user-lang';
 
 @Component({
   selector: 'app-user-page',
@@ -13,7 +14,7 @@ export class UserPageComponent {
   TEXT = TEXT;
   isLoggedIn: boolean;
   title = 'Library Management System';
-  languages: { name: string, short: string }[];
+  languages: UserLang[];
   selectedLangName: string;
 
   constructor(
@@ -65,7 +66,7 @@ export class UserPageComponent {
     }
   }
 
-  switchLanguage(language: { name: string, short: string }) {
+  switchLanguage(language: UserLang) {
     this.selectedLangName = language.name;
     this.langService.setLanguage(language.short);
   }

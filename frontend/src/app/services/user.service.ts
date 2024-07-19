@@ -22,8 +22,8 @@ export class UserService {
     this.baseURL = `${baseURL}/members`;
   }
 
-  getUsersPage(pageIndex: number = 0, query: string="") {
-    this.fetchUsersPage(pageIndex, query);
+  getUsersPage(params: HttpParams) {
+    this.fetchUsersPage(params);
   }
 
   getUserDetailsById(id: number): Observable<UserDetails> {
@@ -34,11 +34,7 @@ export class UserService {
     return this.http.patch<UserDetails>(`${this.baseURL}/${userId}`, user, { withCredentials: true });
   }
 
-  private fetchUsersPage(pageIndex: number, query: string): void {
-    let params = new HttpParams()
-      // .set("sort", "created_at,desc")
-      .set("q", query)
-      .set("page", pageIndex);
+  private fetchUsersPage(params: HttpParams): void {
     this.http.get<UsersPage>(`${this.baseURL}`, { params: params, withCredentials: true })
       .subscribe({
         next: usersPage => {

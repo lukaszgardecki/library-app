@@ -312,16 +312,20 @@
     },
 
     "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Tablero de control"
+        },
         "USERS": {
-            "NAME": "Gestionar usuarios",
+            "NAME": "Usuarios",
             "SEARCH": {
-                "LABEL": "Buscar usuario",
-                "PLACEHOLDER": "Buscar usuario"
+                "PLACEHOLDER": "Buscar..."
             },
             "LABEL": {
                 "ID": "ID",
                 "NAME": "Nombre",
-                "REGISTERED": "Registrado"
+                "EMAIL": "Dirección de correo",
+                "REGISTERED": "Registrado",
+                "STATUS": "Estado"
             },
             "LACK": "No hay usuarios"
         }

@@ -312,16 +312,20 @@
     },
 
     "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Panel"
+        },
         "USERS": {
-            "NAME": "Zarządzaj użytkownikami",
+            "NAME": "Użytkownicy",
             "SEARCH": {
-                "LABEL": "Wyszukaj użytkownika",
-                "PLACEHOLDER": "Wyszukaj użytkownika"
+                "PLACEHOLDER": "Wyszukaj..."
             },
             "LABEL": {
                 "ID": "ID",
                 "NAME": "Nazwa",
-                "REGISTERED": "Zarejestrowany"
+                "EMAIL": "Adres e-mail",
+                "REGISTERED": "Zarejestrowany",
+                "STATUS": "Status"
             },
             "LACK": "Brak użytkowników"
         }

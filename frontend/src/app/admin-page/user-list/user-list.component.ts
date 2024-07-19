@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ProfileSetting } from '../../user-page/profile-dashboard/profile-dashboard.component';
 import { TEXT } from '../../shared/messages';
 import { Pageable } from '../../shared/pageable';
@@ -7,6 +7,8 @@ import { UsersPage } from '../../models/users-page';
 import { Observable } from 'rxjs';
 import { UserDetails } from '../../models/user-details';
 import { Router } from '@angular/router';
+import { Size } from '../../shared/sortable';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-list',
@@ -19,16 +21,21 @@ export class UserListComponent implements ProfileSetting, Pageable, OnInit {
   routerLink: string = "users";
   usersToSearch: string;
   usersPage$: Observable<UsersPage>;
+  pageSizes: Size[] = [new Size(10), new Size(15), new Size(20), new Size(50)];
+  selectedSize: Size = this.pageSizes[0];
   userService = inject(UserService);
   router = inject(Router);
 
   ngOnInit(): void {
       this.usersPage$ = this.userService.usersPage$;
-      this.userService.getUsersPage(0);
+
+      let params = this.createParams();
+      this.userService.getUsersPage(params);
   }
 
   loadPage(pageIndex: number): void {
-    this.userService.getUsersPage(pageIndex, this.usersToSearch);
+    let params = this.createParams(pageIndex);
+    this.userService.getUsersPage(params);
   }
 
   showDetails(user: UserDetails) {
@@ -36,7 +43,8 @@ export class UserListComponent implements ProfileSetting, Pageable, OnInit {
   }
 
   searchUsers() {
-    this.userService.getUsersPage(0, this.usersToSearch);
+    let params = this.createParams();
+    this.userService.getUsersPage(params);
   }
 
   getStatusClass(status: string): string {
@@ -54,5 +62,18 @@ export class UserListComponent implements ProfileSetting, Pageable, OnInit {
       default:
         return '';
     }
+  }
+
+  changeSize(size: Size) {
+    this.selectedSize = size;
+    let params = this.createParams();
+    this.userService.getUsersPage(params);
+  }
+
+  private createParams(page: number = 0): HttpParams {
+    return new HttpParams()
+    .set("page", page)
+    .set("size", this.selectedSize.value)
+    .set("q", this.usersToSearch || "");
   }
 }
