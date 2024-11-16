@@ -36,9 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,8 +55,7 @@ public class LendingService {
     public PagedModel<LendingDto> findLendings(
             Long memberId, LendingStatus status, Pageable pageable, Boolean renewable
     ) {
-        List<Lending> lendings = lendingRepository.findAll().stream()
-                .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
+        List<Lending> lendings = findLendingsByMemberId(memberId).stream()
                 .filter(len -> status == null || len.getStatus() == status)
                 .filter(len -> renewable == null || isRenewable(len) == renewable)
                 .collect(Collectors.toList());
@@ -85,7 +83,8 @@ public class LendingService {
         member.addLoanedItemId(savedLending.getId());
         LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
-        member.updateAfterLending();
+        updateMemberAfterLending(member);
+
         reservation.setStatus(ReservationStatus.COMPLETED);
         actionService.save(new ActionBookBorrowed(savedLendingDto));
         notificationService.sendToUser(new NotificationBookBorrowed(savedLendingDto), savedLendingDto.getMember());
@@ -154,6 +153,12 @@ public class LendingService {
                 .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
+    private List<Lending> findLendingsByMemberId(Long memberId) {
+        return lendingRepository.findAll().stream()
+                .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
+                .toList();
+    }
+
     private Lending findLending(Long id) {
         return lendingRepository.findById(id)
                 .orElseThrow(() -> new LendingNotFoundException(id));
@@ -178,6 +183,31 @@ public class LendingService {
         if (bookIsReserved || lending.isAfterDueDate()) {
             throw new CheckoutException(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
+    }
+
+    private void updateMemberAfterLending(Member member) {
+        member.updateAfterLending();
+        List<Lending> lendings = findLendingsByMemberId(member.getId());
+        String favouriteGenre = getMostFrequentGenre(lendings);
+        member.setFavGenre(favouriteGenre);
+    }
+
+    public String getMostFrequentGenre(List<Lending> lendings) {
+        if (lendings.isEmpty()) return null;
+
+        Optional<String> mostFrequentGenre = lendings.stream()
+                .map(len -> len.getBookItem().getBook().getSubject())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .max((entry1, entry2) -> {
+                    int countComparison = Long.compare(entry1.getValue(), entry2.getValue());
+                    if (countComparison == 0) {
+                        return entry1.getKey().compareTo(entry2.getKey());
+                    }
+                    return countComparison;
+                })
+                .map(Map.Entry::getKey);
+        return mostFrequentGenre.orElse(null);
     }
 
     private Lending createLendingToSave(Reservation reservation) {

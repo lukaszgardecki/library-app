@@ -342,6 +342,16 @@
                 "STATUS": "Status"
             },
             "LACK": "No users"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Edit",
+                "SAVE": "Save"
+            },
+            "TILE_LENDINGS_CURRENT": "Current Lendings",
+            "TILE_LENDINGS_ALL": "All Lendings",
+            "TILE_FAV_GENRE": "Favorite Genre",
+            "TILE_LATE_FEES": "Late Fees"
         }
     },
     

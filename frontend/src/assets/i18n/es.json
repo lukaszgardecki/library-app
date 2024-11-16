@@ -342,6 +342,16 @@
                 "STATUS": "Estado"
             },
             "LACK": "No hay usuarios"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Editar",
+                "SAVE": "Guardar"
+            },
+            "TILE_LENDINGS_CURRENT": "Préstamos actuales",
+            "TILE_LENDINGS_ALL": "Todos los préstamos",
+            "TILE_FAV_GENRE": "Género favorito",
+            "TILE_LATE_FEES": "Tarifas por retraso"
         }
     },
     

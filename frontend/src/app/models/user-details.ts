@@ -43,11 +43,12 @@ export class UserDetailsAdmin {
     dateOfMembership: Date;
     totalBooksBorrowed: number;
     totalBooksReserved: number;
-    charge: BigInt;
+    charge: number;
     status: AccountStatus;
     loanedItemsIds: Array<number>;
     reservedItemsIds: Array<number>;
     role: Role;
+    favGenre: String;
 }
 
 export class UserUpdate {

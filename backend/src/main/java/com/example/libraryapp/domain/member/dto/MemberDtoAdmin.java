@@ -44,4 +44,6 @@ public class MemberDtoAdmin extends RepresentationModel<MemberDtoAdmin> {
     private List<Long> loanedItemsIds;
     private List<Long> reservedItemsIds;
     private Role role;
+
+    private String favGenre;
 }

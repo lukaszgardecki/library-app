@@ -342,6 +342,16 @@
                 "STATUS": "Status"
             },
             "LACK": "Žádní uživatelé"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Upravit",
+                "SAVE": "Uložit"
+            },
+            "TILE_LENDINGS_CURRENT": "Aktuální výpůjčky",
+            "TILE_LENDINGS_ALL": "Všechny výpůjčky",
+            "TILE_FAV_GENRE": "Oblíbený žánr",
+            "TILE_LATE_FEES": "Sankce za zpoždění"
         }
     },
     

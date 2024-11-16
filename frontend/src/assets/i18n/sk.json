@@ -342,6 +342,16 @@
                 "STATUS": "Status"
             },
             "LACK": "Žiadni používatelia"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Upravit",
+                "SAVE": "Uložiť"
+            },
+            "TILE_LENDINGS_CURRENT": "Aktuálne výpožičky",
+            "TILE_LENDINGS_ALL": "Všetky výpožičky",
+            "TILE_FAV_GENRE": "Obľúbený žáner",
+            "TILE_LATE_FEES": "Poplatky za oneskorenie"
         }
     },
     

@@ -118,7 +118,7 @@
             "CARD": {
                 "ID": "Karta czytelnika",
                 "NUM": "Numer karty",
-                "ISSUE_DATE": "Termin ważności karty",
+                "ISSUE_DATE": "Data wydania karty",
                 "STATUS": {
                     "NAME": "Status karty",
                     "ACTIVE": "Aktywna",
@@ -342,6 +342,16 @@
                 "STATUS": "Status"
             },
             "LACK": "Brak użytkowników"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Edytuj",
+                "SAVE": "Zapisz"
+            },
+            "TILE_LENDINGS_CURRENT": "Aktualne wypożyczenia",
+            "TILE_LENDINGS_ALL": "Wszystkie wypożyczenia",
+            "TILE_FAV_GENRE": "Ulubiony gatunek",
+            "TILE_LATE_FEES": "Zaległe opłaty"
         }
     },
 

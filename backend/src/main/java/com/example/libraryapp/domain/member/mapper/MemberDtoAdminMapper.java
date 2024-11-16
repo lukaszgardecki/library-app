@@ -32,6 +32,7 @@ public class MemberDtoAdminMapper {
         dto.setLoanedItemsIds(member.getLoanedItemsIds());
         dto.setReservedItemsIds(member.getReservedItemsIds());
         dto.setRole(member.getRole());
+        dto.setFavGenre(member.getFavGenre());
         return dto;
     }
 }

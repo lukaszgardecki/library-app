@@ -42,6 +42,7 @@ public class Member extends Account {
     @CollectionTable(name = "reserved_items_ids", joinColumns = @JoinColumn(name = "member_id"))
     @Column(name = "book_item_id")
     private List<Long> reservedItemsIds = new ArrayList<>();
+    private String favGenre;
 
 
 

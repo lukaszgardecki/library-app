@@ -342,6 +342,16 @@
                 "STATUS": "Статус"
             },
             "LACK": "Немає користувачів"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Редагувати",
+                "SAVE": "Зберегти"
+            },
+            "TILE_LENDINGS_CURRENT": "Поточні позики",
+            "TILE_LENDINGS_ALL": "Усі позики",
+            "TILE_FAV_GENRE": "Улюблений жанр",
+            "TILE_LATE_FEES": "Плата за запізнення"
         }
     },
     

@@ -11,6 +11,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="0005_create_table_library_card.xml" relativeToChangelogFile="true"/>
     <include file="0008_create_table_person.xml" relativeToChangelogFile="true"/>
     <include file="0002_create_table_member.xml" relativeToChangelogFile="true"/>
+    <include file="0015_update_table_member_fav_genre.xml" relativeToChangelogFile="true" />
     <include file="0004_create_table_reservation.xml" relativeToChangelogFile="true"/>
     <include file="0003_create_table_lending.xml" relativeToChangelogFile="true"/>
     <include file="0013_create_table_loaned_items_ids.xml" relativeToChangelogFile="true"/>

@@ -90,3 +90,82 @@
     margin: 0;
     border: 1.5px solid var(--main-color);
 }
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 16px;
+    margin: var(--basic-dist);
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: var(--radius);
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 3.5rem;
+    /* font-size: clamp(0.5rem, 3.5rem, 5rem); */
+    /* font-size: calc(100% + 2rem); */
+    /* font-size-adjust: calc(100% + 2rem); */
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    flex-grow: 1;
+    /* width: fit-content; */
+    /* max-width: 100%; */
+    /* word-wrap: break-word; */
+    /* flex-shrink: 1; */
+    /* word-wrap: break-word; */
+    /* overflow-wrap: break-word; */
+    /* white-space: normal; */
+    /* box-sizing: border-box; */
+    line-height: 1.2;
+  }
+  
+  .books {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+  }
+  
+  .reservations {
+    background: linear-gradient(135deg, #ffeb3b, #ff9800);
+  }
+  
+  .genre {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+  }
+  
+  .fines {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+  }
+  
+  
+  
+  
+  
+  
+
+  /* @media (max-width: 768px) { */
+    /* .dashboard { */
+      /* grid-template-columns: 1fr; 1 kolumna na mniejszych ekranach */
+    /* } */
+  /* } */

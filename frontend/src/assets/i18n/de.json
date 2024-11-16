@@ -118,7 +118,7 @@
             "CARD": {
                 "ID": "Kartennummer",
                 "NUM": "Kartennummer",
-                "ISSUE_DATE": "Ausgabedatum der Karte",
+                "ISSUE_DATE": "Ausstellungsdatum der Karte",
                 "STATUS": {
                     "NAME": "Kartenstatus",
                     "ACTIVE": "Aktiv",
@@ -342,6 +342,16 @@
                 "STATUS": "Status"
             },
             "LACK": "Keine Benutzer"
+        },
+        "USER_DETAILS": {
+            "BTN": {
+                "EDIT": "Bearbeiten",
+                "SAVE": "Speichern"
+            },
+            "TILE_LENDINGS_CURRENT": "Aktuelle Ausleihen",
+            "TILE_LENDINGS_ALL": "Alle Ausleihen",
+            "TILE_FAV_GENRE": "Lieblingsgenre",
+            "TILE_LATE_FEES": "Verspätungsgebühren"
         }
     },
     
