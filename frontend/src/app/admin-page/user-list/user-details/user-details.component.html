@@ -4,349 +4,351 @@
     </button>
 </div>
 
-<div class="content">
-    <div class="section-header">{{ TEXT.PROFILE_DETAILS_HEADER_PERSONAL | translate }}</div>    
-    <div class="section-content">
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_SURNAME | translate }}:</strong></div>
+<div class="grid-container">
+    <div class="content">
+        <div class="section-header">{{ TEXT.PROFILE_DETAILS_HEADER_PERSONAL | translate }}</div>    
+        <div class="section-content">
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_SURNAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.lastName | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="text" id="lastName" name="lastName"
+                        [(ngModel)]="user.lastName"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.lastName | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="text" id="lastName" name="lastName"
-                    [(ngModel)]="user.lastName"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_FORENAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.firstName | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="text" id="firstName" name="firstName"
+                        [(ngModel)]="user.firstName"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_FORENAME | translate }}:</strong></div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_BIRTH_DATE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.dateOfBirth | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="date" id="dateOfBirth" name="dateOfBirth"
+                        [(ngModel)]="user.dateOfBirth"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.firstName | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="text" id="firstName" name="firstName"
-                    [(ngModel)]="user.firstName"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_BIRTH_DATE | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.dateOfBirth | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="date" id="dateOfBirth" name="dateOfBirth"
-                    [(ngModel)]="user.dateOfBirth"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_GENDER_NAME | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.gender | enumName: "gender" | nullPlaceholder | translate}}</div>
-                <div *ngIf="isPersonalInfoEditing" class="size" dropdown>
-                    <div class="label">
-                        <span>{{user?.gender | enumName: "gender" | nullPlaceholder | translate}}</span>
-                        <i class="fa fa-caret-down"></i>
-                    </div>
-                    <div class="dropdown">
-                        <ul class="menu middle">
-                            <li *ngFor="let gender of genderList" (click)="changeGender(gender)">
-                                <span>{{gender | enumName: "gender" | nullPlaceholder | translate}}</span>
-                            </li>
-                        </ul>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_GENDER_NAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.gender | enumName: "gender" | nullPlaceholder | translate}}</div>
+                    <div *ngIf="isPersonalInfoEditing" class="size" dropdown>
+                        <div class="label">
+                            <span>{{user?.gender | enumName: "gender" | nullPlaceholder | translate}}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                        <div class="dropdown">
+                            <ul class="menu middle">
+                                <li *ngFor="let gender of genderList" (click)="changeGender(gender)">
+                                    <span>{{gender | enumName: "gender" | nullPlaceholder | translate}}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_NATIONALITY | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.nationality | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="text" id="nationality" name="nationality"
-                    [(ngModel)]="user.nationality"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
-
-        <div *ngIf="!isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_ADDRESS | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div>
-                    {{user?.streetAddress | nullPlaceholder}}, {{user?.zipCode | nullPlaceholder}} {{user?.city | nullPlaceholder}}, {{user?.state | nullPlaceholder}}, {{user?.country | nullPlaceholder}}
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_NATIONALITY | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.nationality | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="text" id="nationality" name="nationality"
+                        [(ngModel)]="user.nationality"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
                 </div>
             </div>
-        </div>
 
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_STREET | translate }}:</strong></div>
+            <div *ngIf="!isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_ADDRESS | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>
+                        {{user?.streetAddress | nullPlaceholder}}, {{user?.zipCode | nullPlaceholder}} {{user?.city | nullPlaceholder}}, {{user?.state | nullPlaceholder}}, {{user?.country | nullPlaceholder}}
+                    </div>
+                </div>
             </div>
-            <div class="val">
-                <input type="text" id="streetAddress" name="streetAddress"
-                    [(ngModel)]="user.streetAddress"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_STREET | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="streetAddress" name="streetAddress"
+                        [(ngModel)]="user.streetAddress"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_ZIPCODE | translate }}:</strong></div>
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_ZIPCODE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="zipCode" name="zipCode"
+                        [(ngModel)]="user.zipCode"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <input type="text" id="zipCode" name="zipCode"
-                    [(ngModel)]="user.zipCode"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_CITY| translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="city" name="city"
+                        [(ngModel)]="user.city"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_CITY| translate }}:</strong></div>
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_STATE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="state" name="state"
+                        [(ngModel)]="user.state"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <input type="text" id="city" name="city"
-                    [(ngModel)]="user.city"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_COUNTRY | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="country" name="country"
+                        [(ngModel)]="user.country"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_STATE | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <input type="text" id="state" name="state"
-                    [(ngModel)]="user.state"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_COUNTRY | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <input type="text" id="country" name="country"
-                    [(ngModel)]="user.country"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
 
 
-        <div *ngIf="!isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_PARENTS | translate }}:</strong></div>
+            <div *ngIf="!isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_PARENTS | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.mothersName | nullPlaceholder}}, {{user?.fathersName | nullPlaceholder}}</div>
+                </div>
             </div>
-            <div class="val">
-                <div>{{user?.mothersName | nullPlaceholder}}, {{user?.fathersName | nullPlaceholder}}</div>
-            </div>
-        </div>
 
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_MOTHER | translate }}:</strong></div>
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_MOTHER | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="mothersName" name="mothersName"
+                        [(ngModel)]="user.mothersName"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <input type="text" id="mothersName" name="mothersName"
-                    [(ngModel)]="user.mothersName"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+            <div *ngIf="isPersonalInfoEditing" class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_FATHER | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <input type="text" id="fathersName" name="fathersName"
+                        [(ngModel)]="user.fathersName"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div *ngIf="isPersonalInfoEditing" class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_FATHER | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <input type="text" id="fathersName" name="fathersName"
-                    [(ngModel)]="user.fathersName"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_PESEL | translate }}:</strong></div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_PESEL | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.pesel | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="text" id="pesel" name="pesel"
+                        [(ngModel)]="user.pesel"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.pesel | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="text" id="pesel" name="pesel"
-                    [(ngModel)]="user.pesel"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_PHONE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isPersonalInfoEditing">{{user?.phoneNumber | nullPlaceholder}}</div>
+                    <input *ngIf="isPersonalInfoEditing" type="text" id="phoneNumber" name="phoneNumber"
+                        [(ngModel)]="user.phoneNumber"
+                        [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
+                    >
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_PHONE | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isPersonalInfoEditing">{{user?.phoneNumber | nullPlaceholder}}</div>
-                <input *ngIf="isPersonalInfoEditing" type="text" id="phoneNumber" name="phoneNumber"
-                    [(ngModel)]="user.phoneNumber"
-                    [attr.placeholder]="TEXT.PROFILE_EDIT_PASSWORD_NEW_PLACEHOLDER | translate"
-                >
-            </div>
-        </div>
 
-        <div class="btn-bar right-side">
-            <button class="button" [ngClass]="isPersonalInfoEditing ? 'btn-1' : 'btn-2'" (click)="editPersonalInfo()">
-                {{ isPersonalInfoEditing ? 'Zapisz' : 'Edytuj' }}
-            </button>
+            <div class="btn-bar right-side">
+                <button class="button" [ngClass]="isPersonalInfoEditing ? 'btn-1' : 'btn-2'" (click)="editPersonalInfo()">
+                    {{ isPersonalInfoEditing ? 'Zapisz' : 'Edytuj' }}
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="content">
-    <div class="section-header">{{ TEXT.PROFILE_DETAILS_HEADER_ACCOUNT | translate }}</div>
-    <div class="section-content">
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_USER_ID | translate }}:</strong></div>
+    <div class="content">
+        <div class="section-header">{{ TEXT.PROFILE_DETAILS_HEADER_ACCOUNT | translate }}</div>
+        <div class="section-content">
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_USER_ID | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.id | nullPlaceholder}}</div>
+                </div>
             </div>
-            <div class="val">
-                <div>{{user?.id | nullPlaceholder}}</div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_EMAIL | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.email | nullPlaceholder}}</div>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_EMAIL | translate }}:</strong></div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ID | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.card?.id | nullPlaceholder}}</div>
+                </div>
             </div>
-            <div class="val">
-                <div>{{user?.email | nullPlaceholder}}</div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_NUM | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.card?.barcode | nullPlaceholder}}</div>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ID | translate }}:</strong></div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ISSUE_DATE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.card?.issuedAt | date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
+                </div>
             </div>
-            <div class="val">
-                <div>{{user?.card?.id | nullPlaceholder}}</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_NUM | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div>{{user?.card?.barcode | nullPlaceholder}}</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ISSUE_DATE | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div>{{user?.card?.issuedAt | date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_STATUS_NAME | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isAccountInfoEditing">{{user?.card?.status | enumName: "card" | nullPlaceholder | translate}}</div>
-                <div *ngIf="isAccountInfoEditing" class="size" dropdown>
-                    <div class="label">
-                        <span>{{user?.card?.status | enumName: "card" | nullPlaceholder | translate}}</span>
-                        <i class="fa fa-caret-down"></i>
-                    </div>
-                    <div class="dropdown">
-                        <ul class="menu middle">
-                            <li *ngFor="let cardStatus of cardStatuses" (click)="changeCardStatus(cardStatus)">
-                                <span>{{cardStatus | enumName: "card" | nullPlaceholder | translate}}</span>
-                            </li>
-                        </ul>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_STATUS_NAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isAccountInfoEditing">{{user?.card?.status | enumName: "card" | nullPlaceholder | translate}}</div>
+                    <div *ngIf="isAccountInfoEditing" class="size" dropdown>
+                        <div class="label">
+                            <span>{{user?.card?.status | enumName: "card" | nullPlaceholder | translate}}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                        <div class="dropdown">
+                            <ul class="menu middle">
+                                <li *ngFor="let cardStatus of cardStatuses" (click)="changeCardStatus(cardStatus)">
+                                    <span>{{cardStatus | enumName: "card" | nullPlaceholder | translate}}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_AVAILABILITY_DATE | translate }}:</strong></div>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_AVAILABILITY_DATE | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div>{{user?.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+                </div>
             </div>
-            <div class="val">
-                <div>{{user?.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_STATUS_NAME | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isAccountInfoEditing">{{user?.status | enumName: "account" | nullPlaceholder | translate}}</div>
-                <div *ngIf="isAccountInfoEditing" class="size" dropdown>
-                    <div class="label">
-                        <span>{{user?.status | enumName: "account" | nullPlaceholder | translate}}</span>
-                        <i class="fa fa-caret-down"></i>
-                    </div>
-                    <div class="dropdown">
-                        <ul class="menu middle">
-                            <li *ngFor="let accountStatus of accountStatuses" (click)="changeAccountStatus(accountStatus)">
-                                <span>{{accountStatus | enumName: "account" | nullPlaceholder | translate}}</span>
-                            </li>
-                        </ul>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_STATUS_NAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isAccountInfoEditing">{{user?.status | enumName: "account" | nullPlaceholder | translate}}</div>
+                    <div *ngIf="isAccountInfoEditing" class="size" dropdown>
+                        <div class="label">
+                            <span>{{user?.status | enumName: "account" | nullPlaceholder | translate}}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                        <div class="dropdown">
+                            <ul class="menu middle">
+                                <li *ngFor="let accountStatus of accountStatuses" (click)="changeAccountStatus(accountStatus)">
+                                    <span>{{accountStatus | enumName: "account" | nullPlaceholder | translate}}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="lab">
-                <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_ROLE_NAME | translate }}:</strong></div>
-            </div>
-            <div class="val">
-                <div *ngIf="!isAccountInfoEditing">{{user?.role | enumName: "role" | nullPlaceholder | translate}}</div>
-                <div *ngIf="isAccountInfoEditing" class="size" dropdown>
-                    <div class="label">
-                        <span>{{user?.role | enumName: "role" | nullPlaceholder | translate}}</span>
-                        <i class="fa fa-caret-down"></i>
-                    </div>
-                    <div class="dropdown">
-                        <ul class="menu middle">
-                            <li *ngFor="let role of roles" (click)="changeRole(role)">
-                                <span>{{role | enumName: "role" | nullPlaceholder | translate}}</span>
-                            </li>
-                        </ul>
+            <div class="row">
+                <div class="lab">
+                    <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_ROLE_NAME | translate }}:</strong></div>
+                </div>
+                <div class="val">
+                    <div *ngIf="!isAccountInfoEditing">{{user?.role | enumName: "role" | nullPlaceholder | translate}}</div>
+                    <div *ngIf="isAccountInfoEditing" class="size" dropdown>
+                        <div class="label">
+                            <span>{{user?.role | enumName: "role" | nullPlaceholder | translate}}</span>
+                            <i class="fa fa-caret-down"></i>
+                        </div>
+                        <div class="dropdown">
+                            <ul class="menu middle">
+                                <li *ngFor="let role of roles" (click)="changeRole(role)">
+                                    <span>{{role | enumName: "role" | nullPlaceholder | translate}}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="btn-bar right-side">
-            <button class="button" [ngClass]="isAccountInfoEditing ? 'btn-1' : 'btn-2'" (click)="editAccountInfo()">
-                {{ isAccountInfoEditing ? 'Zapisz' : 'Edytuj' }}
-            </button>
+            <div class="btn-bar right-side">
+                <button class="button" [ngClass]="isAccountInfoEditing ? 'btn-1' : 'btn-2'" (click)="editAccountInfo()">
+                    {{ isAccountInfoEditing ? 'Zapisz' : 'Edytuj' }}
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="content">
-    <div class="section-header">Informacje o użytkowniku</div>
+    <div class="content">
+        <div class="section-header">Informacje o użytkowniku</div>
 
-    
-    <div class="section-content">
-        {{user.firstName}} {{user.lastName}}
+        
+        <div class="section-content">
+            {{user.firstName}} {{user.lastName}}
+        </div>
     </div>
-</div>
 
-<div class="content">
-    <div class="section-header">Statystyki</div>
+    <div class="content">
+        <div class="section-header">Statystyki</div>
 
-    
-    <div class="section-content">
-        {{user.firstName}} {{user.lastName}}
+        
+        <div class="section-content">
+            {{user.firstName}} {{user.lastName}}
+        </div>
     </div>
 </div>
