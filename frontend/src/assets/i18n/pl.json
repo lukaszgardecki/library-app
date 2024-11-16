@@ -9,7 +9,8 @@
         "LOGOUT": "Wyloguj",
         "REGISTER": "Rejestracja",
         "PROFILE": "Profil",
-        "WAREHOUSE": "Magazyn"
+        "WAREHOUSE": "Magazyn",
+        "ADMIN": "Administrator"
     },
     
     "MAIN_NAV": {
@@ -127,7 +128,7 @@
                     "INACTIVE": "Nieaktywne",
                     "CLOSED": "Zamknięte",
                     "SUSPENDED": "Zawieszone",
-                    "PENDING": "Oczekuje na potwierdzenie"
+                    "PENDING": "Potwierdzanie"
                 }
             }
         },
@@ -307,6 +308,26 @@
         "INFO": {
             "NO_NEW_ORDERS": "Brak nowych zamówień.",
             "NO_IN_PROGRESS": "Brak zamówień w trakcie realizacji. Zaakceptuj nowe zamówienie."
+        }
+    },
+
+    "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Panel"
+        },
+        "USERS": {
+            "NAME": "Użytkownicy",
+            "SEARCH": {
+                "PLACEHOLDER": "Wyszukaj..."
+            },
+            "LABEL": {
+                "ID": "ID",
+                "NAME": "Nazwa",
+                "EMAIL": "Adres e-mail",
+                "REGISTERED": "Zarejestrowany",
+                "STATUS": "Status"
+            },
+            "LACK": "Brak użytkowników"
         }
     },
 

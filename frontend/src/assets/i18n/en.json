@@ -9,7 +9,8 @@
         "LOGOUT": "Logout",
         "REGISTER": "Register",
         "PROFILE": "Profile",
-        "WAREHOUSE": "Warehouse"
+        "WAREHOUSE": "Warehouse",
+        "ADMIN": "Administrator"
     },
 
     "MAIN_NAV": {
@@ -307,6 +308,26 @@
         "INFO": {
             "NO_NEW_ORDERS": "No new orders.",
             "NO_IN_PROGRESS": "No orders in progress. Accept a new order."
+        }
+    },
+
+    "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Dashboard"
+        },
+        "USERS": {
+            "NAME": "Users",
+            "SEARCH": {
+                "PLACEHOLDER": "Search..."
+            },
+            "LABEL": {
+                "ID": "ID",
+                "NAME": "Name",
+                "EMAIL": "Email Address",
+                "REGISTERED": "Registered",
+                "STATUS": "Status"
+            },
+            "LACK": "No users"
         }
     },
     

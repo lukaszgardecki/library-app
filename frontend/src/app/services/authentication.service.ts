@@ -94,6 +94,10 @@ export class AuthenticationService {
     return ["WAREHOUSE", "ADMIN"].includes(this.currentUserRole);
   }
 
+  isAdmin(): boolean {
+    return "ADMIN" == this.currentUserRole;
+  }
+
   hasUserBorrowed(bookItem: BookItem): Observable<boolean> {
     return this.loanedItemsIdsSubject.asObservable().pipe(
       map(ids => ids.includes(bookItem.id))

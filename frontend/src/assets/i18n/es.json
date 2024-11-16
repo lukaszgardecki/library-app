@@ -9,7 +9,8 @@
         "LOGOUT": "Cerrar sesión",
         "REGISTER": "Registrarse",
         "PROFILE": "Perfil",
-        "WAREHOUSE": "Almacén"
+        "WAREHOUSE": "Almacén",
+        "ADMIN": "Administrador"
     },
 
     "MAIN_NAV": {
@@ -307,6 +308,26 @@
         "INFO": {
             "NO_NEW_ORDERS": "No hay pedidos nuevos.",
             "NO_IN_PROGRESS": "No hay pedidos en progreso. Acepta un nuevo pedido."
+        }
+    },
+
+    "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Tablero de control"
+        },
+        "USERS": {
+            "NAME": "Usuarios",
+            "SEARCH": {
+                "PLACEHOLDER": "Buscar..."
+            },
+            "LABEL": {
+                "ID": "ID",
+                "NAME": "Nombre",
+                "EMAIL": "Dirección de correo",
+                "REGISTERED": "Registrado",
+                "STATUS": "Estado"
+            },
+            "LACK": "No hay usuarios"
         }
     },
     

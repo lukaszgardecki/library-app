@@ -40,6 +40,12 @@ import { WarehousePageComponent } from './warehouse-page/warehouse-page.componen
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { SideAccordionComponent } from './side-accordion/side-accordion.component';
+import { UserListComponent } from './admin-page/user-list/user-list.component';
+import { UserDetailsComponent } from './admin-page/user-list/user-details/user-details.component';
+import { AdminDashboardComponent } from './admin-page/admin-dashboard/admin-dashboard.component';
+import { DropdownDirective } from './shared/directives/dropdown.directive';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -79,7 +85,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     NotificationDetailsComponent,
     UserPageComponent,
     WarehousePageComponent,
-    NotAuthorizedPageComponent
+    NotAuthorizedPageComponent,
+    AdminPageComponent,
+    SideAccordionComponent,
+    UserListComponent,
+    UserDetailsComponent,
+    AdminDashboardComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,

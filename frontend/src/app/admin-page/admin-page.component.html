@@ -1,0 +1,84 @@
+<div class="container">
+    <div class="sidebar active" #sidebar>
+        <div class="logo">
+            <span>Library</span><span>App</span>
+        </div>
+        <div class="mng-panel">
+            <i class="fa fa-2x fa-power-off" [routerLink]="['']"></i>
+        </div>
+        
+        <div class="tile" 
+            *ngFor="let option of options; let i = index" 
+            (click)="switch(i)" 
+            [ngClass]="{active: option.selected}" 
+            [ngStyle]="{cursor: option.selected ? 'default' : 'pointer'}"
+        >
+            <i class="fa fa-2x" [ngClass]="option.icon"></i>
+            <span [routerLink]="option.obj.routerLink">{{ option.obj.name | translate }}</span>
+        </div>
+    </div>
+
+    <div class="main-content expanded" #mainContent>
+        <div class="top-nav">
+            <div class="left">
+                <div class="wr">
+                    <i class="fa fa-2x fa-bars" (click)=" showSidebar()"></i>
+                </div>
+            </div>
+
+            <div class="middle">
+
+            </div>
+
+            <div class="right">
+                <div class="lang" dropdown>
+                    <div class="wr">
+                        <img src="../../assets/flags/{{ selectedLang.icon }}" [alt]="selectedLang.name">
+                    </div>
+                    <div class="dropdown">
+                        <ul class="menu left">
+                            <li *ngFor="let lang of languages" (click)="switchLanguage(lang)">
+                                <div class="wr">
+                                    <img src="../../assets/flags/{{ lang.icon }}" [alt]="lang.name">
+                                </div>
+                                <span>{{ lang.name }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="user" dropdown>
+                    <div class="data" >
+                        <div class="name">
+                            <span>Łuksz Gardecki</span>
+                            <span>Administrator</span>
+                        </div>
+                        <div class="wr">
+                                <img src="../../assets/avatars/avatar_m1.png">
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <ul class="menu right">
+                            <li>
+                                <div class="wr">
+                                    <i class="fa fa-home"></i>
+                                </div>
+                                <a [routerLink]="['']">{{ TEXT.MAIN_NAV_HOME | translate }}</a>
+                            </li>
+                            <li>
+                                <div class="wr">
+                                    <i class="fa fa-power-off"></i>
+                                </div>
+                                <span [routerLink]="['/login']" (click)="logout()"> {{ TEXT.TOP_BAR_LOGOUT | translate }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>   
+            </div> 
+        </div>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+        
+    </div>
+</div>

@@ -13,10 +13,7 @@ import { EditComponent } from './edit/edit.component';
 @Component({
   selector: 'app-profile-dashboard',
   templateUrl: './profile-dashboard.component.html',
-  styleUrls: [
-    './profile-dashboard.component.css',
-    '../../../bootstrap-fragments.css'
-  ]
+  styleUrl: './profile-dashboard.component.css'
 })
 export class ProfileDashboardComponent {
 

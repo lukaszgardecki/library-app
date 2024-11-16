@@ -1,0 +1,12 @@
+.pagination {display:block; width:100%; clear:both; border-bottom: 1px solid;border-top: 1px solid; border-color: #D7D7D7;}
+.pagination ul{margin: 0; padding: 0; text-align: center;}
+.pagination li{display:inline-block; margin:0 0 0 0;}
+.pagination li:last-child{margin-right:0;}
+.pagination a, .pagination strong{display:block; padding:8px 11px; background-clip:padding-box; font-weight:normal;}
+
+.pagination, .pagination a, .pagination strong{border-color:#D7D7D7;}
+.pagination .current *{color:#FFFFFF; background-color: var(--main-color);}
+
+@media screen and (max-width:900px) {
+    .pagination li{display:inline-block; margin:0 5px 5px 0;}
+}

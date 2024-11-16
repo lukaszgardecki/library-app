@@ -25,6 +25,10 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { WarehousePageComponent } from './warehouse-page/warehouse-page.component';
 import { RoleGuard } from './services/role-guard';
 import { NotAuthorizedPageComponent } from './not-authorized-page/not-authorized-page.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { UserListComponent } from './admin-page/user-list/user-list.component';
+import { UserDetailsComponent } from './admin-page/user-list/user-details/user-details.component';
+import { AdminDashboardComponent } from './admin-page/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {path: "", component: UserPageComponent, children: [
@@ -48,7 +52,7 @@ const routes: Routes = [
         {path: "requested-items/unsent", component: RequestedItemsUnsentComponent},
         {path: "requested-items/pending", component: RequestedItemsPendingComponent},
         {path: "requested-items/completed", component: RequestedItemsCompletedComponent},
-        
+
         {path: "reservations", component: ReservationsComponent},
         {path: "renewable-items", component: RenewableItemsComponent},
         {path: "history", component: UserHistoryComponent},
@@ -60,8 +64,23 @@ const routes: Routes = [
         {path: "edit/email", component: EditEmailComponent},
         {path: "edit/phone", component: EditPhoneNumberComponent},
       ]
-    }
+    },
+
   ]},
+
+  {
+    path: "admin",
+    component: AdminPageComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'ADMIN'},
+    children: [
+      {path: "", component: AdminDashboardComponent},
+      {path: "users", component: UserListComponent},
+      {path: "users/:id", component: UserDetailsComponent}
+    ]
+  },
+
+
   {
     path: "warehouse",
     component: WarehousePageComponent,

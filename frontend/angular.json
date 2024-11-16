@@ -36,8 +36,7 @@
               "src/images"
             ],
             "styles": [
-              "src/styles.css",
-              "src/app/user-page/home-page/styles/layout.css"
+              "src/styles.css"
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",

@@ -9,7 +9,8 @@
         "LOGOUT": "Ausloggen",
         "REGISTER": "Registrieren",
         "PROFILE": "Profil",
-        "WAREHOUSE": "Lager"
+        "WAREHOUSE": "Lager",
+        "ADMIN": "Administrator"
     },
 
     "MAIN_NAV": {
@@ -307,6 +308,26 @@
         "INFO": {
             "NO_NEW_ORDERS": "Keine neuen Bestellungen.",
             "NO_IN_PROGRESS": "Keine Bestellungen in Bearbeitung. Akzeptieren Sie eine neue Bestellung."
+        }
+    },
+
+    "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Dashboard"
+        },
+        "USERS": {
+            "NAME": "Benutzer",
+            "SEARCH": {
+                 "PLACEHOLDER": "Suchen..."
+            },
+            "LABEL": {
+                "ID": "ID",
+                "NAME": "Name",
+                "EMAIL": "E-Mail-Adresse",
+                "REGISTERED": "Registriert",
+                "STATUS": "Status"
+            },
+            "LACK": "Keine Benutzer"
         }
     },
     

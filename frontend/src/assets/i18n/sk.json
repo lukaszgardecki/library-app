@@ -9,7 +9,8 @@
         "LOGOUT": "Odhlásiť sa",
         "REGISTER": "Registrovať sa",
         "PROFILE": "Profil",
-        "WAREHOUSE": "Sklad"
+        "WAREHOUSE": "Sklad",
+        "ADMIN": "Administrátor"
     },
 
     "MAIN_NAV": {
@@ -307,6 +308,26 @@
         "INFO": {
             "NO_NEW_ORDERS": "Žiadne nové objednávky.",
             "NO_IN_PROGRESS": "Žiadne objednávky v procese. Prijať novú objednávku."
+        }
+    },
+
+    "ADMIN": {
+        "DASHBOARD": {
+            "NAME": "Dashboard"
+        },
+        "USERS": {
+            "NAME": "Používatelia",
+            "SEARCH": {
+                "PLACEHOLDER": "Vyhľadávať..."
+            },
+            "LABEL": {
+                "ID": "ID",
+                "NAME": "Meno",
+                "EMAIL": "Emailová adresa",
+                "REGISTERED": "Registrovaný",
+                "STATUS": "Status"
+            },
+            "LACK": "Žiadni používatelia"
         }
     },
     

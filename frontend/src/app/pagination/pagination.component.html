@@ -1,39 +1,41 @@
-<div class="pagination no-select">
-  <ul>
-    <li>
-      <a (click)="isSelectedFirst() ? '' : goPrevPage()" [ngStyle]="{'cursor': isSelectedFirst() ? 'not-allowed' : 'pointer'}">&laquo; {{ TEXT.PAGINATION_PREV | translate }}</a>
-    </li>
-    <!-- 1 element -->
-    <li [ngClass]="{'current': isActive(1)}">
-      <a (click)="goToPageFromBtn(1)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(1)}}</a>
-    </li>
-    <!-- 2 element -->
-    <li [ngStyle]="{'display': arePagesMax(1) ? 'none' : ''}" [ngClass]="{'current': isActive(2)}">
-      <a (click)="goToPageFromBtn(2)" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(2) ? 'none' : 'initial'}">{{getValueOfBtnNo(2)}}</a>
-    </li>
-    <!-- 3 element -->
-    <li [ngStyle]="{'display': arePagesMax(2) ? 'none' : ''}" [ngClass]="{'current': isActive(3)}">
-      <a (click)="goToPageFromBtn(3)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(3)}}</a>
-    </li>
-    <!-- 4 element (middle) -->
-    <li [ngStyle]="{'display': arePagesMax(3) ? 'none' : ''}" [ngClass]="{'current': isActive(4)}">
-      <a (click)="goToPageFromBtn(4)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(4)}}</a>
-    </li>
-    <!-- 5 element -->
-    <li [ngStyle]="{'display': arePagesMax(4) ? 'none' : ''}" [ngClass]="{'current': isActive(5)}">
-      <a (click)="goToPageFromBtn(5)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(5)}}</a>
-    </li>
-    <!-- 6 element -->
-    <li [ngStyle]="{'display': arePagesMax(5) ? 'none' : ''}" [ngClass]="{'current': isActive(6)}">
-      <a (click)="goToPageFromBtn(6)" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(6) ? 'none' : 'initial'}">{{getValueOfBtnNo(6)}}</a>
-    </li>
-    <!-- 7 element -->
-    <li [ngStyle]="{'display': arePagesMax(6) ? 'none' : ''}" [ngClass]="{'current': isActive(7)}">
-      <a (click)="goToPageFromBtn(7)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(7)}}</a>
-    </li>
+<ng-container *ngIf="page && page.totalElements > 0">
+  <div class="pagination no-select">
+    <ul>
+      <li>
+        <a (click)="isSelectedFirst() ? '' : goPrevPage()" [ngStyle]="{'cursor': isSelectedFirst() ? 'not-allowed' : 'pointer'}">&laquo; {{ TEXT.PAGINATION_PREV | translate }}</a>
+      </li>
+      <!-- 1 element -->
+      <li [ngClass]="{'current': isActive(1)}">
+        <a (click)="goToPageFromBtn(1)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(1)}}</a>
+      </li>
+      <!-- 2 element -->
+      <li [ngStyle]="{'display': arePagesMax(1) ? 'none' : ''}" [ngClass]="{'current': isActive(2)}">
+        <a (click)="goToPageFromBtn(2)" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(2) ? 'none' : 'initial'}">{{getValueOfBtnNo(2)}}</a>
+      </li>
+      <!-- 3 element -->
+      <li [ngStyle]="{'display': arePagesMax(2) ? 'none' : ''}" [ngClass]="{'current': isActive(3)}">
+        <a (click)="goToPageFromBtn(3)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(3)}}</a>
+      </li>
+      <!-- 4 element (middle) -->
+      <li [ngStyle]="{'display': arePagesMax(3) ? 'none' : ''}" [ngClass]="{'current': isActive(4)}">
+        <a (click)="goToPageFromBtn(4)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(4)}}</a>
+      </li>
+      <!-- 5 element -->
+      <li [ngStyle]="{'display': arePagesMax(4) ? 'none' : ''}" [ngClass]="{'current': isActive(5)}">
+        <a (click)="goToPageFromBtn(5)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(5)}}</a>
+      </li>
+      <!-- 6 element -->
+      <li [ngStyle]="{'display': arePagesMax(5) ? 'none' : ''}" [ngClass]="{'current': isActive(6)}">
+        <a (click)="goToPageFromBtn(6)" [ngStyle]="{cursor: 'pointer', 'pointer-events': isBlankBtn(6) ? 'none' : 'initial'}">{{getValueOfBtnNo(6)}}</a>
+      </li>
+      <!-- 7 element -->
+      <li [ngStyle]="{'display': arePagesMax(6) ? 'none' : ''}" [ngClass]="{'current': isActive(7)}">
+        <a (click)="goToPageFromBtn(7)" [ngStyle]="{cursor: 'pointer'}">{{getValueOfBtnNo(7)}}</a>
+      </li>
 
-    <li>
-      <a (click)="isSelectedLast() ? '' : goNextPage()" [ngStyle]="{'cursor': isSelectedLast() ? 'not-allowed' : 'pointer'}">{{ TEXT.PAGINATION_NEXT | translate }} &raquo;</a>
-    </li>
-  </ul>
-</div> 
+      <li>
+        <a (click)="isSelectedLast() ? '' : goNextPage()" [ngStyle]="{'cursor': isSelectedLast() ? 'not-allowed' : 'pointer'}">{{ TEXT.PAGINATION_NEXT | translate }} &raquo;</a>
+      </li>
+    </ul>
+  </div>
+</ng-container>
