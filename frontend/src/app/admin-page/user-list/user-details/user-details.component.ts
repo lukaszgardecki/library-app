@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TEXT } from '../../../shared/messages';
 import { UserService } from '../../../services/user.service';
 import { Location } from '@angular/common';
-import { UserDetails } from '../../../models/user-details';
+import { AccountStatus, Gender, Role, UserDetailsAdmin, UserUpdateAdmin } from '../../../models/user-details';
 import { ActivatedRoute } from '@angular/router';
+import { CardStatus } from '../../../models/library-card';
 
 @Component({
   selector: 'app-user-details',
@@ -12,7 +13,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserDetailsComponent implements OnInit {
   TEXT = TEXT;
-  user: UserDetails = new UserDetails();
+  user: UserDetailsAdmin = new UserDetailsAdmin();
+  genderList = Object.values(Gender)
+  accountStatuses = Object.values(AccountStatus)
+  cardStatuses = Object.values(CardStatus)
+  roles = Object.values(Role)
+  isPersonalInfoEditing = false;
+  isAccountInfoEditing = false;
 
   constructor(
     private userService: UserService,
@@ -22,12 +29,71 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
       const id = this.route.snapshot.params['id'];
-    this.userService.getUserDetailsById(id).subscribe({
+    this.userService.getUserDetailsByIdAdmin(id).subscribe({
       next: user => this.user = user
     });
   }
 
+  editPersonalInfo() {
+    if (this.isPersonalInfoEditing) {
+      this.isPersonalInfoEditing = false
+      this.updateUserData()
+    } else {
+      this.isPersonalInfoEditing = true
+    }
+  }
+
+  editAccountInfo() {
+    if (this.isAccountInfoEditing) {
+      this.isAccountInfoEditing = false
+      this.updateUserData()
+    } else {
+      this.isAccountInfoEditing = true
+    }
+  }
+
+  changeAccountStatus(newStatus: AccountStatus) {
+    this.user.status = newStatus
+  }
+
+  changeCardStatus(newStatus: CardStatus) {
+    this.user.card.status = newStatus
+  }
+
+  changeRole(newRole: Role) {
+    this.user.role = newRole
+  }
+
+  changeGender(newGender: Gender) {
+    this.user.gender = newGender
+  }
+
   goBack() {
     this.location.back();
+  }
+
+  updateUserData() {
+    let userToUpdate = new UserUpdateAdmin();
+
+    userToUpdate.firstName = this.user.firstName;
+    userToUpdate.lastName = this.user.lastName;
+    userToUpdate.email = this.user.email;
+    userToUpdate.streetAddress = this.user.streetAddress;
+    userToUpdate.zipCode = this.user.zipCode;
+    userToUpdate.city = this.user.city;
+    userToUpdate.state = this.user.state;
+    userToUpdate.country = this.user.country;
+    userToUpdate.phone = this.user.phoneNumber;
+    userToUpdate.gender = this.user.gender;
+    userToUpdate.pesel = this.user.pesel;
+    userToUpdate.dateOfBirth = this.user.dateOfBirth; // ten format??
+    userToUpdate.nationality = this.user.nationality;
+    userToUpdate.fathersName = this.user.fathersName;
+    userToUpdate.mothersName = this.user.mothersName;
+    userToUpdate.accountStatus = this.user.status;
+    userToUpdate.cardStatus = this.user.card.status;
+    userToUpdate.role = this.user.role;
+
+    this.userService.updateUserByAdmin(this.user.id, userToUpdate).subscribe();
   }
 }

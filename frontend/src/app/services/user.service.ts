@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
-import { UserDetails } from '../models/user-details';
+import { UserDetails, UserDetailsAdmin, UserPreview, UserUpdateAdmin } from '../models/user-details';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserUpdate } from '../shared/user-update';
+import { UserUpdate } from '../models/user-details';
 import { UsersPage } from '../models/users-page';
 
 @Injectable({
@@ -11,6 +11,7 @@ import { UsersPage } from '../models/users-page';
 })
 export class UserService {
   private baseURL;
+  private baseAdminURL;
   private usersPageSubject = new BehaviorSubject<UsersPage>(new UsersPage());
   usersPage$ = this.usersPageSubject.asObservable();
 
@@ -20,6 +21,7 @@ export class UserService {
   ) { 
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/members`;
+    this.baseAdminURL = `${baseURL}/admin/members`;
   }
 
   getUsersPage(params: HttpParams) {
@@ -30,8 +32,20 @@ export class UserService {
     return this.http.get<UserDetails>(`${this.baseURL}/${id}`, { withCredentials: true });
   }
 
+  getUserDetailsByIdAdmin(id: number): Observable<UserDetailsAdmin> {
+    return this.http.get<UserDetailsAdmin>(`${this.baseAdminURL}/${id}`, { withCredentials: true });
+  }
+
+  getUserPreviewInfo(id: number): Observable<UserPreview> {
+    return this.http.get<UserPreview>(`${this.baseURL}/${id}/preview`, { withCredentials: true });
+  }
+
   updateUser(userId: number, user: UserUpdate): Observable<UserDetails> {
     return this.http.patch<UserDetails>(`${this.baseURL}/${userId}`, user, { withCredentials: true });
+  }
+
+  updateUserByAdmin(userId: number, user: UserUpdateAdmin): Observable<UserDetails> {
+    return this.http.patch<UserDetails>(`${this.baseAdminURL}/${userId}`, user, { withCredentials: true });
   }
 
   private fetchUsersPage(params: HttpParams): void {

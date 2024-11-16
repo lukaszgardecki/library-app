@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.bookItem.assembler;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;

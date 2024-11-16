@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.action.assembler;
 
 import com.example.libraryapp.domain.action.Action;
 import com.example.libraryapp.domain.action.ActionDto;

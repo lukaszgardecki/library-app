@@ -26,7 +26,7 @@ export class BorrowedItemsComponent implements ProfileSetting, OnInit {
       next: lendingPage => {
         if (lendingPage._embedded) {
           this.lendings = lendingPage._embedded.lendingDtoList.filter(item => item.bookItem.isReferenceOnly === false);
-        } 
+        }
       }
     });
   }

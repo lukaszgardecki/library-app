@@ -49,8 +49,8 @@
                 <div class="user" dropdown>
                     <div class="data" >
                         <div class="name">
-                            <span>Łuksz Gardecki</span>
-                            <span>Administrator</span>
+                            <span>{{ firstName$ | async }} {{ lastName$ | async }}</span>
+                            <span>{{ role$ | async | enumName: "role" | nullPlaceholder | translate }}</span>
                         </div>
                         <div class="wr">
                                 <img src="../../assets/avatars/avatar_m1.png">
@@ -76,9 +76,9 @@
                 </div>   
             </div> 
         </div>
-        <div class="content">
+        <!-- <div class="content"> -->
             <router-outlet></router-outlet>
-        </div>
+        <!-- </div> -->
         
     </div>
 </div>

@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.card.assembler;
 
 import com.example.libraryapp.domain.card.CardMapper;
 import com.example.libraryapp.domain.card.LibraryCard;

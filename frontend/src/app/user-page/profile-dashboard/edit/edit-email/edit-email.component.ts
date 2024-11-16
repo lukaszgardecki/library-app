@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProfileSetting } from '../../profile-dashboard.component';
 import { UserService } from '../../../../services/user.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
-import { UserUpdate } from '../../../../shared/user-update';
+import { UserUpdate } from '../../../../models/user-details';
 import { TEXT } from '../../../../shared/messages';
 
 @Component({
@@ -39,16 +39,16 @@ export class EditEmailComponent implements ProfileSetting {
       this.setError(TEXT.PROFILE_EDIT_EMAIL_ERROR_MSG_EMPTY_FIELD);
       return;
     }
-  
+
     if (!this.checkEmail()) {
       this.setError(TEXT.PROFILE_EDIT_EMAIL_ERROR_MSG_NOT_VALID);
       return;
     }
-  
+
     this.changeEmail();
     this.newEmail = "";
   }
-  
+
   private setError(message: string): void {
     this.emailIsChanged = false;
     this.emailIsWrong = true;

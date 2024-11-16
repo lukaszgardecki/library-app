@@ -1,8 +1,5 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.rack;
 
-import com.example.libraryapp.domain.rack.Rack;
-import com.example.libraryapp.domain.rack.RackDto;
-import com.example.libraryapp.domain.rack.RackMapper;
 import com.example.libraryapp.web.RackController;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.CollectionModel;

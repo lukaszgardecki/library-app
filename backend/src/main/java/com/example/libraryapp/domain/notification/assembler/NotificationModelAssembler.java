@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.notification.assembler;
 
 import com.example.libraryapp.domain.notification.Notification;
 import com.example.libraryapp.domain.notification.NotificationDtoMapper;

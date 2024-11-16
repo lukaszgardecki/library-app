@@ -104,8 +104,15 @@
                 "OTHER": "Iné"
             },
             "NATIONALITY": "Národnosť",
-            "ADDRESS": "Adresa",
-            "PARENTS": "Meno rodičov",
+            "ADDRESS": "Adresa bydliska",
+            "STREET": "Ulica",
+            "ZIPCODE": "PSČ",
+            "CITY": "Mesto",
+            "STATE": "Kraj",
+            "COUNTRY": "Krajina",
+            "PARENTS": "Mená rodičov",
+            "MOTHER": "Meno matky",
+            "FATHER": "Meno otca",
             "PESEL": "PESEL",
             "PHONE": "Telefónne číslo",
             "CARD": {
@@ -129,6 +136,13 @@
                     "CLOSED": "Zatvorený",
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čakajúci"
+                },
+                "ROLE": {
+                    "NAME": "Rola",
+                    "USER": "Používateľ",
+                    "ADMIN": "Administrátor",
+                    "WAREHOUSE": "Sklad",
+                    "CASHIER": "Pokladník"
                 }
             }
         },

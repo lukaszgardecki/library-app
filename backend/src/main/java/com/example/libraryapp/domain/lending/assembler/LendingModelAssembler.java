@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.lending.assembler;
 
 import com.example.libraryapp.domain.lending.Lending;
 import com.example.libraryapp.domain.lending.LendingDtoMapper;

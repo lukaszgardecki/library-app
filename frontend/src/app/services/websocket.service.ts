@@ -55,7 +55,7 @@ export class WebsocketService {
         if (this.authService.hasUserPermissionToWarehouse()) {
           this.subscribeWarehouseReservations();
         }
-        
+
       }
     });
   }

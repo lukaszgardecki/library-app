@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { StorageService } from './storage.service';
 import { BookItem } from '../models/book-item';
+import { Role, UserPreview } from '../models/user-details';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,10 @@ export class AuthenticationService {
   private _isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this._isLoggedInSubject.asObservable();
   currentUserId: number = -1;
-  currentUserRole: string = "";
+  currentUserRole: Role | null = null;
+  private currentUserSubject = new BehaviorSubject<UserPreview | null>(null);
+  currentUser$: Observable<UserPreview | null> = this.currentUserSubject.asObservable();
+
   private loanedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   private reservedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   private accessTokenSubject: BehaviorSubject<string | null>;
@@ -46,6 +50,17 @@ export class AuthenticationService {
 
     let tokensAreValid = this.isValidToken(this.refreshToken) && this.isValidToken(this.accessToken);
     if (tokensAreValid) {
+
+      let userToGetId = this.findUserIdInToken(this.refreshToken);
+      userService.getUserPreviewInfo(userToGetId).subscribe({
+        next: userPreview => {
+            this.currentUserSubject.next(userPreview);
+        },
+        error: e => {
+            console.error('Błąd podczas pobierania danych użytkownika:', e);
+        }
+      })
+
       this._isLoggedInSubject.next(true);
       this.currentUserId = this.findUserIdInToken(this.refreshToken);
       this.currentUserRole = this.findUserRoleInToken(this.refreshToken);
@@ -91,11 +106,11 @@ export class AuthenticationService {
   }
 
   hasUserPermissionToWarehouse(): boolean {
-    return ["WAREHOUSE", "ADMIN"].includes(this.currentUserRole);
+    return this.currentUserRole !== null && [Role.WAREHOUSE, Role.ADMIN].includes(this.currentUserRole);
   }
 
   isAdmin(): boolean {
-    return "ADMIN" == this.currentUserRole;
+    return Role.ADMIN == this.currentUserRole;
   }
 
   hasUserBorrowed(bookItem: BookItem): Observable<boolean> {
@@ -123,24 +138,35 @@ export class AuthenticationService {
 
   private initializeUserData(response: Token) {
     this.currentUserId = this.findUserIdInToken(response.refresh_token);
-        this.currentUserRole = this.findUserRoleInToken(response.refresh_token);
-        this.storageService.saveTokens(response.access_token, response.refresh_token);
-        this._isLoggedInSubject.next(true);
-        this.accessTokenSubject.next(response.access_token);
-        this.refreshTokenSubject.next(response.refresh_token);
-        this.userService.getUserDetailsById(this.currentUserId).subscribe({
-          next: user => {
-            this.loanedItemsIdsSubject.next(user.loanedItemsIds);
-            this.reservedItemsIdsSubject.next(user.reservedItemsIds);
-            this.storageService.saveLoanedIds(user.loanedItemsIds);
-            this.storageService.saveReservedIds(user.reservedItemsIds);
-          }
-        });
+    this.currentUserRole = this.findUserRoleInToken(response.refresh_token);
+    this.storageService.saveTokens(response.access_token, response.refresh_token);
+    this._isLoggedInSubject.next(true);
+    this.accessTokenSubject.next(response.access_token);
+    this.refreshTokenSubject.next(response.refresh_token);
+
+    this.userService.getUserPreviewInfo(this.currentUserId).subscribe({
+      next: userPreview => {
+          this.currentUserSubject.next(userPreview);
+      },
+      error: e => {
+          console.error('Błąd podczas pobierania danych użytkownika:', e);
+      }
+    })
+
+    this.userService.getUserDetailsById(this.currentUserId).subscribe({
+      next: user => {
+        this.loanedItemsIdsSubject.next(user.loanedItemsIds);
+        this.reservedItemsIdsSubject.next(user.reservedItemsIds);
+        this.storageService.saveLoanedIds(user.loanedItemsIds);
+        this.storageService.saveReservedIds(user.reservedItemsIds);
+      }
+    });
   }
 
   private clearUserData() {
+    this.currentUserSubject.next(null);
     this.currentUserId = -1;
-    this.currentUserRole = "";
+    this.currentUserRole = null;
     this.loanedItemsIdsSubject.next([]);
     this.reservedItemsIdsSubject.next([]);
     this.storageService.clearStorage();
@@ -164,9 +190,10 @@ export class AuthenticationService {
     return this.getTokenPayload(token).userId;
   }
 
-  private findUserRoleInToken(token: string | null): string {
-    if (!token) return "";
-    return this.getTokenPayload(token).userRole;
+  private findUserRoleInToken(token: string | null): Role | null {
+    if (!token) return null;
+    let roleStr = this.getTokenPayload(token).userRole
+    return Role[roleStr as keyof typeof Role];
   }
 
   private isValidToken(token: string | null): boolean {

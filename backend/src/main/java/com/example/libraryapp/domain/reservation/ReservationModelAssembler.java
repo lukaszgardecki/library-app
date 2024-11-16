@@ -1,7 +1,5 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.reservation;
 
-import com.example.libraryapp.domain.reservation.Reservation;
-import com.example.libraryapp.domain.reservation.ReservationDtoMapper;
 import com.example.libraryapp.domain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.web.ReservationController;
 import org.springframework.context.annotation.Configuration;

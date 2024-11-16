@@ -26,7 +26,7 @@ export class LoginComponent {
 
   onSubmit() {
     let credentials = this.validateCredentials();
-    
+
     if(credentials) {
       this.authService.authenticate(this.loginObj).subscribe({
         next: () => {

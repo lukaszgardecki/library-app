@@ -7,8 +7,8 @@
         <li class="dropdown" (click)="dropdown()">
           <span class="dropdown-toggle">{{selectedLangName}}</span><i class="fa fa-caret-down"></i>
           <ul class="dropdown-menu">
-            <li *ngFor="let lang of languages" 
-                (click)="switchLanguage(lang)" 
+            <li *ngFor="let lang of languages"
+                (click)="switchLanguage(lang)"
                 [ngClass]="{selected: selectedLangName == lang.name}"
             >
               {{lang.name}}
@@ -76,9 +76,9 @@
     </form>
   </nav>
 </div>
-  
+
   <router-outlet></router-outlet>
-  
+
   <app-footer></app-footer>
-  
+
   <a id="backtotop" (click)="scrollToTop()"><i class="fa fa-chevron-up"></i></a>

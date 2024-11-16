@@ -104,8 +104,15 @@
                 "OTHER": "Ostatní"
             },
             "NATIONALITY": "Národnost",
-            "ADDRESS": "Adresa",
+            "ADDRESS": "Adresa bydliště",
+            "STREET": "Ulice",
+            "ZIPCODE": "PSČ",
+            "CITY": "Město",
+            "STATE": "Kraj",
+            "COUNTRY": "Země",
             "PARENTS": "Jména rodičů",
+            "MOTHER": "Jméno matky",
+            "FATHER": "Jméno otce",
             "PESEL": "PESEL",
             "PHONE": "Telefonní číslo",
             "CARD": {
@@ -129,6 +136,13 @@
                     "CLOSED": "Zavřený",
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čekající"
+                },
+                "ROLE": {
+                    "NAME": "Role",
+                    "USER": "Uživatel",
+                    "ADMIN": "Administrátor",
+                    "WAREHOUSE": "Sklad",
+                    "CASHIER": "Pokladní"
                 }
             }
         },

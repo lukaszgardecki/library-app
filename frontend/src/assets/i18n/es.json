@@ -104,8 +104,15 @@
                 "OTHER": "Otro"
             },
             "NATIONALITY": "Nacionalidad",
-            "ADDRESS": "Dirección",
+            "ADDRESS": "Dirección de residencia",
+            "STREET": "Calle",
+            "ZIPCODE": "Código postal",
+            "CITY": "Ciudad",
+            "STATE": "Provincia/Estado",
+            "COUNTRY": "País",
             "PARENTS": "Nombres de los padres",
+            "MOTHER": "Nombre de la madre",
+            "FATHER": "Nombre del padre",
             "PESEL": "PESEL",
             "PHONE": "Número de teléfono",
             "CARD": {
@@ -129,6 +136,13 @@
                     "CLOSED": "Cerrada",
                     "SUSPENDED": "Suspendida",
                     "PENDING": "Pendiente"
+                },
+                "ROLE": {
+                    "NAME": "Rol",
+                    "USER": "Usuario",
+                    "ADMIN": "Administrador",
+                    "WAREHOUSE": "Almacén",
+                    "CASHIER": "Cajero"
                 }
             }
         },

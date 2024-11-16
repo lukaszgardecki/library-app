@@ -5,7 +5,6 @@ import com.example.libraryapp.domain.action.types.*;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
-import com.example.libraryapp.domain.config.assembler.ReservationModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.reservation.ReservationException;

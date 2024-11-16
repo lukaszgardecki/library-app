@@ -105,7 +105,14 @@
             },
             "NATIONALITY": "Narodowość",
             "ADDRESS": "Adres zamieszkania",
+            "STREET": "Ulica",
+            "ZIPCODE": "Kod pocztowy",
+            "CITY": "Miasto",
+            "STATE": "Województwo",
+            "COUNTRY": "Kraj",
             "PARENTS": "Imiona rodziców",
+            "MOTHER": "Imię matki",
+            "FATHER": "Imię ojca",
             "PESEL": "Pesel",
             "PHONE": "Telefon",
             "CARD": {
@@ -129,6 +136,13 @@
                     "CLOSED": "Zamknięte",
                     "SUSPENDED": "Zawieszone",
                     "PENDING": "Potwierdzanie"
+                },
+                "ROLE": {
+                    "NAME": "Rola",
+                    "USER": "Użytkownik",
+                    "ADMIN": "Administrator",
+                    "WAREHOUSE": "Magazyn",
+                    "CASHIER": "Kasjer"
                 }
             }
         },

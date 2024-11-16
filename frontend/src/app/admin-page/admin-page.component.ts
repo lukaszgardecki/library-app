@@ -6,6 +6,7 @@ import { UserLang } from '../shared/user-lang';
 import { AuthenticationService } from '../services/authentication.service';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { ActivatedRoute } from '@angular/router';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -20,9 +21,22 @@ export class AdminPageComponent implements OnInit {
     { obj: new AdminDashboardComponent(), icon: 'fa-tachometer-alt', selected: false },
     { obj: new UserListComponent(), icon: 'fa-user', selected: false }
   ];
-  
+
   languages: UserLang[];
   selectedLang: UserLang;
+
+  firstName$: Observable<string> = this.authService.currentUser$.pipe(
+    map(user => user?.firstName || '')
+  );
+
+  lastName$: Observable<string> = this.authService.currentUser$.pipe(
+    map(user => user?.lastName || '')
+  );
+
+  role$: Observable<string> = this.authService.currentUser$.pipe(
+    map(user => user?.role || '')
+  );
+
 
   constructor(
     private langService: TranslationService,

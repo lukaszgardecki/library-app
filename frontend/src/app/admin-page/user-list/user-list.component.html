@@ -1,4 +1,4 @@
-<div class="a">
+<div class="content">
     <div class="section-header">{{ name | translate }}</div>
 
     <div class="section-content">
@@ -41,7 +41,7 @@
                     <div class="table-body-container">
                         <table>
                             <tbody>
-                                <tr *ngFor="let user of usersPage._embedded.memberDtoList; index as i">
+                                <tr *ngFor="let user of usersPage._embedded.memberListPreviewDtoAdminList; index as i">
                                     <td class="col-id">{{user.id}}</td>
                                     <td class="col-name">
                                         <a style="cursor: pointer;" (click)="showDetails(user)">

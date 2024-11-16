@@ -101,7 +101,7 @@ export class UserHistoryComponent implements ProfileSetting {
           this.currentPageNum = actionPage.page.number;
           this.actions.push (...actionPage._embedded.actionDtoList);
           this.isLoading = false;
-        } 
+        }
       }
     });
   }

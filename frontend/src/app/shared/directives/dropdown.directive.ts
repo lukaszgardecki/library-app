@@ -15,7 +15,7 @@ constructor(private el: ElementRef) { }
   @HostListener('click', ['$event'])
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();
-     const dropdown = this.el.nativeElement.querySelector('.dropdown');
+    const dropdown = this.el.nativeElement.querySelector('.dropdown');
     const isOpen = dropdown.classList.contains('show');
     this.closeAllDropdowns();
     if (isOpen) {

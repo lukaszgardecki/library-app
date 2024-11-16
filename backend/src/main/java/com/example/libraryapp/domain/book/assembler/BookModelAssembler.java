@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.book.assembler;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.dto.BookDto;
@@ -27,7 +27,7 @@ public class BookModelAssembler extends RepresentationModelAssemblerSupport<Book
     public BookDto toModel(@NonNull Book book) {
         BookDto bookDto = BookMapper.map(book);
         bookDto.add(linkTo(methodOn(BookController.class).getBookById(book.getId())).withSelfRel());
-        bookDto.add(linkTo(methodOn(BookController.class).getAllBooks(null, Collections.emptyList())).withRel(IanaLinkRelations.COLLECTION));
+        bookDto.add(linkTo(methodOn(BookController.class).getAllBookPreviews(null, Collections.emptyList())).withRel(IanaLinkRelations.COLLECTION));
         return bookDto;
     }
 
@@ -35,7 +35,7 @@ public class BookModelAssembler extends RepresentationModelAssemblerSupport<Book
     @NonNull
     public CollectionModel<BookDto> toCollectionModel(@NonNull Iterable<? extends Book> entities) {
         CollectionModel<BookDto> collectionModel = super.toCollectionModel(entities);
-        collectionModel.add(linkTo(methodOn(BookController.class).getAllBooks(null, null)).withSelfRel());
+        collectionModel.add(linkTo(methodOn(BookController.class).getAllBookPreviews(null, null)).withSelfRel());
         return collectionModel;
     }
 }

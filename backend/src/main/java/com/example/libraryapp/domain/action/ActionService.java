@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.action;
 
-import com.example.libraryapp.domain.config.assembler.ActionModelAssembler;
+import com.example.libraryapp.domain.action.assembler.ActionModelAssembler;
 import com.example.libraryapp.domain.exception.action.ActionNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

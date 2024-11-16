@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProfileSetting } from '../../profile-dashboard.component';
 import { AuthenticationService } from '../../../../services/authentication.service';
 import { UserService } from '../../../../services/user.service';
-import { UserUpdate } from '../../../../shared/user-update';
+import { UserUpdate } from '../../../../models/user-details';
 import { TEXT } from '../../../../shared/messages';
 
 @Component({
@@ -39,16 +39,16 @@ export class EditPhoneNumberComponent implements ProfileSetting {
       this.setError(TEXT.PROFILE_EDIT_PHONE_ERROR_MSG_EMPTY_FIELD);
       return;
     }
-  
+
     if (!this.checkPhoneNumber()) {
       this.setError(TEXT.PROFILE_EDIT_PHONE_ERROR_MSG_NOT_VALID);
       return;
     }
-  
+
     this.changePhoneNumber();
     this.newPhone = "";
   }
-  
+
   private setError(message: string): void {
     this.phoneIsChanged = false;
     this.phoneIsWrong = true;

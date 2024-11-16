@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.config.assembler;
+package com.example.libraryapp.domain.payment.assembler;
 
 import com.example.libraryapp.domain.payment.Payment;
 import com.example.libraryapp.domain.payment.PaymentMapper;
@@ -25,7 +25,7 @@ public class PaymentModelAssembler extends RepresentationModelAssemblerSupport<P
     public PaymentResponse toModel(@NonNull Payment payment) {
         PaymentResponse paymentDto = PaymentMapper.map(payment);
         paymentDto.add(linkTo(methodOn(PaymentController.class).findPaymentById(payment.getId())).withSelfRel());
-        paymentDto.add(linkTo(methodOn(PaymentController.class).findAllPayments(null)).withRel(IanaLinkRelations.COLLECTION));
+        paymentDto.add(linkTo(methodOn(PaymentController.class).findAllPayments(null, null)).withRel(IanaLinkRelations.COLLECTION));
         return paymentDto;
     }
 
@@ -33,7 +33,7 @@ public class PaymentModelAssembler extends RepresentationModelAssemblerSupport<P
     @NonNull
     public CollectionModel<PaymentResponse> toCollectionModel(@NonNull Iterable<? extends Payment> entities) {
         CollectionModel<PaymentResponse> collectionModel = super.toCollectionModel(entities);
-        collectionModel.add(linkTo(methodOn(PaymentController.class).findAllPayments(null)).withSelfRel());
+        collectionModel.add(linkTo(methodOn(PaymentController.class).findAllPayments(null, null)).withSelfRel());
         return collectionModel;
     }
 }

@@ -1,11 +1,13 @@
 package com.example.libraryapp.domain.book;
 
+import com.example.libraryapp.domain.book.assembler.BookPreviewAssembler;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookPreviewDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.mapper.BookMapper;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
-import com.example.libraryapp.domain.config.assembler.BookModelAssembler;
+import com.example.libraryapp.domain.book.assembler.BookModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.management.LanguageDto;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +26,10 @@ import java.util.stream.Collectors;
 public class BookService {
     private final BookRepository bookRepository;
     private final BookModelAssembler bookModelAssembler;
+    private final BookPreviewAssembler bookPreviewAssembler;
     private final PagedResourcesAssembler<Book> pagedResourcesAssembler;
 
-    public PagedModel<BookDto> findAllBook(Pageable pageable, List<String> languages) {
+    public PagedModel<BookPreviewDto> findAllBookPreviews(Pageable pageable, List<String> languages) {
         Page<Book> bookPage;
 
         if (languages != null && !languages.isEmpty()) {
@@ -35,7 +38,7 @@ public class BookService {
             bookPage = bookRepository.findAll(pageable);
         }
 
-        return pagedResourcesAssembler.toModel(bookPage, bookModelAssembler);
+        return pagedResourcesAssembler.toModel(bookPage, bookPreviewAssembler);
     }
 
     public List<BookItemDto> findBookItemsByBookId(Long id) {

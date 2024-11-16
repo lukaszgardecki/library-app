@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ProfileSetting } from '../../profile-dashboard.component';
 import { UserService } from '../../../../services/user.service';
 import { AuthenticationService } from '../../../../services/authentication.service';
-import { UserUpdate } from '../../../../shared/user-update';
+import { UserUpdate } from '../../../../models/user-details';
 import { TEXT } from '../../../../shared/messages';
 
 @Component({
@@ -32,7 +32,7 @@ export class EditPasswordComponent implements ProfileSetting {
     this.passIsChanged = false;
     const isValidPassword = this.isPasswordValid();
     const passwordsMatch = this.newPass === this.newPassRepeat;
-   
+
     if (!isValidPassword && !passwordsMatch) {
       this.errorMsg = TEXT.PROFILE_EDIT_PASSWORD_ERROR_MSG_NOT_VALID_AND_NOT_MATCH;
     } else if (!isValidPassword) {
@@ -81,7 +81,7 @@ export class EditPasswordComponent implements ProfileSetting {
   checkPasswordLength() {
     return this.newPass.length >= this.minPassLength;
   }
-  
+
   checkIsOneLowerCaseLetter() {
     const digitCount = (this.newPass.match(/[a-z]/g) || []).length;
     return digitCount >= this.minLowerCaseChars;

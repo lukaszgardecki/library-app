@@ -2,6 +2,7 @@ package com.example.libraryapp.web;
 
 import com.example.libraryapp.domain.book.BookService;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookPreviewDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.config.RoleAuthorization;
@@ -27,12 +28,12 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<PagedModel<BookDto>> getAllBooks(
+    public ResponseEntity<PagedModel<BookPreviewDto>> getAllBookPreviews(
             Pageable pageable,
             @RequestParam(value = "lang", required = false)
             List<String> languages
     ) {
-        PagedModel<BookDto> collectionModel = bookService.findAllBook(pageable, languages);
+        PagedModel<BookPreviewDto> collectionModel = bookService.findAllBookPreviews(pageable, languages);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 

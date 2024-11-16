@@ -2,5 +2,11 @@ export class LibraryCard {
     id: number;
     barcode: string;
     issuedAt: Date;
-    status: string;
+    status: CardStatus;
+}
+
+export enum CardStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    LOST = "LOST"
 }

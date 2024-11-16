@@ -1,8 +1,16 @@
-.a {
+.content {
     display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+
+    background-color: #fff;
+    flex: 1;
+    margin: var(--basic-dist);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    /* overflow: hidden; */
 }
 
 .section-header {

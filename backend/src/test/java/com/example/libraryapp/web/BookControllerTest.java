@@ -30,7 +30,7 @@ public class BookControllerTest extends BaseTest {
         void shouldReturnPageOf20BooksWhenListIsRequested() {
             client.testRequest(GET, "/books", OK)
                     .expectBody()
-                    .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(20);
+                    .jsonPath("$._embedded.bookPreviewDtoList.length()").isEqualTo(20);
         }
 
         @Test
@@ -38,7 +38,7 @@ public class BookControllerTest extends BaseTest {
         void shouldReturnPageOf6BooksWhenListByLanguageIsRequested() {
             client.testRequest(GET, "/books?lang=Hindi", OK)
                     .expectBody()
-                    .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(6)
+                    .jsonPath("$._embedded.bookPreviewDtoList.length()").isEqualTo(6)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(6)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -50,7 +50,7 @@ public class BookControllerTest extends BaseTest {
         void shouldReturnPageOf22BooksWhenListByLanguageIsRequested() {
             client.testRequest(GET, "/books?page=0&size=10&sort=&lang=Moldovan&lang=Bosnian&lang=Hebrew&lang=Belarusian", OK)
                     .expectBody()
-                    .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(10)
+                    .jsonPath("$._embedded.bookPreviewDtoList.length()").isEqualTo(10)
                     .jsonPath("$.page.size").isEqualTo(10)
                     .jsonPath("$.page.totalElements").isEqualTo(22)
                     .jsonPath("$.page.totalPages").isEqualTo(3)
@@ -62,7 +62,7 @@ public class BookControllerTest extends BaseTest {
         void shouldReturnPageOf3BooksWhenListIsRequested() {
             client.testRequest(GET, "/books?page=0&size=3", OK)
                     .expectBody()
-                    .jsonPath("$._embedded.bookDtoList.length()").isEqualTo(3)
+                    .jsonPath("$._embedded.bookPreviewDtoList.length()").isEqualTo(3)
                     .jsonPath("$.page.size").isEqualTo(3)
                     .jsonPath("$.page.totalElements").isEqualTo(492)
                     .jsonPath("$.page.totalPages").isEqualTo(164)

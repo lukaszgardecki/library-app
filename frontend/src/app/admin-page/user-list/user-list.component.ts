@@ -5,7 +5,7 @@ import { Pageable } from '../../shared/pageable';
 import { UserService } from '../../services/user.service';
 import { UsersPage } from '../../models/users-page';
 import { Observable } from 'rxjs';
-import { UserDetails } from '../../models/user-details';
+import { UserListPreviewAdmin } from '../../models/user-details';
 import { Router } from '@angular/router';
 import { Size } from '../../shared/sortable';
 import { HttpParams } from '@angular/common/http';
@@ -27,10 +27,9 @@ export class UserListComponent implements ProfileSetting, Pageable, OnInit {
   router = inject(Router);
 
   ngOnInit(): void {
-      this.usersPage$ = this.userService.usersPage$;
-
-      let params = this.createParams();
-      this.userService.getUsersPage(params);
+    this.usersPage$ = this.userService.usersPage$;
+    let params = this.createParams();
+    this.userService.getUsersPage(params);
   }
 
   loadPage(pageIndex: number): void {
@@ -38,7 +37,7 @@ export class UserListComponent implements ProfileSetting, Pageable, OnInit {
     this.userService.getUsersPage(params);
   }
 
-  showDetails(user: UserDetails) {
+  showDetails(user: UserListPreviewAdmin) {
     this.router.navigate(['/admin/users', user.id]);
   }
 
