@@ -48,7 +48,7 @@ export class UserDetailsAdmin {
     loanedItemsIds: Array<number>;
     reservedItemsIds: Array<number>;
     role: Role;
-    favGenre: String;
+    genresStats: Map<string, number>;
     lendingsPerMonth: Array<number>;
 }
 

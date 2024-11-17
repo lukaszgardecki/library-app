@@ -11,6 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -45,6 +46,6 @@ public class MemberDtoAdmin extends RepresentationModel<MemberDtoAdmin> {
     private List<Long> reservedItemsIds;
     private Role role;
 
-    private String favGenre;
+    private Map<String, Integer> genresStats;
     private List<Integer> lendingsPerMonth;
 }

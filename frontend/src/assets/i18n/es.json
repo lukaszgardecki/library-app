@@ -348,11 +348,18 @@
                 "EDIT": "Editar",
                 "SAVE": "Guardar"
             },
-            "TILE_LENDINGS_CURRENT": "Préstamos actuales",
-            "TILE_LENDINGS_ALL": "Todos los préstamos",
-            "TILE_FAV_GENRE": "Género favorito",
-            "TILE_LATE_FEES": "Tarifas por retraso",
-            "LENDINGS_12_MONTHS": "Actividad de préstamos anual",
+            "SECTION": {
+                "DATA_LACK": "Sin datos",
+                "LENDINGS_ALL": "Todos los préstamos",
+                "LENDINGS_CURRENT": "Préstamos actuales",
+                "LENDINGS_ANNUAL": "Actividad anual de préstamos",
+                "LATE_FEES": "Cargos atrasados",
+                "FAV_GENRE": "Género favorito",
+                "FAV_GENRES": "Géneros favoritos"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Cantidad de préstamos"
+            },
             "MONTH": {
                 "JAN": "Enero",
                 "FEB": "Febrero",

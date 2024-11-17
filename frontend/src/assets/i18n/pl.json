@@ -348,11 +348,18 @@
                 "EDIT": "Edytuj",
                 "SAVE": "Zapisz"
             },
-            "TILE_LENDINGS_CURRENT": "Aktualne wypożyczenia",
-            "TILE_LENDINGS_ALL": "Wszystkie wypożyczenia",
-            "TILE_FAV_GENRE": "Ulubiony gatunek",
-            "TILE_LATE_FEES": "Zaległe opłaty",
-            "LENDINGS_12_MONTHS": "Roczna aktywność wypożyczeń",
+            "SECTION": {
+                "DATA_LACK": "Brak danych",
+                "LENDINGS_ALL": "Wszystkie wypożyczenia",
+                "LENDINGS_CURRENT": "Aktualne wypożyczenia",
+                "LENDINGS_ANNUAL": "Roczna aktywność wypożyczeń",
+                "LATE_FEES": "Zaległe opłaty",
+                "FAV_GENRE": "Ulubiony gatunek",
+                "FAV_GENRES": "Ulubione gatunki"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Ilość wypożyczeń"
+            },
             "MONTH": {
                 "JAN": "Styczeń",
                 "FEB": "Luty",

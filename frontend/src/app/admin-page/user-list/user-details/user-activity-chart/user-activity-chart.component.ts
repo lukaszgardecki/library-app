@@ -34,7 +34,7 @@ export class UserActivityChartComponent  {
   }
 
   createChart() {
-    let chartLabel = this.translationService.translate(TEXT.ADMIN_USER_DETAILS_ANNUAL_LENDING_ACTIVITY)
+    let chartLabel = this.translationService.translate(TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_ANNUAL)
     let monthLabels = this.getMonthLabels();
 
     if (this.activityChart) {

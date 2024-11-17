@@ -348,11 +348,18 @@
                 "EDIT": "Bearbeiten",
                 "SAVE": "Speichern"
             },
-            "TILE_LENDINGS_CURRENT": "Aktuelle Ausleihen",
-            "TILE_LENDINGS_ALL": "Alle Ausleihen",
-            "TILE_FAV_GENRE": "Lieblingsgenre",
-            "TILE_LATE_FEES": "Verspätungsgebühren",
-            "LENDINGS_12_MONTHS": "Jahresausleihe-Aktivität",
+            "SECTION": {
+                "DATA_LACK": "Keine Daten",
+                "LENDINGS_ALL": "Alle Ausleihen",
+                "LENDINGS_CURRENT": "Aktuelle Ausleihen",
+                "LENDINGS_ANNUAL": "Jahresaktivität der Ausleihen",
+                "LATE_FEES": "Überfällige Gebühren",
+                "FAV_GENRE": "Lieblingsgenre",
+                "FAV_GENRES": "Lieblingsgenres"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Anzahl der Ausleihen"
+            },
             "MONTH": {
                 "JAN": "Januar",
                 "FEB": "Februar",

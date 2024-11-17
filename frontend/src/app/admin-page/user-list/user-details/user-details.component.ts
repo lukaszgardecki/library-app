@@ -17,6 +17,7 @@ import { PdfService } from '../../../services/pdf.service';
 export class UserDetailsComponent implements OnInit {
   TEXT = TEXT;
   user: UserDetailsAdmin = new UserDetailsAdmin();
+  favGenre: String;
   genderList = Object.values(Gender)
   accountStatuses = Object.values(AccountStatus)
   cardStatuses = Object.values(CardStatus)
@@ -36,7 +37,13 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     this.userService.getUserDetailsByIdAdmin(id).subscribe({
-      next: user => this.user = user
+      next: user => {
+        this.user = user
+        if (user.genresStats) {
+          this.user.genresStats = new Map<string, number>(Object.entries(user.genresStats));
+        }
+        this.favGenre = this.findFavouriteGenre();
+      }
     });
     this.lendingService.getCurrentLendingsByUserId(id).subscribe({
       next: lendingPage => {
@@ -85,7 +92,11 @@ export class UserDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  updateUserData() {
+  areAnnualLendingsDataAvailble(): boolean {
+    return !this.user.lendingsPerMonth.every(value => value === 0);
+  }
+
+  private updateUserData() {
     let userToUpdate = new UserUpdateAdmin();
 
     userToUpdate.firstName = this.user.firstName;
@@ -113,5 +124,9 @@ export class UserDetailsComponent implements OnInit {
   saveAsPDF(): void {
     const data = document.getElementById('table');
     this.pdfService.saveAsPDF(data, "borrowed-books");
+  }
+
+  private findFavouriteGenre(): string {
+    return [...this.user.genresStats.entries()].reduce((a, e) => e[1] > a[1] ? e : a)[0];
   }
 }

@@ -8,19 +8,19 @@
 
     <div class="grid-2x2">
         <div class="card books-current">
-            <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_CURRENT | translate }}</h3>
+            <h3>{{ TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_CURRENT | translate }}</h3>
             <p>{{ user.loanedItemsIds.length || 0 }}</p>
         </div>
         <div class="card genre">
-            <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_FAV_GENRE | translate }}</h3>
-            <p>{{ user.favGenre || '&ndash;' }}</p>
+            <h3>{{ TEXT.ADMIN_USER_DETAILS_SECTION_FAV_GENRE | translate }}</h3>
+            <p>{{ favGenre || '&ndash;' }}</p>
         </div>
         <div class="card books-all">
-            <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_ALL | translate }}</h3>
+            <h3>{{ TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_ALL | translate }}</h3>
             <p>{{ user.totalBooksBorrowed }}</p>
         </div>
         <div class="card fines">
-            <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_LATE_FEES | translate }}</h3>
+            <h3>{{ TEXT.ADMIN_USER_DETAILS_SECTION_LATE_FEES | translate }}</h3>
             <p>{{ user.charge | number:'1.2-2' }} zł</p>
         </div>
     </div>
@@ -377,7 +377,7 @@
     </div>
 
     <div class="content">
-        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_CURRENT | translate }}</div>
+        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_CURRENT | translate }}</div>
         <div class="section-content">
             <ng-container *ngIf="lendings && lendings.length > 0; else lack">
                 <table id="table">
@@ -397,11 +397,7 @@
                     </tbody>
                 </table>  
             </ng-container>
-            <ng-template #lack>
-                <div class="lack-message">
-                    {{ TEXT.PROFILE_BORROWED_ITEMS_LACK | translate }}
-                </div>
-            </ng-template>
+            
         </div>
         <div class="section-btn-panel">
             <div *ngIf="lendings && lendings.length > 0" class="btn-bar right-side">
@@ -413,9 +409,28 @@
     </div>
 
     <div class="content">
-        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_ANNUAL_LENDING_ACTIVITY | translate }}</div>
+        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_ANNUAL | translate }}</div>
         <div class="section-content">
-            <app-user-activity-chart [data]="user.lendingsPerMonth"></app-user-activity-chart>
+            <app-user-activity-chart
+                *ngIf="areAnnualLendingsDataAvailble(); else lack"
+                [data]="user.lendingsPerMonth"
+            ></app-user-activity-chart>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_SECTION_FAV_GENRES | translate }}</div>
+        <div class="section-content">
+            <app-fav-genre-chart
+                *ngIf="user.genresStats && user.genresStats.size > 0; else lack"
+                [data]="user.genresStats"
+            ></app-fav-genre-chart>
         </div>
     </div>
 </div>
+
+<ng-template #lack>
+    <div class="lack-message">
+        {{ TEXT.ADMIN_USER_DETAILS_DATA_LACK | translate }}
+    </div>
+</ng-template>

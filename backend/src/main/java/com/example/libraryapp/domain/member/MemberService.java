@@ -67,7 +67,7 @@ public class MemberService {
         MemberDtoAdmin memberDto = userModelAssemblerAdmin.toModel(member);
         List<Lending> lendings = lendingRepository.findAllByMemberId(id);
         memberDto.setLendingsPerMonth(countLendingsPerMonth(lendings));
-        countLendingsPerMonth(lendings).forEach(System.out::println);
+        memberDto.setGenresStats(getTopGenres(lendings, 5));
         return memberDto;
     }
 
@@ -203,4 +203,21 @@ public class MemberService {
         return lendingsPerMonth;
     }
 
+    private Map<String, Integer> getTopGenres(List<Lending> lendings, int count) {
+        return lendings.stream()
+                .collect(Collectors.groupingBy(
+                        lending -> lending.getBookItem().getBook().getSubject(),
+                        Collectors.summingInt(lending -> 1)
+                ))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .limit(count)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+    }
 }

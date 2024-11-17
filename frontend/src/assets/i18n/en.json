@@ -348,11 +348,18 @@
                 "EDIT": "Edit",
                 "SAVE": "Save"
             },
-            "TILE_LENDINGS_CURRENT": "Current Lendings",
-            "TILE_LENDINGS_ALL": "All Lendings",
-            "TILE_FAV_GENRE": "Favorite Genre",
-            "TILE_LATE_FEES": "Late Fees",
-            "LENDINGS_12_MONTHS": "Annual Lending Activity",
+            "SECTION": {
+                "DATA_LACK": "No data",
+                "LENDINGS_ALL": "All Lendings",
+                "LENDINGS_CURRENT": "Current Lendings",
+                "LENDINGS_ANNUAL": "Annual Lending Activity",
+                "LATE_FEES": "Late Fees",
+                "FAV_GENRE": "Favorite Genre",
+                "FAV_GENRES": "Favorite Genres"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Number of Lendings"
+            },
             "MONTH": {
                 "JAN": "January",
                 "FEB": "February",

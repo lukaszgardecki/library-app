@@ -47,6 +47,7 @@ import { UserDetailsComponent } from './admin-page/user-list/user-details/user-d
 import { AdminDashboardComponent } from './admin-page/admin-dashboard/admin-dashboard.component';
 import { DropdownDirective } from './shared/directives/dropdown.directive';
 import { UserActivityChartComponent } from './admin-page/user-list/user-details/user-activity-chart/user-activity-chart.component';
+import { FavGenreChartComponent } from './admin-page/user-list/user-details/fav-genre-chart/fav-genre-chart.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -93,7 +94,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserDetailsComponent,
     AdminDashboardComponent,
     DropdownDirective,
-    UserActivityChartComponent
+    UserActivityChartComponent,
+    FavGenreChartComponent
   ],
   imports: [
     BrowserModule,

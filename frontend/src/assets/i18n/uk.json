@@ -348,11 +348,18 @@
                 "EDIT": "Редагувати",
                 "SAVE": "Зберегти"
             },
-            "TILE_LENDINGS_CURRENT": "Поточні позики",
-            "TILE_LENDINGS_ALL": "Усі позики",
-            "TILE_FAV_GENRE": "Улюблений жанр",
-            "TILE_LATE_FEES": "Плата за запізнення",
-            "LENDINGS_12_MONTHS": "Річна активність позичок",
+            "SECTION": {
+                "DATA_LACK": "Немає даних",
+                "LENDINGS_ALL": "Усі позики",
+                "LENDINGS_CURRENT": "Поточні позики",
+                "LENDINGS_ANNUAL": "Річна активність позик",
+                "LATE_FEES": "Прострочені збори",
+                "FAV_GENRE": "Улюблений жанр",
+                "FAV_GENRES": "Улюблені жанри"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Кількість позик"
+            },
             "MONTH": {
                 "JAN": "Січень",
                 "FEB": "Лютий",

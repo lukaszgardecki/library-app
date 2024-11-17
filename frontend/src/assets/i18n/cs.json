@@ -348,11 +348,18 @@
                 "EDIT": "Upravit",
                 "SAVE": "Uložit"
             },
-            "TILE_LENDINGS_CURRENT": "Aktuální výpůjčky",
-            "TILE_LENDINGS_ALL": "Všechny výpůjčky",
-            "TILE_FAV_GENRE": "Oblíbený žánr",
-            "TILE_LATE_FEES": "Sankce za zpoždění",
-            "LENDINGS_12_MONTHS": "Roční aktivita výpůjček",
+            "SECTION": {
+                "DATA_LACK": "Žádná data",
+                "LENDINGS_ALL": "Všechny výpůjčky",
+                "LENDINGS_CURRENT": "Aktuální výpůjčky",
+                "LENDINGS_ANNUAL": "Roční aktivita výpůjček",
+                "LATE_FEES": "Dlužné poplatky",
+                "FAV_GENRE": "Oblíbený žánr",
+                "FAV_GENRES": "Oblíbené žánry"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Počet výpůjček"
+            },
             "MONTH": {
                 "JAN": "Leden",
                 "FEB": "Únor",

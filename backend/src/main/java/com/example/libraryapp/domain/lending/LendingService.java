@@ -187,27 +187,6 @@ public class LendingService {
 
     private void updateMemberAfterLending(Member member) {
         member.updateAfterLending();
-        List<Lending> lendings = findLendingsByMemberId(member.getId());
-        String favouriteGenre = getMostFrequentGenre(lendings);
-        member.setFavGenre(favouriteGenre);
-    }
-
-    public String getMostFrequentGenre(List<Lending> lendings) {
-        if (lendings.isEmpty()) return null;
-
-        Optional<String> mostFrequentGenre = lendings.stream()
-                .map(len -> len.getBookItem().getBook().getSubject())
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet().stream()
-                .max((entry1, entry2) -> {
-                    int countComparison = Long.compare(entry1.getValue(), entry2.getValue());
-                    if (countComparison == 0) {
-                        return entry1.getKey().compareTo(entry2.getKey());
-                    }
-                    return countComparison;
-                })
-                .map(Map.Entry::getKey);
-        return mostFrequentGenre.orElse(null);
     }
 
     private Lending createLendingToSave(Reservation reservation) {

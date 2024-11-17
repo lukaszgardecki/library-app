@@ -348,11 +348,18 @@
                 "EDIT": "Upravit",
                 "SAVE": "Uložiť"
             },
-            "TILE_LENDINGS_CURRENT": "Aktuálne výpožičky",
-            "TILE_LENDINGS_ALL": "Všetky výpožičky",
-            "TILE_FAV_GENRE": "Obľúbený žáner",
-            "TILE_LATE_FEES": "Poplatky za oneskorenie",
-            "LENDINGS_12_MONTHS": "Ročná aktivita výpožičiek",
+            "SECTION": {
+                "DATA_LACK": "Žiadne údaje",
+                "LENDINGS_ALL": "Všetky výpožičky",
+                "LENDINGS_CURRENT": "Aktuálne výpožičky",
+                "LENDINGS_ANNUAL": "Ročná aktivita výpožičiek",
+                "LATE_FEES": "Oneskorené poplatky",
+                "FAV_GENRE": "Obľúbený žáner",
+                "FAV_GENRES": "Obľúbené žánre"
+            },
+            "CHART_LABEL": {
+                "LENDINGS_COUNT": "Počet výpožičiek"
+            },
             "MONTH": {
                 "JAN": "Január",
                 "FEB": "Február",
