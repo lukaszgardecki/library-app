@@ -6,16 +6,16 @@
 
 <div class="grid-container">
 
-    <div class="dashboard">
-        <div class="card reservations">
+    <div class="grid-2x2">
+        <div class="card books-current">
             <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_CURRENT | translate }}</h3>
-            <p>{{ user.loanedItemsIds.length }}</p>
+            <p>{{ user.loanedItemsIds.length || 0 }}</p>
         </div>
         <div class="card genre">
             <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_FAV_GENRE | translate }}</h3>
             <p>{{ user.favGenre || '&ndash;' }}</p>
         </div>
-        <div class="card books">
+        <div class="card books-all">
             <h3>{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_ALL | translate }}</h3>
             <p>{{ user.totalBooksBorrowed }}</p>
         </div>
@@ -41,6 +41,7 @@
                     >
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_FORENAME | translate }}:</strong></div>
@@ -53,6 +54,7 @@
                     >
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_BIRTH_DATE | translate }}:</strong></div>
@@ -65,6 +67,7 @@
                     >
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_GENDER_NAME | translate }}:</strong></div>
@@ -86,6 +89,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_NATIONALITY | translate }}:</strong></div>
@@ -121,6 +125,7 @@
                     >
                 </div>
             </div>
+
             <div *ngIf="isPersonalInfoEditing" class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_ZIPCODE | translate }}:</strong></div>
@@ -132,6 +137,7 @@
                     >
                 </div>
             </div>
+
             <div *ngIf="isPersonalInfoEditing" class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_CITY| translate }}:</strong></div>
@@ -143,6 +149,7 @@
                     >
                 </div>
             </div>
+
             <div *ngIf="isPersonalInfoEditing" class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_STATE | translate }}:</strong></div>
@@ -154,6 +161,7 @@
                     >
                 </div>
             </div>
+
             <div *ngIf="isPersonalInfoEditing" class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_COUNTRY | translate }}:</strong></div>
@@ -165,7 +173,6 @@
                     >
                 </div>
             </div>
-
 
             <div *ngIf="!isPersonalInfoEditing" class="row">
                 <div class="lab">
@@ -187,6 +194,7 @@
                     >
                 </div>
             </div>
+
             <div *ngIf="isPersonalInfoEditing" class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_FATHER | translate }}:</strong></div>
@@ -211,6 +219,7 @@
                     >
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_PHONE | translate }}:</strong></div>
@@ -223,7 +232,9 @@
                     >
                 </div>
             </div>
+        </div>
 
+        <div class="section-btn-panel">
             <div class="btn-bar right-side">
                 <button class="button" [ngClass]="isPersonalInfoEditing ? 'btn-1' : 'btn-2'" (click)="editPersonalInfo()">
                     {{ isPersonalInfoEditing ? (TEXT.ADMIN_USER_DETAILS_BTN_SAVE | translate) : (TEXT.ADMIN_USER_DETAILS_BTN_EDIT | translate) }}
@@ -243,6 +254,7 @@
                     <div>{{user.id | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_EMAIL | translate }}:</strong></div>
@@ -251,6 +263,7 @@
                     <div>{{user.email | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ID | translate }}:</strong></div>
@@ -259,6 +272,7 @@
                     <div>{{user.card.id | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_NUM | translate }}:</strong></div>
@@ -267,6 +281,7 @@
                     <div>{{user.card.barcode | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_ISSUE_DATE | translate }}:</strong></div>
@@ -275,6 +290,7 @@
                     <div>{{user.card.issuedAt| date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_CARD_STATUS_NAME | translate }}:</strong></div>
@@ -296,6 +312,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_AVAILABILITY_DATE | translate }}:</strong></div>
@@ -304,6 +321,7 @@
                     <div>{{user.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_STATUS_NAME | translate }}:</strong></div>
@@ -325,6 +343,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="lab">
                     <div><strong>{{ TEXT.PROFILE_DETAILS_ACCOUNT_ROLE_NAME | translate }}:</strong></div>
@@ -346,7 +365,9 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="section-btn-panel">
             <div class="btn-bar right-side">
                 <button class="button" [ngClass]="isAccountInfoEditing ? 'btn-1' : 'btn-2'" (click)="editAccountInfo()">
                     {{ isAccountInfoEditing ? (TEXT.ADMIN_USER_DETAILS_BTN_SAVE | translate) : (TEXT.ADMIN_USER_DETAILS_BTN_EDIT | translate) }}
@@ -356,11 +377,38 @@
     </div>
 
     <div class="content">
-        <div class="section-header">Informacje o użytkowniku</div>
-
-        
+        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_TILE_LENDINGS_CURRENT | translate }}</div>
         <div class="section-content">
-            {{user.firstName}} {{user.lastName}}
+            <ng-container *ngIf="lendings && lendings.length > 0; else lack">
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="c2">{{ TEXT.PROFILE_BORROWED_ITEMS_TITLE | translate }}</th>
+                            <th>{{ TEXT.PROFILE_BORROWED_ITEMS_RETURN_DATE | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let lending of lendings; let i = index">
+                            <td>{{i + 1}}.</td>
+                            <td><a [routerLink]="['/books', lending.bookItem.book.id]">{{lending.bookItem.book.title}}</a></td>
+                            <td>{{lending.dueDate | date: "dd/MM/yyyy"}}</td>
+                        </tr>
+                    </tbody>
+                </table>  
+            </ng-container>
+            <ng-template #lack>
+                <div class="lack-message">
+                    {{ TEXT.PROFILE_BORROWED_ITEMS_LACK | translate }}
+                </div>
+            </ng-template>
+        </div>
+        <div class="section-btn-panel">
+            <div *ngIf="lendings && lendings.length > 0" class="btn-bar right-side">
+                <button class="button btn-1"  (click)="saveAsPDF()">
+                    {{ TEXT.BTN_SAVE_TO_FILE | translate }}
+                </button>
+            </div>
         </div>
     </div>
 

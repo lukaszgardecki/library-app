@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { TEXT } from '../../../shared/messages';
 import { UserService } from '../../../services/user.service';
 import { Location } from '@angular/common';
 import { AccountStatus, Gender, Role, UserDetailsAdmin, UserUpdateAdmin } from '../../../models/user-details';
 import { ActivatedRoute } from '@angular/router';
 import { CardStatus } from '../../../models/library-card';
+import { Lending } from '../../../models/lending';
+import { LendingService } from '../../../services/lending.service';
+import { PdfService } from '../../../services/pdf.service';
 
 @Component({
   selector: 'app-user-details',
@@ -20,6 +23,9 @@ export class UserDetailsComponent implements OnInit {
   roles = Object.values(Role)
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
+  lendings: Array<Lending>;
+  lendingService = inject(LendingService);
+  pdfService = inject(PdfService);
 
   constructor(
     private userService: UserService,
@@ -28,9 +34,16 @@ export class UserDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-      const id = this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params['id'];
     this.userService.getUserDetailsByIdAdmin(id).subscribe({
       next: user => this.user = user
+    });
+    this.lendingService.getCurrentLendingsByUserId(id).subscribe({
+      next: lendingPage => {
+        if (lendingPage._embedded) {
+          this.lendings = lendingPage._embedded.lendingDtoList;
+        }
+      }
     });
   }
 
@@ -95,5 +108,10 @@ export class UserDetailsComponent implements OnInit {
     userToUpdate.role = this.user.role;
 
     this.userService.updateUserByAdmin(this.user.id, userToUpdate).subscribe();
+  }
+
+  saveAsPDF(): void {
+    const data = document.getElementById('table');
+    this.pdfService.saveAsPDF(data, "borrowed-books");
   }
 }
