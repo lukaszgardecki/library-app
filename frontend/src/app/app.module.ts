@@ -46,6 +46,7 @@ import { UserListComponent } from './admin-page/user-list/user-list.component';
 import { UserDetailsComponent } from './admin-page/user-list/user-details/user-details.component';
 import { AdminDashboardComponent } from './admin-page/admin-dashboard/admin-dashboard.component';
 import { DropdownDirective } from './shared/directives/dropdown.directive';
+import { UserActivityChartComponent } from './admin-page/user-list/user-details/user-activity-chart/user-activity-chart.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -91,7 +92,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserListComponent,
     UserDetailsComponent,
     AdminDashboardComponent,
-    DropdownDirective
+    DropdownDirective,
+    UserActivityChartComponent
   ],
   imports: [
     BrowserModule,

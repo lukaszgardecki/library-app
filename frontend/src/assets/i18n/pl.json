@@ -351,7 +351,22 @@
             "TILE_LENDINGS_CURRENT": "Aktualne wypożyczenia",
             "TILE_LENDINGS_ALL": "Wszystkie wypożyczenia",
             "TILE_FAV_GENRE": "Ulubiony gatunek",
-            "TILE_LATE_FEES": "Zaległe opłaty"
+            "TILE_LATE_FEES": "Zaległe opłaty",
+            "LENDINGS_12_MONTHS": "Roczna aktywność wypożyczeń",
+            "MONTH": {
+                "JAN": "Styczeń",
+                "FEB": "Luty",
+                "MAR": "Marzec",
+                "APR": "Kwiecień",
+                "MAI": "Maj",
+                "JUN": "Czerwiec",
+                "JUL": "Lipiec",
+                "AUG": "Sierpień",
+                "SEP": "Wrzesień",
+                "OCT": "Październik",
+                "NOV": "Listopad",
+                "DEC": "Grudzień"
+            }
         }
     },
 

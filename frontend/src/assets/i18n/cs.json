@@ -300,7 +300,7 @@
             }
         }
     },
-    
+
     "WAREHOUSE": {
         "EXIT": "Opustit",
         "HEADER": {
@@ -351,10 +351,25 @@
             "TILE_LENDINGS_CURRENT": "Aktuální výpůjčky",
             "TILE_LENDINGS_ALL": "Všechny výpůjčky",
             "TILE_FAV_GENRE": "Oblíbený žánr",
-            "TILE_LATE_FEES": "Sankce za zpoždění"
+            "TILE_LATE_FEES": "Sankce za zpoždění",
+            "LENDINGS_12_MONTHS": "Roční aktivita výpůjček",
+            "MONTH": {
+                "JAN": "Leden",
+                "FEB": "Únor",
+                "MAR": "Březen",
+                "APR": "Duben",
+                "MAI": "Květen",
+                "JUN": "Červen",
+                "JUL": "Červenec",
+                "AUG": "Srpen",
+                "SEP": "Září",
+                "OCT": "Říjen",
+                "NOV": "Listopad",
+                "DEC": "Prosinec"
+            }
         }
     },
-    
+
     "PAGE_403": {
         "HEADER": "Přístup na tuto stránku je omezen",
         "MSG": "Pokud si myslíte, že se jedná o chybu, obraťte se na správce webu."

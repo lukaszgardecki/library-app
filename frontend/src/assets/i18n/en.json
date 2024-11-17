@@ -351,7 +351,22 @@
             "TILE_LENDINGS_CURRENT": "Current Lendings",
             "TILE_LENDINGS_ALL": "All Lendings",
             "TILE_FAV_GENRE": "Favorite Genre",
-            "TILE_LATE_FEES": "Late Fees"
+            "TILE_LATE_FEES": "Late Fees",
+            "LENDINGS_12_MONTHS": "Annual Lending Activity",
+            "MONTH": {
+                "JAN": "January",
+                "FEB": "February",
+                "MAR": "March",
+                "APR": "April",
+                "MAI": "May",
+                "JUN": "June",
+                "JUL": "July",
+                "AUG": "August",
+                "SEP": "September",
+                "OCT": "October",
+                "NOV": "November",
+                "DEC": "December"
+            }
         }
     },
     

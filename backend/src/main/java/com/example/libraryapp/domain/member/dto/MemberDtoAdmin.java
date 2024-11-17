@@ -46,4 +46,5 @@ public class MemberDtoAdmin extends RepresentationModel<MemberDtoAdmin> {
     private Role role;
 
     private String favGenre;
+    private List<Integer> lendingsPerMonth;
 }

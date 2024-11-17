@@ -2,11 +2,15 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from './storage.service';
 import { UserLang } from '../shared/user-lang';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranslationService {
+  private currentLangSubject = new BehaviorSubject<string>("en");
+  currentLang$ = this.currentLangSubject.asObservable();
+  onLangChange$: Observable<any> = this.translateService.onLangChange;
   private readonly LANGUAGES: UserLang[] = [
     new UserLang("English", "en", "flag-en-gb.png"),
     new UserLang("Polski", "pl", "flag-pl.png"),
@@ -21,14 +25,16 @@ export class TranslationService {
     private translateService: TranslateService,
     private storage: StorageService
   ) {
-    const lang = this.storage.getUserLanguage();
-    this.translateService.use(lang || "en");
-    this.translateService.setDefaultLang(lang || "en");
+    const lang = this.storage.getUserLanguage() || "en";
+    this.translateService.use(lang);
+    this.translateService.setDefaultLang(lang);
+    this.currentLangSubject.next(lang);
   }
 
   setLanguage(lang: string) {
     this.translateService.use(lang);
     this.storage.saveUserLanguage(lang);
+    this.currentLangSubject.next(lang);
   }
 
   getUserLanguage() {
@@ -38,5 +44,9 @@ export class TranslationService {
 
   getAvailableLangs() {
     return this.LANGUAGES;
+  }
+
+  translate(path: string): string {
+    return this.translateService.instant(path);
   }
 }

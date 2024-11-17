@@ -49,6 +49,7 @@ export class UserDetailsAdmin {
     reservedItemsIds: Array<number>;
     role: Role;
     favGenre: String;
+    lendingsPerMonth: Array<number>;
 }
 
 export class UserUpdate {

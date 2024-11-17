@@ -366,7 +366,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="section-btn-panel">
             <div class="btn-bar right-side">
                 <button class="button" [ngClass]="isAccountInfoEditing ? 'btn-1' : 'btn-2'" (click)="editAccountInfo()">
@@ -413,11 +413,9 @@
     </div>
 
     <div class="content">
-        <div class="section-header">Statystyki</div>
-
-        
+        <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_ANNUAL_LENDING_ACTIVITY | translate }}</div>
         <div class="section-content">
-            {{user.firstName}} {{user.lastName}}
+            <app-user-activity-chart [data]="user.lendingsPerMonth"></app-user-activity-chart>
         </div>
     </div>
 </div>

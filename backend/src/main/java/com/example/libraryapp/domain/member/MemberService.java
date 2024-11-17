@@ -26,10 +26,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +64,11 @@ public class MemberService {
 
     public MemberDtoAdmin findMemberByIdAdmin(Long id) {
         Member member = findMember(id);
-        return userModelAssemblerAdmin.toModel(member);
+        MemberDtoAdmin memberDto = userModelAssemblerAdmin.toModel(member);
+        List<Lending> lendings = lendingRepository.findAllByMemberId(id);
+        memberDto.setLendingsPerMonth(countLendingsPerMonth(lendings));
+        countLendingsPerMonth(lendings).forEach(System.out::println);
+        return memberDto;
     }
 
     @Transactional
@@ -181,4 +184,23 @@ public class MemberService {
                     }
                 });
     }
+
+    private List<Integer> countLendingsPerMonth(List<Lending> lendings) {
+        List<Integer> lendingsPerMonth = new ArrayList<>();
+        YearMonth currentMonth = YearMonth.now();
+
+        Map<YearMonth, Long> lendingsCountMap = lendings.stream()
+                .collect(Collectors.groupingBy(
+                        lending -> YearMonth.from(lending.getCreationDate()),
+                        Collectors.counting()
+                ));
+
+        for (int i = 11; i >= 0; i--) {
+            YearMonth month = currentMonth.minusMonths(i);
+            int count = lendingsCountMap.getOrDefault(month, 0L).intValue();
+            lendingsPerMonth.add(count);
+        }
+        return lendingsPerMonth;
+    }
+
 }

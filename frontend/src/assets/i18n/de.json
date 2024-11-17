@@ -351,7 +351,22 @@
             "TILE_LENDINGS_CURRENT": "Aktuelle Ausleihen",
             "TILE_LENDINGS_ALL": "Alle Ausleihen",
             "TILE_FAV_GENRE": "Lieblingsgenre",
-            "TILE_LATE_FEES": "Verspätungsgebühren"
+            "TILE_LATE_FEES": "Verspätungsgebühren",
+            "LENDINGS_12_MONTHS": "Jahresausleihe-Aktivität",
+            "MONTH": {
+                "JAN": "Januar",
+                "FEB": "Februar",
+                "MAR": "März",
+                "APR": "April",
+                "MAI": "Mai",
+                "JUN": "Juni",
+                "JUL": "Juli",
+                "AUG": "August",
+                "SEP": "September",
+                "OCT": "Oktober",
+                "NOV": "November",
+                "DEC": "Dezember"
+            }
         }
     },
     
