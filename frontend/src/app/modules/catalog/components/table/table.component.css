@@ -1,0 +1,53 @@
+th {
+  position: relative;
+  text-align: left;
+  padding-right: 30px;
+}
+  
+th:hover {
+  cursor: pointer;
+  outline: 2px solid var(--bs-dark-border-subtle);
+  outline-offset: -2px;
+}
+
+tr:hover {
+  cursor: pointer;
+}
+
+.col-title {
+  text-align: left;
+}
+
+.col-sort {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  line-height: 9px;
+  font-size: 0.7rem;
+}
+
+.col-sort::before {
+  position:absolute;
+  display: block;
+  bottom: 50%;
+  content: "▲"/"";
+}
+.col-sort::after {
+  position:absolute;
+  display: block;
+  top: 50%;
+  content: "▼"/"";
+}
+
+.col-sort::after,
+.col-sort::before {
+  left:0;
+  opacity: 0.125;
+}
+
+.col-sort.asc::before,
+.col-sort.desc::after {
+  opacity: 0.6;
+}

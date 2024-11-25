@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="row">
+    <main class=" ms-sm-auto">
+      <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
+
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
+        <div class="d-flex mb-3 align-items-center">
+          <label for="pageSize" class="form-label me-2 mb-0">{{ 'DATA.PAGE_SIZE' |  translate }}</label>
+          <select id="pageSize" class="form-select form-select-sm w-auto" (change)="changePageSize($event)">
+            <option *ngFor="let size of pageSizes" [value]="size.value" >{{size.value}}</option>
+          </select>
+        </div>
+
+        <form class="d-flex mb-3" role="search">
+          <input class="form-control form-control-sm me-2" type="search" [placeholder]="'DATA.SEARCH' | translate"  aria-label="Search" [formControl]="searchControl">
+        </form>
+
+        <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+          <button type="button" class="btn btn-sm  btn-outline-secondary"> {{ 'DATA.SHARE' | translate }}</button>
+        
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ 'DATA.EXPORT' | translate }}
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">PDF</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="usersPage$ | async as usersPage">
+        <app-table
+            [columns]="[
+                { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
+                { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
+                { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
+                { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
+                { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+            ]"
+            [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
+            (sortChange)="sort($event)"
+            (rowClick)="onRowClick($event)"
+        ></app-table>
+
+        <app-pagination (pageChange)="loadPage($event)" [page]="usersPage.page"></app-pagination> 
+      </ng-container>
+
+    </main>
+  </div>
+</div>
+
+
+<ng-template #lack>Brak danych</ng-template>

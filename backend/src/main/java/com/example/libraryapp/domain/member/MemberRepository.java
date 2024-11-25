@@ -1,10 +1,11 @@
 package com.example.libraryapp.domain.member;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -19,5 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             LOWER(m.email) LIKE LOWER(CONCAT('%', :query, '%')) OR
             CAST(m.id AS string) LIKE CONCAT('%', :query, '%'))
             """)
-    List<Member> findAllByString(@Param("query") String query);
+    Page<Member> findAllByString(@Param("query") String query, Pageable pageable);
 }

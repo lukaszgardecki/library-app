@@ -1,0 +1,134 @@
+{
+    "DATA": {
+        "PAGE_SIZE": "Tamaño de página",
+        "SEARCH": "Buscar...",
+        "LACK": "Falta de datos",
+        "SHARE": "Compartir",
+        "EXPORT": "Exportar",
+        "MONTH": {
+            "JAN": "Enero",
+            "FEB": "Febrero",
+            "MAR": "Marzo",
+            "APR": "Abril",
+            "MAI": "Mayo",
+            "JUN": "Junio",
+            "JUL": "Julio",
+            "AUG": "Agosto",
+            "SEP": "Septiembre",
+            "OCT": "Octubre",
+            "NOV": "Noviembre",
+            "DEC": "Diciembre"
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Volver",
+            "EDIT": "Editar",
+            "SAVE": "Guardar",
+            "SAVE_TO_FILE": "Guardar en archivo"
+        },
+        "LOGIN": {
+            "HEADER": "Iniciar sesión",
+            "USERNAME": {
+                "LABEL": "Nombre de usuario",
+                "VALID_MSG": "Nombre de usuario requerido",
+                "PLACEHOLDER": "Ingrese nombre de usuario"
+            },
+            "PASSWORD": {
+                "LABEL": "Contraseña",
+                "VALID_MSG": "Contraseña requerida",
+                "PLACEHOLDER": "Ingrese contraseña",
+                "FORGOT": "¿Olvidaste tu contraseña?"
+            },
+            "BTN": "Iniciar sesión",
+            "NOT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
+            "SIGN_UP": "Regístrate",
+            "SIGN_UP_ALSO": "También puedes unirte a través de"
+        },
+        "NAVBAR": {
+            "PROFILE": "Perfil",
+            "LOGOUT": "Cerrar sesión",
+            "MEMBER_FROM": "Miembro desde"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Panel principal",
+            "NOTIFICATIONS": "Notificaciones",
+            "MESSAGES": "Mensajes",
+            "USERS": "Usuarios",
+            "BOOKS": "Libros",
+            "CASHIER": "Cajero",
+            "WAREHOUSE": "Almacén",
+            "REPORTS": "Informes",
+            "SETTINGS": "Configuraciones"
+        },
+        "USER": {
+            "ROLE": {
+                "NAME": "Rol",
+                "USER": "Usuario",
+                "ADMIN": "Administrador",
+                "WAREHOUSE": "Almacén",
+                "CASHIER": "Cajero"
+            },
+            "DETAILS": {
+                "HEADER": "Datos personales",
+                "FIRST_NAME": "Nombre",
+                "LAST_NAME": "Apellido",
+                "GENDER": {
+                    "LABEL": "Género",
+                    "MALE": "Hombre",
+                    "FEMALE": "Mujer",
+                    "OTHER": "Otro"
+                },
+                "BIRTH_DATE": "Fecha de nacimiento",
+                "NATIONALITY": "Nacionalidad",
+                "ADDRESS": "Dirección",
+                "STREET": "Calle",
+                "ZIPCODE": "Código postal",
+                "CITY": "Ciudad",
+                "STATE": "Estado",
+                "COUNTRY": "País",
+                "PARENTS": "Nombres de los padres",
+                "MOTHER": "Nombre de la madre",
+                "FATHER": "Nombre del padre",
+                "PESEL": "Pesel",
+                "PHONE": "Teléfono"
+            },
+            "ACCOUNT": {
+                "HEADER": "Detalles de la cuenta",
+                "ID": "ID",
+                "EMAIL": "Correo electrónico",
+                "DATE_OF_REGISTRATION": "Fecha de registro",
+                "AVAILABILITY_DATE": "Fecha de disponibilidad",
+                "STATUS": {
+                    "NAME": "Estado de la cuenta",
+                    "ACTIVE": "Activo",
+                    "INACTIVE": "Inactivo",
+                    "CLOSED": "Cerrado",
+                    "SUSPENDED": "Suspendido",
+                    "PENDING": "Pendiente"
+                },
+                "LENDINGS_ALL": "Todos los préstamos",
+                "LENDINGS_ANNUAL": "Actividad anual de préstamos",
+                "LENDINGS_COUNT": "Número de préstamos",
+                "LENDINGS_CURRENT": "Préstamos actuales",
+                "LATE_FEES": "Cargos por retraso",
+                "FAV_GENRE": "Género favorito",
+                "FAV_GENRES": "Géneros favoritos"
+            },
+            "CARD": {
+                "ID": "Tarjeta de lector",
+                "NUM": "Número de tarjeta",
+                "ISSUE_DATE": "Fecha de emisión de la tarjeta",
+                "STATUS": {
+                    "NAME": "Estado de la tarjeta",
+                    "ACTIVE": "Activa",
+                    "INACTIVE": "Inactiva",
+                    "LOST": "Perdida"
+                }
+            }
+        }
+    },
+    "WEB": {
+
+    }
+}

@@ -18,9 +18,7 @@ import com.example.libraryapp.domain.reservation.ReservationRepository;
 import com.example.libraryapp.domain.reservation.ReservationStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,11 +42,7 @@ public class MemberService {
     private final PagedResourcesAssembler<Member> pagedResourcesAssembler;
 
     public PagedModel<MemberListPreviewDtoAdmin> findAllUsers(String usersToSearch, Pageable pageable) {
-        List<Member> users = memberRepository.findAllByString(usersToSearch);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), users.size());
-        List<Member> paginatedList = users.subList(start, end);
-        Page<Member> page = new PageImpl<>(paginatedList, pageable, users.size());
+        Page<Member> page = memberRepository.findAllByString(usersToSearch, pageable);
         return pagedResourcesAssembler.toModel(page, userPreviewModelAssemblerAdmin);
     }
 

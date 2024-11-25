@@ -1,0 +1,149 @@
+<nav class="app-header navbar bg-body-tertiary border-bottom">
+    <div class="container-fluid">
+        <ul class="navbar-nav d-flex flex-row">
+            <li class="nav-item">
+                <a class="nav-link" role="button" (click)="toggleSidebarVisibility()">
+                    <i class="bi bi-list"></i>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto d-flex flex-row user-select-none">
+
+            <li class="nav-item">
+                <a class="nav-link" role="button" (click)="toggleSidebarVisibility()">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-chat-text"></i>
+                    <span class="navbar-badge badge text-bg-danger">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg position-absolute" data-bs-popper="static">
+                    <a href="#" class="dropdown-item">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0"> <img src="./img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 rounded-circle me-3"> </div>
+                            <div class="flex-grow-1">
+                                <h3 class="dropdown-item-title">
+                                    Brad Diesel
+                                    <span class="float-end fs-7 text-danger"><i class="bi bi-star-fill"></i></span>
+                                </h3>
+                                <p class="fs-7">Call me whenever you can...</p>
+                                <p class="fs-7 text-secondary"> <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0"> <img src="./img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 rounded-circle me-3"> </div>
+                            <div class="flex-grow-1">
+                                <h3 class="dropdown-item-title">
+                                    John Pierce
+                                    <span class="float-end fs-7 text-secondary"> <i class="bi bi-star-fill"></i> </span>
+                                </h3>
+                                <p class="fs-7">I got your message bro</p>
+                                <p class="fs-7 text-secondary"> <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago </p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0"> <img src="./img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 rounded-circle me-3"> </div>
+                            <div class="flex-grow-1">
+                                <h3 class="dropdown-item-title">
+                                    Nora Silvester
+                                    <span class="float-end fs-7 text-warning"> <i class="bi bi-star-fill"></i> </span>
+                                </h3>
+                                <p class="fs-7">The subject goes here</p>
+                                <p class="fs-7 text-secondary"> <i class="bi bi-clock-fill me-1"></i> 4 Hours Ago</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell-fill"></i>
+                    <span class="navbar-badge badge text-bg-warning">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end position-absolute" data-bs-popper="static">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item"> <i class="bi bi-envelope me-2"></i>4 new messages
+                        <span class="float-end text-secondary fs-7">3 mins</span>
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="bi bi-people-fill me-2"></i>8 friend requests
+                        <span class="float-end text-secondary fs-7">12 hours</span>
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="bi bi-file-earmark-fill me-2"></i> 3 new reports
+                        <span class="float-end text-secondary fs-7">2 days</span>
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">
+                        See All Notifications
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" role="button" (click)="toggleFullScreen()">
+                    <i *ngIf="!isFullscreen" class="bi bi-arrows-fullscreen"></i>
+                    <i *ngIf="isFullscreen" class="bi bi-fullscreen-exit"></i>
+                </a>
+            </li>
+    
+            <li class="nav-item dropdown">
+                <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="./flags/{{ selectedLang.icon }}" width="25" [alt]="selectedLang.name">
+                </a>
+                <ul class="dropdown-menu dropdown-menu dropdown-menu-end position-absolute">
+                    <a class="dropdown-item" role="button" *ngFor="let lang of languages" (click)="switchLanguage(lang)">
+                        <img src="./flags/{{ lang.icon }}" width="25" [alt]="lang.name">
+                        <span class="float-end text-secondary fs-7">{{ lang.name }}</span>
+                    </a>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown user-menu" *ngIf="user$ | async as user">
+                <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="./img/user4-128x128.jpg" class="user-image rounded-circle shadow" alt="User Image">
+                    <span class="d-none d-md-inline">{{ user.firstName }} {{ user.lastName }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end position-absolute">
+                    <li class="user-header text-bg-primary">
+                        <img src="./img/user4-128x128.jpg" class="rounded-circle shadow" alt="User Image">
+                        <p>
+                            {{ user.firstName }} {{ user.lastName }} - {{ user.role | enumName: "role" | nullPlaceholder | translate}}
+                            <small>{{ 'CAT.NAVBAR.MEMBER_FROM' | translate }} Nov. 2023</small>
+                        </p>
+                    </li>
+                    <li class="user-body">
+                        <div class="row">
+                            <div class="col-4 text-center"> <a href="#">Followers</a> </div>
+                            <div class="col-4 text-center"> <a href="#">Sales</a> </div>
+                            <div class="col-4 text-center"> <a href="#">Friends</a> </div>
+                        </div>
+                    </li>
+                    <li class="user-footer">
+                        <a href="#" class="btn btn-default btn-flat">{{ 'CAT.NAVBAR.PROFILE' | translate }}</a>
+                        <a href="#" [routerLink]="['/library-app/login']" (click)="logout()"
+                            class="btn btn-default btn-flat float-end"
+                        >{{ 'CAT.NAVBAR.LOGOUT' | translate }}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
