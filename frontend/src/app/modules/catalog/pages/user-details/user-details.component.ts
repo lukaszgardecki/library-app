@@ -13,7 +13,11 @@ import { FormsModule } from '@angular/forms';
 import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { UserActivityChartComponent } from "../../components/charts/user-activity-chart/user-activity-chart.component";
-import { PdfService } from '../../core/services/pdf.service';
+import { LendingService } from '../../core/services/lending.service';
+import { TableComponent } from "../../components/table/table.component";
+import { LendingsPage } from '../../shared/models/lendings-page';
+import { Observable } from 'rxjs';
+import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 
 @Component({
   selector: 'app-user-details',
@@ -21,8 +25,9 @@ import { PdfService } from '../../core/services/pdf.service';
   imports: [
     CommonModule, TranslateModule, FormsModule,
     NullPlaceholderPipe, EnumNamePipe,
-    FavGenreChartComponent, UserActivityChartComponent
-  ],
+    FavGenreChartComponent, UserActivityChartComponent,
+    TableComponent
+],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css'
 })
@@ -35,15 +40,13 @@ export class UserDetailsComponent {
   roles = Object.values(Role)
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
-  // lendings: Array<Lending>;
-  // lendingService = inject(LendingService);
-  // pdfService = inject(PdfService);
+  lendingPage$: Observable<LendingsPage>;
 
   constructor(
     private userService: UserService,
-    private pdfService: PdfService,
+    private lendingService: LendingService,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -57,13 +60,7 @@ export class UserDetailsComponent {
         this.favGenre = this.findFavouriteGenre();
       }
     });
-    // this.lendingService.getCurrentLendingsByUserId(id).subscribe({
-    //   next: lendingPage => {
-    //     if (lendingPage._embedded) {
-    //       this.lendings = lendingPage._embedded.lendingDtoList;
-    //     }
-    //   }
-    // });
+    this.lendingPage$ = this.lendingService.getCurrentLendingsByUserId(id);
   }
 
   editPersonalInfo() {
@@ -108,6 +105,17 @@ export class UserDetailsComponent {
     return !this.user.lendingsPerMonth.every(value => value === 0);
   }
 
+  updateTable(event: TableUpdateEvent) {
+    // TODO: dodać obsługę wyszukiwania wypożyczeń po tytule książki, id, statusie
+    console.log('Aktualizuję tabelę...')
+  }
+
+  showDetails(lendingId: number) {
+    // TODO: dodać nawigację do szczegółów wypożyczenia
+    console.log('Przechodzę do szczegółów wypożyczenia id: ' + lendingId)
+    // this.router.navigate([userId], { relativeTo: this.route });
+  }
+
   private updateUserData() {
     let userToUpdate = new UserUpdateAdmin();
 
@@ -131,11 +139,6 @@ export class UserDetailsComponent {
     userToUpdate.role = this.user.role;
 
     this.userService.updateUserByAdmin(this.user.id, userToUpdate).subscribe();
-  }
-
-  saveAsPDF(): void {
-    const data = document.getElementById('table');
-    this.pdfService.saveAsPDF(data, "borrowed-books");
   }
 
   private findFavouriteGenre(): string {

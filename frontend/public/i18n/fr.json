@@ -126,6 +126,18 @@
                     "LOST": "Perdue"
                 }
             }
+        },
+        "BOOK": {
+            "TITLE": "Titre"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Date de création",
+            "DUE_DATE": "Date de retour",
+            "STATUS": {
+                "NAME": "Statut",
+                "CURRENT": "Actuel",
+                "COMPLETED": "Terminé"
+            }
         }
     },
     "WEB": {

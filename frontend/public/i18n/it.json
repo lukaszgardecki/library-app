@@ -126,6 +126,18 @@
                     "LOST": "Persa"
                 }
             }
+        },
+        "BOOK": {
+            "TITLE": "Titolo"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Data di creazione",
+            "DUE_DATE": "Data di restituzione",
+            "STATUS": {
+                "NAME": "Stato",
+                "CURRENT": "Attuale",
+                "COMPLETED": "Completato"
+            }
         }
     },
     "WEB": {

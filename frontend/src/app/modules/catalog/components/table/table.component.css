@@ -2,6 +2,7 @@ th {
   position: relative;
   text-align: left;
   padding-right: 30px;
+  vertical-align: middle;
 }
   
 th:hover {

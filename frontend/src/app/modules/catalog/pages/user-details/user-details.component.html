@@ -418,50 +418,30 @@
         </div>
     </div>
 
-
-    <!-- <div class="content-row">
-        <div class="content">
-            <div class="section-header">{{ TEXT.ADMIN_USER_DETAILS_SECTION_LENDINGS_CURRENT | translate }}</div>
-            <div class="section-content">
-                <ng-container *ngIf="lendings && lendings.length > 0; else lack">
-                    <table id="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="c2">{{ TEXT.PROFILE_BORROWED_ITEMS_TITLE | translate }}</th>
-                                <th>{{ TEXT.PROFILE_BORROWED_ITEMS_RETURN_DATE | translate }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let lending of lendings; let i = index">
-                                <td>{{i + 1}}.</td>
-                                <td><a [routerLink]="['/books', lending.bookItem.book.id]">{{lending.bookItem.book.title}}</a></td>
-                                <td>{{lending.dueDate | date: "dd/MM/yyyy"}}</td>
-                            </tr>
-                        </tbody>
-                    </table>  
-                </ng-container>
-                
-            </div>
-            <div class="section-btn-panel">
-                <div *ngIf="lendings && lendings.length > 0" class="btn-bar right-side">
-                    <button class="button btn-1"  (click)="saveAsPDF()">
-                        {{ TEXT.BTN_SAVE_TO_FILE | translate }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>       -->
-
-
     <div class="content-row">
         <div class="content">
-            <div class="section-header">Historia wypożyczeń</div>
+            <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate}}</div>
             <div class="section-content">
-                <!-- TABELA Z HISTORIĄ WYPOŻYCZEŃ -->
+                <ng-container *ngIf="lendingPage$ | async as lendingPage; else lack">
+                    <app-table
+                        *ngIf="lendingPage._embedded && lendingPage._embedded.lendingDtoList; else lack"
+                        [tableName]="'user-lendings'"
+                        [columns]="[
+                            { key: 'id', label: 'ID' },
+                            { key: 'bookItem.book.title', label: 'CAT.BOOK.TITLE' },
+                            { key: 'creationDate', label: 'CAT.LENDING.CREATION_DATE' },
+                            { key: 'dueDate', label: 'CAT.LENDING.DUE_DATE' },
+                            { key: 'status', label: 'CAT.LENDING.STATUS.NAME', type: 'lendingStatus' },
+                        ]"
+                        [data]="lendingPage._embedded.lendingDtoList || []"
+                        [page]="lendingPage.page"
+                        (onUpdate)="updateTable($event)"
+                        (onRowClick)="showDetails($event)"
+                    ></app-table>
+                </ng-container>
             </div>
         </div>
-    </div>
+    </div>      
     
 </div>
 

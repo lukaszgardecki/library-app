@@ -3,6 +3,7 @@ import { Gender } from '../../modules/catalog/shared/enums/gender.enum';
 import { CardStatus } from '../../modules/catalog/shared/enums/card-status.enum';
 import { AccountStatus } from '../../modules/catalog/shared/enums/account-status.enum';
 import { Role } from '../../modules/catalog/shared/enums/role.enum';
+import { LendingStatus } from '../../modules/catalog/shared/enums/lending-status.enum';
 
 @Pipe({
   name: 'enumName',
@@ -37,15 +38,21 @@ export class EnumNamePipe implements PipeTransform {
     [Role.WAREHOUSE]: 'CAT.USER.ROLE.WAREHOUSE'
   };
 
-  transform(value?: any, type?: string): string | undefined {
-    if (!value) return undefined;
+  private lendingStatusMap: { [key in LendingStatus]: string } = {
+    [LendingStatus.CURRENT]: 'CAT.LENDING.STATUS.CURRENT',
+    [LendingStatus.COMPLETED]: 'CAT.LENDING.STATUS.COMPLETED'
+  }
+
+  transform(value?: any, type?: string): string {
+    if (!type) return value;
 
     switch(type) {
       case "account": return this.accountStatusMap[value as AccountStatus] || 'Unknown account status';
       case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
       case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
       case "role": return this.rolesMap[value as Role] || 'Unknown role';
-      default: return "Unknown value";
+      case "lendingStatus": return this.lendingStatusMap[value as LendingStatus] || 'Unknown lending status';
+      default: return value;
     }
   }
 }

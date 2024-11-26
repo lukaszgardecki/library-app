@@ -126,6 +126,18 @@
                     "LOST": "Stratená"
                 }
             }
+        },
+        "BOOK": {
+            "TITLE": "Názov"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Dátum vytvorenia",
+            "DUE_DATE": "Dátum vrátenia",
+            "STATUS": {
+                "NAME": "Stav",
+                "CURRENT": "Aktuálne",
+                "COMPLETED": "Dokončené"
+            }
         }
     },
     "WEB": {

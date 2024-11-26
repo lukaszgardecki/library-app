@@ -4,7 +4,7 @@ import { ConfigService } from './config.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UsersPage } from '../../shared/models/users-page';
 import { UserDetails, UserDetailsAdmin, UserPreview, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
-import { Sort } from '../../pages/users/users.component';
+import { Sort } from '../../shared/models/sort.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -58,14 +58,13 @@ export class UserService {
       });
   }
 
-  private createParams(page: number = 0, size: number, sort: Sort, query: string): HttpParams {
-    let params = new HttpParams()
-        .set("page", page)
-        .set("size", size);
-
-    if (query !== "") { params = params.set("q", query); }
+  private createParams(page: number | null, size: number | null, sort: Sort | null, query: string | null): HttpParams {
+    let params = new HttpParams();
+    if (page !== null) { params = params.set("page", page); }
+    if (size !== null) { params = params.set("size", size); } 
+    if (query !== null) { params = params.set("q", query); }
     if (sort?.direction) {
-        const sortParam = ['firstName', 'lastName'].includes(sort.column) ? `person.${sort.column}` : sort.column;
+        const sortParam = ['firstName', 'lastName'].includes(sort.columnKey) ? `person.${sort.columnKey}` : sort.columnKey;
         const sortValue = `${sortParam},${sort.direction}`;
         params = params.set("sort", sortValue);
     }
