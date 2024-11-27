@@ -10,7 +10,7 @@ public class MemberDtoMapper {
         dto.setId(member.getId());
         dto.setFirstName(member.getPerson().getFirstName());
         dto.setLastName(member.getPerson().getLastName());
-        dto.setGender(member.getPerson().getGender().name());
+        dto.setGender(member.getPerson().getGender());
         dto.setAddress(
                 "%s, %s %s, %s, %s".formatted(
                         member.getPerson().getAddress().getStreetAddress(),

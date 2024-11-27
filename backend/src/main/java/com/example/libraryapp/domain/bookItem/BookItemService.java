@@ -6,7 +6,7 @@ import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookItem.dto.BookItemToUpdateDto;
 import com.example.libraryapp.domain.bookItem.mapper.BookItemMapper;
-import com.example.libraryapp.domain.config.assembler.BookItemModelAssembler;
+import com.example.libraryapp.domain.bookItem.assembler.BookItemModelAssembler;
 import com.example.libraryapp.domain.exception.book.BookNotFoundException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemException;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;

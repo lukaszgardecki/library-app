@@ -1,0 +1,67 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" (ngSubmit)="onSubmit()" method="post">
+                
+                <span class="login100-form-title">{{ 'CAT.LOGIN.HEADER' | translate }}</span>
+
+                <div class="wrap-input100 validate-input "
+                    [attr.data-validate] = "('CAT.LOGIN.USERNAME.VALID_MSG' | translate)"
+                    [ngClass]="{'alert-validate': showEmailValidationMessage}"
+                    >
+                    <span class="label-input100">{{ 'CAT.LOGIN.USERNAME.LABEL' | translate }}</span>
+                    <input class="input100" type="email" 
+                        [(ngModel)]="loginObj.username" name="username" 
+                        [attr.placeholder]="'CAT.LOGIN.USERNAME.PLACEHOLDER' | translate"
+                        (focus)="showEmailValidationMessage = false"
+                        hasVal
+                    >
+                    <span class="focus-input100" data-symbol="&#xF4E1;"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input"
+                    [attr.data-validate] = "('CAT.LOGIN.PASSWORD.VALID_MSG' | translate)"
+                    [ngClass]="{'alert-validate': showPasswordValidationMessage}"
+                    >
+                    <span class="label-input100">{{ 'CAT.LOGIN.PASSWORD.LABEL' | translate }}</span>
+                    <input class="input100" type="password"
+                        [(ngModel)]="loginObj.password" name="pass"
+                        [attr.placeholder]="'CAT.LOGIN.PASSWORD.PLACEHOLDER' | translate"
+                        (focus)="showPasswordValidationMessage = false"
+                        hasVal
+                    >
+                    <span class="focus-input100" data-symbol="&#xF44F;"></span>
+                </div>
+                
+                <div class="forgot"><a href="#">{{ 'CAT.LOGIN.PASSWORD.FORGOT' | translate }}</a></div>
+                
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button type="submit" class="login100-form-btn login-btn-bg">
+                            {{ 'CAT.LOGIN.BTN' | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="have-no-account"><span>{{ 'CAT.LOGIN.NOT_HAVE_ACCOUNT' | translate }}</span></div>
+
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <a href="#" class="login100-form-btn signup-btn-bg">
+                            {{ 'CAT.LOGIN.SIGN_UP' | translate }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="sign-up-also"><span>{{ 'CAT.LOGIN.SIGN_UP_ALSO' | translate }}</span></div>
+
+                <div class="socials-wrapper">
+                    <a href="#" class="social-facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-google"><i class="bi bi-google"></i></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.member.dto;
 
 import com.example.libraryapp.domain.card.LibraryCard;
 import com.example.libraryapp.domain.member.AccountStatus;
+import com.example.libraryapp.domain.member.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -16,7 +17,7 @@ public class MemberDto extends RepresentationModel<MemberDto> {
     private Long id;
     private String firstName;
     private String lastName;
-    private String gender;
+    private Gender gender;
     private String address;
     private LocalDate dateOfBirth;
     private String email;

@@ -1,0 +1,146 @@
+{
+    "DATA": {
+        "PAGE_SIZE": "Taille de la page",
+        "SEARCH": "Rechercher...",
+        "LACK": "Pas de données",
+        "SHARE": "Partager",
+        "EXPORT": "Exporter",
+        "MONTH": {
+            "JAN": "Janvier",
+            "FEB": "Février",
+            "MAR": "Mars",
+            "APR": "Avril",
+            "MAI": "Mai",
+            "JUN": "Juin",
+            "JUL": "Juillet",
+            "AUG": "Août",
+            "SEP": "Septembre",
+            "OCT": "Octobre",
+            "NOV": "Novembre",
+            "DEC": "Décembre"
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Retour",
+            "EDIT": "Modifier",
+            "SAVE": "Enregistrer",
+            "SAVE_TO_FILE": "Enregistrer dans un fichier"
+        },
+        "LOGIN": {
+            "HEADER": "Connexion",
+            "USERNAME": {
+                "LABEL": "Nom d'utilisateur",
+                "VALID_MSG": "Nom d'utilisateur requis",
+                "PLACEHOLDER": "Entrez le nom d'utilisateur"
+            },
+            "PASSWORD": {
+                "LABEL": "Mot de passe",
+                "VALID_MSG": "Mot de passe requis",
+                "PLACEHOLDER": "Entrez le mot de passe",
+                "FORGOT": "Mot de passe oublié?"
+            },
+            "BTN": "Se connecter",
+            "NOT_HAVE_ACCOUNT": "Vous n'avez pas de compte?",
+            "SIGN_UP": "S'inscrire",
+            "SIGN_UP_ALSO": "Vous pouvez également rejoindre via"
+        },
+        "NAVBAR": {
+            "PROFILE": "Profil",
+            "LOGOUT": "Déconnexion",
+            "MEMBER_FROM": "Membre depuis"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Tableau de bord",
+            "NOTIFICATIONS": "Notifications",
+            "MESSAGES": "Messages",
+            "USERS": "Utilisateurs",
+            "BOOKS": "Livres",
+            "CASHIER": "Caissier",
+            "WAREHOUSE": "Entrepôt",
+            "REPORTS": "Rapports",
+            "SETTINGS": "Paramètres"
+        },
+        "USER": {
+            "ROLE": {
+                "NAME": "Rôle",
+                "USER": "Utilisateur",
+                "ADMIN": "Administrateur",
+                "WAREHOUSE": "Entrepôt",
+                "CASHIER": "Caissier"
+            },
+            "DETAILS": {
+                "HEADER": "Données personnelles",
+                "FIRST_NAME": "Prénom",
+                "LAST_NAME": "Nom de famille",
+                "GENDER": {
+                    "LABEL": "Sexe",
+                    "MALE": "Homme",
+                    "FEMALE": "Femme",
+                    "OTHER": "Autre"
+                },
+                "BIRTH_DATE": "Date de naissance",
+                "NATIONALITY": "Nationalité",
+                "ADDRESS": "Adresse",
+                "STREET": "Rue",
+                "ZIPCODE": "Code postal",
+                "CITY": "Ville",
+                "STATE": "État",
+                "COUNTRY": "Pays",
+                "PARENTS": "Noms des parents",
+                "MOTHER": "Nom de la mère",
+                "FATHER": "Nom du père",
+                "PESEL": "Pesel",
+                "PHONE": "Téléphone"
+            },
+            "ACCOUNT": {
+                "HEADER": "Détails du compte",
+                "ID": "ID",
+                "EMAIL": "Email",
+                "DATE_OF_REGISTRATION": "Date d'inscription",
+                "AVAILABILITY_DATE": "Date d'expiration",
+                "STATUS": {
+                    "NAME": "Statut du compte",
+                    "ACTIVE": "Actif",
+                    "INACTIVE": "Inactif",
+                    "CLOSED": "Fermé",
+                    "SUSPENDED": "Suspendu",
+                    "PENDING": "En attente"
+                },
+                "LENDINGS_ALL": "Tous les prêts",
+                "LENDINGS_ANNUAL": "Activité annuelle des prêts",
+                "LENDINGS_COUNT": "Nombre de prêts",
+                "LENDINGS_CURRENT": "Prêts actuels",
+                "LATE_FEES": "Frais de retard",
+                "FAV_GENRE": "Genre préféré",
+                "FAV_GENRES": "Genres préférés"
+            },
+            "CARD": {
+                "ID": "Carte de lecteur",
+                "NUM": "Numéro de carte",
+                "ISSUE_DATE": "Date de délivrance",
+                "STATUS": {
+                    "NAME": "Statut de la carte",
+                    "ACTIVE": "Active",
+                    "INACTIVE": "Inactive",
+                    "LOST": "Perdue"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "Titre"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Date de création",
+            "DUE_DATE": "Date de retour",
+            "STATUS": {
+                "NAME": "Statut",
+                "CURRENT": "Actuel",
+                "COMPLETED": "Terminé"
+            }
+        }
+    },
+    "WEB": {
+
+    }
+}

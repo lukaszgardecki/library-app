@@ -1,7 +1,8 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[dropdown]'
+  selector: '[dropdown]',
+  standalone: true
 })
 export class DropdownDirective {
 
@@ -15,7 +16,7 @@ constructor(private el: ElementRef) { }
   @HostListener('click', ['$event'])
   toggleDropdown(event: MouseEvent) {
     event.stopPropagation();
-     const dropdown = this.el.nativeElement.querySelector('.dropdown');
+    const dropdown = this.el.nativeElement.querySelector('.dropdown');
     const isOpen = dropdown.classList.contains('show');
     this.closeAllDropdowns();
     if (isOpen) {

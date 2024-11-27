@@ -53,6 +53,18 @@ public class PaymentControllerTest extends BaseTest {
         }
 
         @Test
+        @DisplayName("Should return all user's payments if ADMIN requested.")
+        void shouldReturnAllUsersPaymentsIfAdminRequested() {
+            client.testRequest(GET, "/payments?memberId=1", admin, OK)
+                    .expectBody()
+                    .jsonPath("$._embedded.paymentResponseList.length()").isEqualTo(2)
+                    .jsonPath("$.page.size").isEqualTo(20)
+                    .jsonPath("$.page.totalElements").isEqualTo(2)
+                    .jsonPath("$.page.totalPages").isEqualTo(1)
+                    .jsonPath("$.page.number").isEqualTo(0);
+        }
+
+        @Test
         @DisplayName("Should not return all payments if USER requested.")
         void shouldNotReturnAllPaymentsIfUserRequested() {
             ErrorMessage responseBody = client.testRequest(GET, "/payments", user, FORBIDDEN)

@@ -1,10 +1,10 @@
 package com.example.libraryapp.domain.payment;
 
-import com.example.libraryapp.domain.config.assembler.PaymentModelAssembler;
 import com.example.libraryapp.domain.exception.member.MemberNotFoundException;
 import com.example.libraryapp.domain.exception.payment.PaymentNotFoundException;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.member.MemberRepository;
+import com.example.libraryapp.domain.payment.assembler.PaymentModelAssembler;
 import com.example.libraryapp.domain.payment.dto.PaymentRequest;
 import com.example.libraryapp.domain.payment.dto.PaymentResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,8 @@ public class PaymentService {
     private final PaymentModelAssembler paymentModelAssembler;
     private final PagedResourcesAssembler<Payment> pagedResourcesAssembler;
 
-    public PagedModel<PaymentResponse> findAllPayments(Pageable pageable) {
-        Page<Payment> payments = paymentRepository.findAll(pageable);
+    public PagedModel<PaymentResponse> findAllPayments(Long memberId, Pageable pageable) {
+        Page<Payment> payments = paymentRepository.findAllByParams(memberId, pageable);
         return pagedResourcesAssembler.toModel(payments, paymentModelAssembler);
     }
 

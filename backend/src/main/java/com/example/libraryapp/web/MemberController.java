@@ -4,6 +4,8 @@ import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.config.RoleAuthorization;
 import com.example.libraryapp.domain.member.MemberService;
 import com.example.libraryapp.domain.member.dto.MemberDto;
+import com.example.libraryapp.domain.member.dto.MemberListPreviewDtoAdmin;
+import com.example.libraryapp.domain.member.dto.MemberPreviewDto;
 import com.example.libraryapp.domain.member.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +26,12 @@ public class MemberController {
 
     @GetMapping
     @RoleAuthorization({ADMIN})
-    public ResponseEntity<PagedModel<MemberDto>> getAllUsers(
+    public ResponseEntity<PagedModel<MemberListPreviewDtoAdmin>> getAllUsers(
             @RequestParam(name = "q", required = false)
             String usersToSearch,
             Pageable pageable
     ) {
-        PagedModel<MemberDto> collectionModel = memberService.findAllUsers(usersToSearch, pageable);
+        PagedModel<MemberListPreviewDtoAdmin> collectionModel = memberService.findAllUsers(usersToSearch, pageable);
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
@@ -38,6 +40,14 @@ public class MemberController {
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         authService.checkIfAdminOrDataOwnerRequested(id);
         MemberDto member = memberService.findMemberById(id);
+        return ResponseEntity.ok(member);
+    }
+
+    @GetMapping("/{id}/preview")
+    @RoleAuthorization({USER, ADMIN})
+    public ResponseEntity<?> getUserPreviewById(@PathVariable Long id) {
+        authService.checkIfAdminOrDataOwnerRequested(id);
+        MemberPreviewDto member = memberService.findMemberPreviewById(id);
         return ResponseEntity.ok(member);
     }
 

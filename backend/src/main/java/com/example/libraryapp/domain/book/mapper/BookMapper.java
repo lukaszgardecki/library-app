@@ -2,6 +2,7 @@ package com.example.libraryapp.domain.book.mapper;
 
 import com.example.libraryapp.domain.book.Book;
 import com.example.libraryapp.domain.book.dto.BookDto;
+import com.example.libraryapp.domain.book.dto.BookPreviewDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 
 import java.util.ArrayList;
@@ -18,6 +19,15 @@ public class BookMapper {
                 .language(book.getLanguage())
                 .pages(book.getPages())
                 .bookItems(book.getBookItems())
+                .build();
+    }
+
+    public static BookPreviewDto mapToPreviewDto(Book book) {
+        return BookPreviewDto.builder()
+                .id(book.getId())
+                .title(book.getTitle())
+                .subject(book.getSubject())
+                .publisher(book.getPublisher())
                 .build();
     }
 

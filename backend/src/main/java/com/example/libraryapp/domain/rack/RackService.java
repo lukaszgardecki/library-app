@@ -2,8 +2,7 @@ package com.example.libraryapp.domain.rack;
 
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.dto.BookItemDto;
-import com.example.libraryapp.domain.config.assembler.BookItemModelAssembler;
-import com.example.libraryapp.domain.config.assembler.RackModelAssembler;
+import com.example.libraryapp.domain.bookItem.assembler.BookItemModelAssembler;
 import com.example.libraryapp.domain.exception.rack.RackException;
 import com.example.libraryapp.domain.exception.rack.RackNotFoundException;
 import com.example.libraryapp.management.Message;

@@ -8,11 +8,11 @@ import com.example.libraryapp.domain.action.types.ActionBookReturned;
 import com.example.libraryapp.domain.bookItem.BookItem;
 import com.example.libraryapp.domain.bookItem.BookItemRepository;
 import com.example.libraryapp.domain.bookItem.BookItemStatus;
-import com.example.libraryapp.domain.config.assembler.LendingModelAssembler;
 import com.example.libraryapp.domain.exception.bookItem.BookItemNotFoundException;
 import com.example.libraryapp.domain.exception.lending.CheckoutException;
 import com.example.libraryapp.domain.exception.lending.LendingNotFoundException;
 import com.example.libraryapp.domain.exception.payment.UnsettledFineException;
+import com.example.libraryapp.domain.lending.assembler.LendingModelAssembler;
 import com.example.libraryapp.domain.lending.dto.LendingDto;
 import com.example.libraryapp.domain.member.Member;
 import com.example.libraryapp.domain.notification.NotificationService;
@@ -36,9 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,8 +55,7 @@ public class LendingService {
     public PagedModel<LendingDto> findLendings(
             Long memberId, LendingStatus status, Pageable pageable, Boolean renewable
     ) {
-        List<Lending> lendings = lendingRepository.findAll().stream()
-                .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
+        List<Lending> lendings = findLendingsByMemberId(memberId).stream()
                 .filter(len -> status == null || len.getStatus() == status)
                 .filter(len -> renewable == null || isRenewable(len) == renewable)
                 .collect(Collectors.toList());
@@ -85,7 +83,8 @@ public class LendingService {
         member.addLoanedItemId(savedLending.getId());
         LendingDto savedLendingDto = LendingDtoMapper.map(savedLending);
         book.updateAfterLending(savedLending.getCreationDate(), savedLending.getDueDate());
-        member.updateAfterLending();
+        updateMemberAfterLending(member);
+
         reservation.setStatus(ReservationStatus.COMPLETED);
         actionService.save(new ActionBookBorrowed(savedLendingDto));
         notificationService.sendToUser(new NotificationBookBorrowed(savedLendingDto), savedLendingDto.getMember());
@@ -154,6 +153,12 @@ public class LendingService {
                 .orElseThrow(() -> new LendingNotFoundException(bookBarcode));
     }
 
+    private List<Lending> findLendingsByMemberId(Long memberId) {
+        return lendingRepository.findAll().stream()
+                .filter(len -> memberId == null || Objects.equals(len.getMember().getId(), memberId))
+                .toList();
+    }
+
     private Lending findLending(Long id) {
         return lendingRepository.findById(id)
                 .orElseThrow(() -> new LendingNotFoundException(id));
@@ -178,6 +183,10 @@ public class LendingService {
         if (bookIsReserved || lending.isAfterDueDate()) {
             throw new CheckoutException(Message.LENDING_RENEWAL_FAILED.getMessage());
         }
+    }
+
+    private void updateMemberAfterLending(Member member) {
+        member.updateAfterLending();
     }
 
     private Lending createLendingToSave(Reservation reservation) {

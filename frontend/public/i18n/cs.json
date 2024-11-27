@@ -1,0 +1,146 @@
+{
+    "DATA": {
+        "PAGE_SIZE": "Velikost stránky",
+        "SEARCH": "Hledat...",
+        "LACK": "Nedostatek dat",
+        "SHARE": "Sdílet",
+        "EXPORT": "Exportovat",
+        "MONTH": {
+            "JAN": "Leden",
+            "FEB": "Únor",
+            "MAR": "Březen",
+            "APR": "Duben",
+            "MAI": "Květen",
+            "JUN": "Červen",
+            "JUL": "Červenec",
+            "AUG": "Srpen",
+            "SEP": "Září",
+            "OCT": "Říjen",
+            "NOV": "Listopad",
+            "DEC": "Prosinec"
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Zpět",
+            "EDIT": "Upravit",
+            "SAVE": "Uložit",
+            "SAVE_TO_FILE": "Uložit do souboru"
+        },
+        "LOGIN": {
+            "HEADER": "Přihlášení",
+            "USERNAME": {
+                "LABEL": "Uživatelské jméno",
+                "VALID_MSG": "Uživatelské jméno je povinné",
+                "PLACEHOLDER": "Zadejte uživatelské jméno"
+            },
+            "PASSWORD": {
+                "LABEL": "Heslo",
+                "VALID_MSG": "Heslo je povinné",
+                "PLACEHOLDER": "Zadejte heslo",
+                "FORGOT": "Zapomněli jste heslo?"
+            },
+            "BTN": "Přihlásit se",
+            "NOT_HAVE_ACCOUNT": "Nemáte účet?",
+            "SIGN_UP": "Zaregistrujte se",
+            "SIGN_UP_ALSO": "Můžete se také připojit přes"
+        },
+        "NAVBAR": {
+            "PROFILE": "Profil",
+            "LOGOUT": "Odhlásit se",
+            "MEMBER_FROM": "Člen od"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Hlavní panel",
+            "NOTIFICATIONS": "Oznámení",
+            "MESSAGES": "Zprávy",
+            "USERS": "Uživatelé",
+            "BOOKS": "Knihy",
+            "CASHIER": "Pokladní",
+            "WAREHOUSE": "Sklad",
+            "REPORTS": "Zprávy",
+            "SETTINGS": "Nastavení"
+        },
+        "USER": {
+            "ROLE": {
+                "NAME": "Role",
+                "USER": "Uživatel",
+                "ADMIN": "Administrátor",
+                "WAREHOUSE": "Sklad",
+                "CASHIER": "Pokladní"
+            },
+            "DETAILS": {
+                "HEADER": "Osobní údaje",
+                "FIRST_NAME": "Jméno",
+                "LAST_NAME": "Příjmení",
+                "GENDER": {
+                    "LABEL": "Pohlaví",
+                    "MALE": "Muž",
+                    "FEMALE": "Žena",
+                    "OTHER": "Jiné"
+                },
+                "BIRTH_DATE": "Datum narození",
+                "NATIONALITY": "Národnost",
+                "ADDRESS": "Adresa",
+                "STREET": "Ulice",
+                "ZIPCODE": "PSČ",
+                "CITY": "Město",
+                "STATE": "Stát",
+                "COUNTRY": "Země",
+                "PARENTS": "Jména rodičů",
+                "MOTHER": "Jméno matky",
+                "FATHER": "Jméno otce",
+                "PESEL": "Pesel",
+                "PHONE": "Telefon"
+            },
+            "ACCOUNT": {
+                "HEADER": "Detaily účtu",
+                "ID": "ID",
+                "EMAIL": "Email",
+                "DATE_OF_REGISTRATION": "Datum registrace",
+                "AVAILABILITY_DATE": "Datum dostupnosti",
+                "STATUS": {
+                    "NAME": "Stav účtu",
+                    "ACTIVE": "Aktivní",
+                    "INACTIVE": "Neaktivní",
+                    "CLOSED": "Uzavřený",
+                    "SUSPENDED": "Pozastavený",
+                    "PENDING": "Čekající"
+                },
+                "LENDINGS_ALL": "Všechny výpůjčky",
+                "LENDINGS_ANNUAL": "Roční aktivita výpůjček",
+                "LENDINGS_COUNT": "Počet výpůjček",
+                "LENDINGS_CURRENT": "Aktuální výpůjčky",
+                "LATE_FEES": "Poplatky za zpoždění",
+                "FAV_GENRE": "Oblíbený žánr",
+                "FAV_GENRES": "Oblíbené žánry"
+            },
+            "CARD": {
+                "ID": "Čtenářská karta",
+                "NUM": "Číslo karty",
+                "ISSUE_DATE": "Datum vydání karty",
+                "STATUS": {
+                    "NAME": "Stav karty",
+                    "ACTIVE": "Aktivní",
+                    "INACTIVE": "Neaktivní",
+                    "LOST": "Ztracená"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "Název"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Datum vytvoření",
+            "DUE_DATE": "Datum vrácení",
+            "STATUS": {
+                "NAME": "Stav",
+                "CURRENT": "Aktuální",
+                "COMPLETED": "Dokončeno"
+            }
+        }
+    },
+    "WEB": {
+
+    }
+}

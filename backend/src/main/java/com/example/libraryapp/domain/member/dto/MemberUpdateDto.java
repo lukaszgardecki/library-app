@@ -5,17 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberUpdateDto {
-    private String firstName;
-    private String lastName;
-    private String email;
+public class MemberUpdateDto extends MemberUpdate {
     private String password;
-
-    private String streetAddress;
-    private String zipCode;
-    private String city;
-    private String state;
-    private String country;
-
-    private String phone;
 }

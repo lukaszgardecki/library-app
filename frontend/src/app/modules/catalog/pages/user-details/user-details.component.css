@@ -1,0 +1,180 @@
+.user-main-content {
+    max-width: 100%; 
+}
+
+.content-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--basic-dist);
+    margin: var(--basic-dist) 0;
+}
+
+.content-row .card {
+    flex: 1 1 calc(50% - 16px); 
+    box-sizing: border-box;
+    min-width: 200px;
+
+    background-color: blue;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 8px;
+    box-sizing: border-box;
+}
+
+.content-row .card h3 {
+    font-size: 1rem;
+    margin: 0 0 8px 0;
+    line-height: 1.5;
+}
+
+.content-row .card p {
+    font-size: 2rem;
+    font-weight: 600;
+    align-self: center;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.tile-content {
+    display: flex;
+    flex: 1 1 calc(50% - 16px);
+    min-width: 350px;
+}
+
+.content {
+    display: flex;
+    flex: 1 1 calc(50% - 16px);
+    min-width: 350px;
+
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+}
+
+.tile-content .wr {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: var(--basic-dist);
+}
+
+.card.books-all {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+}
+.card.books-current {
+    background: linear-gradient(135deg, #ffeb3b, #ff9800);
+}
+.card.genre {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+}
+.card.fines {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.section-header {
+    padding: 15px;
+    border-bottom: 1px solid var(--light-color);
+}
+
+.section-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 15px;
+    flex: 1;
+}
+
+.section-content .lack-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.section-btn-panel {
+    padding: 15px;
+}
+
+.data-row {
+    display: flex;
+    width: 100%;
+    margin: 5px 0;
+    font-size: 1rem;
+}
+
+.data-row .lab,
+.data-row .val {
+    flex-basis: 50%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.data-row .size {
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    padding: 0 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+}
+
+.data-row .size .label {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.data-row .size .label span {
+    flex: 1;
+    height: 100%;
+    align-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.data-row .size .label i {
+    font-size: 1.4rem;
+}
+/* .data-row .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 200;
+} */

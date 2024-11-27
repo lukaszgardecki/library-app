@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row">
+    <main class=" ms-sm-auto">
+      <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
+
+      <app-table
+          *ngIf="usersPage$ | async as usersPage; else lack"
+          [tableName]="'user-list'"
+          [columns]="[
+              { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
+              { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
+              { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
+              { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
+              { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+          ]"
+          [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
+          [page]="usersPage.page"
+          (onUpdate)="updateTable($event)"
+          (onRowClick)="showDetails($event)"
+      ></app-table>
+
+    </main>
+  </div>
+</div>
+
+
+<ng-template #lack>{{ 'DATA.LACK' | translate }}</ng-template>

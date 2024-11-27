@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'nullPlaceholder'
+  name: 'nullPlaceholder',
+  standalone: true
 })
 export class NullPlaceholderPipe implements PipeTransform {
 

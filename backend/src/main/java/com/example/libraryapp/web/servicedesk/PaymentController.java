@@ -24,8 +24,11 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @GetMapping
-    public ResponseEntity<PagedModel<PaymentResponse>> findAllPayments(Pageable pageable) {
-        PagedModel<PaymentResponse> collectionModel = paymentService.findAllPayments(pageable);
+    public ResponseEntity<PagedModel<PaymentResponse>> findAllPayments(
+            @RequestParam(required = false) Long memberId,
+            Pageable pageable
+    ) {
+        PagedModel<PaymentResponse> collectionModel = paymentService.findAllPayments(memberId, pageable);
         return ResponseEntity.ok(collectionModel);
     }
 

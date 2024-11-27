@@ -1,0 +1,10 @@
+.pagination {
+    --bs-pagination-color: var(--bs-dark);
+    --bs-pagination-hover-color: var(--bs-dark);
+    --bs-pagination-active-bg: var(--bs-dark);
+    --bs-pagination-active-border-color: var(--bs-dark);
+}
+
+li {
+    cursor: pointer;
+}

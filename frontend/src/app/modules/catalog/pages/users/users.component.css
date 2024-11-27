@@ -1,0 +1,5 @@
+.form-select:focus,
+.form-control:focus {
+  border-color: var(--bs-dark-border-subtle);
+  box-shadow: 0 0 0 0.2rem var(--bs-dark-border-subtle);
+}

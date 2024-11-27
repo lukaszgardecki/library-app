@@ -29,7 +29,7 @@ public class MemberControllerTest extends BaseTest {
         void shouldReturnAllUsersWhenAdminRequested() {
             client.testRequest(GET, "/members", admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(8)
+                    .jsonPath("$._embedded.memberListPreviewDtoAdminList.length()").isEqualTo(8)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(8)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -43,7 +43,7 @@ public class MemberControllerTest extends BaseTest {
             String queryString1 = "kle";
             client.testRequest(GET, "/members?q=" + queryString1, admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$._embedded.memberListPreviewDtoAdminList.length()").isEqualTo(1)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(1)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -52,7 +52,7 @@ public class MemberControllerTest extends BaseTest {
             String queryString2 = "kas";
             client.testRequest(GET, "/members?q=" + queryString2, admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$._embedded.memberListPreviewDtoAdminList.length()").isEqualTo(1)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(1)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -61,7 +61,7 @@ public class MemberControllerTest extends BaseTest {
             String queryString3 = ".com";
             client.testRequest(GET, "/members?q=" + queryString3, admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(8)
+                    .jsonPath("$._embedded.memberListPreviewDtoAdminList.length()").isEqualTo(8)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(8)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -70,7 +70,7 @@ public class MemberControllerTest extends BaseTest {
             String queryString4 = "2";
             client.testRequest(GET, "/members?q=" + queryString4, admin, OK)
                     .expectBody()
-                    .jsonPath("$._embedded.memberDtoList.length()").isEqualTo(1)
+                    .jsonPath("$._embedded.memberListPreviewDtoAdminList.length()").isEqualTo(1)
                     .jsonPath("$.page.size").isEqualTo(20)
                     .jsonPath("$.page.totalElements").isEqualTo(1)
                     .jsonPath("$.page.totalPages").isEqualTo(1)
@@ -110,7 +110,7 @@ public class MemberControllerTest extends BaseTest {
             assertThat(returnedUser.getTotalBooksBorrowed()).isEqualTo(5);
             assertThat(returnedUser.getTotalBooksReserved()).isEqualTo(1);
             assertThat(returnedUser.getCharge()).isEqualTo(new BigDecimal("0.00"));
-            assertThat(returnedUser.getGender()).isEqualTo(Gender.OTHER.name());
+            assertThat(returnedUser.getGender()).isEqualTo(Gender.OTHER);
             assertThat(returnedUser.getDateOfBirth()).isEqualTo("1993-03-14");
             assertThat(returnedUser.getStatus()).isEqualTo(AccountStatus.CLOSED);
             assertThat(returnedUser.getPhoneNumber()).isEqualTo("333-333-333");

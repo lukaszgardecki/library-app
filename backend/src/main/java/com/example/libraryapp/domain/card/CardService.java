@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.card;
 
 import com.example.libraryapp.domain.card.dto.CardDto;
-import com.example.libraryapp.domain.config.assembler.CardModelAssembler;
+import com.example.libraryapp.domain.card.assembler.CardModelAssembler;
 import com.example.libraryapp.domain.exception.card.CardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

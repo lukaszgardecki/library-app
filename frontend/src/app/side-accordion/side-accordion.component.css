@@ -1,7 +1,0 @@
-@import url('../../bootstrap-fragments.css');
-
-.accordion-body ul{padding: 0;}
-.accordion-body li{list-style: none; user-select: none; display: flex; justify-content: space-between;}
-.accordion-body li:hover{background-color: #1C7AA8; cursor: pointer;}
-
-.selected {color: #ffffff; background-color: #1C7AA8;}

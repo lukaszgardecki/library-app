@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
+  <div class="d-flex mb-3 align-items-center">
+    <label for="pageSize" class="form-label me-2 mb-0">{{ 'DATA.PAGE_SIZE' |  translate }}</label>
+    <select id="pageSize" class="form-select form-select-sm w-auto" (change)="changePageSize($event)">
+      <option *ngFor="let size of pageSizes" [value]="size.value" >{{size.value}}</option>
+    </select>
+  </div>
+
+  <form class="d-flex mb-3" role="search">
+    <input class="form-control form-control-sm me-2" type="search" [placeholder]="'DATA.SEARCH' | translate"  aria-label="Search" [formControl]="searchControl">
+  </form>
+
+  <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Button group with nested dropdown">
+    <button type="button" class="btn btn-sm  btn-outline-secondary"> {{ 'DATA.SHARE' | translate }}</button>
+  
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ 'DATA.EXPORT' | translate }}
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" (click)="saveAsPDF()">PDF</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-sm" [id]="tableId">
+    <thead>
+      <tr>
+        <th 
+          scope="col"
+          class="user-select-none"
+          *ngFor="let column of columns"
+          (click)="onSort(column.key)"
+          >
+          <span class="col-title">{{ column.label | translate }}</span>
+          <span class="col-sort"
+              [ngClass]="{
+                  'asc': sortState.direction === 'asc' && sortState.columnKey === column.key,
+                  'desc': sortState.direction === 'desc' && sortState.columnKey === column.key,
+              }"
+          ></span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of data; index as i">
+        <td *ngFor="let column of columns" (click)="showDetails(row.id)">
+            {{ getValue(row, column.key) | enumName: column.type | translate }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-pagination *ngIf="page && page.totalPages > 1" (pageChange)="loadPage($event)" [page]="page"></app-pagination> 

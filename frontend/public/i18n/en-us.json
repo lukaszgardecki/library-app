@@ -1,0 +1,146 @@
+{
+    "DATA": {
+        "PAGE_SIZE": "Page size",
+        "SEARCH": "Search...",
+        "LACK": "No data",
+        "SHARE": "Share",
+        "EXPORT": "Export",
+        "MONTH": {
+            "JAN": "January",
+            "FEB": "February",
+            "MAR": "March",
+            "APR": "April",
+            "MAI": "May",
+            "JUN": "June",
+            "JUL": "July",
+            "AUG": "August",
+            "SEP": "September",
+            "OCT": "October",
+            "NOV": "November",
+            "DEC": "December"
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Back",
+            "EDIT": "Edit",
+            "SAVE": "Save",
+            "SAVE_TO_FILE": "Save to file"
+        },
+        "LOGIN": {
+            "HEADER": "Login",
+            "USERNAME": {
+                "LABEL": "Username",
+                "VALID_MSG": "Username is required",
+                "PLACEHOLDER": "Enter username"
+            },
+            "PASSWORD": {
+                "LABEL": "Password",
+                "VALID_MSG": "Password is required",
+                "PLACEHOLDER": "Enter password",
+                "FORGOT": "Forgot password?"
+            },
+            "BTN": "Log in",
+            "NOT_HAVE_ACCOUNT": "Don't have an account?",
+            "SIGN_UP": "Sign up",
+            "SIGN_UP_ALSO": "You can also join through"
+        },
+        "NAVBAR": {
+            "PROFILE": "Profile",
+            "LOGOUT": "Logout",
+            "MEMBER_FROM": "Member since"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Dashboard",
+            "NOTIFICATIONS": "Notifications",
+            "MESSAGES": "Messages",
+            "USERS": "Users",
+            "BOOKS": "Books",
+            "CASHIER": "Cashier",
+            "WAREHOUSE": "Warehouse",
+            "REPORTS": "Reports",
+            "SETTINGS": "Settings"
+        },
+        "USER": {
+            "ROLE": {
+                "NAME": "Role",
+                "USER": "User",
+                "ADMIN": "Administrator",
+                "WAREHOUSE": "Warehouse",
+                "CASHIER": "Cashier"
+            },
+            "DETAILS": {
+                "HEADER": "Personal details",
+                "FIRST_NAME": "First name",
+                "LAST_NAME": "Last name",
+                "GENDER": {
+                    "LABEL": "Gender",
+                    "MALE": "Male",
+                    "FEMALE": "Female",
+                    "OTHER": "Other"
+                },
+                "BIRTH_DATE": "Date of birth",
+                "NATIONALITY": "Nationality",
+                "ADDRESS": "Address",
+                "STREET": "Street",
+                "ZIPCODE": "Zip code",
+                "CITY": "City",
+                "STATE": "State",
+                "COUNTRY": "Country",
+                "PARENTS": "Parents' names",
+                "MOTHER": "Mother's name",
+                "FATHER": "Father's name",
+                "PESEL": "Pesel",
+                "PHONE": "Phone"
+            },
+            "ACCOUNT": {
+                "HEADER": "Account details",
+                "ID": "ID",
+                "EMAIL": "Email",
+                "DATE_OF_REGISTRATION": "Registration date",
+                "AVAILABILITY_DATE": "Validity date",
+                "STATUS": {
+                    "NAME": "Account status",
+                    "ACTIVE": "Active",
+                    "INACTIVE": "Inactive",
+                    "CLOSED": "Closed",
+                    "SUSPENDED": "Suspended",
+                    "PENDING": "Pending"
+                },
+                "LENDINGS_ALL": "All lendings",
+                "LENDINGS_ANNUAL": "Annual lending activity",
+                "LENDINGS_COUNT": "Lending count",
+                "LENDINGS_CURRENT": "Current lendings",
+                "LATE_FEES": "Late fees",
+                "FAV_GENRE": "Favorite genre",
+                "FAV_GENRES": "Favorite genres"
+            },
+            "CARD": {
+                "ID": "Library card",
+                "NUM": "Card number",
+                "ISSUE_DATE": "Card issue date",
+                "STATUS": {
+                    "NAME": "Card status",
+                    "ACTIVE": "Active",
+                    "INACTIVE": "Inactive",
+                    "LOST": "Lost"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "Title"
+        },
+        "LENDING": {
+            "CREATION_DATE": "Creation Date",
+            "DUE_DATE": "Return Date",
+            "STATUS": {
+                "NAME": "Status",
+                "CURRENT": "Current",
+                "COMPLETED": "Completed"
+            }
+        }
+    },
+    "WEB": {
+
+    }
+}
