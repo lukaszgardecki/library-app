@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TableComponent } from "../../components/table/table.component";
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
+import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterModule, TableComponent],
+  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })

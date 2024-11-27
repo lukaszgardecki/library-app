@@ -41,24 +41,45 @@
     </div>
   </div>
 
-  <div class="row">
-    <app-table
-        class=" ms-sm-auto"
-        *ngIf="usersPage$ | async as usersPage; else lack"
-        [tableName]="'user-list'"
-        [columns]="[
-            { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
-            { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
-            { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
-            { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
-            { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
-        ]"
-        [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
-        [page]="usersPage.page"
-        (onUpdate)="updateTable($event)"
-        (onRowClick)="showDetails($event)"
-    ></app-table>
+
+  <div class="content-row">
+    <div class="content">
+      <div class="section-header">{{ 'CAT.USER.ACCOUNT.FAV_GENRES' | translate }}</div>
+      <div class="section-content">
+        <ng-container *ngIf="(usersStats$ | async)?.favGenres as favGenres">
+          <app-fav-genre-chart
+              *ngIf="favGenres; else lack"
+              [data]="favGenres"
+          ></app-fav-genre-chart>
+        </ng-container>
+      </div>
+    </div>
   </div>
+  
+
+  <div class="content-row">
+    <div class="content">
+      <div class="section-header">{{ 'CAT.USER.ACCOUNT.FAV_GENRES' | translate }}</div>
+      <div class="section-content">
+        <app-table
+          *ngIf="usersPage$ | async as usersPage; else lack"
+          [tableName]="'user-list'"
+          [columns]="[
+              { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
+              { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
+              { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
+              { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
+              { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+          ]"
+          [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
+          [page]="usersPage.page"
+          (onUpdate)="updateTable($event)"
+          (onRowClick)="showDetails($event)"
+        ></app-table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 

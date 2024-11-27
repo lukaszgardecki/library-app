@@ -36,4 +36,14 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
        """)
     long countLendingsToday();
 
+    @Query(value = """
+       SELECT b.subject, COUNT(l.id) AS total
+       FROM lending l
+       JOIN book_item bi ON l.book_item_id = bi.id
+       JOIN book b ON bi.book_id = b.id
+       GROUP BY b.subject
+       ORDER BY total DESC
+       LIMIT :count
+       """, nativeQuery = true)
+    List<Object[]> findTopSubjectsWithLendingCount(@Param("count") int count);
 }

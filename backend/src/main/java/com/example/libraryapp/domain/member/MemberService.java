@@ -52,6 +52,7 @@ public class MemberService {
                 .activeUsersThisMonth(lendingRepository.countActiveMembersThisMonth())
                 .newUsersThisMonth(memberRepository.countMembersRegisteredThisMonth())
                 .usersCount(memberRepository.count())
+                .favGenres(findTopGenres(5))
                 .build();
     }
 
@@ -220,6 +221,17 @@ public class MemberService {
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private Map<String, Long> findTopGenres(int count) {
+        List<Object[]> results = lendingRepository.findTopSubjectsWithLendingCount(count);
+        return results.stream()
+                .collect(Collectors.toMap(
+                        result -> (String) result[0],
+                        result -> (Long) result[1],
+                        (v1, v2) -> v1,
                         LinkedHashMap::new
                 ));
     }

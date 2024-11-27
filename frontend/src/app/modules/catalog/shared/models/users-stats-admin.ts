@@ -3,4 +3,5 @@ export class UserStatsAdmin {
     usersCount: number;
     activeUsersThisMonth: number;
     newUsersThisMonth: number;
+    favGenres: Map<string, number> = new Map<string, number>();
 }
