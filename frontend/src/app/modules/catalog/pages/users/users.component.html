@@ -1,25 +1,63 @@
 <div class="container-fluid">
+
+  <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
+
+  <div class="row pt-3">
+    <div class="col-lg-3 col-6 pb-3">
+        <div class="small-box text-bg-primary">
+            <div class="inner">
+                <h3>{{ (usersStats$ | async)?.todayLendings }}</h3>
+                <p>{{ 'CAT.STATS.LENDINGS_COUNT_TODAY' | translate }}</p>
+            </div>
+            <i class="bi bi-bookmark-check small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6 pb-3">
+        <div class="small-box text-bg-success">
+            <div class="inner">
+                <h3>{{ (usersStats$ | async)?.activeUsersThisMonth }}</h3>
+                <p>{{ 'CAT.STATS.USERS_ACTIVE_THIS_MONTH' | translate }}</p>
+            </div>
+            <i class="bi bi-activity small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6 pb-3">
+        <div class="small-box text-bg-warning">
+            <div class="inner">
+                <h3>{{ (usersStats$ | async)?.newUsersThisMonth }}</h3>
+                <p>{{ 'CAT.STATS.USERS_NEW_THIS_MONTH' | translate }}</p>
+            </div>
+            <i class="bi bi-person-plus-fill small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6 pb-3">
+        <div class="small-box text-bg-danger">
+            <div class="inner">
+                <h3>{{ (usersStats$ | async)?.usersCount }}</h3>
+                <p>{{ 'CAT.STATS.USERS_TOTAL' | translate }}</p>
+            </div>
+            <i class="bi bi-people-fill small-box-icon"></i>
+        </div>
+    </div>
+  </div>
+
   <div class="row">
-    <main class=" ms-sm-auto">
-      <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
-
-      <app-table
-          *ngIf="usersPage$ | async as usersPage; else lack"
-          [tableName]="'user-list'"
-          [columns]="[
-              { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
-              { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
-              { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
-              { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
-              { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
-          ]"
-          [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
-          [page]="usersPage.page"
-          (onUpdate)="updateTable($event)"
-          (onRowClick)="showDetails($event)"
-      ></app-table>
-
-    </main>
+    <app-table
+        class=" ms-sm-auto"
+        *ngIf="usersPage$ | async as usersPage; else lack"
+        [tableName]="'user-list'"
+        [columns]="[
+            { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
+            { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
+            { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
+            { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
+            { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+        ]"
+        [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
+        [page]="usersPage.page"
+        (onUpdate)="updateTable($event)"
+        (onRowClick)="showDetails($event)"
+    ></app-table>
   </div>
 </div>
 

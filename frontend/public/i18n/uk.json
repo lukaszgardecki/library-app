@@ -138,6 +138,12 @@
                 "CURRENT": "Поточний",
                 "COMPLETED": "Завершено"
             }
+        },
+        "STATS": {
+            "LENDINGS_COUNT_TODAY": "Сьогоднішні позики",
+            "USERS_ACTIVE_THIS_MONTH": "Активні користувачі цього місяця",
+            "USERS_NEW_THIS_MONTH": "Нові користувачі цього місяця",
+            "USERS_TOTAL": "Усі користувачі"
         }
     },
     "WEB": {

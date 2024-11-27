@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { UsersPage } from '../../shared/models/users-page';
 import { UserDetails, UserDetailsAdmin, UserPreview, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
 import { Sort } from '../../shared/models/sort.interface';
+import { UserStatsAdmin } from '../../shared/models/users-stats-admin';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class UserService {
   getUsersPage(page: number, size: number, sort: Sort, query: string = ""): void {
     let params = this.createParams(page, size, sort, query);
     this.fetchUsersPage(params);
+  }
+
+  getUsersStatsAdmin(): Observable<UserStatsAdmin> {
+    return this.http.get<UserStatsAdmin>(`${this.baseAdminURL}/stats`, { withCredentials: true });
   }
 
   getUserDetailsById(id: number): Observable<UserDetails> {

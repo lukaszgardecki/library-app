@@ -15,6 +15,7 @@ import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 })
 export class UsersComponent {
   usersPage$ = this.userService.usersPage$;
+  usersStats$ = this.userService.getUsersStatsAdmin();
 
   constructor(
     private userService: UserService,

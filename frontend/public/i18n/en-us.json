@@ -138,6 +138,12 @@
                 "CURRENT": "Current",
                 "COMPLETED": "Completed"
             }
+        },
+        "STATS": {
+            "LENDINGS_COUNT_TODAY": "Today's Lendings",
+            "USERS_ACTIVE_THIS_MONTH": "Active Users This Month",
+            "USERS_NEW_THIS_MONTH": "New Users This Month",
+            "USERS_TOTAL": "Total Users"
         }
     },
     "WEB": {

@@ -20,4 +20,20 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
             """
             , nativeQuery = true)
     Optional<Lending> findCurrentLendingByBookItemId(@Param(value = "bookItemId") Long bookItemId);
+
+    @Query("""
+       SELECT COUNT(DISTINCT l.member.id)
+       FROM Lending l
+       WHERE FUNCTION('MONTH', l.creationDate) = FUNCTION('MONTH', CURRENT_DATE)
+       AND FUNCTION('YEAR', l.creationDate) = FUNCTION('YEAR', CURRENT_DATE)
+       """)
+    long countActiveMembersThisMonth();
+
+    @Query("""
+       SELECT COUNT(l)
+       FROM Lending l
+       WHERE l.creationDate = CURRENT_DATE
+       """)
+    long countLendingsToday();
+
 }

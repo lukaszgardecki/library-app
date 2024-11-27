@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.member.MemberService;
 import com.example.libraryapp.domain.member.dto.MemberDto;
 import com.example.libraryapp.domain.member.dto.MemberDtoAdmin;
 import com.example.libraryapp.domain.member.dto.MemberUpdateAdminDto;
+import com.example.libraryapp.domain.member.dto.MembersStatsAdminDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,12 @@ public class AdminMemberController {
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         MemberDtoAdmin member = memberService.findMemberByIdAdmin(id);
         return ResponseEntity.ok(member);
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<MembersStatsAdminDto> getUsersStats() {
+        MembersStatsAdminDto stats = memberService.findAllUsersStats();
+        return ResponseEntity.ok(stats);
     }
 
     @PatchMapping("/{id}")

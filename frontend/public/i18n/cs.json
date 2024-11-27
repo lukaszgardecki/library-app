@@ -138,6 +138,12 @@
                 "CURRENT": "Aktuální",
                 "COMPLETED": "Dokončeno"
             }
+        },
+        "STATS": {
+            "LENDINGS_COUNT_TODAY": "Dnešní výpůjčky",
+            "USERS_ACTIVE_THIS_MONTH": "Aktivní uživatelé v tomto měsíci",
+            "USERS_NEW_THIS_MONTH": "Noví uživatelé v tomto měsíci",
+            "USERS_TOTAL": "Všichni uživatelé"
         }
     },
     "WEB": {

@@ -138,6 +138,12 @@
                 "CURRENT": "Aktualne",
                 "COMPLETED": "Zakończone"
             }
+        },
+        "STATS": {
+            "LENDINGS_COUNT_TODAY": "Dzisiejsze wypożyczenia",
+            "USERS_ACTIVE_THIS_MONTH": "Aktywni użytkownicy w tym miesiącu",
+            "USERS_NEW_THIS_MONTH": "Nowi użytkownicy w tym miesiącu",
+            "USERS_TOTAL": "Wszyscy użytkownicy"
         }
     },
     "WEB": {

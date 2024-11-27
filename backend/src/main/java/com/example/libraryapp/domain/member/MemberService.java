@@ -46,6 +46,15 @@ public class MemberService {
         return pagedResourcesAssembler.toModel(page, userPreviewModelAssemblerAdmin);
     }
 
+    public MembersStatsAdminDto findAllUsersStats() {
+        return MembersStatsAdminDto.builder()
+                .todayLendings(lendingRepository.countLendingsToday())
+                .activeUsersThisMonth(lendingRepository.countActiveMembersThisMonth())
+                .newUsersThisMonth(memberRepository.countMembersRegisteredThisMonth())
+                .usersCount(memberRepository.count())
+                .build();
+    }
+
     public MemberDto findMemberById(Long id) {
         Member member = findMember(id);
         return userModelAssembler.toModel(member);
