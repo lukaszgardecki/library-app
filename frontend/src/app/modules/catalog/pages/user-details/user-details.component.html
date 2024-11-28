@@ -417,10 +417,10 @@
             <div class="content">
                 <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate }}</div>
                 <div class="section-content">
-                    <app-user-activity-chart
+                    <app-annual-activity-chart
                         *ngIf="areAnnualLendingsDataAvailble(); else lack"
                         [data]="user.lendingsPerMonth"
-                    ></app-user-activity-chart>
+                    ></app-annual-activity-chart>
                 </div>
             </div>
         </div>

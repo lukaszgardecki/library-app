@@ -7,13 +7,13 @@ import { TranslationService } from '../../../../../shared/services/translation.s
 Chart.register(...registerables, Tooltip);
 
 @Component({
-  selector: 'app-user-activity-chart',
+  selector: 'app-annual-activity-chart',
   standalone: true,
   imports: [TranslateModule],
-  templateUrl: './user-activity-chart.component.html',
-  styleUrl: './user-activity-chart.component.css'
+  templateUrl: './annual-activity-chart.component.html',
+  styleUrl: './annual-activity-chart.component.css'
 })
-export class UserActivityChartComponent {
+export class AnnualActivityChartComponent {
   chart: any;
 
   constructor(private translationService: TranslationService) { }
@@ -44,7 +44,7 @@ export class UserActivityChartComponent {
       this.chart.destroy();
     }
 
-    this.chart = new Chart('activityChart', {
+    this.chart = new Chart('annualActivityChart', {
       type: 'bar',
       data: {
         labels: monthLabels,

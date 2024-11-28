@@ -12,7 +12,7 @@ import { NullPlaceholderPipe } from "../../../../shared/pipes/null-placeholder.p
 import { FormsModule } from '@angular/forms';
 import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
-import { UserActivityChartComponent } from "../../components/charts/user-activity-chart/user-activity-chart.component";
+import { AnnualActivityChartComponent } from "../../components/charts/annual-activity-chart/annual-activity-chart.component";
 import { LendingService } from '../../core/services/lending.service';
 import { TableComponent } from "../../components/table/table.component";
 import { LendingsPage } from '../../shared/models/lendings-page';
@@ -25,7 +25,7 @@ import { TableUpdateEvent } from '../../shared/models/table-event.interface';
   imports: [
     CommonModule, TranslateModule, FormsModule,
     NullPlaceholderPipe, EnumNamePipe,
-    FavGenreChartComponent, UserActivityChartComponent,
+    FavGenreChartComponent, AnnualActivityChartComponent,
     TableComponent
 ],
   templateUrl: './user-details.component.html',
