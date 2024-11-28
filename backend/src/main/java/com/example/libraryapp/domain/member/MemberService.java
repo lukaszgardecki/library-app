@@ -24,9 +24,11 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +55,7 @@ public class MemberService {
                 .newUsersThisMonth(memberRepository.countMembersRegisteredThisMonth())
                 .usersCount(memberRepository.count())
                 .favGenres(findTopGenres(5))
+                .lendingsLastYearByMonth(findLendingsLastYearByMonth())
                 .build();
     }
 
@@ -234,5 +237,22 @@ public class MemberService {
                         (v1, v2) -> v1,
                         LinkedHashMap::new
                 ));
+    }
+
+    public List<Long> findLendingsLastYearByMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(11).withDayOfMonth(1);
+        List<Object[]> rawCounts = lendingRepository.countLendingsByMonth(startDate);
+
+        Map<Integer, Long> monthCounts = rawCounts.stream()
+                .collect(Collectors.toMap(
+                        row -> (Integer) row[0],
+                        row -> (Long) row[1]
+                ));
+
+        return IntStream.rangeClosed(0, 11)
+                .mapToObj(i -> now.minusMonths(11 - i).getMonthValue())
+                .map(month -> monthCounts.getOrDefault(month, 0L))
+                .collect(Collectors.toList());
     }
 }

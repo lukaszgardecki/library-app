@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,4 +47,12 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
        LIMIT :count
        """, nativeQuery = true)
     List<Object[]> findTopSubjectsWithLendingCount(@Param("count") int count);
+
+    @Query("""
+        SELECT MONTH(l.creationDate) AS month, COUNT(l) AS count
+        FROM Lending l
+        WHERE l.creationDate >= :startDate
+        GROUP BY MONTH(l.creationDate)
+    """)
+    List<Object[]> countLendingsByMonth(@Param("startDate") LocalDate startDate);
 }

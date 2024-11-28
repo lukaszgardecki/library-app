@@ -16,4 +16,5 @@ public class MembersStatsAdminDto {
     private int newUsersThisMonth;
     private long usersCount;
     private Map<String, Long> favGenres;
+    private List<Long> lendingsLastYearByMonth;
 }

@@ -44,14 +44,22 @@
 
   <div class="content-row">
     <div class="content">
+      <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate }}</div>
+      <div class="section-content">
+        <app-user-activity-chart
+          *ngIf="(usersStats$ | async)?.lendingsPerMonthWithinAYear as lendings; else lack"
+          [data]="lendings"
+        ></app-user-activity-chart>
+      </div>
+    </div>
+
+    <div class="content">
       <div class="section-header">{{ 'CAT.USER.ACCOUNT.FAV_GENRES' | translate }}</div>
       <div class="section-content">
-        <ng-container *ngIf="(usersStats$ | async)?.favGenres as favGenres">
-          <app-fav-genre-chart
-              *ngIf="favGenres; else lack"
-              [data]="favGenres"
-          ></app-fav-genre-chart>
-        </ng-container>
+        <app-fav-genre-chart
+          *ngIf="(usersStats$ | async)?.favGenres as favGenres; else lack"
+          [data]="favGenres"
+        ></app-fav-genre-chart>
       </div>
     </div>
   </div>
