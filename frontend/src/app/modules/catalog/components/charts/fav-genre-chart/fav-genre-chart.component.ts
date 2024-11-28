@@ -62,7 +62,7 @@ export class FavGenreChartComponent {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'bottom'
+            position: 'right'
           },
           tooltip: {
             enabled: true,
