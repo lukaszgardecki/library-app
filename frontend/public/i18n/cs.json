@@ -6,18 +6,54 @@
         "SHARE": "Sdílet",
         "EXPORT": "Exportovat",
         "MONTH": {
-            "JAN": "Leden",
-            "FEB": "Únor",
-            "MAR": "Březen",
-            "APR": "Duben",
-            "MAI": "Květen",
-            "JUN": "Červen",
-            "JUL": "Červenec",
-            "AUG": "Srpen",
-            "SEP": "Září",
-            "OCT": "Říjen",
-            "NOV": "Listopad",
-            "DEC": "Prosinec"
+            "JAN": {
+                "NAME": "Leden",
+                "SHORT": "led"
+            },
+            "FEB": {
+                "NAME": "Únor",
+                "SHORT": "úno"
+            },
+            "MAR": {
+                "NAME": "Březen",
+                "SHORT": "bře"
+            },
+            "APR": {
+                "NAME": "Duben",
+                "SHORT": "dub"
+            },
+            "MAI": {
+                "NAME": "Květen",
+                "SHORT": "kvě"
+            },
+            "JUN": {
+                "NAME": "Červen",
+                "SHORT": "čvn"
+            },
+            "JUL": {
+                "NAME": "Červenec",
+                "SHORT": "čvc"
+            },
+            "AUG": {
+                "NAME": "Srpen",
+                "SHORT": "srp"
+            },
+            "SEP": {
+                "NAME": "Září",
+                "SHORT": "zář"
+            },
+            "OCT": {
+                "NAME": "Říjen",
+                "SHORT": "říj"
+            },
+            "NOV": {
+                "NAME": "Listopad",
+                "SHORT": "lis"
+            },
+            "DEC": {
+                "NAME": "Prosinec",
+                "SHORT": "pro"
+            }
         }
     },
     "CAT": {

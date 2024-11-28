@@ -6,18 +6,54 @@
         "SHARE": "Zdieľať",
         "EXPORT": "Exportovať",
         "MONTH": {
-            "JAN": "Január",
-            "FEB": "Február",
-            "MAR": "Marec",
-            "APR": "Apríl",
-            "MAI": "Máj",
-            "JUN": "Jún",
-            "JUL": "Júl",
-            "AUG": "August",
-            "SEP": "September",
-            "OCT": "Október",
-            "NOV": "November",
-            "DEC": "December"
+            "JAN": {
+                "NAME": "január",
+                "SHORT": "jan"
+            },
+            "FEB": {
+                "NAME": "február",
+                "SHORT": "feb"
+            },
+            "MAR": {
+                "NAME": "marec",
+                "SHORT": "mar"
+            },
+            "APR": {
+                "NAME": "apríl",
+                "SHORT": "apr"
+            },
+            "MAI": {
+                "NAME": "máj",
+                "SHORT": "máj"
+            },
+            "JUN": {
+                "NAME": "jún",
+                "SHORT": "jún"
+            },
+            "JUL": {
+                "NAME": "júl",
+                "SHORT": "júl"
+            },
+            "AUG": {
+                "NAME": "august",
+                "SHORT": "aug"
+            },
+            "SEP": {
+                "NAME": "september",
+                "SHORT": "sep"
+            },
+            "OCT": {
+                "NAME": "október",
+                "SHORT": "okt"
+            },
+            "NOV": {
+                "NAME": "november",
+                "SHORT": "nov"
+            },
+            "DEC": {
+                "NAME": "december",
+                "SHORT": "dec"
+            }
         }
     },
     "CAT": {

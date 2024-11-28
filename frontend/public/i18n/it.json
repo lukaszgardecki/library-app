@@ -6,18 +6,54 @@
         "SHARE": "Condividi",
         "EXPORT": "Esporta",
         "MONTH": {
-            "JAN": "Gennaio",
-            "FEB": "Febbraio",
-            "MAR": "Marzo",
-            "APR": "Aprile",
-            "MAI": "Maggio",
-            "JUN": "Giugno",
-            "JUL": "Luglio",
-            "AUG": "Agosto",
-            "SEP": "Settembre",
-            "OCT": "Ottobre",
-            "NOV": "Novembre",
-            "DEC": "Dicembre"
+            "JAN": {
+                "NAME": "gennaio",
+                "SHORT": "gen"
+            },
+            "FEB": {
+                "NAME": "febbraio",
+                "SHORT": "feb"
+            },
+            "MAR": {
+                "NAME": "marzo",
+                "SHORT": "mar"
+            },
+            "APR": {
+                "NAME": "aprile",
+                "SHORT": "apr"
+            },
+            "MAI": {
+                "NAME": "maggio",
+                "SHORT": "mag"
+            },
+            "JUN": {
+                "NAME": "giugno",
+                "SHORT": "giu"
+            },
+            "JUL": {
+                "NAME": "luglio",
+                "SHORT": "lug"
+            },
+            "AUG": {
+                "NAME": "agosto",
+                "SHORT": "ago"
+            },
+            "SEP": {
+                "NAME": "settembre",
+                "SHORT": "set"
+            },
+            "OCT": {
+                "NAME": "ottobre",
+                "SHORT": "ott"
+            },
+            "NOV": {
+                "NAME": "novembre",
+                "SHORT": "nov"
+            },
+            "DEC": {
+                "NAME": "dicembre",
+                "SHORT": "dic"
+            }
         }
     },
     "CAT": {
