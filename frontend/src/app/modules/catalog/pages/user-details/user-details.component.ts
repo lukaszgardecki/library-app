@@ -34,10 +34,10 @@ import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 export class UserDetailsComponent {
   user: UserDetailsAdmin = new UserDetailsAdmin();
   favGenre: String = '';
-  genderList = Object.values(Gender)
-  accountStatuses = Object.values(AccountStatus)
-  cardStatuses = Object.values(CardStatus)
-  roles = Object.values(Role)
+  genderList = Object.values(Gender);
+  accountStatuses = Object.values(AccountStatus);
+  cardStatuses = Object.values(CardStatus);
+  roles = Object.values(Role);
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
   lendingPage$: Observable<LendingsPage>;

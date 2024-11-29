@@ -89,6 +89,7 @@
     "CAT": {
         "BTN": {
             "BACK": "Back",
+            "CANCEL": "Cancel",
             "EDIT": "Edit",
             "SAVE": "Save",
             "SAVE_TO_FILE": "Save to file"
@@ -110,6 +111,20 @@
             "NOT_HAVE_ACCOUNT": "Don't have an account?",
             "SIGN_UP": "Sign up",
             "SIGN_UP_ALSO": "You can also join through"
+        },
+        "REGISTER": {
+            "HEADER": "Registration",
+            "VALID_MSG": {
+                "REQUIRED": "Fill in the field.",
+                "PASS_LENGTH": "Password must be at least {{length}} characters long.",
+                "PASS_UPPER_LETTER": "Password must contain at least one uppercase letter.",
+                "PASS_LOWER_LETTER": "Password must contain at least one lowercase letter.",
+                "PASS_DIGIT": "Password must contain at least one digit.",
+                "PASS_SPECIAL_CHAR": "Password must contain at least one special character.",
+                "PASS_MISMATCH": "Passwords must match."
+            },
+            "PASS_REPEAT": "Repeat password",
+            "BTN": "Register"
         },
         "NAVBAR": {
             "PROFILE": "Profile",

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { UsersPage } from '../../shared/models/users-page';
-import { UserDetails, UserDetailsAdmin, UserPreview, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
+import { UserDetails, UserDetailsAdmin, UserPreview, UserRegister, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
 import { Sort } from '../../shared/models/sort.interface';
 import { UserStatsAdmin } from '../../shared/models/users-stats-admin';
 
@@ -13,15 +13,17 @@ import { UserStatsAdmin } from '../../shared/models/users-stats-admin';
 export class UserService {
   private baseURL;
   private baseAdminURL;
+  private registerURL;
   private usersPageSubject = new BehaviorSubject<UsersPage>(new UsersPage());
   usersPage$ = this.usersPageSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService
-  ) { 
+  ) {
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/members`;
+    this.registerURL = `${baseURL}/register`;
     this.baseAdminURL = `${baseURL}/admin/members`;
   }
 
@@ -53,6 +55,10 @@ export class UserService {
     return this.http.get<UserPreview>(`${this.baseURL}/${id}/preview`, { withCredentials: true });
   }
 
+  createNewUser(user: UserRegister) {
+    this.http.post(this.registerURL, user).subscribe();
+  }
+
   updateUser(userId: number, user: UserUpdate): Observable<UserDetails> {
     return this.http.patch<UserDetails>(`${this.baseURL}/${userId}`, user, { withCredentials: true });
   }
@@ -73,7 +79,7 @@ export class UserService {
   private createParams(page: number | null, size: number | null, sort: Sort | null, query: string | null): HttpParams {
     let params = new HttpParams();
     if (page !== null) { params = params.set("page", page); }
-    if (size !== null) { params = params.set("size", size); } 
+    if (size !== null) { params = params.set("size", size); }
     if (query !== null) { params = params.set("q", query); }
     if (sort?.direction) {
         const sortParam = ['firstName', 'lastName'].includes(sort.columnKey) ? `person.${sort.columnKey}` : sort.columnKey;

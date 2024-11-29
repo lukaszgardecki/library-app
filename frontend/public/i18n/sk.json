@@ -89,6 +89,7 @@
     "CAT": {
         "BTN": {
             "BACK": "Späť",
+            "CANCEL": "Zrušiť",
             "EDIT": "Upraviť",
             "SAVE": "Uložiť",
             "SAVE_TO_FILE": "Uložiť do súboru"
@@ -110,6 +111,20 @@
             "NOT_HAVE_ACCOUNT": "Nemáte účet?",
             "SIGN_UP": "Zaregistrujte sa",
             "SIGN_UP_ALSO": "Môžete sa tiež pripojiť cez"
+        },
+        "REGISTER": {
+            "HEADER": "Registrácia",
+            "VALID_MSG": {
+                "REQUIRED": "Vyplňte pole.",
+                "PASS_LENGTH": "Heslo musí mať aspoň {{length}} znakov.",
+                "PASS_UPPER_LETTER": "Heslo musí obsahovať aspoň jedno veľké písmeno.",
+                "PASS_LOWER_LETTER": "Heslo musí obsahovať aspoň jedno malé písmeno.",
+                "PASS_DIGIT": "Heslo musí obsahovať aspoň jednu číslicu.",
+                "PASS_SPECIAL_CHAR": "Heslo musí obsahovať aspoň jeden špeciálny znak.",
+                "PASS_MISMATCH": "Heslá musia byť rovnaké."
+            },
+            "PASS_REPEAT": "Zopakujte heslo",
+            "BTN": "Registrovať"
         },
         "NAVBAR": {
             "PROFILE": "Profil",

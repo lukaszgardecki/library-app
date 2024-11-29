@@ -89,6 +89,7 @@
     "CAT": {
         "BTN": {
             "BACK": "Volver",
+            "CANCEL": "Cancelar",
             "EDIT": "Editar",
             "SAVE": "Guardar",
             "SAVE_TO_FILE": "Guardar en archivo"
@@ -110,6 +111,20 @@
             "NOT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
             "SIGN_UP": "Regístrate",
             "SIGN_UP_ALSO": "También puedes unirte a través de"
+        },
+        "REGISTER": {
+            "HEADER": "Registro",
+            "VALID_MSG": {
+                "REQUIRED": "Complete el campo.",
+                "PASS_LENGTH": "La contraseña debe tener al menos {{length}} caracteres.",
+                "PASS_UPPER_LETTER": "La contraseña debe contener al menos una letra mayúscula.",
+                "PASS_LOWER_LETTER": "La contraseña debe contener al menos una letra minúscula.",
+                "PASS_DIGIT": "La contraseña debe contener al menos un dígito.",
+                "PASS_SPECIAL_CHAR": "La contraseña debe contener al menos un carácter especial.",
+                "PASS_MISMATCH": "Las contraseñas deben coincidir."
+            },
+            "PASS_REPEAT": "Repite la contraseña",
+            "BTN": "Registrar"
         },
         "NAVBAR": {
             "PROFILE": "Perfil",

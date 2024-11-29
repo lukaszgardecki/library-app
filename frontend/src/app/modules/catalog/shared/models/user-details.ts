@@ -4,6 +4,25 @@ import { Gender } from "../enums/gender.enum";
 import { Role } from "../enums/role.enum";
 import { LibraryCard } from "./library-card";
 
+export class UserRegister {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    pesel: string;
+    dateOfBirth: Date;
+    gender: Gender;
+    nationality: string;
+    mothersName: string;
+    fathersName: string;
+    streetAddress: string;
+    zipCode: string;
+    city: string;
+    state: string;
+    country: string;
+    phone: string;
+}
+
 export class UserDetails {
     id: number;
     firstName: string;
