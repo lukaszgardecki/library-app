@@ -40,10 +40,10 @@
         </div>
     </div>
   </div>
-
+  
   <div class="row">
 
-    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 p-2" type="button" data-bs-toggle="modal" data-bs-target="#registrationModal">
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 p-2" type="button" data-bs-toggle="modal" data-bs-target="#registrationModal" (click)="generateFakeUsers()">
       <div class="small-box add-user-btn">
         <i class="bi bi-person-add small-box-icon"></i>
       </div>
@@ -84,7 +84,7 @@
         </div>
       </div>
     </div>
-
+  
     <div class="col-12 col-xl-6 col-xxl-6 p-2">
       <div class="content">
         <div class="section-header">{{ 'CAT.STATS.USERS_TOTAL' | translate }}</div>
@@ -112,4 +112,4 @@
 
 <ng-template #lack>{{ 'DATA.LACK' | translate }}</ng-template>
 
-<app-registration-form></app-registration-form>
+<app-registration-form></app-registration-form>  

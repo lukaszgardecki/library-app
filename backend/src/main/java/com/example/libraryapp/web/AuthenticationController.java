@@ -4,15 +4,12 @@ import com.example.libraryapp.domain.auth.AuthenticationService;
 import com.example.libraryapp.domain.auth.LoginRequest;
 import com.example.libraryapp.domain.auth.LoginResponse;
 import com.example.libraryapp.domain.auth.RegisterRequest;
+import com.example.libraryapp.management.FakeUserGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -41,5 +38,13 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginResponse loginResponse = authService.refreshToken(request, response);
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/fu")
+    public ResponseEntity<Void> generateFakeUsers(@RequestParam int amount) {
+        for (int i = 0; i < amount; i++) {
+            authService.register(FakeUserGenerator.generate());
+        }
+        return ResponseEntity.ok().build();
     }
 }

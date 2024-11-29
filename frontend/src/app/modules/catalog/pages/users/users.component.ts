@@ -34,4 +34,8 @@ export class UsersComponent {
   showDetails(userId: number) {
     this.router.navigate([userId], { relativeTo: this.route });
   }
+
+  generateFakeUsers() {
+    this.userService.generateFakeUsers(10);
+  }
 }

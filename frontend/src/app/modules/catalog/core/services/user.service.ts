@@ -12,6 +12,7 @@ import { UserStatsAdmin } from '../../shared/models/users-stats-admin';
 })
 export class UserService {
   private baseURL;
+  private fakeUserURL;
   private baseAdminURL;
   private registerURL;
   private usersPageSubject = new BehaviorSubject<UsersPage>(new UsersPage());
@@ -23,6 +24,7 @@ export class UserService {
   ) {
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/members`;
+    this.fakeUserURL = `${baseURL}/fu`;
     this.registerURL = `${baseURL}/register`;
     this.baseAdminURL = `${baseURL}/admin/members`;
   }
@@ -57,6 +59,10 @@ export class UserService {
 
   createNewUser(user: UserRegister) {
     this.http.post(this.registerURL, user).subscribe();
+  }
+
+  generateFakeUsers(amount: number) {
+    this.http.post(`${this.fakeUserURL}?amount=${amount}`, null).subscribe();
   }
 
   updateUser(userId: number, user: UserUpdate): Observable<UserDetails> {
