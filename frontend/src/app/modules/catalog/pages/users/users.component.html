@@ -6,7 +6,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
         <div class="small-box text-bg-primary">
             <div class="inner">
-                <h3>{{ (usersStats$ | async)?.todayLendings }}</h3>
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.todayLendings }}</h3>
                 <p>{{ 'CAT.STATS.LENDINGS_COUNT_TODAY' | translate }}</p>
             </div>
             <i class="bi bi-bookmark-check small-box-icon"></i>
@@ -15,7 +15,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
         <div class="small-box text-bg-success">
             <div class="inner">
-                <h3>{{ (usersStats$ | async)?.activeUsersThisMonth }}</h3>
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.activeUsersThisMonth }}</h3>
                 <p>{{ 'CAT.STATS.USERS_ACTIVE_THIS_MONTH' | translate }}</p>
             </div>
             <i class="bi bi-activity small-box-icon"></i>
@@ -24,7 +24,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
         <div class="small-box text-bg-warning">
             <div class="inner">
-                <h3>{{ (usersStats$ | async)?.newUsersThisMonth }}</h3>
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.newUsersThisMonth }}</h3>
                 <p>{{ 'CAT.STATS.USERS_NEW_THIS_MONTH' | translate }}</p>
             </div>
             <i class="bi bi-person-plus-fill small-box-icon"></i>
@@ -33,7 +33,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
         <div class="small-box text-bg-danger">
             <div class="inner">
-                <h3>{{ (usersStats$ | async)?.usersCount }}</h3>
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.usersCount }}</h3>
                 <p>{{ 'CAT.STATS.USERS_TOTAL' | translate }}</p>
             </div>
             <i class="bi bi-people-fill small-box-icon"></i>
@@ -42,54 +42,50 @@
   </div>
   
   <div class="row">
-    <div class="col-10 p-2">
-      <div class="content">
-        <div class="section-header">Wykres</div>
-        <div class="section-content">
-          
-        </div>
+
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 p-2">
+      <div class="small-box add-user-btn">
+        <i class="bi bi-person-add small-box-icon"></i>
       </div>
     </div>
 
-    <div class="col-2 p-2">
-      <div class="small-box text-bg-success" role="button">
-        <div class="inner">
-            <!-- <h3>{{ (usersStats$ | async)?.activeUsersThisMonth }}</h3> -->
-            <p>Dodaj</p>
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-5 col-xxl-5 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_WEEKLY' | translate }}</div>
+        <div class="section-content" >
+          <app-weekly-activity-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data1]="stats.newLendingsLastWeekByDay"
+            [data2]="stats.returnedLendingsLastWeekByDay"
+          ></app-weekly-activity-chart>
         </div>
-        <i class="bi bi-person-add small-box-icon"></i>
+      </div>
     </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-12 p-2">
+    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
       <div class="content">
         <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate }}</div>
         <div class="section-content">
           <app-annual-activity-chart
-            *ngIf="(usersStats$ | async)?.lendingsPerMonthWithinAYear as lendings; else lack"
-            [data]="lendings"
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.lendingsLastYearByMonth"
           ></app-annual-activity-chart>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6 col-sm-6 col-12 p-2">
+    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
       <div class="content">
         <div class="section-header">{{ 'CAT.USER.ACCOUNT.FAV_GENRES' | translate }}</div>
         <div class="section-content">
           <app-fav-genre-chart
-            *ngIf="(usersStats$ | async)?.favGenres as favGenres; else lack"
-            [data]="favGenres"
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.favGenres"
           ></app-fav-genre-chart>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 p-2">
+  
+    <div class="col-12 col-xl-6 col-xxl-6 p-2">
       <div class="content">
         <div class="section-header">{{ 'CAT.STATS.USERS_TOTAL' | translate }}</div>
         <div class="section-content">
@@ -111,7 +107,6 @@
         </div>
       </div>
     </div>
-  </div>
 </div>
 
 

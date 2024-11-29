@@ -5,6 +5,36 @@
         "LACK": "Keine Daten",
         "SHARE": "Teilen",
         "EXPORT": "Exportieren",
+        "DAY": {
+            "MON": {
+                "NAME": "Montag",
+                "SHORT": "Mo"
+            },
+            "TUE": {
+                "NAME": "Dienstag",
+                "SHORT": "Di"
+            },
+            "WED": {
+                "NAME": "Mittwoch",
+                "SHORT": "Mi"
+            },
+            "THU": {
+                "NAME": "Donnerstag",
+                "SHORT": "Do"
+            },
+            "FRI": {
+                "NAME": "Freitag",
+                "SHORT": "Fr"
+            },
+            "SAT": {
+                "NAME": "Samstag",
+                "SHORT": "Sa"
+            },
+            "SUN": {
+                "NAME": "Sonntag",
+                "SHORT": "So"
+            }
+        },
         "MONTH": {
             "JAN": {
                 "NAME": "Januar",
@@ -143,10 +173,13 @@
                     "SUSPENDED": "Gesperrt",
                     "PENDING": "Bestätigung ausstehend"
                 },
+                "LENDINGS": "Ausleihen",
                 "LENDINGS_ALL": "Alle Ausleihen",
                 "LENDINGS_ANNUAL": "Jährliche Ausleihaktivität",
+                "LENDINGS_WEEKLY": "Aktivität in den letzten 7 Tagen",
                 "LENDINGS_COUNT": "Anzahl der Ausleihen",
                 "LENDINGS_CURRENT": "Aktuelle Ausleihen",
+                "RETURNS": "Rückgaben",
                 "LATE_FEES": "Verspätungsgebühren",
                 "FAV_GENRE": "Lieblingsgenre",
                 "FAV_GENRES": "Lieblingsgenres"

@@ -4,5 +4,7 @@ export class UserStatsAdmin {
     activeUsersThisMonth: number;
     newUsersThisMonth: number;
     favGenres: Map<string, number> = new Map<string, number>();
-    lendingsPerMonthWithinAYear: Array<number> = new Array<number>();
+    lendingsLastYearByMonth: Array<number> = new Array<number>();
+    newLendingsLastWeekByDay: Array<number> = new Array<number>();
+    returnedLendingsLastWeekByDay: Array<number> = new Array<number>();
 }

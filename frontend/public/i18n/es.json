@@ -5,6 +5,36 @@
         "LACK": "Falta de datos",
         "SHARE": "Compartir",
         "EXPORT": "Exportar",
+        "DAY": {
+            "MON": {
+                "NAME": "lunes",
+                "SHORT": "lun"
+            },
+            "TUE": {
+                "NAME": "martes",
+                "SHORT": "mar"
+            },
+            "WED": {
+                "NAME": "miércoles",
+                "SHORT": "mié"
+            },
+            "THU": {
+                "NAME": "jueves",
+                "SHORT": "jue"
+            },
+            "FRI": {
+                "NAME": "viernes",
+                "SHORT": "vie"
+            },
+            "SAT": {
+                "NAME": "sábado",
+                "SHORT": "sáb"
+            },
+            "SUN": {
+                "NAME": "domingo",
+                "SHORT": "dom"
+            }
+        },
         "MONTH": {
             "JAN": {
                 "NAME": "enero",
@@ -143,10 +173,13 @@
                     "SUSPENDED": "Suspendido",
                     "PENDING": "Pendiente"
                 },
+                "LENDINGS": "Préstamos",
                 "LENDINGS_ALL": "Todos los préstamos",
                 "LENDINGS_ANNUAL": "Actividad anual de préstamos",
+                "LENDINGS_WEEKLY": "Actividad en los últimos 7 días",
                 "LENDINGS_COUNT": "Número de préstamos",
                 "LENDINGS_CURRENT": "Préstamos actuales",
+                "RETURNS": "Devoluciones",
                 "LATE_FEES": "Cargos por retraso",
                 "FAV_GENRE": "Género favorito",
                 "FAV_GENRES": "Géneros favoritos"

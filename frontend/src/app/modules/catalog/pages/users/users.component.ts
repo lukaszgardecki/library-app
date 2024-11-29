@@ -7,11 +7,12 @@ import { TableComponent } from "../../components/table/table.component";
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { AnnualActivityChartComponent } from '../../components/charts/annual-activity-chart/annual-activity-chart.component';
+import { WeeklyActivityChartComponent } from "../../components/charts/weekly-activity-chart/weekly-activity-chart.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent],
+  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent, WeeklyActivityChartComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })

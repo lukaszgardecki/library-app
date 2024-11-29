@@ -5,6 +5,36 @@
         "LACK": "Nedostatek dat",
         "SHARE": "Sdílet",
         "EXPORT": "Exportovat",
+        "DAY": {
+            "MON": {
+                "NAME": "pondělí",
+                "SHORT": "po"
+            },
+            "TUE": {
+                "NAME": "úterý",
+                "SHORT": "út"
+            },
+            "WED": {
+                "NAME": "středa",
+                "SHORT": "st"
+            },
+            "THU": {
+                "NAME": "čtvrtek",
+                "SHORT": "čt"
+            },
+            "FRI": {
+                "NAME": "pátek",
+                "SHORT": "pá"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "so"
+            },
+            "SUN": {
+                "NAME": "neděle",
+                "SHORT": "ne"
+            }
+        },
         "MONTH": {
             "JAN": {
                 "NAME": "Leden",
@@ -143,10 +173,13 @@
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čekající"
                 },
+                "LENDINGS": "Výpůjčky",
                 "LENDINGS_ALL": "Všechny výpůjčky",
                 "LENDINGS_ANNUAL": "Roční aktivita výpůjček",
+                "LENDINGS_WEEKLY": "Aktivita za posledních 7 dní",
                 "LENDINGS_COUNT": "Počet výpůjček",
                 "LENDINGS_CURRENT": "Aktuální výpůjčky",
+                "RETURNS": "Vrácení",
                 "LATE_FEES": "Poplatky za zpoždění",
                 "FAV_GENRE": "Oblíbený žánr",
                 "FAV_GENRES": "Oblíbené žánry"

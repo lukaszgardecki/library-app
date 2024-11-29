@@ -15,11 +15,10 @@ Chart.register(...registerables, Tooltip);
 })
 export class AnnualActivityChartComponent {
   chart: any;
-
-  constructor(private translationService: TranslationService) { }
-
   @Input() data: Array<number>;
   private langChangeSubscription: Subscription;
+
+  constructor(private translationService: TranslationService) { }
 
   ngOnInit(): void {
     this.createChart();
@@ -126,23 +125,23 @@ export class AnnualActivityChartComponent {
   }
 
   private getMonthShort(monthNum: number): string {
-    let monthName = '';
+    let monthShort = '';
     switch (monthNum) {
-      case 1: monthName = this.translationService.translate('DATA.MONTH.JAN.SHORT'); break;
-      case 2: monthName = this.translationService.translate('DATA.MONTH.FEB.SHORT'); break;
-      case 3: monthName = this.translationService.translate('DATA.MONTH.MAR.SHORT'); break;
-      case 4: monthName = this.translationService.translate('DATA.MONTH.APR.SHORT'); break;
-      case 5: monthName = this.translationService.translate('DATA.MONTH.MAI.SHORT'); break;
-      case 6: monthName = this.translationService.translate('DATA.MONTH.JUN.SHORT'); break;
-      case 7: monthName = this.translationService.translate('DATA.MONTH.JUL.SHORT'); break;
-      case 8: monthName = this.translationService.translate('DATA.MONTH.AUG.SHORT'); break;
-      case 9: monthName = this.translationService.translate('DATA.MONTH.SEP.SHORT'); break;
-      case 10: monthName = this.translationService.translate('DATA.MONTH.OCT.SHORT'); break;
-      case 11: monthName = this.translationService.translate('DATA.MONTH.NOV.SHORT'); break;
-      case 12: monthName = this.translationService.translate('DATA.MONTH.DEC.SHORT'); break;
-      default: monthName = ''; break;
+      case 1: monthShort = this.translationService.translate('DATA.MONTH.JAN.SHORT'); break;
+      case 2: monthShort = this.translationService.translate('DATA.MONTH.FEB.SHORT'); break;
+      case 3: monthShort = this.translationService.translate('DATA.MONTH.MAR.SHORT'); break;
+      case 4: monthShort = this.translationService.translate('DATA.MONTH.APR.SHORT'); break;
+      case 5: monthShort = this.translationService.translate('DATA.MONTH.MAI.SHORT'); break;
+      case 6: monthShort = this.translationService.translate('DATA.MONTH.JUN.SHORT'); break;
+      case 7: monthShort = this.translationService.translate('DATA.MONTH.JUL.SHORT'); break;
+      case 8: monthShort = this.translationService.translate('DATA.MONTH.AUG.SHORT'); break;
+      case 9: monthShort = this.translationService.translate('DATA.MONTH.SEP.SHORT'); break;
+      case 10: monthShort = this.translationService.translate('DATA.MONTH.OCT.SHORT'); break;
+      case 11: monthShort = this.translationService.translate('DATA.MONTH.NOV.SHORT'); break;
+      case 12: monthShort = this.translationService.translate('DATA.MONTH.DEC.SHORT'); break;
+      default: monthShort = ''; break;
     }
-    return monthName;
+    return monthShort;
   }
 
   private getLast12MonthsNums(): number[] {

@@ -55,7 +55,9 @@ public class MemberService {
                 .newUsersThisMonth(memberRepository.countMembersRegisteredThisMonth())
                 .usersCount(memberRepository.count())
                 .favGenres(findTopGenres(5))
-                .lendingsLastYearByMonth(findLendingsLastYearByMonth())
+                .lendingsLastYearByMonth(countLendingsLastYearByMonth())
+                .newLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.CURRENT))
+                .returnedLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.COMPLETED))
                 .build();
     }
 
@@ -239,10 +241,10 @@ public class MemberService {
                 ));
     }
 
-    public List<Long> findLendingsLastYearByMonth() {
+    public List<Long> countLendingsLastYearByMonth() {
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusMonths(11).withDayOfMonth(1);
-        List<Object[]> rawCounts = lendingRepository.countLendingsByMonth(startDate);
+        List<Object[]> rawCounts = lendingRepository.countLendingsByMonth(startDate, now);
 
         Map<Integer, Long> monthCounts = rawCounts.stream()
                 .collect(Collectors.toMap(
@@ -253,6 +255,22 @@ public class MemberService {
         return IntStream.rangeClosed(0, 11)
                 .mapToObj(i -> now.minusMonths(11 - i).getMonthValue())
                 .map(month -> monthCounts.getOrDefault(month, 0L))
+                .collect(Collectors.toList());
+    }
+
+    public List<Long> countLendingsLastWeekByDay(LendingStatus status) {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusDays(6);
+        List<Object[]> rawCounts = lendingRepository.countLendingsByDay(startDate, now, status);
+        Map<Integer, Long> counts = rawCounts.stream()
+                .collect(Collectors.toMap(
+                        row -> ((Number) row[0]).intValue(),
+                        row -> ((Number) row[1]).longValue()
+                ));
+
+        return IntStream.rangeClosed(1, 7)
+                .mapToObj(i -> now.minusDays(7 - i).getDayOfWeek().getValue())
+                .map(day -> counts.getOrDefault(day, 0L))
                 .collect(Collectors.toList());
     }
 }

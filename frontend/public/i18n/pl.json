@@ -5,6 +5,36 @@
         "LACK": "Brak danych",
         "SHARE": "Udostępnij",
         "EXPORT": "Eksportuj",
+        "DAY": {
+            "MON": {
+                "NAME": "poniedziałek",
+                "SHORT": "pon"
+            },
+            "TUE": {
+                "NAME": "wtorek",
+                "SHORT": "wt"
+            },
+            "WED": {
+                "NAME": "środa",
+                "SHORT": "śr"
+            },
+            "THU": {
+                "NAME": "czwartek",
+                "SHORT": "czw"
+            },
+            "FRI": {
+                "NAME": "piątek",
+                "SHORT": "pt"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "sob"
+            },
+            "SUN": {
+                "NAME": "niedziela",
+                "SHORT": "niedz"
+            }
+        },
         "MONTH": {
             "JAN": {
                 "NAME": "styczeń",
@@ -143,10 +173,13 @@
                     "SUSPENDED": "Zawieszone",
                     "PENDING": "Potwierdzanie"
                 },
+                "LENDINGS": "Wypożyczenia",
                 "LENDINGS_ALL": "Wszystkie wypożyczenia",
                 "LENDINGS_ANNUAL": "Roczna aktywność wypożyczeń",
+                "LENDINGS_WEEKLY": "Aktywność w ciągu ostatnich 7 dni",
                 "LENDINGS_COUNT": "Liczba wypożyczeń",
                 "LENDINGS_CURRENT": "Aktualne wypożyczenia",
+                "RETURNS": "Zwroty",
                 "LATE_FEES": "Zaległe opłaty",
                 "FAV_GENRE": "Ulubiony gatunek",
                 "FAV_GENRES": "Ulubione gatunki"

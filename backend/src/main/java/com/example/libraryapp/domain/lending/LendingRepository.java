@@ -49,10 +49,28 @@ public interface LendingRepository extends JpaRepository<Lending, Long> {
     List<Object[]> findTopSubjectsWithLendingCount(@Param("count") int count);
 
     @Query("""
-        SELECT MONTH(l.creationDate) AS month, COUNT(l) AS count
+        SELECT MONTH(l.creationDate) AS month, COUNT(l)
         FROM Lending l
-        WHERE l.creationDate >= :startDate
+        WHERE l.creationDate >= :startDate AND l.creationDate <= :endDate
         GROUP BY MONTH(l.creationDate)
     """)
-    List<Object[]> countLendingsByMonth(@Param("startDate") LocalDate startDate);
+    List<Object[]> countLendingsByMonth(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
+
+    @Query("""
+        SELECT
+            FUNCTION('DAYOFWEEK', l.creationDate) AS day,
+            COUNT(l) AS count
+        FROM Lending l
+        WHERE l.creationDate >= :startDate AND l.creationDate <= :endDate AND l.status = :status
+        GROUP BY FUNCTION('DAYOFWEEK', l.creationDate)
+        ORDER BY FUNCTION('DAYOFWEEK', l.creationDate) ASC
+    """)
+    List<Object[]> countLendingsByDay(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("status") LendingStatus status
+    );
 }

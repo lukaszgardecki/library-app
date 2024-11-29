@@ -5,6 +5,36 @@
         "LACK": "Žiadne údaje",
         "SHARE": "Zdieľať",
         "EXPORT": "Exportovať",
+        "DAY": {
+            "MON": {
+                "NAME": "pondelok",
+                "SHORT": "po"
+            },
+            "TUE": {
+                "NAME": "utorok",
+                "SHORT": "ut"
+            },
+            "WED": {
+                "NAME": "streda",
+                "SHORT": "st"
+            },
+            "THU": {
+                "NAME": "štvrtok",
+                "SHORT": "štv"
+            },
+            "FRI": {
+                "NAME": "piatok",
+                "SHORT": "pi"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "so"
+            },
+            "SUN": {
+                "NAME": "nedeľa",
+                "SHORT": "ne"
+            }
+        },
         "MONTH": {
             "JAN": {
                 "NAME": "január",
@@ -143,10 +173,13 @@
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čakajúci"
                 },
+                "LENDINGS": "Požičania",
                 "LENDINGS_ALL": "Všetky výpožičky",
                 "LENDINGS_ANNUAL": "Ročná aktivita výpožičiek",
+                "LENDINGS_WEEKLY": "Aktivita za posledných 7 dní",
                 "LENDINGS_COUNT": "Počet výpožičiek",
                 "LENDINGS_CURRENT": "Aktuálne výpožičky",
+                "RETURNS": "Vrátenia",
                 "LATE_FEES": "Oneskorené poplatky",
                 "FAV_GENRE": "Obľúbený žáner",
                 "FAV_GENRES": "Obľúbené žánre"
