@@ -125,6 +125,19 @@
         </div>
       </div>
     </div>
+
+
+    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_AGE_GROUPS.HEADER' | translate }}</div>
+        <div class="section-content">
+          <app-users-age-groups-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.ageGroups"
+          ></app-users-age-groups-chart>
+        </div>
+      </div>
+    </div>
 </div>
 
 

@@ -225,12 +225,17 @@
             }
         },
         "STATS": {
+            "AMOUNT": "Menge",
             "RANK": "Platz",
             "LENDINGS_COUNT_TODAY": "Heutige Ausleihungen",
             "USERS_ACTIVE_THIS_MONTH": "Aktive Benutzer in diesem Monat",
             "USERS_NEW_THIS_MONTH": "Neue Benutzer in diesem Monat",
             "USERS_TOTAL": "Alle Benutzer",
-            "USERS_TOP_BORROWERS": "Top 10 Leser"
+            "USERS_TOP_BORROWERS": "Top 10 Leser",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Altersgruppen",
+                "LABEL": "Alter"
+            }
         }
     },
     "WEB": {

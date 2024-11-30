@@ -40,6 +40,9 @@ export class UserService {
         if (stats.favGenres) {
           stats.favGenres = new Map<string, number>(Object.entries(stats.favGenres));
         }
+        if (stats.ageGroups) {
+          stats.ageGroups = new Map<string, number>(Object.entries(stats.ageGroups));
+        }
         return stats;
       })
     );

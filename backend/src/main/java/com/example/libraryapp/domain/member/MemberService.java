@@ -34,6 +34,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PersonRepository personRepository;
     private final LendingRepository lendingRepository;
     private final ReservationRepository reservationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -59,6 +60,7 @@ public class MemberService {
                 .newLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.CURRENT))
                 .returnedLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.COMPLETED))
                 .topBorrowers(findTop10Borrowers())
+                .ageGroups(countMembersByAgeGroups())
                 .build();
     }
 
@@ -288,4 +290,17 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    private Map<String, Long> countMembersByAgeGroups() {
+         return new TreeMap<>(
+             Map.of(
+                 "<15", personRepository.countByAgeBetween(0, 15),
+                 "16-25", personRepository.countByAgeBetween(16, 25),
+                 "26-35", personRepository.countByAgeBetween(26, 35),
+                 "36-45", personRepository.countByAgeBetween(36, 45),
+                 "46-55", personRepository.countByAgeBetween(46, 55),
+                 "56-65", personRepository.countByAgeBetween(56, 65),
+                 "66+", personRepository.countByAgeBetween(66, 120)
+             )
+         );
+    }
 }

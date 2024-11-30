@@ -20,4 +20,5 @@ public class MembersStatsAdminDto {
     private List<Long> newLendingsLastWeekByDay;
     private List<Long> returnedLendingsLastWeekByDay;
     private List<MemberTopBorrowersDtoAdmin> topBorrowers;
+    private Map<String, Long> ageGroups;
 }

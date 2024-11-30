@@ -225,12 +225,17 @@
             }
         },
         "STATS": {
+            "AMOUNT": "Кількість",
             "RANK": "Місце",
             "LENDINGS_COUNT_TODAY": "Сьогоднішні позики",
             "USERS_ACTIVE_THIS_MONTH": "Активні користувачі цього місяця",
             "USERS_NEW_THIS_MONTH": "Нові користувачі цього місяця",
             "USERS_TOTAL": "Усі користувачі",
-            "USERS_TOP_BORROWERS": "Топ 10 читачів"
+            "USERS_TOP_BORROWERS": "Топ 10 читачів",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Вікові групи",
+                "LABEL": "Вік"
+            }
         }
     },
     "WEB": {

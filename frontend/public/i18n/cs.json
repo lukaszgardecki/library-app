@@ -225,12 +225,17 @@
             }
         },
         "STATS": {
+            "AMOUNT": "Množství",
             "RANK": "Místo",
             "LENDINGS_COUNT_TODAY": "Dnešní výpůjčky",
             "USERS_ACTIVE_THIS_MONTH": "Aktivní uživatelé v tomto měsíci",
             "USERS_NEW_THIS_MONTH": "Noví uživatelé v tomto měsíci",
             "USERS_TOTAL": "Všichni uživatelé",
-            "USERS_TOP_BORROWERS": "Top 10 čtenářů"
+            "USERS_TOP_BORROWERS": "Top 10 čtenářů",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Věkové Skupiny",
+                "LABEL": "Věk"
+            }
         }
     },
     "WEB": {

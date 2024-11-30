@@ -4,8 +4,6 @@ import { Chart, registerables, Tooltip, TooltipItem } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { TranslationService } from '../../../../../shared/services/translation.service';
 
-Chart.register(...registerables, Tooltip);
-
 @Component({
   selector: 'app-annual-activity-chart',
   standalone: true,
@@ -21,6 +19,7 @@ export class AnnualActivityChartComponent {
   constructor(private translationService: TranslationService) { }
 
   ngOnInit(): void {
+    Chart.register(...registerables, Tooltip);
     this.createChart();
     this.langChangeSubscription = this.translationService.onLangChange$.subscribe(onLangChange => {
         if (onLangChange){

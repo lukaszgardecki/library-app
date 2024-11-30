@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { TranslationService } from '../../../../../shared/services/translation.service';
 import { Chart, registerables, Tooltip, TooltipItem } from 'chart.js';
 
-Chart.register(...registerables, Tooltip);
 
 @Component({
   selector: 'app-weekly-activity-chart',
@@ -22,6 +21,7 @@ export class WeeklyActivityChartComponent {
   constructor(private translationService: TranslationService) { }
 
   ngOnInit(): void {
+    Chart.register(...registerables, Tooltip);
     this.createChart();
     this.langChangeSubscription = this.translationService.onLangChange$.subscribe(onLangChange => {
         if (onLangChange){

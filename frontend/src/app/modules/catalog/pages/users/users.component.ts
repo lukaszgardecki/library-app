@@ -10,11 +10,12 @@ import { AnnualActivityChartComponent } from '../../components/charts/annual-act
 import { WeeklyActivityChartComponent } from "../../components/charts/weekly-activity-chart/weekly-activity-chart.component";
 import { RegistrationFormComponent } from "../../components/registration-form/registration-form.component";
 import { TopBorrowersComponent } from "../../components/tables/top-borrowers/top-borrowers.component";
+import { UsersAgeGroupsChartComponent } from "../../components/charts/users-age-groups-chart/users-age-groups-chart.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent, WeeklyActivityChartComponent, RegistrationFormComponent, TopBorrowersComponent],
+  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent, WeeklyActivityChartComponent, RegistrationFormComponent, TopBorrowersComponent, UsersAgeGroupsChartComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
