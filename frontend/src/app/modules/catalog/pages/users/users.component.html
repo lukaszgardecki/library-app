@@ -115,7 +115,7 @@
           <app-top-borrowers
             *ngIf="usersStats$ | async as stats; else lack"
             [columns]="[
-                { key: 'place', label: 'CAT.STATS.RANK' },
+                { key: 'rank', label: 'CAT.STATS.RANK' },
                 { key: 'fullName', label: 'CAT.USER.BORROWER' },
                 { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
             ]"
@@ -127,7 +127,7 @@
     </div>
 
 
-    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
+    <div class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2">
       <div class="content">
         <div class="section-header">{{ 'CAT.STATS.USERS_AGE_GROUPS.HEADER' | translate }}</div>
         <div class="section-content">
@@ -135,6 +135,22 @@
             *ngIf="usersStats$ | async as stats; else lack"
             [data]="stats.ageGroups"
           ></app-users-age-groups-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_TOP_CITIES' | translate }}</div>
+        <div class="section-content">
+          <app-top-cities
+            *ngIf="usersStats$ | async as stats; else lack"
+            [columns]="[
+                'CAT.USER.DETAILS.CITY' ,
+                'CAT.STATS.AMOUNT' ,
+            ]"
+            [data]="stats.topCities"
+          ></app-top-cities>
         </div>
       </div>
     </div>

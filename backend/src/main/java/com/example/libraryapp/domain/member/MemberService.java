@@ -61,6 +61,7 @@ public class MemberService {
                 .returnedLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.COMPLETED))
                 .topBorrowers(findTop10Borrowers())
                 .ageGroups(countMembersByAgeGroups())
+                .topCities(findTop10CitiesWithUserCount())
                 .build();
     }
 
@@ -282,7 +283,7 @@ public class MemberService {
         return top10Borrowers.stream()
                 .map(member -> MemberTopBorrowersDtoAdmin.builder()
                         .id(member.getId())
-                        .place(top10Borrowers.indexOf(member) + 1)
+                        .rank(top10Borrowers.indexOf(member) + 1)
                         .fullName(String.format("%s %s", member.getPerson().getFirstName(), member.getPerson().getLastName()))
                         .totalBooksBorrowed(member.getTotalBooksBorrowed())
                         .build()
@@ -302,5 +303,13 @@ public class MemberService {
                  "66+", personRepository.countByAgeBetween(66, 120)
              )
          );
+    }
+
+    private Map<String, Long> findTop10CitiesWithUserCount() {
+        return personRepository.findTop10CitiesWithUserCount().stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0],
+                        row -> ((Number) row[1]).longValue()
+                ));
     }
 }

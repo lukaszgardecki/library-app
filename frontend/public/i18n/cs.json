@@ -235,7 +235,8 @@
             "USERS_AGE_GROUPS": {
                 "HEADER": "Věkové Skupiny",
                 "LABEL": "Věk"
-            }
+            },
+            "USERS_TOP_CITIES": "Město - počet čtenářů"
         }
     },
     "WEB": {

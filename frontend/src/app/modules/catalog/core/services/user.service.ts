@@ -43,6 +43,9 @@ export class UserService {
         if (stats.ageGroups) {
           stats.ageGroups = new Map<string, number>(Object.entries(stats.ageGroups));
         }
+        if (stats.topCities) {
+          stats.topCities = new Map<string, number>(Object.entries(stats.topCities));
+        }
         return stats;
       })
     );

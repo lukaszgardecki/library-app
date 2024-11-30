@@ -6,18 +6,19 @@ import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Locale;
 import java.util.Random;
 
 
 public class FakeUserGenerator {
-    private static final Faker faker = new Faker();
+    private static final Faker faker = new Faker(Locale.getDefault());
     private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL_CHARACTERS = "@#$%^&*()-_=+<>?";
 
     public static RegisterRequest generate() {
-        LocalDate dateOfBirth = faker.date().birthday(18, 80).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dateOfBirth = faker.date().birthday(12, 80).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setFirstName(faker.name().firstName());
         registerRequest.setLastName(faker.name().lastName());

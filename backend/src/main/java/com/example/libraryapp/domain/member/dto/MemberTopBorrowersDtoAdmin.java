@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class MemberTopBorrowersDtoAdmin {
     private Long id;
-    private int place;
+    private int rank;
     private String fullName;
     private int totalBooksBorrowed;
 }

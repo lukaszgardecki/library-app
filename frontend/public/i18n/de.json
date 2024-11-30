@@ -235,7 +235,8 @@
             "USERS_AGE_GROUPS": {
                 "HEADER": "Altersgruppen",
                 "LABEL": "Alter"
-            }
+            },
+            "USERS_TOP_CITIES": "Stadt - Anzahl der Leser"
         }
     },
     "WEB": {

@@ -11,4 +11,5 @@ export class UserStatsAdmin {
     returnedLendingsLastWeekByDay: Array<number> = new Array<number>();
     topBorrowers: Array<UserTopBorrowersAdmin> = new Array<UserTopBorrowersAdmin>();
     ageGroups: Map<string, number> = new Map<string, number>();
+    topCities: Map<string, number> = new Map<string, number>();
 }
