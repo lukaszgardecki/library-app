@@ -143,6 +143,7 @@
             "SETTINGS": "Nastavenia"
         },
         "USER": {
+            "BORROWER": "Čitateľ",
             "ROLE": {
                 "NAME": "Rola",
                 "USER": "Používateľ",
@@ -224,10 +225,12 @@
             }
         },
         "STATS": {
+            "RANK": "Miesto",
             "LENDINGS_COUNT_TODAY": "Dnešné výpožičky",
             "USERS_ACTIVE_THIS_MONTH": "Aktívni používatelia tento mesiac",
             "USERS_NEW_THIS_MONTH": "Noví používatelia tento mesiac",
-            "USERS_TOTAL": "Všetci používatelia"
+            "USERS_TOTAL": "Všetci používatelia",
+            "USERS_TOP_BORROWERS": "Top 10 čitateľov"
         }
     },
     "WEB": {

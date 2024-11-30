@@ -143,6 +143,7 @@
             "SETTINGS": "Impostazioni"
         },
         "USER": {
+            "BORROWER": "Lettore",
             "ROLE": {
                 "NAME": "Ruolo",
                 "USER": "Utente",
@@ -224,10 +225,12 @@
             }
         },
         "STATS": {
+            "RANK": "Posizione",
             "LENDINGS_COUNT_TODAY": "Prestiti di oggi",
             "USERS_ACTIVE_THIS_MONTH": "Utenti attivi questo mese",
             "USERS_NEW_THIS_MONTH": "Nuovi utenti questo mese",
-            "USERS_TOTAL": "Tutti gli utenti"
+            "USERS_TOTAL": "Tutti gli utenti",
+            "USERS_TOP_BORROWERS": "I 10 migliori lettori"
         }
     },
     "WEB": {

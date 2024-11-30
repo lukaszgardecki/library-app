@@ -143,6 +143,7 @@
             "SETTINGS": "Налаштування"
         },
         "USER": {
+            "BORROWER": "Читач",
             "ROLE": {
                 "NAME": "Роль",
                 "USER": "Користувач",
@@ -224,10 +225,12 @@
             }
         },
         "STATS": {
+            "RANK": "Місце",
             "LENDINGS_COUNT_TODAY": "Сьогоднішні позики",
             "USERS_ACTIVE_THIS_MONTH": "Активні користувачі цього місяця",
             "USERS_NEW_THIS_MONTH": "Нові користувачі цього місяця",
-            "USERS_TOTAL": "Усі користувачі"
+            "USERS_TOTAL": "Усі користувачі",
+            "USERS_TOP_BORROWERS": "Топ 10 читачів"
         }
     },
     "WEB": {

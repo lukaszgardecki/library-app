@@ -107,6 +107,24 @@
         </div>
       </div>
     </div>
+
+    <div class="col-12 col-xl-6 col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_TOP_BORROWERS' | translate }}</div>
+        <div class="section-content">
+          <app-top-borrowers
+            *ngIf="usersStats$ | async as stats; else lack"
+            [columns]="[
+                { key: 'place', label: 'CAT.STATS.RANK' },
+                { key: 'fullName', label: 'CAT.USER.BORROWER' },
+                { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
+            ]"
+            [data]="stats.topBorrowers || []"
+            (onRowClick)="showDetails($event)"
+          ></app-top-borrowers>
+        </div>
+      </div>
+    </div>
 </div>
 
 

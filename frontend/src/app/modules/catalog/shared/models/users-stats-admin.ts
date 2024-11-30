@@ -1,3 +1,5 @@
+import { UserTopBorrowersAdmin } from "./user-details";
+
 export class UserStatsAdmin {
     todayLendings: number;
     usersCount: number;
@@ -7,4 +9,5 @@ export class UserStatsAdmin {
     lendingsLastYearByMonth: Array<number> = new Array<number>();
     newLendingsLastWeekByDay: Array<number> = new Array<number>();
     returnedLendingsLastWeekByDay: Array<number> = new Array<number>();
+    topBorrowers: Array<UserTopBorrowersAdmin> = new Array<UserTopBorrowersAdmin>();
 }

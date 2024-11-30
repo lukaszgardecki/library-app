@@ -58,6 +58,7 @@ public class MemberService {
                 .lendingsLastYearByMonth(countLendingsLastYearByMonth())
                 .newLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.CURRENT))
                 .returnedLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.COMPLETED))
+                .topBorrowers(findTop10Borrowers())
                 .build();
     }
 
@@ -241,7 +242,7 @@ public class MemberService {
                 ));
     }
 
-    public List<Long> countLendingsLastYearByMonth() {
+    private List<Long> countLendingsLastYearByMonth() {
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusMonths(11).withDayOfMonth(1);
         List<Object[]> rawCounts = lendingRepository.countLendingsByMonth(startDate, now);
@@ -258,7 +259,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public List<Long> countLendingsLastWeekByDay(LendingStatus status) {
+    private List<Long> countLendingsLastWeekByDay(LendingStatus status) {
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusDays(6);
         List<Object[]> rawCounts = lendingRepository.countLendingsByDay(startDate, now, status);
@@ -273,4 +274,18 @@ public class MemberService {
                 .map(day -> counts.getOrDefault(day, 0L))
                 .collect(Collectors.toList());
     }
+
+    private List<MemberTopBorrowersDtoAdmin> findTop10Borrowers() {
+        List<Member> top10Borrowers = memberRepository.findTop10Borrowers();
+        return top10Borrowers.stream()
+                .map(member -> MemberTopBorrowersDtoAdmin.builder()
+                        .id(member.getId())
+                        .place(top10Borrowers.indexOf(member) + 1)
+                        .fullName(String.format("%s %s", member.getPerson().getFirstName(), member.getPerson().getLastName()))
+                        .totalBooksBorrowed(member.getTotalBooksBorrowed())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
 }

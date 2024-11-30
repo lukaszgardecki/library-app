@@ -125,7 +125,11 @@ export class UserUpdateAdmin {
     role: Role;
 }
 
-
+export class UserTopBorrowersAdmin {
+    id: number;
+    fullName: string;
+    totalBooksBorrowed: number;
+}
 
 
 

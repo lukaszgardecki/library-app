@@ -19,4 +19,5 @@ public class MembersStatsAdminDto {
     private List<Long> lendingsLastYearByMonth;
     private List<Long> newLendingsLastWeekByDay;
     private List<Long> returnedLendingsLastWeekByDay;
+    private List<MemberTopBorrowersDtoAdmin> topBorrowers;
 }

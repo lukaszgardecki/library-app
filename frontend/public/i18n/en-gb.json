@@ -143,6 +143,7 @@
             "SETTINGS": "Settings"
         },
         "USER": {
+            "BORROWER": "Reader",
             "ROLE": {
                 "NAME": "Role",
                 "USER": "User",
@@ -224,10 +225,12 @@
             }
         },
         "STATS": {
+            "RANK": "Rank",
             "LENDINGS_COUNT_TODAY": "Today's Lendings",
             "USERS_ACTIVE_THIS_MONTH": "Active Users This Month",
             "USERS_NEW_THIS_MONTH": "New Users This Month",
-            "USERS_TOTAL": "Total Users"
+            "USERS_TOTAL": "Total Users",
+            "USERS_TOP_BORROWERS": "Top 10 readers"
         }
     },
     "WEB": {

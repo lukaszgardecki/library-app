@@ -3,17 +3,18 @@ import { UserService } from '../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { TableComponent } from "../../components/table/table.component";
+import { TableComponent } from "../../components/tables/table/table.component";
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { AnnualActivityChartComponent } from '../../components/charts/annual-activity-chart/annual-activity-chart.component';
 import { WeeklyActivityChartComponent } from "../../components/charts/weekly-activity-chart/weekly-activity-chart.component";
 import { RegistrationFormComponent } from "../../components/registration-form/registration-form.component";
+import { TopBorrowersComponent } from "../../components/tables/top-borrowers/top-borrowers.component";
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent, WeeklyActivityChartComponent, RegistrationFormComponent],
+  imports: [CommonModule, TranslateModule, RouterModule, TableComponent, FavGenreChartComponent, AnnualActivityChartComponent, WeeklyActivityChartComponent, RegistrationFormComponent, TopBorrowersComponent],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })

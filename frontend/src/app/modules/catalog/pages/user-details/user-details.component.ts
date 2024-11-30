@@ -14,7 +14,7 @@ import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { AnnualActivityChartComponent } from "../../components/charts/annual-activity-chart/annual-activity-chart.component";
 import { LendingService } from '../../core/services/lending.service';
-import { TableComponent } from "../../components/table/table.component";
+import { TableComponent } from "../../components/tables/table/table.component";
 import { LendingsPage } from '../../shared/models/lendings-page';
 import { Observable } from 'rxjs';
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';

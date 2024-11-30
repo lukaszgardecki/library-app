@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Sort } from '../../shared/models/sort.interface';
+import { Sort } from '../../../shared/models/sort.interface';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Size } from '../../shared/models/size.interface';
+import { Size } from '../../../shared/models/size.interface';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { PdfService } from '../../core/services/pdf.service';
-import { PaginationComponent } from "../pagination/pagination.component";
-import { Page } from '../../../../shared/models/page';
-import { TableUpdateEvent } from '../../shared/models/table-event.interface';
-import { EnumNamePipe } from '../../../../shared/pipes/enum-name.pipe';
+import { PdfService } from '../../../core/services/pdf.service';
+import { PaginationComponent } from "../../pagination/pagination.component";
+import { Page } from '../../../../../shared/models/page';
+import { TableUpdateEvent } from '../../../shared/models/table-event.interface';
+import { EnumNamePipe } from '../../../../../shared/pipes/enum-name.pipe';
 
 @Component({
   selector: 'app-table',
@@ -108,3 +108,5 @@ export class TableComponent {
     this.onUpdate.emit(event);
   }
 }
+
+

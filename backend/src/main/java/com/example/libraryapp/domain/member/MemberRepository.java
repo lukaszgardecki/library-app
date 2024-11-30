@@ -31,4 +31,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
        """)
     int countMembersRegisteredThisMonth();
 
+    @Query("""
+         SELECT m
+         FROM Member m
+         ORDER BY m.totalBooksBorrowed DESC
+         LIMIT 10
+         """)
+    List<Member> findTop10Borrowers();
 }
