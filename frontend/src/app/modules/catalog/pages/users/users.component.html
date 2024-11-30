@@ -1,27 +1,162 @@
 <div class="container-fluid">
+
+  <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
+
   <div class="row">
-    <main class=" ms-sm-auto">
-      <h1 class="h2">{{ 'CAT.SIDEBAR.USERS' | translate }}</h1>
-
-      <app-table
-          *ngIf="usersPage$ | async as usersPage; else lack"
-          [tableName]="'user-list'"
-          [columns]="[
-              { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
-              { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
-              { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
-              { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
-              { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
-          ]"
-          [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
-          [page]="usersPage.page"
-          (onUpdate)="updateTable($event)"
-          (onRowClick)="showDetails($event)"
-      ></app-table>
-
-    </main>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+        <div class="small-box text-bg-primary">
+            <div class="inner">
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.todayLendings }}</h3>
+                <p>{{ 'CAT.STATS.LENDINGS_COUNT_TODAY' | translate }}</p>
+            </div>
+            <i class="bi bi-bookmark-check small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+        <div class="small-box text-bg-success">
+            <div class="inner">
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.activeUsersThisMonth }}</h3>
+                <p>{{ 'CAT.STATS.USERS_ACTIVE_THIS_MONTH' | translate }}</p>
+            </div>
+            <i class="bi bi-activity small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+        <div class="small-box text-bg-warning">
+            <div class="inner">
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.newUsersThisMonth }}</h3>
+                <p>{{ 'CAT.STATS.USERS_NEW_THIS_MONTH' | translate }}</p>
+            </div>
+            <i class="bi bi-person-plus-fill small-box-icon"></i>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+        <div class="small-box text-bg-danger">
+            <div class="inner">
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.usersCount }}</h3>
+                <p>{{ 'CAT.STATS.USERS_TOTAL' | translate }}</p>
+            </div>
+            <i class="bi bi-people-fill small-box-icon"></i>
+        </div>
+    </div>
   </div>
+  
+  <div class="row">
+
+    <div class="col-12 col-sm-2 col-md-2 col-lg-2 col-xl-1 p-2" type="button" data-bs-toggle="modal" data-bs-target="#registrationModal" (click)="generateFakeUsers()">
+      <div class="small-box add-user-btn">
+        <i class="bi bi-person-add small-box-icon"></i>
+      </div>
+    </div>
+
+    <div class="col-12 col-sm-10 col-md-10 col-lg-10 col-xl-5 col-xxl-5 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_WEEKLY' | translate }}</div>
+        <div class="section-content" >
+          <app-weekly-activity-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data1]="stats.newLendingsLastWeekByDay"
+            [data2]="stats.returnedLendingsLastWeekByDay"
+          ></app-weekly-activity-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate }}</div>
+        <div class="section-content">
+          <app-annual-activity-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.lendingsLastYearByMonth"
+          ></app-annual-activity-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-12  col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.USER.ACCOUNT.FAV_GENRES' | translate }}</div>
+        <div class="section-content">
+          <app-fav-genre-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.favGenres"
+          ></app-fav-genre-chart>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-12 col-xl-6 col-xxl-6 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_TOTAL' | translate }}</div>
+        <div class="section-content">
+          <app-table
+            *ngIf="usersPage$ | async as usersPage; else lack"
+            [tableName]="'user-list'"
+            [columns]="[
+                { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
+                { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
+                { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
+                { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
+                { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+            ]"
+            [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
+            [page]="usersPage.page"
+            (onUpdate)="updateTable($event)"
+            (onRowClick)="showDetails($event)"
+          ></app-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-6 col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_TOP_BORROWERS' | translate }}</div>
+        <div class="section-content">
+          <app-top-borrowers
+            *ngIf="usersStats$ | async as stats; else lack"
+            [columns]="[
+                { key: 'rank', label: 'CAT.STATS.RANK' },
+                { key: 'fullName', label: 'CAT.USER.BORROWER' },
+                { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
+            ]"
+            [data]="stats.topBorrowers || []"
+            (onRowClick)="showDetails($event)"
+          ></app-top-borrowers>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_AGE_GROUPS.HEADER' | translate }}</div>
+        <div class="section-content">
+          <app-users-age-groups-chart
+            *ngIf="usersStats$ | async as stats; else lack"
+            [data]="stats.ageGroups"
+          ></app-users-age-groups-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2">
+      <div class="content">
+        <div class="section-header">{{ 'CAT.STATS.USERS_TOP_CITIES' | translate }}</div>
+        <div class="section-content">
+          <app-top-cities
+            *ngIf="usersStats$ | async as stats; else lack"
+            [columns]="[
+                'CAT.USER.DETAILS.CITY' ,
+                'CAT.STATS.AMOUNT' ,
+            ]"
+            [data]="stats.topCities"
+          ></app-top-cities>
+        </div>
+      </div>
+    </div>
 </div>
 
 
 <ng-template #lack>{{ 'DATA.LACK' | translate }}</ng-template>
+
+<app-registration-form></app-registration-form>  

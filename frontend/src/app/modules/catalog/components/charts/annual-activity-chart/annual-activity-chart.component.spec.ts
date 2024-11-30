@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserActivityChartComponent } from './user-activity-chart.component';
+import { UserActivityChartComponent } from './annual-activity-chart.component';
 
 describe('UserActivityChartComponent', () => {
   let component: UserActivityChartComponent;

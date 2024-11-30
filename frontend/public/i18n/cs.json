@@ -5,24 +5,91 @@
         "LACK": "Nedostatek dat",
         "SHARE": "Sdílet",
         "EXPORT": "Exportovat",
+        "DAY": {
+            "MON": {
+                "NAME": "pondělí",
+                "SHORT": "po"
+            },
+            "TUE": {
+                "NAME": "úterý",
+                "SHORT": "út"
+            },
+            "WED": {
+                "NAME": "středa",
+                "SHORT": "st"
+            },
+            "THU": {
+                "NAME": "čtvrtek",
+                "SHORT": "čt"
+            },
+            "FRI": {
+                "NAME": "pátek",
+                "SHORT": "pá"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "so"
+            },
+            "SUN": {
+                "NAME": "neděle",
+                "SHORT": "ne"
+            }
+        },
         "MONTH": {
-            "JAN": "Leden",
-            "FEB": "Únor",
-            "MAR": "Březen",
-            "APR": "Duben",
-            "MAI": "Květen",
-            "JUN": "Červen",
-            "JUL": "Červenec",
-            "AUG": "Srpen",
-            "SEP": "Září",
-            "OCT": "Říjen",
-            "NOV": "Listopad",
-            "DEC": "Prosinec"
+            "JAN": {
+                "NAME": "Leden",
+                "SHORT": "led"
+            },
+            "FEB": {
+                "NAME": "Únor",
+                "SHORT": "úno"
+            },
+            "MAR": {
+                "NAME": "Březen",
+                "SHORT": "bře"
+            },
+            "APR": {
+                "NAME": "Duben",
+                "SHORT": "dub"
+            },
+            "MAI": {
+                "NAME": "Květen",
+                "SHORT": "kvě"
+            },
+            "JUN": {
+                "NAME": "Červen",
+                "SHORT": "čvn"
+            },
+            "JUL": {
+                "NAME": "Červenec",
+                "SHORT": "čvc"
+            },
+            "AUG": {
+                "NAME": "Srpen",
+                "SHORT": "srp"
+            },
+            "SEP": {
+                "NAME": "Září",
+                "SHORT": "zář"
+            },
+            "OCT": {
+                "NAME": "Říjen",
+                "SHORT": "říj"
+            },
+            "NOV": {
+                "NAME": "Listopad",
+                "SHORT": "lis"
+            },
+            "DEC": {
+                "NAME": "Prosinec",
+                "SHORT": "pro"
+            }
         }
     },
     "CAT": {
         "BTN": {
             "BACK": "Zpět",
+            "CANCEL": "Zrušit",
             "EDIT": "Upravit",
             "SAVE": "Uložit",
             "SAVE_TO_FILE": "Uložit do souboru"
@@ -45,6 +112,20 @@
             "SIGN_UP": "Zaregistrujte se",
             "SIGN_UP_ALSO": "Můžete se také připojit přes"
         },
+        "REGISTER": {
+            "HEADER": "Registrace",
+            "VALID_MSG": {
+                "REQUIRED": "Vyplňte pole.",
+                "PASS_LENGTH": "Heslo musí mít alespoň {{length}} znaků.",
+                "PASS_UPPER_LETTER": "Heslo musí obsahovat alespoň jedno velké písmeno.",
+                "PASS_LOWER_LETTER": "Heslo musí obsahovat alespoň jedno malé písmeno.",
+                "PASS_DIGIT": "Heslo musí obsahovat alespoň jednu číslici.",
+                "PASS_SPECIAL_CHAR": "Heslo musí obsahovat alespoň jeden speciální znak.",
+                "PASS_MISMATCH": "Hesla se musí shodovat."
+            },
+            "PASS_REPEAT": "Zopakujte heslo",
+            "BTN": "Registrovat"
+        },
         "NAVBAR": {
             "PROFILE": "Profil",
             "LOGOUT": "Odhlásit se",
@@ -62,6 +143,7 @@
             "SETTINGS": "Nastavení"
         },
         "USER": {
+            "BORROWER": "Čtenář",
             "ROLE": {
                 "NAME": "Role",
                 "USER": "Uživatel",
@@ -107,10 +189,13 @@
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čekající"
                 },
+                "LENDINGS": "Výpůjčky",
                 "LENDINGS_ALL": "Všechny výpůjčky",
                 "LENDINGS_ANNUAL": "Roční aktivita výpůjček",
+                "LENDINGS_WEEKLY": "Aktivita za posledních 7 dní",
                 "LENDINGS_COUNT": "Počet výpůjček",
                 "LENDINGS_CURRENT": "Aktuální výpůjčky",
+                "RETURNS": "Vrácení",
                 "LATE_FEES": "Poplatky za zpoždění",
                 "FAV_GENRE": "Oblíbený žánr",
                 "FAV_GENRES": "Oblíbené žánry"
@@ -138,6 +223,20 @@
                 "CURRENT": "Aktuální",
                 "COMPLETED": "Dokončeno"
             }
+        },
+        "STATS": {
+            "AMOUNT": "Množství",
+            "RANK": "Místo",
+            "LENDINGS_COUNT_TODAY": "Dnešní výpůjčky",
+            "USERS_ACTIVE_THIS_MONTH": "Aktivní uživatelé v tomto měsíci",
+            "USERS_NEW_THIS_MONTH": "Noví uživatelé v tomto měsíci",
+            "USERS_TOTAL": "Všichni uživatelé",
+            "USERS_TOP_BORROWERS": "Top 10 čtenářů",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Věkové Skupiny",
+                "LABEL": "Věk"
+            },
+            "USERS_TOP_CITIES": "Město - počet čtenářů"
         }
     },
     "WEB": {

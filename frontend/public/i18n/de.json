@@ -5,24 +5,91 @@
         "LACK": "Keine Daten",
         "SHARE": "Teilen",
         "EXPORT": "Exportieren",
+        "DAY": {
+            "MON": {
+                "NAME": "Montag",
+                "SHORT": "Mo"
+            },
+            "TUE": {
+                "NAME": "Dienstag",
+                "SHORT": "Di"
+            },
+            "WED": {
+                "NAME": "Mittwoch",
+                "SHORT": "Mi"
+            },
+            "THU": {
+                "NAME": "Donnerstag",
+                "SHORT": "Do"
+            },
+            "FRI": {
+                "NAME": "Freitag",
+                "SHORT": "Fr"
+            },
+            "SAT": {
+                "NAME": "Samstag",
+                "SHORT": "Sa"
+            },
+            "SUN": {
+                "NAME": "Sonntag",
+                "SHORT": "So"
+            }
+        },
         "MONTH": {
-            "JAN": "Januar",
-            "FEB": "Februar",
-            "MAR": "März",
-            "APR": "April",
-            "MAI": "Mai",
-            "JUN": "Juni",
-            "JUL": "Juli",
-            "AUG": "August",
-            "SEP": "September",
-            "OCT": "Oktober",
-            "NOV": "November",
-            "DEC": "Dezember"
+            "JAN": {
+                "NAME": "Januar",
+                "SHORT": "Jan"
+            },
+            "FEB": {
+                "NAME": "Februar",
+                "SHORT": "Feb"
+            },
+            "MAR": {
+                "NAME": "März",
+                "SHORT": "Mär"
+            },
+            "APR": {
+                "NAME": "April",
+                "SHORT": "Apr"
+            },
+            "MAI": {
+                "NAME": "Mai",
+                "SHORT": "Mai"
+            },
+            "JUN": {
+                "NAME": "Juni",
+                "SHORT": "Jun"
+            },
+            "JUL": {
+                "NAME": "Juli",
+                "SHORT": "Jul"
+            },
+            "AUG": {
+                "NAME": "August",
+                "SHORT": "Aug"
+            },
+            "SEP": {
+                "NAME": "September",
+                "SHORT": "Sep"
+            },
+            "OCT": {
+                "NAME": "Oktober",
+                "SHORT": "Okt"
+            },
+            "NOV": {
+                "NAME": "November",
+                "SHORT": "Nov"
+            },
+            "DEC": {
+                "NAME": "Dezember",
+                "SHORT": "Dez"
+            }
         }
     },
     "CAT": {
         "BTN": {
             "BACK": "Zurück",
+            "CANCEL": "Abbrechen",
             "EDIT": "Bearbeiten",
             "SAVE": "Speichern",
             "SAVE_TO_FILE": "In Datei speichern"
@@ -45,6 +112,20 @@
             "SIGN_UP": "Registrieren",
             "SIGN_UP_ALSO": "Sie können sich auch anmelden über"
         },
+        "REGISTER": {
+            "HEADER": "Registrierung",
+            "VALID_MSG": {
+                "REQUIRED": "Feld ausfüllen.",
+                "PASS_LENGTH": "Das Passwort muss mindestens {{length}} Zeichen lang sein.",
+                "PASS_UPPER_LETTER": "Das Passwort muss mindestens einen Großbuchstaben enthalten.",
+                "PASS_LOWER_LETTER": "Das Passwort muss mindestens einen Kleinbuchstaben enthalten.",
+                "PASS_DIGIT": "Das Passwort muss mindestens eine Zahl enthalten.",
+                "PASS_SPECIAL_CHAR": "Das Passwort muss mindestens ein Sonderzeichen enthalten.",
+                "PASS_MISMATCH": "Die Passwörter müssen übereinstimmen."
+            },
+            "PASS_REPEAT": "Passwort wiederholen",
+            "BTN": "Registrieren"
+        },
         "NAVBAR": {
             "PROFILE": "Profil",
             "LOGOUT": "Abmelden",
@@ -62,6 +143,7 @@
             "SETTINGS": "Einstellungen"
         },
         "USER": {
+            "BORROWER": "Leser",
             "ROLE": {
                 "NAME": "Rolle",
                 "USER": "Benutzer",
@@ -107,10 +189,13 @@
                     "SUSPENDED": "Gesperrt",
                     "PENDING": "Bestätigung ausstehend"
                 },
+                "LENDINGS": "Ausleihen",
                 "LENDINGS_ALL": "Alle Ausleihen",
                 "LENDINGS_ANNUAL": "Jährliche Ausleihaktivität",
+                "LENDINGS_WEEKLY": "Aktivität in den letzten 7 Tagen",
                 "LENDINGS_COUNT": "Anzahl der Ausleihen",
                 "LENDINGS_CURRENT": "Aktuelle Ausleihen",
+                "RETURNS": "Rückgaben",
                 "LATE_FEES": "Verspätungsgebühren",
                 "FAV_GENRE": "Lieblingsgenre",
                 "FAV_GENRES": "Lieblingsgenres"
@@ -138,6 +223,20 @@
                 "CURRENT": "Aktuell",
                 "COMPLETED": "Abgeschlossen"
             }
+        },
+        "STATS": {
+            "AMOUNT": "Menge",
+            "RANK": "Platz",
+            "LENDINGS_COUNT_TODAY": "Heutige Ausleihungen",
+            "USERS_ACTIVE_THIS_MONTH": "Aktive Benutzer in diesem Monat",
+            "USERS_NEW_THIS_MONTH": "Neue Benutzer in diesem Monat",
+            "USERS_TOTAL": "Alle Benutzer",
+            "USERS_TOP_BORROWERS": "Top 10 Leser",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Altersgruppen",
+                "LABEL": "Alter"
+            },
+            "USERS_TOP_CITIES": "Stadt - Anzahl der Leser"
         }
     },
     "WEB": {

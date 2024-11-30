@@ -5,24 +5,91 @@
         "LACK": "Žiadne údaje",
         "SHARE": "Zdieľať",
         "EXPORT": "Exportovať",
+        "DAY": {
+            "MON": {
+                "NAME": "pondelok",
+                "SHORT": "po"
+            },
+            "TUE": {
+                "NAME": "utorok",
+                "SHORT": "ut"
+            },
+            "WED": {
+                "NAME": "streda",
+                "SHORT": "st"
+            },
+            "THU": {
+                "NAME": "štvrtok",
+                "SHORT": "štv"
+            },
+            "FRI": {
+                "NAME": "piatok",
+                "SHORT": "pi"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "so"
+            },
+            "SUN": {
+                "NAME": "nedeľa",
+                "SHORT": "ne"
+            }
+        },
         "MONTH": {
-            "JAN": "Január",
-            "FEB": "Február",
-            "MAR": "Marec",
-            "APR": "Apríl",
-            "MAI": "Máj",
-            "JUN": "Jún",
-            "JUL": "Júl",
-            "AUG": "August",
-            "SEP": "September",
-            "OCT": "Október",
-            "NOV": "November",
-            "DEC": "December"
+            "JAN": {
+                "NAME": "január",
+                "SHORT": "jan"
+            },
+            "FEB": {
+                "NAME": "február",
+                "SHORT": "feb"
+            },
+            "MAR": {
+                "NAME": "marec",
+                "SHORT": "mar"
+            },
+            "APR": {
+                "NAME": "apríl",
+                "SHORT": "apr"
+            },
+            "MAI": {
+                "NAME": "máj",
+                "SHORT": "máj"
+            },
+            "JUN": {
+                "NAME": "jún",
+                "SHORT": "jún"
+            },
+            "JUL": {
+                "NAME": "júl",
+                "SHORT": "júl"
+            },
+            "AUG": {
+                "NAME": "august",
+                "SHORT": "aug"
+            },
+            "SEP": {
+                "NAME": "september",
+                "SHORT": "sep"
+            },
+            "OCT": {
+                "NAME": "október",
+                "SHORT": "okt"
+            },
+            "NOV": {
+                "NAME": "november",
+                "SHORT": "nov"
+            },
+            "DEC": {
+                "NAME": "december",
+                "SHORT": "dec"
+            }
         }
     },
     "CAT": {
         "BTN": {
             "BACK": "Späť",
+            "CANCEL": "Zrušiť",
             "EDIT": "Upraviť",
             "SAVE": "Uložiť",
             "SAVE_TO_FILE": "Uložiť do súboru"
@@ -45,6 +112,20 @@
             "SIGN_UP": "Zaregistrujte sa",
             "SIGN_UP_ALSO": "Môžete sa tiež pripojiť cez"
         },
+        "REGISTER": {
+            "HEADER": "Registrácia",
+            "VALID_MSG": {
+                "REQUIRED": "Vyplňte pole.",
+                "PASS_LENGTH": "Heslo musí mať aspoň {{length}} znakov.",
+                "PASS_UPPER_LETTER": "Heslo musí obsahovať aspoň jedno veľké písmeno.",
+                "PASS_LOWER_LETTER": "Heslo musí obsahovať aspoň jedno malé písmeno.",
+                "PASS_DIGIT": "Heslo musí obsahovať aspoň jednu číslicu.",
+                "PASS_SPECIAL_CHAR": "Heslo musí obsahovať aspoň jeden špeciálny znak.",
+                "PASS_MISMATCH": "Heslá musia byť rovnaké."
+            },
+            "PASS_REPEAT": "Zopakujte heslo",
+            "BTN": "Registrovať"
+        },
         "NAVBAR": {
             "PROFILE": "Profil",
             "LOGOUT": "Odhlásiť sa",
@@ -62,6 +143,7 @@
             "SETTINGS": "Nastavenia"
         },
         "USER": {
+            "BORROWER": "Čitateľ",
             "ROLE": {
                 "NAME": "Rola",
                 "USER": "Používateľ",
@@ -107,10 +189,13 @@
                     "SUSPENDED": "Pozastavený",
                     "PENDING": "Čakajúci"
                 },
+                "LENDINGS": "Požičania",
                 "LENDINGS_ALL": "Všetky výpožičky",
                 "LENDINGS_ANNUAL": "Ročná aktivita výpožičiek",
+                "LENDINGS_WEEKLY": "Aktivita za posledných 7 dní",
                 "LENDINGS_COUNT": "Počet výpožičiek",
                 "LENDINGS_CURRENT": "Aktuálne výpožičky",
+                "RETURNS": "Vrátenia",
                 "LATE_FEES": "Oneskorené poplatky",
                 "FAV_GENRE": "Obľúbený žáner",
                 "FAV_GENRES": "Obľúbené žánre"
@@ -138,6 +223,20 @@
                 "CURRENT": "Aktuálne",
                 "COMPLETED": "Dokončené"
             }
+        },
+        "STATS": {
+            "AMOUNT": "Množstvo",
+            "RANK": "Miesto",
+            "LENDINGS_COUNT_TODAY": "Dnešné výpožičky",
+            "USERS_ACTIVE_THIS_MONTH": "Aktívni používatelia tento mesiac",
+            "USERS_NEW_THIS_MONTH": "Noví používatelia tento mesiac",
+            "USERS_TOTAL": "Všetci používatelia",
+            "USERS_TOP_BORROWERS": "Top 10 čitateľov",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Vekové Skupiny",
+                "LABEL": "Vek"
+            },
+            "USERS_TOP_CITIES": "Mesto - počet čitateľov"
         }
     },
     "WEB": {

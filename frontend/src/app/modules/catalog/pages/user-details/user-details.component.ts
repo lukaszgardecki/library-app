@@ -12,9 +12,9 @@ import { NullPlaceholderPipe } from "../../../../shared/pipes/null-placeholder.p
 import { FormsModule } from '@angular/forms';
 import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
-import { UserActivityChartComponent } from "../../components/charts/user-activity-chart/user-activity-chart.component";
+import { AnnualActivityChartComponent } from "../../components/charts/annual-activity-chart/annual-activity-chart.component";
 import { LendingService } from '../../core/services/lending.service';
-import { TableComponent } from "../../components/table/table.component";
+import { TableComponent } from "../../components/tables/table/table.component";
 import { LendingsPage } from '../../shared/models/lendings-page';
 import { Observable } from 'rxjs';
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
@@ -25,7 +25,7 @@ import { TableUpdateEvent } from '../../shared/models/table-event.interface';
   imports: [
     CommonModule, TranslateModule, FormsModule,
     NullPlaceholderPipe, EnumNamePipe,
-    FavGenreChartComponent, UserActivityChartComponent,
+    FavGenreChartComponent, AnnualActivityChartComponent,
     TableComponent
 ],
   templateUrl: './user-details.component.html',
@@ -34,10 +34,10 @@ import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 export class UserDetailsComponent {
   user: UserDetailsAdmin = new UserDetailsAdmin();
   favGenre: String = '';
-  genderList = Object.values(Gender)
-  accountStatuses = Object.values(AccountStatus)
-  cardStatuses = Object.values(CardStatus)
-  roles = Object.values(Role)
+  genderList = Object.values(Gender);
+  accountStatuses = Object.values(AccountStatus);
+  cardStatuses = Object.values(CardStatus);
+  roles = Object.values(Role);
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
   lendingPage$: Observable<LendingsPage>;

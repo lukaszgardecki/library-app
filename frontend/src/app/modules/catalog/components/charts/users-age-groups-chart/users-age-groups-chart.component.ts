@@ -1,17 +1,19 @@
-import { Component, HostListener, Input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { TranslationService } from '../../../../../shared/services/translation.service';
+import { Subscription } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 import { Chart, registerables, Tooltip, TooltipItem } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 
 @Component({
-  selector: 'app-fav-genre-chart',
+  selector: 'app-users-age-groups-chart',
   standalone: true,
   imports: [TranslateModule],
-  templateUrl: './fav-genre-chart.component.html',
-  styleUrl: './fav-genre-chart.component.css'
+  templateUrl: './users-age-groups-chart.component.html',
+  styleUrl: './users-age-groups-chart.component.css'
 })
-export class FavGenreChartComponent {
+export class UsersAgeGroupsChartComponent {
   chart: any;
   @Input() data: Map<string, number>;
   private langChangeSubscription: Subscription;
@@ -45,8 +47,8 @@ export class FavGenreChartComponent {
       this.chart.destroy();
     }
 
-    this.chart = new Chart('genreChart', {
-      type: 'doughnut',
+    this.chart = new Chart('ageGroupsChart', {
+      type: 'pie',
       data: {
         labels: genreLabels,
         datasets: [{
@@ -56,6 +58,7 @@ export class FavGenreChartComponent {
           borderWidth: 1
         }]
       },
+      plugins: [ChartDataLabels],
       options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -66,22 +69,37 @@ export class FavGenreChartComponent {
           tooltip: {
             enabled: true,
             callbacks: {
-              label: (context: TooltipItem<any>) => {
+              title: (context: TooltipItem<any>[]) => {
+                const value = context[0].label;
+                const title = this.translationService.translate('CAT.STATS.USERS_AGE_GROUPS.LABEL');
+                return `${title}: ${value}`;
+              },
+              label: (context: any) => {
                 const value = context.raw;
-                const label = this.translationService.translate('CAT.USER.ACCOUNT.LENDINGS_COUNT');
-                return `${label}: ${value}`;
+                const total = context.dataset.data.reduce((sum: number, val: number) => sum + val, 0);
+                const percentage = ((value / total) * 100).toFixed(1) + '%';
+                const label = this.translationService.translate('CAT.STATS.AMOUNT');
+                return `${label}: ${value} (${percentage})`;
               }
             }
+          },
+          datalabels: {
+            formatter: (value: number, context: any) => {
+              const total = context.chart.data.datasets[0].data.reduce((sum: number, val: number) => sum + val, 0);
+              const percentage = ((value / total) * 100).toFixed(1) + '%';
+              return percentage;
+            },
+            color: '#000',
+            font: {
+              weight: 'bold',
+            },
+            anchor: 'center',
+            align: 'end',
+            offset: 10,
+            clamp: true,
           }
         }
       }
     });
-  }
-
-  @HostListener('window:resize')
-  onResize(): void {
-    if (this.chart) {
-      this.chart.resize();
-    }
   }
 }

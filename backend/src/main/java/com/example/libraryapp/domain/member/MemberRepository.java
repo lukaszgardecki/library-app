@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -21,4 +22,20 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             CAST(m.id AS string) LIKE CONCAT('%', :query, '%'))
             """)
     Page<Member> findAllByString(@Param("query") String query, Pageable pageable);
+
+    @Query("""
+       SELECT COUNT(m)
+       FROM Member m
+       WHERE FUNCTION('MONTH', m.dateOfMembership) = FUNCTION('MONTH', CURRENT_DATE)
+       AND FUNCTION('YEAR', m.dateOfMembership) = FUNCTION('YEAR', CURRENT_DATE)
+       """)
+    int countMembersRegisteredThisMonth();
+
+    @Query("""
+         SELECT m
+         FROM Member m
+         ORDER BY m.totalBooksBorrowed DESC
+         LIMIT 10
+         """)
+    List<Member> findTop10Borrowers();
 }

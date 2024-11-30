@@ -24,14 +24,17 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PersonRepository personRepository;
     private final LendingRepository lendingRepository;
     private final ReservationRepository reservationRepository;
     private final PasswordEncoder passwordEncoder;
@@ -44,6 +47,22 @@ public class MemberService {
     public PagedModel<MemberListPreviewDtoAdmin> findAllUsers(String usersToSearch, Pageable pageable) {
         Page<Member> page = memberRepository.findAllByString(usersToSearch, pageable);
         return pagedResourcesAssembler.toModel(page, userPreviewModelAssemblerAdmin);
+    }
+
+    public MembersStatsAdminDto findAllUsersStats() {
+        return MembersStatsAdminDto.builder()
+                .todayLendings(lendingRepository.countLendingsToday())
+                .activeUsersThisMonth(lendingRepository.countActiveMembersThisMonth())
+                .newUsersThisMonth(memberRepository.countMembersRegisteredThisMonth())
+                .usersCount(memberRepository.count())
+                .favGenres(findTopGenres(5))
+                .lendingsLastYearByMonth(countLendingsLastYearByMonth())
+                .newLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.CURRENT))
+                .returnedLendingsLastWeekByDay(countLendingsLastWeekByDay(LendingStatus.COMPLETED))
+                .topBorrowers(findTop10Borrowers())
+                .ageGroups(countMembersByAgeGroups())
+                .topCities(findTop10CitiesWithUserCount())
+                .build();
     }
 
     public MemberDto findMemberById(Long id) {
@@ -212,6 +231,85 @@ public class MemberService {
                         Map.Entry::getValue,
                         (e1, e2) -> e1,
                         LinkedHashMap::new
+                ));
+    }
+
+    private Map<String, Long> findTopGenres(int count) {
+        List<Object[]> results = lendingRepository.findTopSubjectsWithLendingCount(count);
+        return results.stream()
+                .collect(Collectors.toMap(
+                        result -> (String) result[0],
+                        result -> (Long) result[1],
+                        (v1, v2) -> v1,
+                        LinkedHashMap::new
+                ));
+    }
+
+    private List<Long> countLendingsLastYearByMonth() {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusMonths(11).withDayOfMonth(1);
+        List<Object[]> rawCounts = lendingRepository.countLendingsByMonth(startDate, now);
+
+        Map<Integer, Long> monthCounts = rawCounts.stream()
+                .collect(Collectors.toMap(
+                        row -> (Integer) row[0],
+                        row -> (Long) row[1]
+                ));
+
+        return IntStream.rangeClosed(0, 11)
+                .mapToObj(i -> now.minusMonths(11 - i).getMonthValue())
+                .map(month -> monthCounts.getOrDefault(month, 0L))
+                .collect(Collectors.toList());
+    }
+
+    private List<Long> countLendingsLastWeekByDay(LendingStatus status) {
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = now.minusDays(6);
+        List<Object[]> rawCounts = lendingRepository.countLendingsByDay(startDate, now, status);
+        Map<Integer, Long> counts = rawCounts.stream()
+                .collect(Collectors.toMap(
+                        row -> ((Number) row[0]).intValue(),
+                        row -> ((Number) row[1]).longValue()
+                ));
+
+        return IntStream.rangeClosed(1, 7)
+                .mapToObj(i -> now.minusDays(7 - i).getDayOfWeek().getValue())
+                .map(day -> counts.getOrDefault(day, 0L))
+                .collect(Collectors.toList());
+    }
+
+    private List<MemberTopBorrowersDtoAdmin> findTop10Borrowers() {
+        List<Member> top10Borrowers = memberRepository.findTop10Borrowers();
+        return top10Borrowers.stream()
+                .map(member -> MemberTopBorrowersDtoAdmin.builder()
+                        .id(member.getId())
+                        .rank(top10Borrowers.indexOf(member) + 1)
+                        .fullName(String.format("%s %s", member.getPerson().getFirstName(), member.getPerson().getLastName()))
+                        .totalBooksBorrowed(member.getTotalBooksBorrowed())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Long> countMembersByAgeGroups() {
+         return new TreeMap<>(
+             Map.of(
+                 "<15", personRepository.countByAgeBetween(0, 15),
+                 "16-25", personRepository.countByAgeBetween(16, 25),
+                 "26-35", personRepository.countByAgeBetween(26, 35),
+                 "36-45", personRepository.countByAgeBetween(36, 45),
+                 "46-55", personRepository.countByAgeBetween(46, 55),
+                 "56-65", personRepository.countByAgeBetween(56, 65),
+                 "66+", personRepository.countByAgeBetween(66, 120)
+             )
+         );
+    }
+
+    private Map<String, Long> findTop10CitiesWithUserCount() {
+        return personRepository.findTop10CitiesWithUserCount().stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0],
+                        row -> ((Number) row[1]).longValue()
                 ));
     }
 }
