@@ -1,0 +1,52 @@
+package com.example.libraryapp.NEWinfrastructure.persistence.inmemory;
+
+import com.example.libraryapp.NEWdomain.token.model.Token;
+import com.example.libraryapp.NEWdomain.token.ports.RefreshTokenRepository;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.Objects.requireNonNull;
+
+
+@RequiredArgsConstructor
+public class InMemoryRefreshTokenRepositoryImpl implements RefreshTokenRepository {
+    private final ConcurrentHashMap<Long, Token> map = new ConcurrentHashMap<>();
+    private static long id = 0;
+
+    @Override
+    public void save(Token token) {
+        requireNonNull(token, "Token cannot be null");
+        if (token.getId() == null) {
+            token.setId(++id);
+        }
+        map.put(token.getId(), token);
+    }
+
+    @Override
+    public void saveAll(List<Token> tokens) {
+        tokens.forEach(token -> map.put(token.getId(), token));
+    }
+
+    @Override
+    public Optional<Token> findByToken(String token) {
+        return map.values().stream()
+                .filter(t -> t.getToken().equals(token))
+                .findFirst();
+    }
+
+    @Override
+    public List<Token> findAllValidTokenByUser(Long userId) {
+        return map.values().stream()
+                .filter(t -> t.getUserId().equals(userId))
+                .toList();
+    }
+
+    @Override
+    public boolean existsValidToken(String token) {
+        return map.values().stream()
+                .anyMatch(t -> t.getToken().equals(token));
+    }
+}

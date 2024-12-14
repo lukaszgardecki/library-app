@@ -13,9 +13,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="created_at" type="DATETIME"/>
             <column name="subject" type="VARCHAR(500)"/>
             <column name="content" type="VARCHAR(2000)"/>
-            <column name="book_id" type="BIGINT"/>
-            <column name="book_title" type="VARCHAR(500)"/>
-            <column name="member_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
             <column name="type" type="VARCHAR(50)"/>
             <column name="is_read" type="BOOLEAN"/>
         </createTable>
