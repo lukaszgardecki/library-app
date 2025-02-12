@@ -2,8 +2,8 @@ package com.example.libraryapp.OLDweb;
 
 import com.example.libraryapp.OLDdomain.book.dto.BookDto;
 import com.example.libraryapp.OLDdomain.book.dto.BookToSaveDto;
-import com.example.libraryapp.NEWdomain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.NEWdomain.bookitem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
+import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.OLDdomain.exception.ErrorMessage;
 import com.example.libraryapp.OLDmanagement.LanguageDto;
 import org.junit.jupiter.api.DisplayName;

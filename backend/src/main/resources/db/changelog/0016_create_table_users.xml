@@ -23,14 +23,13 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="card_id" type="BIGINT"/>
             <column name="person_id" type="BIGINT">
                 <constraints nullable="false"
-                             foreignKeyName="fk_user_person_id"
+                             foreignKeyName="fk_users_person_id"
                              referencedTableName="person"
                              referencedColumnNames="id"
                              primaryKey="true"
-                             primaryKeyName="pk_user"
+                             primaryKeyName="pk_users"
                 />
             </column>
-
         </createTable>
 
         <modifySql dbms="mysql">

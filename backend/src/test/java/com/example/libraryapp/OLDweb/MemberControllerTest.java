@@ -1,12 +1,7 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.NEWdomain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.OLDdomain.exception.ErrorMessage;
-import com.example.libraryapp.NEWdomain.user.model.Gender;
-import com.example.libraryapp.OLDdomain.member.dto.MemberDto;
-import com.example.libraryapp.OLDdomain.member.dto.MemberUpdateDto;
-import com.example.libraryapp.OLDdomain.reservation.ReservationStatus;
-import com.example.libraryapp.OLDmanagement.Constants;
+import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
+import com.example.libraryapp.domain.person.model.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

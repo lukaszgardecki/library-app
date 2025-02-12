@@ -1,17 +1,9 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.NEWdomain.user.dto.RegisterUserDto;
-import com.example.libraryapp.NEWdomain.auth.dto.LoginRequest;
-import com.example.libraryapp.NEWdomain.auth.dto.LoginResponse;
-import com.example.libraryapp.OLDdomain.book.dto.BookDto;
-import com.example.libraryapp.OLDdomain.book.dto.BookToSaveDto;
-import com.example.libraryapp.OLDdomain.exception.ErrorMessage;
-import com.example.libraryapp.NEWdomain.user.model.Gender;
-import com.example.libraryapp.OLDdomain.member.dto.MemberUpdateDto;
-import com.example.libraryapp.OLDdomain.payment.dto.PaymentRequest;
-import com.example.libraryapp.OLDdomain.rack.RackToSaveDto;
-import com.example.libraryapp.OLDdomain.rack.RackToUpdateDto;
-import com.example.libraryapp.OLDmanagement.ActionRequest;
+import com.example.libraryapp.domain.user.dto.RegisterUserDto;
+import com.example.libraryapp.domain.auth.dto.LoginRequest;
+import com.example.libraryapp.domain.auth.dto.LoginResponse;
+import com.example.libraryapp.domain.person.model.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;

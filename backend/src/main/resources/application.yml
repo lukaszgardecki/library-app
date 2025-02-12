@@ -1,9 +1,9 @@
 spring:
   liquibase:
-    change-log: db/changelog/master.xml
+    change-log: classpath:db/changelog/master.xml
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
   profiles:
     default: prod
 springdoc:

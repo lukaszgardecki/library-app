@@ -1,8 +1,8 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.NEWapplication.auth.AuthenticationFacade;
-import com.example.libraryapp.NEWdomain.auth.dto.LoginRequest;
-import com.example.libraryapp.NEWdomain.auth.dto.LoginResponse;
+import com.example.libraryapp.application.auth.AuthenticationFacade;
+import com.example.libraryapp.domain.auth.dto.LoginRequest;
+import com.example.libraryapp.domain.auth.dto.LoginResponse;
 import com.example.libraryapp.TestAuth;
 import com.example.libraryapp.TestHelper;
 import jakarta.servlet.http.Cookie;
