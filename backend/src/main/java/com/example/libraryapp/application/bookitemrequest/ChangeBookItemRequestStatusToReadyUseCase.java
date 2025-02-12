@@ -3,8 +3,8 @@ package com.example.libraryapp.application.bookitemrequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemRequestReadyEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemRequestReadyEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

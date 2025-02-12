@@ -1,8 +1,8 @@
 package com.example.libraryapp.application.warehouse;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
 import com.example.libraryapp.domain.warehouse.ports.WarehouseEventListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemRequestedEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemRequestedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 

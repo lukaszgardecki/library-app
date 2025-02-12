@@ -1,7 +1,7 @@
 package com.example.libraryapp.application.person;
 
 import com.example.libraryapp.domain.person.ports.PersonRepository;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPersonRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPersonRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class PersonConfiguration {
 
     public PersonFacade personFacade() {
-        InMemoryPersonRepositoryImpl personRepository = new InMemoryPersonRepositoryImpl();
+        InMemoryPersonRepositoryAdapter personRepository = new InMemoryPersonRepositoryAdapter();
         PersonService personService = new PersonService(personRepository);
         return new PersonFacade(
                 new GetPageByQueryUseCase(personService),

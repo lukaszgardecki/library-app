@@ -5,10 +5,10 @@ import com.example.libraryapp.domain.notification.ports.EmailNotificationPort;
 import com.example.libraryapp.domain.notification.ports.NotificationPreferencesRepositoryPort;
 import com.example.libraryapp.domain.notification.ports.SmsNotificationPort;
 import com.example.libraryapp.domain.notification.ports.SystemNotificationPort;
-import com.example.libraryapp.infrastructure.events.event.notification.EmailNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.event.notification.SmsNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.event.notification.SystemNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.notification.EmailNotificationSentEvent;
+import com.example.libraryapp.domain.event.types.notification.SmsNotificationSentEvent;
+import com.example.libraryapp.domain.event.types.notification.SystemNotificationSentEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -7,9 +7,9 @@ import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemRequestedEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemReservedEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemRequestedEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemReservedEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

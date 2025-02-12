@@ -1,8 +1,8 @@
 package com.example.libraryapp.domain.useractivity.types.bookitem;
 
 import com.example.libraryapp.domain.useractivity.model.UserActivityType;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemReservedEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemReservedEvent;
 
 public class BookItemReservedActivity extends BookItemActivity {
 

@@ -7,8 +7,8 @@ import com.example.libraryapp.application.fine.FineFacade;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemLostEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemLostEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;

@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.notification.types.bookitem;
 
 import com.example.libraryapp.domain.notification.model.NotificationType;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
 
 public class RequestCancelledNotification extends BookItemNotification {
 

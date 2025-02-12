@@ -9,8 +9,8 @@ import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemLoanedEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemLoanedEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

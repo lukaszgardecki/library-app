@@ -2,7 +2,7 @@ package com.example.libraryapp.domain.useractivity.types.user;
 
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
 import com.example.libraryapp.domain.useractivity.model.UserActivityType;
-import com.example.libraryapp.infrastructure.events.event.user.UserEvent;
+import com.example.libraryapp.domain.event.types.user.UserEvent;
 
 public class AccountCreatedActivity extends UserActivity {
 

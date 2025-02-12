@@ -9,10 +9,10 @@ import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRequestRepositoryImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRequestRepositoryAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -21,14 +21,14 @@ import org.springframework.context.annotation.Lazy;
 public class BookItemRequestConfiguration {
 
     public BookItemRequestFacade bookItemRequestFacade() {
-        InMemoryBookItemRequestRepositoryImpl bookItemRequestRepository = new InMemoryBookItemRequestRepositoryImpl();
-        InMemoryUserRepositoryImpl userRepository = new InMemoryUserRepositoryImpl();
+        InMemoryBookItemRequestRepositoryAdapter bookItemRequestRepository = new InMemoryBookItemRequestRepositoryAdapter();
+        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         AuthenticationFacade authFacade = new AuthenticationConfiguration().authenticationFacade(userRepository);
         BookFacade bookFacade = new BookConfiguration().bookFacade();
         BookItemFacade bookItemFacade = new BookItemConfiguration().bookItemFacade();
         BookItemRequestService bookItemRequestService = new BookItemRequestService(bookItemRequestRepository);
-        InMemoryEventPublisherImpl publisher = new InMemoryEventPublisherImpl();
+        InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
 
         return new BookItemRequestFacade(
                 new GetCurrentBookItemRequestUseCase(bookItemRequestService),

@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.useractivity.types.notify;
 
 import com.example.libraryapp.domain.useractivity.model.UserActivityType;
-import com.example.libraryapp.infrastructure.events.event.notification.NotificationSentEvent;
+import com.example.libraryapp.domain.event.types.notification.NotificationSentEvent;
 
 public class SmsNotificationSentActivity extends NotificationSentActivity {
 

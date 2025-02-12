@@ -13,10 +13,10 @@ import com.example.libraryapp.application.fine.FineFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepository;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemLoanRepositoryImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemLoanRepositoryAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,16 +24,16 @@ import org.springframework.context.annotation.Configuration;
 public class BookItemLoanConfiguration {
 
     public BookItemLoanFacade bookItemLoanFacade() {
-        InMemoryBookItemLoanRepositoryImpl loanRepository = new InMemoryBookItemLoanRepositoryImpl();
+        InMemoryBookItemLoanRepositoryAdapter loanRepository = new InMemoryBookItemLoanRepositoryAdapter();
         BookItemLoanService loanService = new BookItemLoanService(loanRepository);
-        InMemoryUserRepositoryImpl userRepository = new InMemoryUserRepositoryImpl();
+        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         AuthenticationFacade authFacade = new AuthenticationConfiguration().authenticationFacade(userRepository);
         BookFacade bookFacade = new BookConfiguration().bookFacade();
         BookItemFacade bookItemFacade = new BookItemConfiguration().bookItemFacade();
         BookItemRequestFacade bookItemRequestFacade = new BookItemRequestConfiguration().bookItemRequestFacade();
         FineFacade fineFacade = new FineConfiguration().fineFacade();
-        InMemoryEventPublisherImpl publisher = new InMemoryEventPublisherImpl();
+        InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
 
         return new BookItemLoanFacade(
                 new GetBookItemLoanUseCase(loanService),

@@ -20,11 +20,11 @@ import com.example.libraryapp.application.statistics.StatisticsConfiguration;
 import com.example.libraryapp.application.statistics.StatisticsFacade;
 import com.example.libraryapp.domain.auth.ports.PasswordEncoderPort;
 import com.example.libraryapp.domain.user.ports.UserRepository;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPasswordEncoderImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPersonRepositoryImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPasswordEncoderAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPersonRepositoryAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -33,12 +33,12 @@ import org.springframework.context.annotation.Lazy;
 public class UserConfiguration {
 
     public UserFacade userFacade() {
-        InMemoryUserRepositoryImpl userRepository = new InMemoryUserRepositoryImpl();
+        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
         return userFacade(userRepository);
     }
 
     public UserFacade userFacade(UserRepository userRepository) {
-        InMemoryPersonRepositoryImpl personRepository = new InMemoryPersonRepositoryImpl();
+        InMemoryPersonRepositoryAdapter personRepository = new InMemoryPersonRepositoryAdapter();
         PersonFacade personFacade = new PersonConfiguration().personFacade(personRepository);
         AuthenticationFacade authFacade = new AuthenticationConfiguration().authenticationFacade(userRepository);
         BookFacade bookFacade = new BookConfiguration().bookFacade();
@@ -48,8 +48,8 @@ public class UserConfiguration {
         FineFacade fineFacade = new FineConfiguration().fineFacade();
         LibraryCardFacade libraryCardFacade = new LibraryCardConfiguration().LibraryCardFacade();
         StatisticsFacade statisticsFacade = new StatisticsConfiguration().statisticsFacade();
-        InMemoryPasswordEncoderImpl passwordEncoder = new InMemoryPasswordEncoderImpl();
-        InMemoryEventPublisherImpl publisher = new InMemoryEventPublisherImpl();
+        InMemoryPasswordEncoderAdapter passwordEncoder = new InMemoryPasswordEncoderAdapter();
+        InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
         UserCredentialsService credentialsService = new UserCredentialsService(userRepository, passwordEncoder);
         UserService userService = new UserService(
                 userRepository, credentialsService, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,

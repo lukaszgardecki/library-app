@@ -3,7 +3,7 @@ package com.example.libraryapp.application.payment;
 import com.example.libraryapp.application.auth.AuthenticationConfiguration;
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.domain.payment.ports.PaymentRepository;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPaymentRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPaymentRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class PaymentConfiguration {
 
     public PaymentFacade paymentFacade() {
-        InMemoryPaymentRepositoryImpl paymentRepository = new InMemoryPaymentRepositoryImpl();
+        InMemoryPaymentRepositoryAdapter paymentRepository = new InMemoryPaymentRepositoryAdapter();
         PaymentRequestFactory requestFactory = new PaymentRequestFactory();
         PaymentPortFactory portFactory = new PaymentPortFactory();
         PaymentService paymentService = new PaymentService(paymentRepository);

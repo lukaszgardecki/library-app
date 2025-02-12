@@ -3,9 +3,9 @@ package com.example.libraryapp.application.bookitemrequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.*;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.event.types.bookitem.*;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;

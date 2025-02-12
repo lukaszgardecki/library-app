@@ -2,8 +2,8 @@ package com.example.libraryapp.application.fine;
 
 import com.example.libraryapp.domain.fine.dto.FineCardDetailsDto;
 import com.example.libraryapp.domain.fine.dto.FinePaymentResult;
-import com.example.libraryapp.infrastructure.events.event.fine.FinePaidEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.fine.FinePaidEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

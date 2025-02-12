@@ -9,10 +9,9 @@ import com.example.libraryapp.domain.user.model.AccountStatus;
 import com.example.libraryapp.domain.user.model.Role;
 import com.example.libraryapp.domain.user.model.User;
 import com.example.libraryapp.domain.user.ports.UserRepository;
-import com.example.libraryapp.infrastructure.events.event.user.UserRegisteredEvent;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,7 +24,6 @@ class RegisterUserUseCase {
     private final UserCredentialsService credentialsService;
     private final EventPublisherPort publisher;
 
-    @Transactional
     public Long execute(RegisterUserDto dto) {
         credentialsService.validateEmail(dto.getEmail());
         Long cardId = libraryCardFacade.createNewLibraryCard();

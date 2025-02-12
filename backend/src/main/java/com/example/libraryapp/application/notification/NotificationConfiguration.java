@@ -2,7 +2,7 @@ package com.example.libraryapp.application.notification;
 
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.domain.notification.ports.*;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

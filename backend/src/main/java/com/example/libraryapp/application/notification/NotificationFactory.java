@@ -1,11 +1,11 @@
 package com.example.libraryapp.application.notification;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.event.types.bookitem.*;
 import com.example.libraryapp.domain.notification.model.Notification;
 import com.example.libraryapp.domain.notification.types.bookitem.*;
 import com.example.libraryapp.domain.notification.types.user.UserRegisteredNotification;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.*;
-import com.example.libraryapp.infrastructure.events.event.user.UserRegisteredEvent;
+import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 
 import java.util.HashMap;
 import java.util.List;

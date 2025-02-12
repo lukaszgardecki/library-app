@@ -5,7 +5,7 @@ import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.user.dto.RegisterUserDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.exceptions.UserNotFoundException;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class UserFacadeTest {
 
     @BeforeEach
     void setUp() {
-        userFacade = new UserConfiguration().userFacade(new InMemoryUserRepositoryImpl());
+        userFacade = new UserConfiguration().userFacade(new InMemoryUserRepositoryAdapter());
     }
 
 

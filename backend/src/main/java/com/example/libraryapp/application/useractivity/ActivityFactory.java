@@ -1,5 +1,7 @@
 package com.example.libraryapp.application.useractivity;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.event.types.bookitem.*;
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
 import com.example.libraryapp.domain.useractivity.types.bookitem.*;
 import com.example.libraryapp.domain.useractivity.types.notify.EmailNotificationSentActivity;
@@ -8,14 +10,12 @@ import com.example.libraryapp.domain.useractivity.types.notify.SystemNotificatio
 import com.example.libraryapp.domain.useractivity.types.user.AccountCreatedActivity;
 import com.example.libraryapp.domain.useractivity.types.user.LoginFailedActivity;
 import com.example.libraryapp.domain.useractivity.types.user.LoginSuccessActivity;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.*;
-import com.example.libraryapp.infrastructure.events.event.notification.EmailNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.event.notification.SmsNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.event.notification.SystemNotificationSentEvent;
-import com.example.libraryapp.infrastructure.events.event.user.UserAuthFailedEvent;
-import com.example.libraryapp.infrastructure.events.event.user.UserAuthSuccessEvent;
-import com.example.libraryapp.infrastructure.events.event.user.UserRegisteredEvent;
+import com.example.libraryapp.domain.event.types.notification.EmailNotificationSentEvent;
+import com.example.libraryapp.domain.event.types.notification.SmsNotificationSentEvent;
+import com.example.libraryapp.domain.event.types.notification.SystemNotificationSentEvent;
+import com.example.libraryapp.domain.event.types.user.UserAuthFailedEvent;
+import com.example.libraryapp.domain.event.types.user.UserAuthSuccessEvent;
+import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 
 import java.util.HashMap;
 import java.util.List;

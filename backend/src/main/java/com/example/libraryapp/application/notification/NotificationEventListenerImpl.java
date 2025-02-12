@@ -1,8 +1,8 @@
 package com.example.libraryapp.application.notification;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
 import com.example.libraryapp.domain.notification.model.Notification;
 import com.example.libraryapp.domain.notification.ports.NotificationEventListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

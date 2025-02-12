@@ -8,9 +8,9 @@ import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
 import com.example.libraryapp.domain.user.ports.UserRepository;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAuthenticationManagerPortImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAuthenticationManagerPortAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Lazy;
 public class AuthenticationConfiguration {
 
     public AuthenticationFacade authenticationFacade() {
-        InMemoryUserRepositoryImpl userRepository = new InMemoryUserRepositoryImpl();
-        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortImpl(userRepository);
+        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
+        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortAdapter(userRepository);
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         TokenFacade tokenFacade = new TokenConfiguration().tokenFacade();
         PersonFacade personFacade = new PersonConfiguration().personFacade();
@@ -31,7 +31,7 @@ public class AuthenticationConfiguration {
     }
 
     public AuthenticationFacade authenticationFacade(UserRepository userRepository) {
-        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortImpl(userRepository);
+        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortAdapter(userRepository);
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         TokenFacade tokenFacade = new TokenConfiguration().tokenFacade();
         PersonFacade personFacade = new PersonConfiguration().personFacade();

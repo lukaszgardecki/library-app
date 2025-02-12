@@ -1,8 +1,8 @@
 package com.example.libraryapp.domain.notification.types.bookitem;
 
 import com.example.libraryapp.domain.notification.model.NotificationType;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.BookItemStillInQueueEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
+import com.example.libraryapp.domain.event.types.bookitem.BookItemStillInQueueEvent;
 
 public class BookItemStillInQueueNotification extends BookItemNotification {
 

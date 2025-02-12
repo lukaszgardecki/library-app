@@ -5,9 +5,9 @@ import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.token.ports.AccessTokenRepository;
 import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAccessTokenRepositoryImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryRefreshTokenRepositoryImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAccessTokenRepositoryAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryRefreshTokenRepositoryAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,9 +20,9 @@ import java.security.Key;
 public class TokenConfiguration {
 
     public TokenFacade tokenFacade() {
-        InMemoryUserRepositoryImpl userRepository = new InMemoryUserRepositoryImpl();
-        AccessTokenRepository accessTokenRepository = new InMemoryAccessTokenRepositoryImpl();
-        RefreshTokenRepository refreshTokenRepository = new InMemoryRefreshTokenRepositoryImpl();
+        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
+        AccessTokenRepository accessTokenRepository = new InMemoryAccessTokenRepositoryAdapter();
+        RefreshTokenRepository refreshTokenRepository = new InMemoryRefreshTokenRepositoryAdapter();
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         Key secret = getSigningKey("uiadfhguiajefhdgjuiouiodfghuioasdfghauopdfhguoahfdughafdogha");
         TokenGenerator tokenGenerator = new TokenGenerator(secret);

@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.notification.types.user;
 
 import com.example.libraryapp.domain.notification.model.Notification;
 import com.example.libraryapp.domain.notification.model.NotificationType;
-import com.example.libraryapp.infrastructure.events.event.user.UserRegisteredEvent;
+import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 
 public class UserRegisteredNotification extends Notification {
 

@@ -1,8 +1,8 @@
 package com.example.libraryapp.application.useractivity;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
 import com.example.libraryapp.domain.useractivity.ports.UserActivityEventListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,10 +1,10 @@
 package com.example.libraryapp.application.user;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.event.types.bookitem.*;
 import com.example.libraryapp.domain.user.ports.UserEventListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.*;
-import com.example.libraryapp.infrastructure.events.event.fine.FinePaidEvent;
-import com.example.libraryapp.infrastructure.events.event.user.UserRegisteredEvent;
+import com.example.libraryapp.domain.event.types.fine.FinePaidEvent;
+import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

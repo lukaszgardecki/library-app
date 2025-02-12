@@ -3,9 +3,9 @@ package com.example.libraryapp.application.fine;
 import com.example.libraryapp.application.payment.PaymentConfiguration;
 import com.example.libraryapp.application.payment.PaymentFacade;
 import com.example.libraryapp.domain.fine.ports.FineRepository;
-import com.example.libraryapp.infrastructure.events.publishers.EventPublisherPort;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherImpl;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryFineRepositoryImpl;
+import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryFineRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,10 +13,10 @@ import org.springframework.context.annotation.Configuration;
 public class FineConfiguration {
 
     public FineFacade fineFacade() {
-        InMemoryFineRepositoryImpl fineRepository = new InMemoryFineRepositoryImpl();
+        InMemoryFineRepositoryAdapter fineRepository = new InMemoryFineRepositoryAdapter();
         PaymentFacade paymentFacade = new PaymentConfiguration().paymentFacade();
         FineService fineService = new FineService(fineRepository, paymentFacade);
-        InMemoryEventPublisherImpl publisher = new InMemoryEventPublisherImpl();
+        InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
         return new FineFacade(
                 new ValidateUserForFinesUseCase(fineService),
                 new ProcessBookItemReturnUseCase(fineService),

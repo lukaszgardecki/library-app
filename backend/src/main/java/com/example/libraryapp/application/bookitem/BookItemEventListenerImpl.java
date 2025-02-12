@@ -1,8 +1,8 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.event.types.bookitem.*;
 import com.example.libraryapp.domain.user.ports.UserEventListenerPort;
-import com.example.libraryapp.infrastructure.events.event.CustomEvent;
-import com.example.libraryapp.infrastructure.events.event.bookitem.*;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

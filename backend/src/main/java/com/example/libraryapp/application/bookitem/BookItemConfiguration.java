@@ -3,7 +3,7 @@ package com.example.libraryapp.application.bookitem;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestConfiguration;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.domain.bookitem.ports.BookItemRepository;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class BookItemConfiguration {
 
     public BookItemFacade bookItemFacade() {
-        InMemoryBookItemRepositoryImpl repository = new InMemoryBookItemRepositoryImpl();
+        InMemoryBookItemRepositoryAdapter repository = new InMemoryBookItemRepositoryAdapter();
         BookItemRequestFacade bookItemRequestFacade = new BookItemRequestConfiguration().bookItemRequestFacade();
         BookItemBarcodeGenerator barcodeGenerator = new BookItemBarcodeGenerator();
         BookItemService bookItemService = new BookItemService(repository, bookItemRequestFacade, barcodeGenerator);

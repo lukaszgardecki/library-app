@@ -7,7 +7,7 @@ import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.token.dto.AuthTokensDto;
 import com.example.libraryapp.domain.user.model.AccountStatus;
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryImpl;
+import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,14 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AuthenticationFacadeTest {
     private AuthenticationFacade authenticationFacade;
-    private InMemoryUserRepositoryImpl userRepository;
+    private InMemoryUserRepositoryAdapter userRepository;
     private UserFacade userFacade;
     private final TestHelper testHelper = new TestHelper();
 
 
     @BeforeEach
     void setUp() {
-        userRepository = new InMemoryUserRepositoryImpl();
+        userRepository = new InMemoryUserRepositoryAdapter();
         userFacade = new UserConfiguration().userFacade(userRepository);
         authenticationFacade = new AuthenticationConfiguration().authenticationFacade(userRepository);
     }

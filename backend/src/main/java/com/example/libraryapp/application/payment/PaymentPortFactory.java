@@ -5,8 +5,8 @@ import com.example.libraryapp.domain.payment.ports.PaymentStrategyPort;
 import com.example.libraryapp.domain.payment.request.CardPaymentRequest;
 import com.example.libraryapp.domain.payment.request.CashPaymentRequest;
 import com.example.libraryapp.domain.payment.request.PaymentRequest;
-import com.example.libraryapp.infrastructure.payment.CardPaymentStrategyImpl;
-import com.example.libraryapp.infrastructure.payment.CashPaymentStrategyImpl;
+import com.example.libraryapp.infrastructure.payment.CardPaymentStrategyAdapter;
+import com.example.libraryapp.infrastructure.payment.CashPaymentStrategyAdapter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -19,8 +19,8 @@ class PaymentPortFactory {
     private static final Map<Class<? extends PaymentRequest>, Function<PaymentRequest, PaymentStrategyPort<? extends PaymentRequest>>> paymentPorts = new HashMap<>();
 
     static {
-        paymentPorts.put(CardPaymentRequest.class, request -> new CardPaymentStrategyImpl());
-        paymentPorts.put(CashPaymentRequest.class, request -> new CashPaymentStrategyImpl());
+        paymentPorts.put(CardPaymentRequest.class, request -> new CardPaymentStrategyAdapter());
+        paymentPorts.put(CashPaymentRequest.class, request -> new CashPaymentStrategyAdapter());
     }
 
     @SuppressWarnings("unchecked")
