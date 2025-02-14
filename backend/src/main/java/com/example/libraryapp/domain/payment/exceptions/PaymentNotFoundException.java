@@ -1,12 +1,12 @@
 package com.example.libraryapp.domain.payment.exceptions;
 
 
-public class PaymentNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public PaymentNotFoundException() {
-    }
+public class PaymentNotFoundException extends LibraryAppNotFoundException {
 
     public PaymentNotFoundException(Long paymentId) {
-        super("Message.PAYMENT_NOT_FOUND.getMessage(paymentId)");
+        super(MessageKey.PAYMENT_NOT_FOUND_ID, paymentId.toString());
     }
 }

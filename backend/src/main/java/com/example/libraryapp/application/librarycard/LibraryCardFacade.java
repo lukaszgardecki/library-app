@@ -13,8 +13,8 @@ public class LibraryCardFacade {
     private final BlockLibraryCardUseCase blockLibraryCardUseCase;
     private final ReportLostLibraryCardUseCase reportLostLibraryCardUseCase;
 
-    public Long createNewLibraryCard() {
-        return createNewLibraryCardUseCase.execute();
+    public Long createNewLibraryCard(Long userId) {
+        return createNewLibraryCardUseCase.execute(userId);
     }
 
     public LibraryCardDto save(LibraryCardDto card) {

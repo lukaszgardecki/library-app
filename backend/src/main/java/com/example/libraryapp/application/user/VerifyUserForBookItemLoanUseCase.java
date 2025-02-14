@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.user;
 
-import com.example.libraryapp.application.constants.Constants;
+import com.example.libraryapp.domain.Constants;
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanException;
 import com.example.libraryapp.domain.user.exceptions.UnsettledFineException;
 import com.example.libraryapp.domain.user.model.User;
@@ -16,7 +17,7 @@ class VerifyUserForBookItemLoanUseCase {
         User user = userService.getUserById(userId);
         if (user.getCharge().compareTo(BigDecimal.ZERO) > 0) throw new UnsettledFineException();
         if (user.getTotalBooksBorrowed() >= Constants.MAX_BOOKS_ISSUED_TO_A_USER) {
-            throw new BookItemLoanException("Message.LENDING_LIMIT_EXCEEDED.getMessage()");
+            throw new BookItemLoanException(MessageKey.LOAN_LIMIT_EXCEEDED);
         }
     }
 }

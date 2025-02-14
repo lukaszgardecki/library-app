@@ -1,12 +1,11 @@
 package com.example.libraryapp.domain.fine.exceptions;
 
-public class FineAlreadyPaidException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppException;
+
+public class FineAlreadyPaidException extends LibraryAppException {
 
     public FineAlreadyPaidException() {
-        super("Kara została już opłacona...");
-    }
-
-    public FineAlreadyPaidException(Long id) {
-        super(String.format("Kara (id=%s) zostałą już opłacona.", id));
+        super(MessageKey.FINE_ALREADY_PAID);
     }
 }

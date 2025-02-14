@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitemrequest;
 
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestException;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
@@ -13,7 +14,7 @@ class CheckIfBookItemRequestStatusIsReadyUseCase {
         BookItemRequestStatus requiredStatus = BookItemRequestStatus.READY;
         BookItemRequest bookItemRequest = bookItemRequestService.getCurrentBookItemRequest(bookItemId, userId);
         if (bookItemRequest.getStatus() != requiredStatus) {
-            throw new BookItemRequestException("Book item request status is not " + requiredStatus);
+            throw new BookItemRequestException(MessageKey.REQUEST_STATUS_NOT_READY);
         }
         return bookItemRequest.getId();
     }

@@ -1,8 +1,10 @@
 package com.example.libraryapp.domain.useractivity.exceptions;
 
-public class UserActivityNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public UserActivityNotFoundException(Long id) {
-        super("Message.ACTION_NOT_FOUND_ID.getMessage(id)");
+public class UserActivityNotFoundException extends LibraryAppNotFoundException {
+    public UserActivityNotFoundException(Long userActivityId) {
+        super(MessageKey.ACTIVITY_LOGIN_SUCCEEDED, userActivityId.toString());
     }
 }

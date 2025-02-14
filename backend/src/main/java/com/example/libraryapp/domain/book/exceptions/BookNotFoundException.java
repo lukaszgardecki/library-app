@@ -1,8 +1,11 @@
 package com.example.libraryapp.domain.book.exceptions;
 
-public class BookNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public BookNotFoundException(Long id) {
-        super("Message.BOOK_NOT_FOUND.getMessage(id)");
+public class BookNotFoundException extends LibraryAppNotFoundException {
+
+    public BookNotFoundException(Long bookId) {
+        super(MessageKey.BOOK_NOT_FOUND_ID, bookId.toString());
     }
 }

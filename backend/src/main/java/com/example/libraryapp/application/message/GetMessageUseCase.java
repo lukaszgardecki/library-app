@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.message;
 
-import com.example.libraryapp.application.constants.Message;
+import com.example.libraryapp.domain.MessageKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -9,7 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 class GetMessageUseCase {
     private final MessageSource messageSource;
 
-    String execute(Message message, Object... params) {
-        return messageSource.getMessage(message.getKey(), params, LocaleContextHolder.getLocale());
+    String execute(MessageKey messageKey, Object... params) {
+        return messageSource.getMessage(messageKey.getKey(), params, LocaleContextHolder.getLocale());
     }
 }

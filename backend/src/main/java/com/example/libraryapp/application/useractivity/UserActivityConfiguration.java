@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.useractivity;
 
+import com.example.libraryapp.domain.message.ports.MessageProviderPort;
 import com.example.libraryapp.domain.useractivity.ports.UserActivityRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,10 @@ class UserActivityConfiguration {
     }
 
     @Bean
-    UserActivityEventListenerImpl activityEventListener(UserActivityFacade userActivityFacade) {
-        return new UserActivityEventListenerImpl(userActivityFacade);
+    UserActivityEventListenerAdapter activityEventListener(
+            UserActivityFacade userActivityFacade,
+            MessageProviderPort messageProvider
+    ) {
+        return new UserActivityEventListenerAdapter(userActivityFacade, messageProvider);
     }
 }

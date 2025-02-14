@@ -13,6 +13,7 @@ public class BookItemFacade {
     private final GetBookItemUseCase getBookItemUseCase;
     private final GetPageOfBookItemsUseCase getPageOfBookItemsUseCase;
     private final GetPageOfBookItemsByBookIdUseCase getPageOfBookItemsByBookIdUseCase;
+    private final GetPageOfBookItemsByRackIdUseCase getPageOfBookItemsByRackIdUseCase;
     private final AddBookItemUseCase addBookItemUseCase;
     private final UpdateBookItemUseCase updateBookItemUseCase;
     private final DeleteBookItemUseCase deleteBookItemUseCase;
@@ -30,6 +31,10 @@ public class BookItemFacade {
 
     public Page<BookItemDto> getPageOfBookItemsByBookId(Long bookId, Pageable pageable) {
         return getPageOfBookItemsByBookIdUseCase.execute(bookId, pageable).map(BookItemMapper::toDto);
+    }
+
+    public Page<BookItemDto> getPageOfBookItemsByRackId(Long rackId, Pageable pageable) {
+        return getPageOfBookItemsByRackIdUseCase.execute(rackId, pageable).map(BookItemMapper::toDto);
     }
 
     public BookItemDto addBookItem(BookItemToSaveDto bookItem) {

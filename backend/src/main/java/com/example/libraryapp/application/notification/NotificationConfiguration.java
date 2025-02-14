@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.notification;
 
 import com.example.libraryapp.application.auth.AuthenticationFacade;
+import com.example.libraryapp.domain.message.ports.MessageProviderPort;
 import com.example.libraryapp.domain.notification.ports.*;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import org.springframework.context.annotation.Bean;
@@ -24,14 +25,18 @@ class NotificationConfiguration {
     }
 
     @Bean
-    NotificationEventListenerImpl notificationEventListener(
+    NotificationEventListenerAdapter notificationEventListener(
+            NotificationRepositoryPort notificationRepositoryPort,
             SmsNotificationPort smsNotificationPort,
             EmailNotificationPort emailNotificationPort,
             SystemNotificationPort systemNotificationPort,
             NotificationPreferencesRepositoryPort notificationPreferencesPort,
-            EventPublisherPort publisherPort
+            EventPublisherPort publisherPort,
+            MessageProviderPort messageProviderPort
     ) {
-        return new NotificationEventListenerImpl(
+        return new NotificationEventListenerAdapter(
+                notificationRepositoryPort,
+                messageProviderPort,
                 new NotificationSender(
                         smsNotificationPort,
                         emailNotificationPort,

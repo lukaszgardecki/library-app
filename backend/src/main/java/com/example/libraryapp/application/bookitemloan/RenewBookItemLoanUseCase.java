@@ -3,7 +3,7 @@ package com.example.libraryapp.application.bookitemloan;
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
-import com.example.libraryapp.application.constants.Constants;
+import com.example.libraryapp.domain.Constants;
 import com.example.libraryapp.application.fine.FineFacade;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;

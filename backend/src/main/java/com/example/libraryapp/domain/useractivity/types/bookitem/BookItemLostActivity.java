@@ -1,19 +1,17 @@
 package com.example.libraryapp.domain.useractivity.types.bookitem;
 
-import com.example.libraryapp.domain.useractivity.model.UserActivityType;
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
+import com.example.libraryapp.domain.message.ports.MessageProviderPort;
+import com.example.libraryapp.domain.useractivity.model.UserActivityType;
 
 public class BookItemLostActivity extends BookItemActivity {
 
-    public BookItemLostActivity(BookItemEvent event) {
+    public BookItemLostActivity(BookItemEvent event, MessageProviderPort msgProvider) {
         super(event.getUserId());
         this.type = UserActivityType.BOOK_LOST;
-        this.message = "Message.ACTION_BOOK_LOST.getMessage(lending.getBookItem().getBook().getTitle())";
+        this.message = msgProvider.getMessage(
+                MessageKey.ACTIVITY_BOOK_ITEM_LOST, event.getBookTitle()
+        );
     }
-
-//    public BookItemLostActivity(Long userId, String bookTitle) {
-//        super(userId);
-//        this.type = UserActivityType.BOOK_LOST;
-//        this.message = "Message.ACTION_BOOK_LOST.getMessage(lending.getBookItem().getBook().getTitle())";
-//    }
 }

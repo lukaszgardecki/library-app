@@ -11,6 +11,6 @@ class GetPageOfBookItemsByBookIdUseCase {
     private final BookItemRepository bookItemRepository;
 
     Page<BookItem> execute(Long bookId, Pageable pageable) {
-        return bookItemRepository.getPageOfBookItemsByBookId(bookId, pageable);
+        return bookItemRepository.findAllByBookId(bookId, pageable);
     }
 }

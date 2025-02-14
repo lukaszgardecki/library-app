@@ -1,7 +1,11 @@
 package com.example.libraryapp.domain.bookitemloan.exceptions;
 
-public class BookItemLoanException extends RuntimeException {
-    public BookItemLoanException(String message) {
-        super(message);
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppException;
+
+public class BookItemLoanException extends LibraryAppException {
+
+    public BookItemLoanException(MessageKey messageKey) {
+        super(messageKey);
     }
 }

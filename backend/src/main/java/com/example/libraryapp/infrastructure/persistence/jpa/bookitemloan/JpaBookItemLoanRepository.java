@@ -39,7 +39,15 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
         AND b.bookItemId = :bookItemId
         AND b.status = :status
     """)
-    Optional<BookItemLoanEntity> findByParams(Long userId, Long bookItemId, BookItemLoanStatus status);
+    Optional<BookItemLoanEntity> findByParams(Long bookItemId, Long userId, BookItemLoanStatus status);
+
+    @Query("""
+        SELECT b
+        FROM BookItemLoanEntity b
+        WHERE b.bookItemId = :bookItemId
+        AND b.status = :status
+    """)
+    Optional<BookItemLoanEntity> findByParams(Long bookItemId, BookItemLoanStatus status);
 
     // TODO: 04.02.2025 sprawdzić czy metoda poniżej robi porpawne zapytanie
     @Query(value = """

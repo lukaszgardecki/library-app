@@ -1,7 +1,10 @@
 package com.example.libraryapp.domain.user.exceptions;
 
-public class UnsettledFineException extends RuntimeException{
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppException;
+
+public class UnsettledFineException extends LibraryAppException {
     public UnsettledFineException() {
-        super("Message.MEMBER_UNSETTLED_CHARGES.getMessage()");
+        super(MessageKey.USER_UNSETTLED_CHARGES);
     }
 }

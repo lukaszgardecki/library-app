@@ -24,8 +24,13 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepository {
     }
 
     @Override
-    public Optional<BookItemLoan> findByParams(Long userId, Long bookItemId, BookItemLoanStatus status) {
-        return repository.findByParams(userId, bookItemId, status).map(this::toModel);
+    public Optional<BookItemLoan> findByParams(Long bookItemId, Long userId, BookItemLoanStatus status) {
+        return repository.findByParams(bookItemId, userId, status).map(this::toModel);
+    }
+
+    @Override
+    public Optional<BookItemLoan> findByParams(Long bookItemId, BookItemLoanStatus status) {
+        return repository.findByParams(bookItemId, status).map(this::toModel);
     }
 
     @Override

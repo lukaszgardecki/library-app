@@ -26,14 +26,15 @@ class RegisterUserUseCase {
 
     public Long execute(RegisterUserDto dto) {
         credentialsService.validateEmail(dto.getEmail());
-        Long cardId = libraryCardFacade.createNewLibraryCard();
         PersonDto personToSave = createPersonToSave(dto);
         PersonDto savedPerson = personFacade.save(personToSave);
         User userToSave = createUserToSave(dto);
-        userToSave.setCardId(cardId);
         userToSave.setPersonId(savedPerson.getId());
         User savedUser = userRepository.save(userToSave);
-        publisher.publish(new UserRegisteredEvent(savedUser.getId(), savedPerson.getFirstName(), savedPerson.getLastName(), "jakaś wiadomosć"));
+        Long cardId = libraryCardFacade.createNewLibraryCard(savedUser.getId());
+        savedUser.setCardId(cardId);
+        userRepository.save(savedUser);
+        publisher.publish(new UserRegisteredEvent(savedUser.getId(), savedPerson.getFirstName(), savedPerson.getLastName()));
         return savedUser.getId();
     }
 

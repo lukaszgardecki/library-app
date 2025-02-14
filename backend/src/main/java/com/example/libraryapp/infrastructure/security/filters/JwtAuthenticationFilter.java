@@ -62,6 +62,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean isNotAuthorizedEndpoint(String requestURI) {
         List<String> publicEndpoints = List.of(
+                // H2
+                "/h2-console", "/favicon.ico",
+
+                // application endpoints:
                 "/authenticate",
                 "/register",
                 "/books"

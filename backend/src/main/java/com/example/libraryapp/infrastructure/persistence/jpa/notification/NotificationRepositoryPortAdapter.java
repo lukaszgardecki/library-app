@@ -27,6 +27,12 @@ class NotificationRepositoryPortAdapter implements NotificationRepositoryPort {
     }
 
     @Override
+    public Notification save(Notification notification) {
+        NotificationEntity savedNotification = repository.save(toEntity(notification));
+        return toModel(savedNotification);
+    }
+
+    @Override
     @Transactional
     public void markAsRead(Long id) {
         repository.markAsRead(id);

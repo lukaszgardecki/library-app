@@ -22,13 +22,18 @@ class BookItemRepositoryAdapter implements BookItemRepository {
     }
 
     @Override
-    public Page<BookItem> getPageOfBookItems(Pageable pageable) {
-        return repository.findAllByParams(null, pageable).map(this::toModel);
+    public Page<BookItem> findAll(Pageable pageable) {
+        return repository.findAllByParams(null, null, pageable).map(this::toModel);
     }
 
     @Override
-    public Page<BookItem> getPageOfBookItemsByBookId(Long bookId, Pageable pageable) {
-        return repository.findAllByParams(bookId, pageable).map(this::toModel);
+    public Page<BookItem> findAllByBookId(Long bookId, Pageable pageable) {
+        return repository.findAllByParams(bookId, null, pageable).map(this::toModel);
+    }
+
+    @Override
+    public Page<BookItem> findAllByRackId(Long rackId, Pageable pageable) {
+        return repository.findAllByParams(null, rackId, pageable).map(this::toModel);
     }
 
     @Override

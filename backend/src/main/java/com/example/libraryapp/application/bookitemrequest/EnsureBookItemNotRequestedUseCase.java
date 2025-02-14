@@ -1,5 +1,7 @@
 package com.example.libraryapp.application.bookitemrequest;
 
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.bookitem.exceptions.BookItemException;
 import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestException;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
@@ -21,7 +23,7 @@ class EnsureBookItemNotRequestedUseCase {
                 ).stream()
                 .findAny()
                 .ifPresent(bookItemRequest -> {
-                    throw new BookItemRequestException("Message.RESERVATION_ALREADY_CREATED.getMessage()");
+                    throw new BookItemException(MessageKey.BOOK_ITEM_ALREADY_REQUESTED);
                 });
     }
 }

@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitemrequest;
 
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestException;
 import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestNotFoundException;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
@@ -69,8 +70,16 @@ class BookItemRequestService {
     void verifyIfCurrentRequestExists(Long bookItemId, Long userId) {
         BookItemRequest currentRequest = getCurrentBookItemRequest(bookItemId, userId);
         if (currentRequest != null) {
-            throw new BookItemRequestException("Message.RESERVATION_ALREADY_CREATED.getMessage()");
+            throw new BookItemRequestException(MessageKey.REQUEST_ALREADY_CREATED);
         }
+    }
+
+    List<BookItemRequestStatus> getCurrentRequestStatuses() {
+        return List.of(
+                BookItemRequestStatus.PENDING,
+                BookItemRequestStatus.READY,
+                BookItemRequestStatus.RESERVED
+        );
     }
 
     private BookItemRequest createBookItemRequestToSave(Long bookItemId, Long userId, BookItemRequestStatus status) {
@@ -80,13 +89,5 @@ class BookItemRequestService {
                 .userId(userId)
                 .bookItemId(bookItemId)
                 .build();
-    }
-
-    private List<BookItemRequestStatus> getCurrentRequestStatuses() {
-        return List.of(
-                BookItemRequestStatus.PENDING,
-                BookItemRequestStatus.READY,
-                BookItemRequestStatus.RESERVED
-        );
     }
 }

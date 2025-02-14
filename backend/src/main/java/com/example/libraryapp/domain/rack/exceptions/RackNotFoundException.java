@@ -1,14 +1,15 @@
 package com.example.libraryapp.domain.rack.exceptions;
 
-public class RackNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public RackNotFoundException(Long id) {
-        super("Message.RACK_NOT_FOUND.getMessage(id)");
+public class RackNotFoundException extends LibraryAppNotFoundException {
+
+    public RackNotFoundException(Long rackId) {
+        super(MessageKey.RACK_NOT_FOUND_ID, rackId.toString());
     }
 
     public RackNotFoundException(String location) {
-        // TODO: 11.12.2024 zrobić message wyjątku dopasowany do lokalizacji
-        super("Message.RACK_NOT_FOUND.getMessage(id)");
+        super(MessageKey.RACK_NOT_FOUND_LOCATION, location);
     }
-
 }

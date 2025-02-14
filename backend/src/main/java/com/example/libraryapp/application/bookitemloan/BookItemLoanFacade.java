@@ -25,8 +25,8 @@ public class BookItemLoanFacade {
     private final ProcessLostBookItemUseCase processLostBookItemUseCase;
     private final CountByCreationDateUseCase countByCreationDateUseCase;
     private final CountUniqueBorrowersInCurrentMonthUseCase countUniqueBorrowersInCurrentMonthUseCase;
-    private final CountBookItemLoansMonthly countBookItemLoansMonthly;
-    private final CountBookItemLoansDaily countBookItemLoansDaily;
+    private final CountBookItemLoansMonthlyUseCase countBookItemLoansMonthlyUseCase;
+    private final CountBookItemLoansDailyUseCase countBookItemLoansDailyUseCase;
 
     public BookItemLoanDto getBookLoan(Long id) {
         BookItemLoan bookItemLoan = getBookItemLoanUseCase.execute(id);
@@ -83,10 +83,10 @@ public class BookItemLoanFacade {
     }
 
     public List<Object[]> countBookItemLoansMonthly(LocalDate startDate, LocalDate endDate) {
-        return countBookItemLoansMonthly.execute(startDate, endDate);
+        return countBookItemLoansMonthlyUseCase.execute(startDate, endDate);
     }
 
     public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
-        return countBookItemLoansDaily.execute(startDate, endDate, status);
+        return countBookItemLoansDailyUseCase.execute(startDate, endDate, status);
     }
 }

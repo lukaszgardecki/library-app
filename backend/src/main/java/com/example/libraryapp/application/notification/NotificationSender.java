@@ -21,17 +21,17 @@ class NotificationSender {
 
     void send(Notification notification) {
         Long userId = notification.getUserId();
-        userNotificationPreferencesPort.findByUserId(userId).ifPresent(prefs -> {
-            systemNotificationPort.send(notification);
-            publisher.publish(new SystemNotificationSentEvent(userId, "wysyłam powiadomienie systemowe"));
+        systemNotificationPort.send(notification);
+        publisher.publish(new SystemNotificationSentEvent(userId, notification.getSubject()));
 
+        userNotificationPreferencesPort.findByUserId(userId).ifPresent(prefs -> {
             if (prefs.getSmsEnabled()) {
                 smsNotificationPort.send(notification);
-                publisher.publish(new SmsNotificationSentEvent(userId, "wysyłam powiadomienie sms"));
+                publisher.publish(new SmsNotificationSentEvent(userId, notification.getSubject()));
             }
             if (prefs.getEmailEnabled()) {
                 emailNotificationPort.send(notification);
-                publisher.publish(new EmailNotificationSentEvent(userId, "wysyłam powiadomienie email"));
+                publisher.publish(new EmailNotificationSentEvent(userId, notification.getSubject()));
             }
         });
     }

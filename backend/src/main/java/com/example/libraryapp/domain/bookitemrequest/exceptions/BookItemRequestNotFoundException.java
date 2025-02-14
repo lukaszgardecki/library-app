@@ -1,12 +1,15 @@
 package com.example.libraryapp.domain.bookitemrequest.exceptions;
 
-public class BookItemRequestNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
+
+public class BookItemRequestNotFoundException extends LibraryAppNotFoundException {
 
     public BookItemRequestNotFoundException() {
-        super("Message.RESERVATION_NOT_FOUND.getMessage()");
+        super(MessageKey.REQUEST_NOT_FOUND, "null");
     }
 
-    public BookItemRequestNotFoundException(Long id) {
-        super("Message.RESERVATION_NOT_FOUND_ID.getMessage(id)");
+    public BookItemRequestNotFoundException(Long bookItemRequestId) {
+        super(MessageKey.REQUEST_NOT_FOUND_ID, bookItemRequestId.toString());
     }
 }

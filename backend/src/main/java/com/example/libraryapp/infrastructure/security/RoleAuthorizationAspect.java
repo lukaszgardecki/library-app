@@ -48,7 +48,7 @@ public class RoleAuthorizationAspect {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new AccessDeniedException("Message.ACCESS_DENIED.getMessage()");
+            throw new AccessDeniedException("AccessDeniedException");
         } else {
             boolean userIsAllowedToGetData = checkUserHasRole(authentication, allowedRoles) || isMemberAdmin();
             if (!userIsAllowedToGetData) {

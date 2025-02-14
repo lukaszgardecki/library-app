@@ -38,6 +38,7 @@ class LibraryCardRepositoryAdapter implements LibraryCardRepository {
                 .barcode(model.getBarcode())
                 .issuedAt(model.getIssuedAt())
                 .status(model.getStatus())
+                .userId(model.getUserId())
                 .build();
     }
 
@@ -47,6 +48,7 @@ class LibraryCardRepositoryAdapter implements LibraryCardRepository {
                 .barcode(entity.getBarcode())
                 .issuedAt(entity.getIssuedAt())
                 .status(entity.getStatus())
+                .userId(entity.getUserId())
                 .build();
     }
 }

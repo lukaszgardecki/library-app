@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.bookitemloan;
 
-import com.example.libraryapp.application.constants.Constants;
+import com.example.libraryapp.domain.Constants;
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanException;
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanNotFoundException;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
@@ -23,7 +24,12 @@ class BookItemLoanService {
 
     BookItemLoan getBookItemLoan(Long bookItemId, Long userId, BookItemLoanStatus status) {
         return bookItemLoanRepository.findByParams(bookItemId, userId, status)
-                .orElseThrow(BookItemLoanNotFoundException::new);
+                .orElseThrow(() -> new BookItemLoanNotFoundException(bookItemId));
+    }
+
+    BookItemLoan getBookItemLoan(Long bookItemId, BookItemLoanStatus status) {
+        return bookItemLoanRepository.findByParams(bookItemId, status)
+                .orElseThrow(() -> new BookItemLoanNotFoundException(bookItemId));
     }
 
     List<BookItemLoan> getAllBookItemLoans(Long userId) {
@@ -45,7 +51,7 @@ class BookItemLoanService {
 
     void validateBookItemLoanForRenewal(BookItemLoan loanToUpdate) {
         if (loanToUpdate.getDueDate().isBefore(LocalDateTime.now())) {
-            throw new BookItemLoanException("Message.RESERVATION_ALREADY_CREATED.getMessage()");
+            throw new BookItemLoanException(MessageKey.LOAN_RENEWAL_FAILED_RETURN_DATE);
         }
     }
 

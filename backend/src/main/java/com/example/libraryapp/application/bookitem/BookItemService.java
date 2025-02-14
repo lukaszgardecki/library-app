@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.domain.bookitem.exceptions.BookItemNotFoundException;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
@@ -14,10 +15,15 @@ class BookItemService {
     private final BookItemRepository bookItemRepository;
     private final BookItemRequestFacade bookItemRequestFacade;
     private final BookItemBarcodeGenerator generator;
+    private final BookFacade bookFacade;
 
     BookItem getBookItemById(Long id) {
         return bookItemRepository.findById(id)
                 .orElseThrow(() -> new BookItemNotFoundException(id));
+    }
+
+    String getBookTitleByBookId(Long bookId) {
+        return bookFacade.getBook(bookId).getTitle();
     }
 
     BookItem save(BookItem bookItem) {

@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset lukas:0011
 insert into
-    user_activity(user_id, type, message, created_at)
+    user_activity(user_id, type, messageKey, created_at)
 values
     (1, 'LOGIN', 'Zalogowanie czytelnika Kasia Lubiczytać, Nr karty 540100000001', '2024-06-05 22:40:34.730348'),
     (1, 'REQUEST_NEW', 'Wysłano zamówienie Araya', '2024-06-05 22:40:34.845347'),

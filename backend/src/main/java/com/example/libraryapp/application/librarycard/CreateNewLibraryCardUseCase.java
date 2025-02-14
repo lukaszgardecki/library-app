@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 class CreateNewLibraryCardUseCase {
     private final LibraryCardService libraryCardService;
 
-    Long execute() {
-        return libraryCardService.createLibraryCard();
+    Long execute(Long userId) {
+        return libraryCardService.createLibraryCard(userId);
     }
 }

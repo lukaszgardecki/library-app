@@ -12,6 +12,8 @@ import com.example.libraryapp.domain.event.types.bookitem.BookItemReservedEvent;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 class CreateBookItemRequestUseCase {
     private final UserFacade userFacade;
@@ -36,7 +38,8 @@ class CreateBookItemRequestUseCase {
         } else {
             request = bookItemRequestService.saveReservation(bookItemId, userId);
             int queuePosition = bookItemRequestService.getReservationQueuePosition(bookItemId, userId);
-            publisher.publish(new BookItemReservedEvent(bookItemId, userId, bookTitle, queuePosition));
+            LocalDate dueDate = bookItem.getDueDate();
+            publisher.publish(new BookItemReservedEvent(bookItemId, userId, bookTitle, queuePosition, dueDate));
         }
         return request;
     }

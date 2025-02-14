@@ -15,7 +15,7 @@ import com.example.libraryapp.domain.librarycard.dto.LibraryCardDto;
 import com.example.libraryapp.domain.person.dto.PersonDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
-import com.example.libraryapp.domain.user.exceptions.MemberHasNotReturnedBooksException;
+import com.example.libraryapp.domain.user.exceptions.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.user.exceptions.UserNotFoundException;
 import com.example.libraryapp.domain.user.model.AdminUserDetails;
 import com.example.libraryapp.domain.user.model.User;
@@ -65,7 +65,7 @@ class UserService {
     }
 
     User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     User getUserByEmail(String email) {
@@ -91,7 +91,7 @@ class UserService {
                             user.getStatus()
                     );
                 })
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     void deleteById(Long userId) {
@@ -107,7 +107,7 @@ class UserService {
                 .stream()
                 .findAny()
                 .ifPresent(loan -> {
-                    throw new MemberHasNotReturnedBooksException();
+                    throw new UserHasNotReturnedBooksException();
                 });
         fineFacade.validateUserForFines(userId);
     }

@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.librarycard;
 
-import com.example.libraryapp.application.constants.Constants;
+import com.example.libraryapp.domain.Constants;
 import com.example.libraryapp.domain.librarycard.exceptions.LibraryCardNotFoundException;
 import com.example.libraryapp.domain.librarycard.model.LibraryCard;
 import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 class LibraryCardService {
     private final LibraryCardRepository libraryCardRepository;
 
-    Long createLibraryCard() {
-        LibraryCard libraryCard = createCard();
+    Long createLibraryCard(Long userId) {
+        LibraryCard libraryCard = createCard(userId);
         LibraryCard newCard = libraryCardRepository.save(libraryCard);
         String newCardNum = generateNum(newCard.getId());
         newCard.setBarcode(newCardNum);
@@ -35,10 +35,11 @@ class LibraryCardService {
         libraryCardRepository.changeStatusByUserId(status, userId);
     }
 
-    private LibraryCard createCard() {
+    private LibraryCard createCard(Long userId) {
         return LibraryCard.builder()
                 .issuedAt(LocalDateTime.now())
                 .status(LibraryCardStatus.ACTIVE)
+                .userId(userId)
                 .build();
     }
 

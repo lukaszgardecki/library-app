@@ -1,9 +1,11 @@
 package com.example.libraryapp.domain.rack.exceptions;
 
-public class RackException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppException;
 
-    public RackException(String message) {
-        super(message);
+public class RackException extends LibraryAppException {
+
+    public RackException(MessageKey messageKey) {
+        super(messageKey);
     }
-
 }

@@ -11,6 +11,6 @@ class GetPageOfBookItemsUseCase {
     private final BookItemRepository bookItemRepository;
 
     Page<BookItem> execute(Pageable pageable) {
-        return bookItemRepository.getPageOfBookItems(pageable);
+        return bookItemRepository.findAll(pageable);
     }
 }

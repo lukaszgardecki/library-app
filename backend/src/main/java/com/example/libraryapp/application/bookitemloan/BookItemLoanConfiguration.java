@@ -52,12 +52,12 @@ public class BookItemLoanConfiguration {
                         userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ProcessLostBookItemUseCase(
-                        userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
+                        authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new CountByCreationDateUseCase(loanService),
                 new CountUniqueBorrowersInCurrentMonthUseCase(loanService),
-                new CountBookItemLoansMonthly(loanService),
-                new CountBookItemLoansDaily(loanService)
+                new CountBookItemLoansMonthlyUseCase(loanService),
+                new CountBookItemLoansDailyUseCase(loanService)
         );
     }
 
@@ -90,12 +90,12 @@ public class BookItemLoanConfiguration {
                         userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ProcessLostBookItemUseCase(
-                        userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
+                        authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new CountByCreationDateUseCase(loanService),
                 new CountUniqueBorrowersInCurrentMonthUseCase(loanService),
-                new CountBookItemLoansMonthly(loanService),
-                new CountBookItemLoansDaily(loanService)
+                new CountBookItemLoansMonthlyUseCase(loanService),
+                new CountBookItemLoansDailyUseCase(loanService)
         );
     }
 }

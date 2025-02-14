@@ -1,14 +1,11 @@
 package com.example.libraryapp.domain.bookitemloan.exceptions;
 
-public class BookItemLoanNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public BookItemLoanNotFoundException() {
-        super("Message.LENDING_NOT_FOUND.getMessage()");
-    }
-    public BookItemLoanNotFoundException(String barcode) {
-        super("Message.LENDING_NOT_FOUND_BARCODE.getMessage(barcode)");
-    }
-    public BookItemLoanNotFoundException(Long id) {
-        super("Message.LENDING_NOT_FOUND.getMessage(id)");
+public class BookItemLoanNotFoundException extends LibraryAppNotFoundException {
+
+    public BookItemLoanNotFoundException(Long bookItemLoanId) {
+        super(MessageKey.LOAN_NOT_FOUND_ID, bookItemLoanId.toString());
     }
 }

@@ -29,7 +29,7 @@ class FineService {
 
     Fine getFineById(Long id) {
         return fineRepository.findById(id)
-                .orElseThrow(FineNotFoundException::new);
+                .orElseThrow(() -> new FineNotFoundException(id));
     }
 
     void processFineForBookReturn(LocalDateTime returnDate, LocalDateTime dueDate, Long userId, Long bookItemLoanId) {
@@ -65,7 +65,7 @@ class FineService {
 
     FinePaymentResult payFine(Long fineId, FineCardDetailsDto cardDetails) {
         Fine fineToPay = getFineById(fineId);
-        if (fineToPay.isPaid()) throw new FineAlreadyPaidException(fineId);
+        if (fineToPay.isPaid()) throw new FineAlreadyPaidException();
 
         PaymentProcessRequestDto payment = new PaymentProcessRequestDto(
                 fineToPay.getAmount(),

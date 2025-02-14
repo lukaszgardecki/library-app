@@ -10,6 +10,7 @@ class GetPersonUseCase {
     private final PersonRepository personRepository;
 
     Person execute(Long id) {
-        return personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
     }
 }

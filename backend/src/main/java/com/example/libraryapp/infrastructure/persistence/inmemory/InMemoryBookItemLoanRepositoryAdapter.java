@@ -34,6 +34,14 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
+    public Optional<BookItemLoan> findByParams(Long bookItemId, BookItemLoanStatus status) {
+        return map.values().stream()
+                .filter(loan -> loan.getBookItemId().equals(bookItemId)
+                        && loan.getStatus().equals(status))
+                .findFirst();
+    }
+
+    @Override
     public List<BookItemLoan> findAllByUserId(Long userId) {
         return map.values().stream()
                 .filter(loan -> loan.getUserId().equals(userId))

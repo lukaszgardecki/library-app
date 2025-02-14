@@ -4,10 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class UserAuthSuccessEvent extends UserEvent {
-    private String msg;
 
-    public UserAuthSuccessEvent(Long userId, String userFirstName, String userLastName, String msg) {
+    public UserAuthSuccessEvent(Long userId, String userFirstName, String userLastName) {
         super(userId, userFirstName, userLastName);
-        this.msg = msg;
     }
 }

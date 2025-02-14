@@ -1,7 +1,7 @@
 package com.example.libraryapp.application.token;
 
 
-import com.example.libraryapp.application.constants.Message;
+import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.application.message.MessageFacade;
 import com.example.libraryapp.domain.token.model.TokenType;
 import io.jsonwebtoken.JwtException;
@@ -22,7 +22,7 @@ public class HttpRequestExtractor {
         return Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith(BEARER_PREFIX))
                 .map(authHeader -> authHeader.substring(BEARER_PREFIX.length()))
-                .orElseThrow(() -> new JwtException(messageFacade.get(Message.ACCESS_DENIED)));
+                .orElseThrow(() -> new JwtException(messageFacade.get(MessageKey.ACCESS_DENIED)));
     }
 
     public String extractFingerprintFromHeader(HttpServletRequest request) {
@@ -30,6 +30,6 @@ public class HttpRequestExtractor {
                 .filter(cookie -> FingerprintGenerator.FINGERPRINT_COOKIE_NAME.equals(cookie.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
-                .orElseThrow(() -> new JwtException(messageFacade.get(Message.ACCESS_DENIED)));
+                .orElseThrow(() -> new JwtException(messageFacade.get(MessageKey.ACCESS_DENIED)));
     }
 }

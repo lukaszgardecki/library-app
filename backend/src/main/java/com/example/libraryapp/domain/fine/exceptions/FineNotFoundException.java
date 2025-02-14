@@ -1,12 +1,11 @@
 package com.example.libraryapp.domain.fine.exceptions;
 
-public class FineNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public FineNotFoundException() {
-        super("?????");
-    }
+public class FineNotFoundException extends LibraryAppNotFoundException {
 
-    public FineNotFoundException(Long id) {
-        super("???");
+    public FineNotFoundException(Long fineId) {
+        super(MessageKey.FINE_NOT_FOUND_ID, fineId.toString());
     }
 }

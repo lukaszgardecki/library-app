@@ -10,13 +10,15 @@ import java.util.Optional;
 public interface BookItemRepository {
     Optional<BookItem> findById(Long id);
 
-    Page<BookItem> getPageOfBookItems(Pageable pageable);
+    Page<BookItem> findAll(Pageable pageable);
+
+    Page<BookItem> findAllByBookId(Long bookId, Pageable pageable);
+
+    Page<BookItem> findAllByRackId(Long rackId, Pageable pageable);
 
     BookItem save(BookItem bookItem);
 
     void deleteById(Long id);
 
     void updateStatus(Long id, BookItemStatus status);
-
-    Page<BookItem> getPageOfBookItemsByBookId(Long bookId, Pageable pageable);
 }

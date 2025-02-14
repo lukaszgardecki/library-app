@@ -15,6 +15,8 @@ public interface BookItemLoanRepository {
 
     Optional<BookItemLoan> findByParams(Long bookItemId, Long userId, BookItemLoanStatus status);
 
+    Optional<BookItemLoan> findByParams(Long bookItemId, BookItemLoanStatus status);
+
     List<BookItemLoan> findAllByUserId(Long userId);
 
     List<BookItemLoan> findAllCurrentLoansByUserId(Long userId);

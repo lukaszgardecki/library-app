@@ -24,7 +24,7 @@ public class InMemoryBookItemRepositoryAdapter implements BookItemRepository {
     }
 
     @Override
-    public Page<BookItem> getPageOfBookItems(Pageable pageable) {
+    public Page<BookItem> findAll(Pageable pageable) {
         List<BookItem> allItems = new ArrayList<>(map.values());
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), allItems.size());
@@ -32,11 +32,22 @@ public class InMemoryBookItemRepositoryAdapter implements BookItemRepository {
         return new PageImpl<>(pagedItems, pageable, allItems.size());
     }
 
-
     @Override
-    public Page<BookItem> getPageOfBookItemsByBookId(Long bookId, Pageable pageable) {
+    public Page<BookItem> findAllByBookId(Long bookId, Pageable pageable) {
         List<BookItem> filteredItems = map.values().stream()
                 .filter(bookItem -> bookItem.getBookId().equals(bookId))
+                .toList();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), filteredItems.size());
+        List<BookItem> pagedItems = filteredItems.subList(start, end);
+        return new PageImpl<>(pagedItems, pageable, filteredItems.size());
+    }
+
+    @Override
+    public Page<BookItem> findAllByRackId(Long rackId, Pageable pageable) {
+        List<BookItem> filteredItems = map.values().stream()
+                .filter(bookItem -> bookItem.getRackId().equals(rackId))
                 .toList();
 
         int start = (int) pageable.getOffset();

@@ -30,13 +30,13 @@ class AuthenticateUserUseCase {
             user = userFacade.getUserByEmail(username);
             person = personFacade.getPersonById(user.getPersonId());
             authenticationManager.authenticate(user.getEmail(), password);
-            publisher.publish(new UserAuthSuccessEvent(user.getId(), person.getFirstName(), person.getLastName(),"Pomyślne logowanie użytkownika"));
+            publisher.publish(new UserAuthSuccessEvent(user.getId(), person.getFirstName(), person.getLastName()));
             return tokenFacade.generateTokensFor(user);
         } catch (UserNotFoundException | AuthenticationException ex) {
             if (user != null && person != null) {
-                publisher.publish(new UserAuthFailedEvent(user.getId(), person.getFirstName(), person.getLastName(), "Nieudane logowanie użytkownika"));
+                publisher.publish(new UserAuthFailedEvent(user.getId(), person.getFirstName(), person.getLastName()));
             }
-            throw new BadCredentialsException("Message.VALIDATION_BAD_CREDENTIALS.getMessage()");
+            throw new BadCredentialsException("");
         }
     }
 }

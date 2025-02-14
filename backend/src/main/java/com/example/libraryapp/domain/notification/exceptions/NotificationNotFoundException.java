@@ -1,8 +1,11 @@
 package com.example.libraryapp.domain.notification.exceptions;
 
-public class NotificationNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public NotificationNotFoundException(Long id) {
-        super("Message.NOTIFICATION_NOT_FOUND.getMessage(id)");
+public class NotificationNotFoundException extends LibraryAppNotFoundException {
+
+    public NotificationNotFoundException(Long notificationId) {
+        super(MessageKey.NOTIFICATION_NOT_FOUND_ID, notificationId.toString());
     }
 }

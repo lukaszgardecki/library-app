@@ -1,7 +1,7 @@
 package com.example.libraryapp.application.bookitem;
 
 
-import com.example.libraryapp.application.constants.Constants;
+import com.example.libraryapp.domain.Constants;
 
 class BookItemBarcodeGenerator {
 

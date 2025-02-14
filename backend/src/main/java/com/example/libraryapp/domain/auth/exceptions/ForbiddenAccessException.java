@@ -1,9 +1,12 @@
 package com.example.libraryapp.domain.auth.exceptions;
 
 
-public class ForbiddenAccessException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppException;
+
+public class ForbiddenAccessException extends LibraryAppException {
 
     public ForbiddenAccessException() {
-        super("Message.FORBIDDEN.getMessage()");
+        super(MessageKey.FORBIDDEN);
     }
 }

@@ -17,7 +17,7 @@ class PaymentService {
 
     Payment getPaymentById(Long id) {
         return repository.findById(id)
-                .orElseThrow(PaymentNotFoundException::new);
+                .orElseThrow(() -> new PaymentNotFoundException(id));
     }
 
     Payment save(Payment payment) {

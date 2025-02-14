@@ -12,6 +12,8 @@ public interface NotificationRepositoryPort {
 
     Optional<Notification> findById(Long id);
 
+    Notification save(Notification notification);
+
     void markAsRead(Long id);
 
     void deleteById(Long id);

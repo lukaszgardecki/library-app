@@ -13,13 +13,19 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
         SELECT bi
         FROM BookItemEntity bi
         WHERE (:bookId IS NULL OR bi.bookId = :bookId)
+            OR (:rackId IS NULL OR bi.rackId = :rackId)
     """,
     countQuery = """
         SELECT COUNT(bi)
         FROM BookItemEntity bi
         WHERE (:bookId IS NULL OR bi.bookId = :bookId)
+            OR (:rackId IS NULL OR bi.rackId = :rackId)
     """)
-    Page<BookItemEntity> findAllByParams(@Param("bookId") Long bookId, Pageable pageable);
+    Page<BookItemEntity> findAllByParams(
+            @Param("bookId") Long bookId,
+            @Param("rackId") Long rackId,
+            Pageable pageable
+    );
 
     @Query("""
         UPDATE BookItemEntity bi

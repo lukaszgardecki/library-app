@@ -13,7 +13,7 @@ class WarehouseConfiguration {
     }
 
     @Bean
-    WarehouseEventListenerImpl warehouseEventListener(SimpMessagingTemplate messagingTemplate) {
-        return new WarehouseEventListenerImpl(messagingTemplate);
+    WarehouseEventListenerAdapter warehouseEventListener(SimpMessagingTemplate messagingTemplate) {
+        return new WarehouseEventListenerAdapter(messagingTemplate);
     }
 }

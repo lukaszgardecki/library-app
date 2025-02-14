@@ -1,17 +1,13 @@
 package com.example.libraryapp.application.rack;
 
-import com.example.libraryapp.domain.rack.ports.RackRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class DeleteRackUseCase {
-    private final RackRepository rackRepository;
+    private final RackService rackService;
 
     void execute(Long id) {
-        // TODO: 11.12.2024 tutaj trzeba sprawdzić czy regał nie ma książek...
-//        else throw new RackException("Message.RACK_DELETION_FAILED.getMessage(rack.getLocationIdentifier())");
-
-
-        rackRepository.deleteById(id);
+        rackService.verifyRackToDelete(id);
+        rackService.deleteById(id);
     }
 }

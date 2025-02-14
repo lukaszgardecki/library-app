@@ -1,12 +1,11 @@
 package com.example.libraryapp.domain.bookitem.exceptions;
 
-public class BookItemNotFoundException extends RuntimeException {
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
 
-    public BookItemNotFoundException(Long id) {
-        super("Message.BOOK_ITEM_NOT_FOUND_ID.getMessage(id)");
-    }
+public class BookItemNotFoundException extends LibraryAppNotFoundException {
 
-    public BookItemNotFoundException(String barcode) {
-        super("Message.BOOK_ITEM_NOT_FOUND_BARCODE.getMessage(barcode)");
+    public BookItemNotFoundException(Long bookItemId) {
+        super(MessageKey.BOOK_ITEM_NOT_FOUND_ID, bookItemId.toString());
     }
 }

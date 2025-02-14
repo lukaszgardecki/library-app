@@ -1,7 +1,10 @@
 package com.example.libraryapp.domain.librarycard.exceptions;
 
-public class LibraryCardNotFoundException extends RuntimeException{
-    public LibraryCardNotFoundException(Long id) {
-        super("Message.CARD_NOT_FOUND.getMessage(id)");
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.exception.LibraryAppNotFoundException;
+
+public class LibraryCardNotFoundException extends LibraryAppNotFoundException {
+    public LibraryCardNotFoundException(Long libraryCardId) {
+        super(MessageKey.CARD_NOT_FOUND_ID, libraryCardId.toString());
     }
 }

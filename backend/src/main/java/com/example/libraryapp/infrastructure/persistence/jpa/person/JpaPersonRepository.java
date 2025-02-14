@@ -27,9 +27,9 @@ interface JpaPersonRepository extends JpaRepository<PersonEntity, Long> {
     long countByAgeBetween(int min, int max);
 
     @Query(value = """
-        SELECT p.address_city, COUNT(p) AS userCount
+        SELECT p.city, COUNT(p) AS userCount
         FROM person p
-        GROUP BY p.address_city
+        GROUP BY p.city
         ORDER BY userCount DESC
         LIMIT :limit
     """, nativeQuery = true)
