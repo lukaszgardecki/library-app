@@ -45,10 +45,10 @@ class PaymentController {
         return ResponseEntity.created(paymentURI).body(payment);
     }
 
-    private URI createURI(PaymentDto savedPayment) {
+    private URI createURI(PaymentDto payment) {
         return ServletUriComponentsBuilder.fromCurrentRequest()
                 .replacePath("/api/v1/payments/{id}")
-                .buildAndExpand(savedPayment.getId())
+                .buildAndExpand(payment.getId())
                 .toUri();
     }
 }

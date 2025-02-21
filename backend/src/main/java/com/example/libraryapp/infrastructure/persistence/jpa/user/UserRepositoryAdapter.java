@@ -1,8 +1,11 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.user;
 
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class UserRepositoryAdapter implements UserRepository {
+class UserRepositoryAdapter implements UserRepositoryPort {
     private final JpaUserRepository repository;
 
     @Override
@@ -21,6 +24,16 @@ class UserRepositoryAdapter implements UserRepository {
                 .stream()
                 .map(this::toModel)
                 .toList();
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(this::toModel);
+    }
+
+    @Override
+    public Page<UserListPreviewProjection> findAllListPreviews(String query, Pageable pageable) {
+        return repository.findAllByQuery(query, pageable);
     }
 
     @Override

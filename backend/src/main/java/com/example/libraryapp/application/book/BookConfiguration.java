@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.book;
 
-import com.example.libraryapp.domain.book.ports.BookRepository;
+import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class BookConfiguration {
     }
 
     @Bean
-    BookFacade bookFacade(BookRepository bookRepository) {
+    BookFacade bookFacade(BookRepositoryPort bookRepository) {
         BookService bookService = new BookService(bookRepository);
         return new BookFacade(
                 new GetBookUseCase(bookService),

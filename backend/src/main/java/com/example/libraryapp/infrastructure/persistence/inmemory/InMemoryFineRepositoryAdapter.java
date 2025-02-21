@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.fine.model.Fine;
 import com.example.libraryapp.domain.fine.model.FineStatus;
-import com.example.libraryapp.domain.fine.ports.FineRepository;
+import com.example.libraryapp.domain.fine.ports.FineRepositoryPort;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
-public class InMemoryFineRepositoryAdapter implements FineRepository {
+public class InMemoryFineRepositoryAdapter implements FineRepositoryPort {
     private final ConcurrentHashMap<Long, Fine> map = new ConcurrentHashMap<>();
     private static long id = 0;
 

@@ -1,5 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.user;
 
+import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +14,43 @@ import java.util.Optional;
 interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
     boolean existsByEmail(String email);
+
+    @Query(
+            value = """
+                    SELECT
+                        u.id AS id,
+                        u.email AS email,
+                        u.registration_date AS registrationDate,
+                        u.status AS status,
+                        p.first_name AS firstName,
+                        p.last_name AS lastName
+                    FROM users u
+                    JOIN person p ON u.person_id = p.id
+                    WHERE LOWER(u.email) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(p.first_name) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(p.last_name) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(CAST(u.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
+            """,
+            countQuery = """
+                    SELECT COUNT(*)
+                    FROM users u
+                    JOIN person p ON u.person_id = p.id
+                    WHERE LOWER(u.email) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(p.first_name) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(p.last_name) LIKE LOWER(CONCAT('%', :query, '%'))
+                       OR LOWER(CAST(u.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
+                    """,
+            nativeQuery = true)
+    Page<UserListPreviewProjection> findAllByQuery(@Param("query") String query, Pageable pageable);
+
+    // TODO: 12.02.2025 ta metoda jest źle liczy nie to co powinna
+    @Query(value = """
+        SELECT * 
+        FROM users
+        ORDER BY total_books_borrowed DESC 
+        LIMIT :limit
+    """, nativeQuery = true)
+    List<UserEntity> findAllByLoansCountDesc(@Param("limit") int limit);
 
     Optional<UserEntity> findByEmail(String email);
 
@@ -59,13 +99,6 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
     """)
     long countNewRegisteredUsersByMonth(@Param("month") int month, @Param("year") int year);
 
-    // TODO: 12.02.2025 ta metoda jest źle liczy nie to co powinna
-    @Query(value = """
-        SELECT * 
-        FROM users u 
-        ORDER BY u.total_books_borrowed DESC 
-        LIMIT :limit
-    """, nativeQuery = true)
-    List<UserEntity> findAllByLoansCountDesc(@Param("limit") int limit);
+
 
 }

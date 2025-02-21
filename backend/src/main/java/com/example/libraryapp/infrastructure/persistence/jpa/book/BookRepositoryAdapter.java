@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.book;
 
 import com.example.libraryapp.domain.book.model.Book;
-import com.example.libraryapp.domain.book.ports.BookRepository;
+import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class BookRepositoryAdapter implements BookRepository {
+class BookRepositoryAdapter implements BookRepositoryPort {
     private final JpaBookRepository repository;
 
     @Override

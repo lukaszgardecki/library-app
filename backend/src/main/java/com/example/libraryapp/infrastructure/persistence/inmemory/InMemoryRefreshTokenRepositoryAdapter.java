@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.token.model.Token;
-import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
+import com.example.libraryapp.domain.token.ports.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 
 @RequiredArgsConstructor
-public class InMemoryRefreshTokenRepositoryAdapter implements RefreshTokenRepository {
+public class InMemoryRefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort {
     private final ConcurrentHashMap<Long, Token> map = new ConcurrentHashMap<>();
     private static long id = 0;
 

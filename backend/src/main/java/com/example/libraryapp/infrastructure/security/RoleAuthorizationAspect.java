@@ -1,10 +1,8 @@
 package com.example.libraryapp.infrastructure.security;
 
+import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.domain.auth.exceptions.ForbiddenAccessException;
-import com.example.libraryapp.domain.user.exceptions.UserNotFoundException;
 import com.example.libraryapp.domain.user.model.Role;
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.ports.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,14 +17,13 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Aspect
 @RequiredArgsConstructor
 public class RoleAuthorizationAspect {
     private static final String ROLE_PREFIX = "ROLE_";
-    private final UserRepository userRepository;
+    private final AuthenticationFacade authFacade;
 
     @Before("within(@com.example.libraryapp.infrastructure.security.RoleAuthorization *) || @annotation(com.example.libraryapp.infrastructure.security.RoleAuthorization)")
     public void checkRole(JoinPoint joinPoint) {
@@ -50,7 +47,8 @@ public class RoleAuthorizationAspect {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new AccessDeniedException("AccessDeniedException");
         } else {
-            boolean userIsAllowedToGetData = checkUserHasRole(authentication, allowedRoles) || isMemberAdmin();
+            boolean userIdAdmin = authFacade.isCurrentUserAdmin();
+            boolean userIsAllowedToGetData = checkUserHasRole(authentication, allowedRoles) || userIdAdmin;
             if (!userIsAllowedToGetData) {
                 throw new ForbiddenAccessException();
             }
@@ -74,30 +72,5 @@ public class RoleAuthorizationAspect {
                 .map(GrantedAuthority::getAuthority)
                 .map(authority -> authority.startsWith(ROLE_PREFIX) ? authority.substring(ROLE_PREFIX.length()) : authority)
                 .anyMatch(role -> rolesStr.contains(role) || (isUserAccess && isAdminOrCashierOrWarehouse));
-    }
-
-    private Long getCurrentLoggedInUserId() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return findMemberByEmail(username).getId();
-    }
-
-    private User findMemberByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
-    }
-
-    public boolean isMemberAdmin() {
-        return getCurrentLoggedInUserRole().equals(Role.ADMIN.name());
-    }
-
-    private String getCurrentLoggedInUserRole() {
-        Long userId = getCurrentLoggedInUserId();
-        return findMemberRoleByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-    }
-
-    private Optional<String> findMemberRoleByUserId(Long id) {
-        return userRepository.findById(id)
-                .map(user -> user.getRole().name());
     }
 }

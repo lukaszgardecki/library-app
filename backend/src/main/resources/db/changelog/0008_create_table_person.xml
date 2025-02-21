@@ -15,7 +15,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="gender" type="VARCHAR(50)"/>
             <column name="pesel" type="VARCHAR(15)"/>
             <column name="date_of_birth" type="DATE"/>
-            <column name="nationality" type="VARCHAR(50)"/>
+            <column name="nationality" type="VARCHAR(100)"/>
             <column name="mothers_name" type="VARCHAR(100)"/>
             <column name="fathers_name" type="VARCHAR(100)"/>
 

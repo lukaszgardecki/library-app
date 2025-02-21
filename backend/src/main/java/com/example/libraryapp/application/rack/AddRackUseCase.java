@@ -3,12 +3,12 @@ package com.example.libraryapp.application.rack;
 import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.rack.exceptions.RackException;
 import com.example.libraryapp.domain.rack.model.Rack;
-import com.example.libraryapp.domain.rack.ports.RackRepository;
+import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class AddRackUseCase {
-    private final RackRepository rackRepository;
+    private final RackRepositoryPort rackRepository;
 
     Rack execute(Rack rack) {
         rackRepository.findByLocation(rack.getLocationIdentifier())

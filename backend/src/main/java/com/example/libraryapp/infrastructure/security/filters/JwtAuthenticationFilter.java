@@ -1,6 +1,5 @@
 package com.example.libraryapp.infrastructure.security.filters;
 
-import com.example.libraryapp.application.token.HttpRequestExtractor;
 import com.example.libraryapp.application.token.TokenFacade;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -25,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenFacade tokenFacade;
-    private final HttpRequestExtractor extractor;
     private final UserDetailsService userDetailsService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
@@ -42,8 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            String token = extractor.extractTokenFromHeader(request);
-            String fingerprint = extractor.extractFingerprintFromHeader(request);
+            String token = tokenFacade.extractTokenFromHeader(request);
+            String fingerprint = tokenFacade.extractFingerprintFromHeader(request);
             boolean isRefreshTokenRequest = requestURI.endsWith("/refresh-token");
             tokenFacade.validateTokenAndFingerprint(token, fingerprint, isRefreshTokenRequest);
 
@@ -55,7 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             handlerExceptionResolver.resolveException(
-                    request, response,null, new JwtException("Message.ACCESS_DENIED.getMessage()")
+                    request, response, null, new JwtException(e.getMessage())
             );
         }
     }
@@ -65,10 +63,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // H2
                 "/h2-console", "/favicon.ico",
 
+                // app version:
+                "/version",
+
                 // application endpoints:
                 "/authenticate",
                 "/register",
-                "/books"
+                "/books",
+
+                //fake users:
+                "/fu"
         );
         return publicEndpoints.stream().anyMatch(requestURI::contains);
     }

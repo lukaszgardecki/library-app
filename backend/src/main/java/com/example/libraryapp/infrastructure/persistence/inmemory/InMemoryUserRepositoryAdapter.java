@@ -1,7 +1,11 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,12 +14,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
-public class InMemoryUserRepositoryAdapter implements UserRepository {
+public class InMemoryUserRepositoryAdapter implements UserRepositoryPort {
     private final ConcurrentHashMap<Long, User> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
     @Override
     public List<User> findAllByLoansCountDesc(int limit) {
+        return null;
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        List<User> users = map.values().stream()
+                .skip(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .toList();
+        return new PageImpl<>(users, pageable, map.size());
+    }
+
+    @Override
+    public Page<UserListPreviewProjection> findAllListPreviews(String query, Pageable pageable) {
+        // TODO: 18.02.2025 ?? 
         return null;
     }
 

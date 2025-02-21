@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
-import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
+import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryBookItemRequestRepositoryAdapter implements BookItemRequestRepository {
+public class InMemoryBookItemRequestRepositoryAdapter implements BookItemRequestRepositoryPort {
     private final ConcurrentHashMap<Long, BookItemRequest> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
@@ -47,12 +47,9 @@ public class InMemoryBookItemRequestRepositoryAdapter implements BookItemRequest
         List<BookItemRequest> filteredRequests = map.values().stream()
                 .filter(request -> request.getStatus().equals(status))
                 .toList();
-
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), filteredRequests.size());
-
         List<BookItemRequest> pagedRequests = filteredRequests.subList(start, end);
-
         return new PageImpl<>(pagedRequests, pageable, filteredRequests.size());
     }
 

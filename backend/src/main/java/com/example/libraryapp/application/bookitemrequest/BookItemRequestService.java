@@ -5,7 +5,7 @@ import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestE
 import com.example.libraryapp.domain.bookitemrequest.exceptions.BookItemRequestNotFoundException;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
-import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
+import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class BookItemRequestService {
-    private final BookItemRequestRepository bookItemRequestRepository;
+    private final BookItemRequestRepositoryPort bookItemRequestRepository;
 
     BookItemRequest getCurrentBookItemRequestById(Long id) {
         return bookItemRequestRepository.findById(id)

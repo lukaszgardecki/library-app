@@ -1,8 +1,9 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
+import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
-import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepository;
+import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanRepository {
+public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     private final ConcurrentHashMap<Long, BookItemLoan> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
@@ -56,15 +57,21 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
-    public Page<BookItemLoan> findPageOfBookLoansByParams(Long id, BookItemLoanStatus status, Pageable pageable) {
+    public Page<BookItemLoan> findPageOfBookLoansByParams(Long userId, BookItemLoanStatus status, Pageable pageable) {
         List<BookItemLoan> filteredLoans = map.values().stream()
-                .filter(loan -> loan.getBookItemId().equals(id) && loan.getStatus().equals(status))
+                .filter(loan -> loan.getBookItemId().equals(userId) && loan.getStatus().equals(status))
                 .toList();
 
         int start = (int) pageable.getOffset();
         int end = Math.min(start + pageable.getPageSize(), filteredLoans.size());
         List<BookItemLoan> pagedLoans = filteredLoans.subList(start, end);
         return new PageImpl<>(pagedLoans, pageable, filteredLoans.size());
+    }
+
+    @Override
+    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(Long userId, String query, BookItemLoanStatus status, Pageable pageable) {
+        // TODO: 20.02.2025 jak to zaimplementować?
+        return null;
     }
 
     @Override

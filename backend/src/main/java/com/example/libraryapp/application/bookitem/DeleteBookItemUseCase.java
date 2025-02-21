@@ -4,14 +4,14 @@ import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.bookitem.exceptions.BookItemException;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.domain.bookitem.ports.BookItemRepository;
+import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemDeletedEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class DeleteBookItemUseCase {
-    private final BookItemRepository bookItemRepository;
+    private final BookItemRepositoryPort bookItemRepository;
     private final BookItemService bookItemService;
     private final EventPublisherPort publisher;
 

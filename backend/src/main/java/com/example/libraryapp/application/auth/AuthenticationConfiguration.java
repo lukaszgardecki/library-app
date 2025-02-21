@@ -7,7 +7,7 @@ import com.example.libraryapp.application.token.TokenFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAuthenticationManagerPortAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
@@ -30,7 +30,7 @@ public class AuthenticationConfiguration {
         );
     }
 
-    public AuthenticationFacade authenticationFacade(UserRepository userRepository) {
+    public AuthenticationFacade authenticationFacade(UserRepositoryPort userRepository) {
         AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortAdapter(userRepository);
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         TokenFacade tokenFacade = new TokenConfiguration().tokenFacade();
@@ -42,7 +42,6 @@ public class AuthenticationConfiguration {
     }
 
     @Bean
-    @Lazy
     AuthenticationFacade authenticationFacade(
             @Lazy UserFacade userFacade,
             @Lazy TokenFacade tokenFacade,

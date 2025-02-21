@@ -18,6 +18,5 @@ public class BookItemLoan {
     private LocalDateTime returnDate;
     private BookItemLoanStatus status;
     private Long userId;
-    private Long bookId;
     private Long bookItemId;
 }

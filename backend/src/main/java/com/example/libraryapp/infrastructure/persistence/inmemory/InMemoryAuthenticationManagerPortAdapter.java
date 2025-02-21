@@ -3,7 +3,7 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
 import com.example.libraryapp.domain.user.model.AccountStatus;
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class InMemoryAuthenticationManagerPortAdapter implements AuthenticationManagerPort {
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
 
     @Override
     public boolean authenticate(String username, String password) {

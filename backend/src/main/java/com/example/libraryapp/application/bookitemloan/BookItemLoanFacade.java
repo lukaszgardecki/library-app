@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
+import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class BookItemLoanFacade {
     private final GetBookItemLoanUseCase getBookItemLoanUseCase;
     private final GetPageOfBookItemLoansByParamsUseCase getPageOfBookItemLoansByParamsUseCase;
+    private final GetPageOfBookItemLoanListPreviewsUseCase getPageOfBookItemLoanListPreviewsUseCase;
     private final GetAllUserLoansUseCase getAllUserLoansUseCase;
     private final GetUserCurrentLoansUseCase getUserCurrentLoansUseCase;
     private final GetTopSubjectsWithLoansCountUseCase getTopSubjectsWithLoansCountUseCase;
@@ -33,8 +35,13 @@ public class BookItemLoanFacade {
         return BookItemLoanMapper.toDto(bookItemLoan);
     }
 
-    public Page<BookItemLoanDto> getPageOfBookLoansByParams(Long id, BookItemLoanStatus status, Boolean renewable, Pageable pageable) {
-        return getPageOfBookItemLoansByParamsUseCase.execute(id, status, renewable, pageable)
+    public Page<BookItemLoanDto> getPageOfBookLoansByParams(Long userId, BookItemLoanStatus status, Boolean renewable, Pageable pageable) {
+        return getPageOfBookItemLoansByParamsUseCase.execute(userId, status, renewable, pageable)
+                .map(BookItemLoanMapper::toDto);
+    }
+
+    public Page<BookItemLoanListPreviewDto> getPageOfBookLoanListPreviewsByParams(Long userId, String query, BookItemLoanStatus status, Boolean renewable, Pageable pageable) {
+        return getPageOfBookItemLoanListPreviewsUseCase.execute(userId, query, status, renewable, pageable)
                 .map(BookItemLoanMapper::toDto);
     }
 

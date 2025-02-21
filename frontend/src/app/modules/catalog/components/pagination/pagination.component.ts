@@ -11,7 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './pagination.component.css'
 })
 export class PaginationComponent {
-  @Input() page: Page;
+  @Input() page: Page<any>;
   @Output() pageChange = new EventEmitter<number>();
 
   get pageNumbers(): number[] {

@@ -20,6 +20,15 @@ interface JpaPersonRepository extends JpaRepository<PersonEntity, Long> {
     Page<PersonEntity> findAllByQuery(@Param("query") String query, Pageable pageable);
 
     @Query("""
+        SELECT p
+        FROM PersonEntity p
+        WHERE :query IS NULL OR :query = ''
+            OR LOWER(p.firstName) LIKE LOWER(CONCAT('%', :query, '%'))
+            OR LOWER(p.lastName) LIKE LOWER(CONCAT('%', :query, '%'))
+    """)
+    List<PersonEntity> findAllByQuery(@Param("query") String query);
+
+    @Query("""
         SELECT COUNT(p)
         FROM PersonEntity p
         WHERE YEAR(CURRENT DATE) - YEAR(p.dateOfBirth) BETWEEN :min AND :max
@@ -27,9 +36,9 @@ interface JpaPersonRepository extends JpaRepository<PersonEntity, Long> {
     long countByAgeBetween(int min, int max);
 
     @Query(value = """
-        SELECT p.city, COUNT(p) AS userCount
-        FROM person p
-        GROUP BY p.city
+        SELECT city, COUNT(*) AS userCount
+        FROM person
+        GROUP BY city
         ORDER BY userCount DESC
         LIMIT :limit
     """, nativeQuery = true)

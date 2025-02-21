@@ -8,17 +8,17 @@ import com.example.libraryapp.domain.user.dto.RegisterUserDto;
 import com.example.libraryapp.domain.user.model.AccountStatus;
 import com.example.libraryapp.domain.user.model.Role;
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class RegisterUserUseCase {
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
     private final PersonFacade personFacade;
     private final LibraryCardFacade libraryCardFacade;
     private final UserCredentialsService credentialsService;
@@ -40,7 +40,7 @@ class RegisterUserUseCase {
 
     private User createUserToSave(RegisterUserDto dto) {
         return User.builder()
-                .registrationDate(LocalDateTime.now())
+                .registrationDate(LocalDate.now())
                 .password(credentialsService.encodePassword(dto.getPassword()))
                 .email(dto.getEmail())
                 .status(AccountStatus.PENDING)

@@ -4,7 +4,7 @@ import com.example.libraryapp.application.book.BookConfiguration;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestConfiguration;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
-import com.example.libraryapp.domain.bookitem.ports.BookItemRepository;
+import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRepositoryAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
@@ -38,7 +38,7 @@ public class BookItemConfiguration {
 
     @Bean
     BookItemFacade bookItemFacade(
-            BookItemRepository repository,
+            BookItemRepositoryPort repository,
             BookFacade bookFacade,
             BookItemRequestFacade bookItemRequestFacade,
             EventPublisherPort publisher

@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.refreshtoken;
 
 import com.example.libraryapp.domain.token.model.Token;
-import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
+import com.example.libraryapp.domain.token.ports.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
+class RefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort {
     private final JpaRefreshTokenRepository repository;
 
     @Override

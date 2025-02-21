@@ -2,14 +2,14 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.librarycard.model.LibraryCard;
 import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
-import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepository;
+import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepositoryPort;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
-public class InMemoryLibraryCardRepositoryAdapter implements LibraryCardRepository {
+public class InMemoryLibraryCardRepositoryAdapter implements LibraryCardRepositoryPort {
     private final ConcurrentHashMap<Long, LibraryCard> map = new ConcurrentHashMap<>();
     private static long id = 0;
 

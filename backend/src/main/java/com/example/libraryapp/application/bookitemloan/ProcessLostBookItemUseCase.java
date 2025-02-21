@@ -4,6 +4,7 @@ import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.fine.FineFacade;
+import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
@@ -29,9 +30,10 @@ class ProcessLostBookItemUseCase {
         bookItemLoan.setReturnDate(now);
         bookItemLoan.setStatus(BookItemLoanStatus.COMPLETED);
         bookItemLoanService.save(bookItemLoan);
-        BigDecimal bookItemPrice = bookItemFacade.getBookItem(bookItemId).getPrice();
+        BookItemDto bookItem = bookItemFacade.getBookItem(bookItemId);
+        BigDecimal bookItemPrice = bookItem.getPrice();
         fineFacade.processBookItemLost(BookItemLoanMapper.toDto(bookItemLoan), bookItemPrice);
-        String bookTitle = bookFacade.getBook(bookItemLoan.getBookId()).getTitle();
+        String bookTitle = bookFacade.getBook(bookItem.getBookId()).getTitle();
         publisher.publish(new BookItemLostEvent(bookItemId, userId, bookTitle, bookItemPrice));
     }
 }

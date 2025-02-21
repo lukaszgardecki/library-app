@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.useractivity;
 
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
-import com.example.libraryapp.domain.useractivity.ports.UserActivityRepository;
+import com.example.libraryapp.domain.useractivity.ports.UserActivityRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class UserActivityRepositoryAdapter implements UserActivityRepository {
+class UserActivityRepositoryAdapter implements UserActivityRepositoryPort {
     private final JpaUserActivityRepository repository;
 
     @Override

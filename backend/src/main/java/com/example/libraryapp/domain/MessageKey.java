@@ -47,6 +47,9 @@ public enum MessageKey {
     RACK_LOCATION_ALREADY_EXISTS("rack.location.already-exists"),
     RACK_DELETION_FAILED("rack.deletion-failed"),
 
+    // TOKEN
+    TOKEN_NOT_FOUND_HASH("token.not-found.hash"),
+
     // CARD
     CARD_NOT_FOUND_ID("card.not-found.id"),
 

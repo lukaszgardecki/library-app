@@ -1,18 +1,14 @@
 package com.example.libraryapp.application.bookitemrequest;
 
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
-import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
+import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class ChangeBookItemRequestStatusUseCase {
-//    private final BookItemRequestService bookItemRequestService;
-    private final BookItemRequestRepository bookItemRequestRepository;
-//    private final EventPublisherPort publisher;
+    private final BookItemRequestRepositoryPort bookItemRequestRepository;
 
     void execute(Long id, BookItemRequestStatus newStatus) {
         bookItemRequestRepository.setBookRequestStatus(id, newStatus);
-//        BookItemRequest bookItemRequest = bookItemRequestService.findBookItemRequest(id);
-//        publisher.publish(new BookRequestReadyEvent(bookItemRequest));
     }
 }

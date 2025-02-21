@@ -3,7 +3,7 @@ import { Gender } from '../../modules/catalog/shared/enums/gender.enum';
 import { CardStatus } from '../../modules/catalog/shared/enums/card-status.enum';
 import { AccountStatus } from '../../modules/catalog/shared/enums/account-status.enum';
 import { Role } from '../../modules/catalog/shared/enums/role.enum';
-import { LendingStatus } from '../../modules/catalog/shared/enums/lending-status.enum';
+import { LendingStatus } from '../../modules/catalog/shared/enums/loan-status.enum';
 
 @Pipe({
   name: 'enumName',

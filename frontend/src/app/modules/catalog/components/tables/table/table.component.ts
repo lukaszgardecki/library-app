@@ -23,7 +23,7 @@ export class TableComponent {
   tableId: string;
   @Input() columns: { key: string; label: string; type?: string }[] = [];
   @Input() data?: any[] = [];
-  @Input() page: Page = new Page();
+  @Input() page: Page<any> = new Page();
   @Output() onUpdate = new EventEmitter<TableUpdateEvent>();
   @Output() onRowClick = new EventEmitter<number>();
   searchControl = new FormControl('');

@@ -1,14 +1,14 @@
 package com.example.libraryapp.application.token;
 
-import com.example.libraryapp.domain.token.ports.AccessTokenRepository;
-import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
+import com.example.libraryapp.domain.token.ports.AccessTokenRepositoryPort;
+import com.example.libraryapp.domain.token.ports.RefreshTokenRepositoryPort;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class ValidateTokenAndFingerprintUseCase {
-    private final AccessTokenRepository accessTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenRepositoryPort accessTokenRepository;
+    private final RefreshTokenRepositoryPort refreshTokenRepository;
     private final TokenValidator validator;
 
     void execute(String token, String fingerprint, boolean isRefreshToken) {

@@ -10,7 +10,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" unique="true"/>
             </column>
-            <column name="registration_date" type="DATETIME"/>
+            <column name="registration_date" type="DATE"/>
             <column name="password" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)">
                 <constraints unique="true"/>

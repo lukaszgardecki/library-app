@@ -20,6 +20,7 @@ import com.example.libraryapp.domain.payment.exceptions.PaymentNotFoundException
 import com.example.libraryapp.domain.person.exceptions.PersonNotFoundException;
 import com.example.libraryapp.domain.rack.exceptions.RackException;
 import com.example.libraryapp.domain.rack.exceptions.RackNotFoundException;
+import com.example.libraryapp.domain.token.exceptions.TokenNotFoundException;
 import com.example.libraryapp.domain.user.exceptions.EmailAlreadyExistsException;
 import com.example.libraryapp.domain.user.exceptions.UnsettledFineException;
 import com.example.libraryapp.domain.user.exceptions.UserHasNotReturnedBooksException;
@@ -82,6 +83,7 @@ public class CustomExceptionHandler {
             FineNotFoundException.class,
             PaymentNotFoundException.class,
             UserActivityNotFoundException.class,
+            TokenNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage sourceDoesNotExist(LibraryAppNotFoundException ex, WebRequest request) {

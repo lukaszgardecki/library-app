@@ -1,10 +1,9 @@
 package com.example.libraryapp.application.token;
 
-import com.example.libraryapp.application.message.MessageFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
-import com.example.libraryapp.domain.token.ports.AccessTokenRepository;
-import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
+import com.example.libraryapp.domain.token.ports.AccessTokenRepositoryPort;
+import com.example.libraryapp.domain.token.ports.RefreshTokenRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryAccessTokenRepositoryAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryRefreshTokenRepositoryAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryUserRepositoryAdapter;
@@ -21,37 +20,45 @@ public class TokenConfiguration {
 
     public TokenFacade tokenFacade() {
         InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
-        AccessTokenRepository accessTokenRepository = new InMemoryAccessTokenRepositoryAdapter();
-        RefreshTokenRepository refreshTokenRepository = new InMemoryRefreshTokenRepositoryAdapter();
+        AccessTokenRepositoryPort accessTokenRepository = new InMemoryAccessTokenRepositoryAdapter();
+        RefreshTokenRepositoryPort refreshTokenRepository = new InMemoryRefreshTokenRepositoryAdapter();
         UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
         Key secret = getSigningKey("uiadfhguiajefhdgjuiouiodfghuioasdfghauopdfhguoahfdughafdogha");
         TokenGenerator tokenGenerator = new TokenGenerator(secret);
         TokenValidator tokenValidator = new TokenValidator(secret);
         TokenService tokenService = new TokenService(accessTokenRepository, refreshTokenRepository, tokenGenerator);
+        HttpRequestExtractor extractor = new HttpRequestExtractor();
         return new TokenFacade(
                 new GenerateUserTokensUseCase(tokenService),
                 new RefreshUserTokensUseCase(tokenService, userFacade, tokenValidator),
                 new RevokeUserTokensUseCase(tokenService),
                 new ValidateTokenAndFingerprintUseCase(accessTokenRepository, refreshTokenRepository, tokenValidator),
-                new GetUsernameFromTokenUseCase(tokenValidator)
+                new ExtractTokenFromHeaderUseCase(extractor),
+                new ExtractFingerprintFromHeaderUseCase(extractor),
+                new GetUsernameFromTokenUseCase(tokenValidator),
+                new GetTokenByHashUseCase(tokenService)
         );
     }
 
     @Bean
     TokenFacade tokenFacade(
             UserFacade userFacade,
-            AccessTokenRepository accessTokenRepository,
-            RefreshTokenRepository refreshTokenRepository,
+            AccessTokenRepositoryPort accessTokenRepository,
+            RefreshTokenRepositoryPort refreshTokenRepository,
             TokenValidator tokenValidator,
             TokenGenerator tokenGenerator
     ) {
+        HttpRequestExtractor extractor = new HttpRequestExtractor();
         TokenService tokenService = new TokenService(accessTokenRepository, refreshTokenRepository, tokenGenerator);
         return new TokenFacade(
                 new GenerateUserTokensUseCase(tokenService),
                 new RefreshUserTokensUseCase(tokenService, userFacade, tokenValidator),
                 new RevokeUserTokensUseCase(tokenService),
                 new ValidateTokenAndFingerprintUseCase(accessTokenRepository, refreshTokenRepository, tokenValidator),
-                new GetUsernameFromTokenUseCase(tokenValidator)
+                new ExtractTokenFromHeaderUseCase(extractor),
+                new ExtractFingerprintFromHeaderUseCase(extractor),
+                new GetUsernameFromTokenUseCase(tokenValidator),
+                new GetTokenByHashUseCase(tokenService)
         );
     }
 
@@ -63,11 +70,6 @@ public class TokenConfiguration {
     @Bean
     TokenValidator tokenValidator(Key key) {
         return new TokenValidator(key);
-    }
-
-    @Bean
-    HttpRequestExtractor requestExtractor(MessageFacade messageFacade) {
-        return new HttpRequestExtractor(messageFacade);
     }
 
     @Bean

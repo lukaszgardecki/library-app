@@ -2,7 +2,7 @@ package com.example.libraryapp.application.fine;
 
 import com.example.libraryapp.application.payment.PaymentConfiguration;
 import com.example.libraryapp.application.payment.PaymentFacade;
-import com.example.libraryapp.domain.fine.ports.FineRepository;
+import com.example.libraryapp.domain.fine.ports.FineRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryFineRepositoryAdapter;
@@ -28,7 +28,7 @@ public class FineConfiguration {
 
     @Bean
     FineFacade fineFacade(
-            FineRepository fineRepository,
+            FineRepositoryPort fineRepository,
             PaymentFacade paymentFacade,
             EventPublisherPort publisher
     ) {

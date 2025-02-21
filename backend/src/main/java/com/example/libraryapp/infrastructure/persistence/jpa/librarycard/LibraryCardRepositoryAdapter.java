@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.librarycard;
 
 import com.example.libraryapp.domain.librarycard.model.LibraryCard;
 import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
-import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepository;
+import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class LibraryCardRepositoryAdapter implements LibraryCardRepository {
+class LibraryCardRepositoryAdapter implements LibraryCardRepositoryPort {
     private final JpaLibraryCardRepository repository;
 
     @Override

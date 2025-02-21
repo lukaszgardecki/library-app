@@ -2,7 +2,7 @@ package com.example.libraryapp.application.payment;
 
 import com.example.libraryapp.application.auth.AuthenticationConfiguration;
 import com.example.libraryapp.application.auth.AuthenticationFacade;
-import com.example.libraryapp.domain.payment.ports.PaymentRepository;
+import com.example.libraryapp.domain.payment.ports.PaymentRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPaymentRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class PaymentConfiguration {
 
     @Bean
     public PaymentFacade paymentFacade(
-        PaymentRepository paymentRepository,
+        PaymentRepositoryPort paymentRepository,
         AuthenticationFacade authFacade
     ) {
         PaymentRequestFactory requestFactory = new PaymentRequestFactory();

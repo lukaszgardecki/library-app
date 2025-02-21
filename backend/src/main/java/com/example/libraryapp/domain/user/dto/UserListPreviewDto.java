@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ public class UserListPreviewDto {
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDateTime registrationDate;
+    private LocalDate registrationDate;
     private AccountStatus status;
 }

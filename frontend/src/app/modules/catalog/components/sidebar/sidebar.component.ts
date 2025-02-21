@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ConfigService } from '../../core/services/config.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,8 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   @Input() isActive: boolean = true;
+  appVersion: string;
   menuItemGroups: MenuItemGroup[] = [
     { items: [
       { name: 'CAT.SIDEBAR.DASHBOARD', routerLink: '/library-app/dashboard', icon: 'bi-speedometer', selected: false }
@@ -37,6 +39,12 @@ export class SidebarComponent {
       { name: 'CAT.SIDEBAR.SETTINGS', routerLink: '/library-app/settings', icon: 'bi-gear-fill', selected: false },
     ] },
   ];
+
+  constructor(private configService: ConfigService) {}
+
+  ngOnInit(): void {
+      this.configService.getAppVersion().subscribe({next: version => this.appVersion = version});
+  }
 }
 
 interface SubmenuItem {

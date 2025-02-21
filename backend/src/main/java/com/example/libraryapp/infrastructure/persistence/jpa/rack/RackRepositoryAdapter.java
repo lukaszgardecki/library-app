@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.rack;
 
 import com.example.libraryapp.domain.rack.model.Rack;
-import com.example.libraryapp.domain.rack.ports.RackRepository;
+import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class RackRepositoryAdapter implements RackRepository {
+class RackRepositoryAdapter implements RackRepositoryPort {
     private final JpaRackRepository repository;
 
 

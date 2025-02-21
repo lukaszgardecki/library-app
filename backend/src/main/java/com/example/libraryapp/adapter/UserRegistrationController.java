@@ -21,7 +21,7 @@ class UserRegistrationController {
     @PostMapping("/fu")
     public ResponseEntity<Void> generateFakeUsers(@RequestParam int amount) {
         for (int i = 0; i < amount; i++) {
-//            userFacade.registerNewUser(FakeUserGenerator.generate());
+            userFacade.generateFakeUsers(amount);
         }
         return ResponseEntity.ok().build();
     }

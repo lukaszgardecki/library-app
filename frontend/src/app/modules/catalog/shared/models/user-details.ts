@@ -28,21 +28,24 @@ export class UserDetails {
     firstName: string;
     lastName: string;
     gender: Gender;
-    address: string;
+    streetAddress: string;
+    zipCode: string;
+    city: string;
+    state: string;
+    country: string;
     email: string;
     phoneNumber: string;
     pesel: string;
     nationality: string;
     dateOfBirth: string;
-    parentsNames: string;
+    fathersName: string;
+    mothersName: string;
     card: LibraryCard;
     dateOfMembership: Date;
     totalBooksBorrowed: number;
     totalBooksReserved: number;
     charge: BigInt;
     status: AccountStatus;
-    loanedItemsIds: Array<number>;
-    reservedItemsIds: Array<number>;
 }
 
 export class UserDetailsAdmin {
@@ -69,10 +72,10 @@ export class UserDetailsAdmin {
     charge: number;
     status: AccountStatus;
     loanedItemsIds: Array<number> = [];
-    reservedItemsIds: Array<number> = [];
+    requestedItemsIds: Array<number> = [];
     role: Role;
     genresStats: Map<string, number> = new Map<string, number>();
-    lendingsPerMonth: Array<number> = [];
+    loansPerMonth: Array<number> = [];
 }
 
 export class UserUpdate {
@@ -100,7 +103,7 @@ export class UserListPreviewAdmin {
     firstName: string;
     lastName: string;
     email: string;
-    dateOfMembership: Date;
+    registrationDate: Date;
     status: AccountStatus;
 }
 

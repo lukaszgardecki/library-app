@@ -2,12 +2,12 @@ package com.example.libraryapp.application.user;
 
 import com.example.libraryapp.domain.auth.ports.PasswordEncoderPort;
 import com.example.libraryapp.domain.user.exceptions.EmailAlreadyExistsException;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class UserCredentialsService {
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
     private final PasswordEncoderPort passwordEncoder;
 
     void validateEmail(String email) {

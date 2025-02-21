@@ -5,14 +5,14 @@ import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.domain.bookitem.exceptions.BookItemNotFoundException;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.domain.bookitem.ports.BookItemRepository;
+import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class BookItemService {
-    private final BookItemRepository bookItemRepository;
+    private final BookItemRepositoryPort bookItemRepository;
     private final BookItemRequestFacade bookItemRequestFacade;
     private final BookItemBarcodeGenerator generator;
     private final BookFacade bookFacade;

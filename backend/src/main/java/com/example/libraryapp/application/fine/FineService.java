@@ -7,7 +7,7 @@ import com.example.libraryapp.domain.fine.exceptions.FineAlreadyPaidException;
 import com.example.libraryapp.domain.fine.exceptions.FineNotFoundException;
 import com.example.libraryapp.domain.fine.model.Fine;
 import com.example.libraryapp.domain.fine.model.FineStatus;
-import com.example.libraryapp.domain.fine.ports.FineRepository;
+import com.example.libraryapp.domain.fine.ports.FineRepositoryPort;
 import com.example.libraryapp.domain.payment.dto.PaymentCardDetailsDto;
 import com.example.libraryapp.domain.payment.dto.PaymentProcessRequestDto;
 import com.example.libraryapp.domain.payment.model.PaymentMethod;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class FineService {
-    private final FineRepository fineRepository;
+    private final FineRepositoryPort fineRepository;
     private final PaymentFacade paymentFacade;
 
     List<Fine> getAllByUserId(Long userId) {

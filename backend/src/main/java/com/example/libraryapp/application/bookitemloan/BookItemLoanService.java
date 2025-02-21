@@ -6,7 +6,7 @@ import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanExcepti
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanNotFoundException;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
-import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepository;
+import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class BookItemLoanService {
-    private final BookItemLoanRepository bookItemLoanRepository;
+    private final BookItemLoanRepositoryPort bookItemLoanRepository;
 
     BookItemLoan getBookItemLoanById(Long id) {
         return bookItemLoanRepository.findById(id)
@@ -77,7 +77,6 @@ class BookItemLoanService {
         return BookItemLoan.builder()
                 .bookItemId(bookItemId)
                 .userId(userId)
-                .bookId(bookId)
                 .status(BookItemLoanStatus.CURRENT)
                 .creationDate(startTime)
                 .dueDate(endTime)

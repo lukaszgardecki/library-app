@@ -1,12 +1,12 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.book.model.Book;
-import com.example.libraryapp.domain.book.ports.BookRepository;
+import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class InMemoryBookRepositoryAdapter implements BookRepository {
+public class InMemoryBookRepositoryAdapter implements BookRepositoryPort {
     private final ConcurrentHashMap<Long, Book> map = new ConcurrentHashMap<>();
     private static long id = 0;
 

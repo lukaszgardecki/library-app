@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
-    private LocalDateTime registrationDate;
+    private LocalDate registrationDate;
     private String password;
     private String email;
     private AccountStatus status;

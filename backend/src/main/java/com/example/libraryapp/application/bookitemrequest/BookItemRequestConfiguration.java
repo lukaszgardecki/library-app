@@ -8,7 +8,7 @@ import com.example.libraryapp.application.bookitem.BookItemConfiguration;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
-import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
+import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemRequestRepositoryAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
@@ -56,7 +56,7 @@ public class BookItemRequestConfiguration {
             AuthenticationFacade authFacade,
             @Lazy BookItemFacade bookItemFacade,
             BookFacade bookFacade,
-            BookItemRequestRepository bookItemRequestRepository,
+            BookItemRequestRepositoryPort bookItemRequestRepository,
             EventPublisherPort publisher
     ) {
         BookItemRequestService bookItemRequestService = new BookItemRequestService(bookItemRequestRepository);

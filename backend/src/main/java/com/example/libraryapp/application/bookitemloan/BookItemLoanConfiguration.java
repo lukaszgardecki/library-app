@@ -12,7 +12,7 @@ import com.example.libraryapp.application.fine.FineConfiguration;
 import com.example.libraryapp.application.fine.FineFacade;
 import com.example.libraryapp.application.user.UserConfiguration;
 import com.example.libraryapp.application.user.UserFacade;
-import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepository;
+import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryBookItemLoanRepositoryAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
@@ -38,6 +38,7 @@ public class BookItemLoanConfiguration {
         return new BookItemLoanFacade(
                 new GetBookItemLoanUseCase(loanService),
                 new GetPageOfBookItemLoansByParamsUseCase(loanRepository, bookItemRequestFacade),
+                new GetPageOfBookItemLoanListPreviewsUseCase(loanRepository, bookItemRequestFacade),
                 new GetAllUserLoansUseCase(loanService),
                 new GetUserCurrentLoansUseCase(loanRepository),
                 new GetTopSubjectsWithLoansCountUseCase(loanService),
@@ -46,10 +47,10 @@ public class BookItemLoanConfiguration {
                         loanService, fineFacade, publisher
                 ),
                 new RenewBookItemLoanUseCase(
-                        userFacade, authFacade, bookItemRequestFacade, bookFacade, loanService, fineFacade, publisher
+                        userFacade, authFacade, bookItemFacade, bookItemRequestFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ReturnBookItemUseCase(
-                        userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
+                        authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ProcessLostBookItemUseCase(
                         authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
@@ -63,7 +64,7 @@ public class BookItemLoanConfiguration {
 
     @Bean
     BookItemLoanFacade bookItemLoanFacade(
-            BookItemLoanRepository loanRepository,
+            BookItemLoanRepositoryPort loanRepository,
             UserFacade userFacade,
             AuthenticationFacade authFacade,
             BookItemRequestFacade bookItemRequestFacade,
@@ -76,6 +77,7 @@ public class BookItemLoanConfiguration {
         return new BookItemLoanFacade(
                 new GetBookItemLoanUseCase(loanService),
                 new GetPageOfBookItemLoansByParamsUseCase(loanRepository, bookItemRequestFacade),
+                new GetPageOfBookItemLoanListPreviewsUseCase(loanRepository, bookItemRequestFacade),
                 new GetAllUserLoansUseCase(loanService),
                 new GetUserCurrentLoansUseCase(loanRepository),
                 new GetTopSubjectsWithLoansCountUseCase(loanService),
@@ -84,10 +86,10 @@ public class BookItemLoanConfiguration {
                         loanService, fineFacade, publisher
                 ),
                 new RenewBookItemLoanUseCase(
-                        userFacade, authFacade, bookItemRequestFacade, bookFacade, loanService, fineFacade, publisher
+                        userFacade, authFacade, bookItemFacade, bookItemRequestFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ReturnBookItemUseCase(
-                        userFacade, authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
+                        authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher
                 ),
                 new ProcessLostBookItemUseCase(
                         authFacade, bookItemFacade, bookFacade, loanService, fineFacade, publisher

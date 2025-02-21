@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.accesstoken;
 
 import com.example.libraryapp.domain.token.model.Token;
-import com.example.libraryapp.domain.token.ports.AccessTokenRepository;
+import com.example.libraryapp.domain.token.ports.AccessTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class AccessTokenRepositoryAdapter implements AccessTokenRepository {
+class AccessTokenRepositoryAdapter implements AccessTokenRepositoryPort {
     private final JpaAccessTokenRepository repository;
 
     @Override

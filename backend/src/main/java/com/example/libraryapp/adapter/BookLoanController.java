@@ -3,6 +3,7 @@ package com.example.libraryapp.adapter;
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
+import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
 import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,26 @@ class BookLoanController {
             Pageable pageable
     ) {
         authFacade.validateOwnerOrAdminAccess(userId);
-        Page<BookItemLoanDto> collectionModel = bookItemLoanFacade.getPageOfBookLoansByParams(
+        Page<BookItemLoanDto> page = bookItemLoanFacade.getPageOfBookLoansByParams(
                 userId, status, renewable, pageable
         );
-        return ResponseEntity.ok(collectionModel);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/list")
+    @RoleAuthorization({ADMIN, USER})
+    public ResponseEntity<Page<BookItemLoanListPreviewDto>> getLoanListPreviews(
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) BookItemLoanStatus status,
+            @RequestParam(required = false) Boolean renewable,
+            @RequestParam(value = "q", required = false) String query,
+            Pageable pageable
+    ) {
+        authFacade.validateOwnerOrAdminAccess(userId);
+        Page<BookItemLoanListPreviewDto> page = bookItemLoanFacade.getPageOfBookLoanListPreviewsByParams(
+                userId, query, status, renewable, pageable
+        );
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")

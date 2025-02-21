@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.person;
 
 import com.example.libraryapp.domain.person.model.Address;
 import com.example.libraryapp.domain.person.model.Person;
-import com.example.libraryapp.domain.person.ports.PersonRepository;
+import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class PersonRepositoryAdapter implements PersonRepository {
+class PersonRepositoryAdapter implements PersonRepositoryPort {
     private final JpaPersonRepository repository;
 
     @Override
@@ -28,6 +28,14 @@ class PersonRepositoryAdapter implements PersonRepository {
     public Page<Person> findAllByQuery(String query, Pageable pageable) {
         return repository.findAllByQuery(query, pageable)
                 .map(this::toModel);
+    }
+
+    @Override
+    public List<Person> findAllByQuery(String query) {
+        return repository.findAllByQuery(query)
+                .stream()
+                .map(this::toModel)
+                .toList();
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
+import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
-import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepository;
+import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class BookItemLoanRepositoryAdapter implements BookItemLoanRepository {
+class BookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     private final JpaBookItemLoanRepository repository;
 
     @Override
@@ -51,8 +52,13 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepository {
     }
 
     @Override
-    public Page<BookItemLoan> findPageOfBookLoansByParams(Long id, BookItemLoanStatus status, Pageable pageable) {
-        return repository.findAllByParams(id, status, pageable).map(this::toModel);
+    public Page<BookItemLoan> findPageOfBookLoansByParams(Long userId, BookItemLoanStatus status, Pageable pageable) {
+        return repository.findAllByParams(userId, status, pageable).map(this::toModel);
+    }
+
+    @Override
+    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(Long userId, String query, BookItemLoanStatus status, Pageable pageable) {
+        return repository.findPageOfBookLoanListPreviews(userId, query, status.name(), pageable);
     }
 
     @Override
@@ -78,12 +84,12 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepository {
 
     @Override
     public List<Object[]> countBookItemLoansMonthly(LocalDate startDate, LocalDate endDate) {
-        return repository.countBookItemLoansMonthly(startDate, endDate);
+        return repository.countBookItemLoansMonthly(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
     }
 
     @Override
     public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
-        return repository.countBookItemLoansByDay(startDate, endDate, status);
+        return repository.countBookItemLoansByDay(startDate.atStartOfDay(), endDate.atStartOfDay(), status);
     }
 
     private BookItemLoanEntity toEntity(BookItemLoan model) {

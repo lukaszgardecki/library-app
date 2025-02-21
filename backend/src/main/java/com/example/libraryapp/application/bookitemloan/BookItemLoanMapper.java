@@ -1,7 +1,9 @@
 package com.example.libraryapp.application.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
+import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
+import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 
 class BookItemLoanMapper {
 
@@ -13,7 +15,6 @@ class BookItemLoanMapper {
                 .returnDate(dto.returnDate())
                 .status(dto.status())
                 .userId(dto.userId())
-                .bookId(dto.bookId())
                 .bookItemId(dto.bookItemId())
                 .build();
     }
@@ -26,8 +27,18 @@ class BookItemLoanMapper {
                 model.getReturnDate(),
                 model.getStatus(),
                 model.getUserId(),
-                model.getBookId(),
                 model.getBookItemId()
+        );
+    }
+
+    static BookItemLoanListPreviewDto toDto(BookItemLoanListPreviewProjection model) {
+        return new BookItemLoanListPreviewDto(
+                model.getId(),
+                model.getCreationDate(),
+                model.getDueDate(),
+                model.getStatus(),
+                model.getBookItemId(),
+                model.getBookTitle()
         );
     }
 }

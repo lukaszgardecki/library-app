@@ -4,14 +4,14 @@ import com.example.libraryapp.domain.Constants;
 import com.example.libraryapp.domain.librarycard.exceptions.LibraryCardNotFoundException;
 import com.example.libraryapp.domain.librarycard.model.LibraryCard;
 import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
-import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepository;
+import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class LibraryCardService {
-    private final LibraryCardRepository libraryCardRepository;
+    private final LibraryCardRepositoryPort libraryCardRepository;
 
     Long createLibraryCard(Long userId) {
         LibraryCard libraryCard = createCard(userId);

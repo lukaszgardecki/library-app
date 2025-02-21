@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.bookitemrequest;
 
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
-import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepository;
+import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class BookItemRequestRepositoryAdapter implements BookItemRequestRepository {
+class BookItemRequestRepositoryAdapter implements BookItemRequestRepositoryPort {
     private final JpaBookItemRequestRepository repository;
 
     @Override

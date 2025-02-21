@@ -1,9 +1,10 @@
 package com.example.libraryapp.application.token;
 
 import com.example.libraryapp.domain.token.dto.AuthTokensDto;
+import com.example.libraryapp.domain.token.exceptions.TokenNotFoundException;
 import com.example.libraryapp.domain.token.model.Token;
-import com.example.libraryapp.domain.token.ports.AccessTokenRepository;
-import com.example.libraryapp.domain.token.ports.RefreshTokenRepository;
+import com.example.libraryapp.domain.token.ports.AccessTokenRepositoryPort;
+import com.example.libraryapp.domain.token.ports.RefreshTokenRepositoryPort;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 
@@ -11,9 +12,15 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class TokenService {
-    private final AccessTokenRepository accessTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final AccessTokenRepositoryPort accessTokenRepository;
+    private final RefreshTokenRepositoryPort refreshTokenRepository;
     private final TokenGenerator generator;
+
+    Token getTokenByHash(String hash) {
+        return accessTokenRepository.findByToken(hash)
+                .or(() -> refreshTokenRepository.findByToken(hash))
+                .orElseThrow(() -> new TokenNotFoundException(hash));
+    }
 
     AuthTokensDto generateNewTokensFor(UserDto user) {
         AuthTokensDto auth = generator.generateAuth(user);

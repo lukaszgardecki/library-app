@@ -6,11 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
 public class PersonFacade {
-    private final GetPageByQueryUseCase getPageByQueryUseCase;
+    private final GetAllPersonsByQueryUseCase getAllPersonsByQueryUseCase;
     private final GetPersonUseCase getPersonUseCase;
     private final SavePersonUseCase savePersonUseCase;
     private final DeletePersonUseCase deletePersonUseCase;
@@ -18,8 +19,15 @@ public class PersonFacade {
     private final GetCitiesByUserCountDescUseCase getCitiesByUserCountDescUseCase;
 
     public Page<PersonDto> getAllByQuery(String query, Pageable pageable) {
-        return getPageByQueryUseCase.execute(query, pageable)
+        return getAllPersonsByQueryUseCase.execute(query, pageable)
                 .map(PersonMapper::toDto);
+    }
+
+    public List<PersonDto> getAllByQuery(String query) {
+        return getAllPersonsByQueryUseCase.execute(query)
+                .stream()
+                .map(PersonMapper::toDto)
+                .toList();
     }
 
     public PersonDto getPersonById(Long id) {

@@ -33,7 +33,7 @@ public class AuthenticationFacade {
         return getCurrentLoggedInUserUseCase.execute().getId();
     }
 
-    private boolean isCurrentUserAdmin() {
+    public boolean isCurrentUserAdmin() {
         UserDto user = getCurrentLoggedInUserUseCase.execute();
         return Objects.equals(user.getRole(), Role.ADMIN);
     }

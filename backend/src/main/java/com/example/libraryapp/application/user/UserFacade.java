@@ -1,9 +1,10 @@
 package com.example.libraryapp.application.user;
 
 import com.example.libraryapp.domain.user.dto.*;
-import com.example.libraryapp.domain.user.model.AdminUserDetails;
 import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserListPreview;
+import com.example.libraryapp.domain.user.model.UserDetails;
+import com.example.libraryapp.domain.user.model.UserDetailsAdmin;
+import com.example.libraryapp.domain.user.model.UserPreview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,9 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserFacade {
     private final RegisterUserUseCase registerUserUseCase;
+    private final GetAllUsersUseCase getAllUsersUseCase;
+    private final GetUserListUseCase getUserListUseCase;
     private final GetUserUseCase getUserUseCase;
-    private final GetUserAdminInfoUseCase getUserAdminInfoUseCase;
-    private final GetUserListPreviewUseCase getUserListPreviewUseCase;
+    private final GetUserPreviewUseCase getUserPreviewUseCase;
+    private final GetUserDetailsUseCase getUserDetailsUseCase;
+    private final GetUserDetailsAdminUseCase getUserDetailsAdminUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final UpdateUserByAdminUseCase updateUserByAdminUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
@@ -25,7 +29,11 @@ public class UserFacade {
     private final CountAllUseCase countAllUseCase;
     private final CountNewRegisteredUsersByMonthUseCase countNewRegisteredUsersByMonthUseCase;
     private final GetUsersByLoanCountDescendingUseCase getUsersByLoanCountDescendingUseCase;
-    private final SearchUserPreviewsUseCase searchUserPreviewsUseCase;
+
+    public Page<UserDto> getAllUsers(Pageable pageable) {
+        return getAllUsersUseCase.execute(pageable)
+                .map(UserMapper::toDto);
+    }
 
     public List<UserDto> getAllByLoanCountDesc(int limit) {
         return getUsersByLoanCountDescendingUseCase.execute(limit)
@@ -34,8 +42,8 @@ public class UserFacade {
                 .toList();
     }
 
-    public Page<UserListPreviewDto> searchUserPreviews(String query, Pageable pageable) {
-        return searchUserPreviewsUseCase.execute(query, pageable)
+    public Page<UserListPreviewDto> getUserList(String query, Pageable pageable) {
+        return getUserListUseCase.execute(query, pageable)
                 .map(UserMapper::toDto);
     }
 
@@ -49,14 +57,19 @@ public class UserFacade {
         return UserMapper.toDto(user);
     }
 
-    public AdminUserDetailsDto getUserAdminInfo(Long id) {
-        AdminUserDetails user = getUserAdminInfoUseCase.execute(id);
+    public UserDetailsDto getUserDetails(Long id) {
+        UserDetails user = getUserDetailsUseCase.execute(id);
         return UserMapper.toDto(user);
     }
 
-    public UserListPreviewDto getUserListPreviewById(Long userId) {
-        UserListPreview userListPreview = getUserListPreviewUseCase.execute(userId);
-        return UserMapper.toDto(userListPreview);
+    public UserDetailsAdminDto getUserDetailsAdmin(Long id) {
+        UserDetailsAdmin user = getUserDetailsAdminUseCase.execute(id);
+        return UserMapper.toDto(user);
+    }
+
+    public UserPreviewDto getUserPreview(Long id) {
+        UserPreview userPreview = getUserPreviewUseCase.execute(id);
+        return UserMapper.toDto(userPreview);
     }
 
     public Long registerNewUser(RegisterUserDto request) {
@@ -94,5 +107,12 @@ public class UserFacade {
     }
     public long countNewRegisteredUsersByMonth(int month, int year) {
         return countNewRegisteredUsersByMonthUseCase.execute(month, year);
+    }
+
+    public void generateFakeUsers(int limit) {
+        for (int i = 0; i < limit; i++) {
+            RegisterUserDto user = FakeUserGenerator.generate();
+            registerUserUseCase.execute(user);
+        }
     }
 }

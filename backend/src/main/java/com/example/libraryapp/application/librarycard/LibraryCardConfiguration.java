@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.librarycard;
 
-import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepository;
+import com.example.libraryapp.domain.librarycard.ports.LibraryCardRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryLibraryCardRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class LibraryCardConfiguration {
 
     @Bean
     public LibraryCardFacade libraryCardFacade(
-            LibraryCardRepository cardRepository
+            LibraryCardRepositoryPort cardRepository
     ) {
         LibraryCardService libraryCardService = new LibraryCardService(cardRepository);
         return new LibraryCardFacade(

@@ -19,7 +19,7 @@ import com.example.libraryapp.application.person.PersonFacade;
 import com.example.libraryapp.application.statistics.StatisticsConfiguration;
 import com.example.libraryapp.application.statistics.StatisticsFacade;
 import com.example.libraryapp.domain.auth.ports.PasswordEncoderPort;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryEventPublisherAdapter;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPasswordEncoderAdapter;
@@ -37,7 +37,7 @@ public class UserConfiguration {
         return userFacade(userRepository);
     }
 
-    public UserFacade userFacade(UserRepository userRepository) {
+    public UserFacade userFacade(UserRepositoryPort userRepository) {
         InMemoryPersonRepositoryAdapter personRepository = new InMemoryPersonRepositoryAdapter();
         PersonFacade personFacade = new PersonConfiguration().personFacade(personRepository);
         AuthenticationFacade authFacade = new AuthenticationConfiguration().authenticationFacade(userRepository);
@@ -52,14 +52,17 @@ public class UserConfiguration {
         InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
         UserCredentialsService credentialsService = new UserCredentialsService(userRepository, passwordEncoder);
         UserService userService = new UserService(
-                userRepository, credentialsService, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
+                userRepository, credentialsService, authFacade, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
                 fineFacade, personFacade, libraryCardFacade, statisticsFacade
         );
         return new UserFacade(
                 new RegisterUserUseCase(userRepository, personFacade, libraryCardFacade, credentialsService, publisher),
+                new GetAllUsersUseCase(userService),
+                new GetUserListUseCase(userService),
                 new GetUserUseCase(userService),
-                new GetUserAdminInfoUseCase(userService, authFacade),
-                new GetUserListPreviewUseCase(userService),
+                new GetUserPreviewUseCase(userService),
+                new GetUserDetailsUseCase(userService),
+                new GetUserDetailsAdminUseCase(userService, authFacade),
                 new UpdateUserUseCase(userService),
                 new UpdateUserByAdminUseCase(userService),
                 new DeleteUserUseCase(userService, authFacade, bookItemRequestFacade),
@@ -68,14 +71,13 @@ public class UserConfiguration {
                 new VerifyUserForBookItemRenewalUseCase(userService),
                 new CountAllUseCase(userService),
                 new CountNewRegisteredUsersByMonthUseCase(userService),
-                new GetUsersByLoanCountDescendingUseCase(userService),
-                new SearchUserPreviewsUseCase(userService)
+                new GetUsersByLoanCountDescendingUseCase(userService)
         );
     }
 
     @Bean
     UserFacade userFacade(
-            UserRepository userRepository,
+            UserRepositoryPort userRepository,
             AuthenticationFacade authFacade,
             PersonFacade personFacade,
             BookFacade bookFacade,
@@ -90,14 +92,17 @@ public class UserConfiguration {
     ) {
         UserCredentialsService credentialsService = new UserCredentialsService(userRepository, passwordEncoder);
         UserService userService = new UserService(
-                userRepository, credentialsService, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
+                userRepository, credentialsService, authFacade, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
                 fineFacade, personFacade, libraryCardFacade, statisticsFacade
         );
         return new UserFacade(
                 new RegisterUserUseCase(userRepository, personFacade, libraryCardFacade, credentialsService, publisher),
+                new GetAllUsersUseCase(userService),
+                new GetUserListUseCase(userService),
                 new GetUserUseCase(userService),
-                new GetUserAdminInfoUseCase(userService, authFacade),
-                new GetUserListPreviewUseCase(userService),
+                new GetUserPreviewUseCase(userService),
+                new GetUserDetailsUseCase(userService),
+                new GetUserDetailsAdminUseCase(userService, authFacade),
                 new UpdateUserUseCase(userService),
                 new UpdateUserByAdminUseCase(userService),
                 new DeleteUserUseCase(userService, authFacade, bookItemRequestFacade),
@@ -106,8 +111,7 @@ public class UserConfiguration {
                 new VerifyUserForBookItemRenewalUseCase(userService),
                 new CountAllUseCase(userService),
                 new CountNewRegisteredUsersByMonthUseCase(userService),
-                new GetUsersByLoanCountDescendingUseCase(userService),
-                new SearchUserPreviewsUseCase(userService)
+                new GetUsersByLoanCountDescendingUseCase(userService)
         );
     }
 

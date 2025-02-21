@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.fine;
 
 import com.example.libraryapp.domain.fine.model.Fine;
 import com.example.libraryapp.domain.fine.model.FineStatus;
-import com.example.libraryapp.domain.fine.ports.FineRepository;
+import com.example.libraryapp.domain.fine.ports.FineRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class FineRepositoryAdapter implements FineRepository {
+class FineRepositoryAdapter implements FineRepositoryPort {
     private final JpaFineRepository repository;
 
     @Override

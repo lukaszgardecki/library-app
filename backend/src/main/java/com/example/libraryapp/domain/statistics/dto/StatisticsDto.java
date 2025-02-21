@@ -1,10 +1,12 @@
 package com.example.libraryapp.domain.statistics.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @AllArgsConstructor
 public class StatisticsDto {
     private long todayLoans;

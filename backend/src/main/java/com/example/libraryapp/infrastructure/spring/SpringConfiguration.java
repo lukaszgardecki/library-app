@@ -1,6 +1,6 @@
 package com.example.libraryapp.infrastructure.spring;
 
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.infrastructure.security.config.UserDetailsAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+
+import java.util.Locale;
 
 @Configuration
 class SpringConfiguration {
@@ -26,7 +30,7 @@ class SpringConfiguration {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserRepository userRepository) {
+    public AuthenticationProvider authenticationProvider(UserRepositoryPort userRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService(userRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -34,9 +38,16 @@ class SpringConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
+    public UserDetailsService userDetailsService(UserRepositoryPort userRepository) {
         return username -> userRepository.findByEmail(username)
                 .map(UserDetailsAdapter::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email %s not found".formatted(username)));
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
+        resolver.setDefaultLocale(Locale.ENGLISH);
+        return resolver;
     }
 }

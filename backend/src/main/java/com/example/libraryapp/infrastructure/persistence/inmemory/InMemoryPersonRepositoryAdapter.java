@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.person.model.Person;
-import com.example.libraryapp.domain.person.ports.PersonRepository;
+import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 
-public class InMemoryPersonRepositoryAdapter implements PersonRepository {
+public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
     private final ConcurrentHashMap<Long, Person> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
@@ -45,6 +45,20 @@ public class InMemoryPersonRepositoryAdapter implements PersonRepository {
         int end = Math.min((start + pageable.getPageSize()), filteredPeople.size());
         List<Person> pageContent = filteredPeople.subList(start, end);
         return new PageImpl<>(pageContent, pageable, filteredPeople.size());
+    }
+
+    @Override
+    public List<Person> findAllByQuery(String query) {
+        return map.values().stream()
+                .filter(person -> {
+                    if (query == null || query.isEmpty()) {
+                        return true;
+                    }
+                    String lowerQuery = query.toLowerCase();
+                    return person.getFirstName().toLowerCase().contains(lowerQuery) ||
+                            person.getLastName().toLowerCase().contains(lowerQuery);
+                })
+                .toList();
     }
 
     @Override

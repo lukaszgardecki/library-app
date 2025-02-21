@@ -1,11 +1,7 @@
 package com.example.libraryapp.application.user;
 
-import com.example.libraryapp.domain.user.dto.AdminUserDetailsDto;
-import com.example.libraryapp.domain.user.dto.UserDto;
-import com.example.libraryapp.domain.user.dto.UserListPreviewDto;
-import com.example.libraryapp.domain.user.model.AdminUserDetails;
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserListPreview;
+import com.example.libraryapp.domain.user.dto.*;
+import com.example.libraryapp.domain.user.model.*;
 
 class UserMapper {
 
@@ -39,7 +35,16 @@ class UserMapper {
                 .build();
     }
 
-    static UserListPreviewDto toDto(UserListPreview model) {
+    static UserPreviewDto toDto(UserPreview model) {
+        return new UserPreviewDto(
+                model.getId(),
+                model.getFirstName(),
+                model.getLastName(),
+                model.getRole()
+        );
+    }
+
+    static UserListPreviewDto toDto(UserListPreviewProjection model) {
         return new UserListPreviewDto(
                 model.getId(),
                 model.getFirstName(),
@@ -50,8 +55,35 @@ class UserMapper {
         );
     }
 
-    static AdminUserDetailsDto toDto(AdminUserDetails model) {
-        return new AdminUserDetailsDto(
+    static UserDetailsDto toDto(UserDetails model) {
+        return new UserDetailsDto(
+                model.getId(),
+                model.getFirstName(),
+                model.getLastName(),
+                model.getGender(),
+                model.getStreetAddress(),
+                model.getZipCode(),
+                model.getCity(),
+                model.getState(),
+                model.getCountry(),
+                model.getDateOfBirth(),
+                model.getEmail(),
+                model.getPhoneNumber(),
+                model.getPesel(),
+                model.getNationality(),
+                model.getFathersName(),
+                model.getMothersName(),
+                model.getCard(),
+                model.getDateOfMembership(),
+                model.getTotalBooksBorrowed(),
+                model.getTotalBooksReserved(),
+                model.getCharge(),
+                model.getStatus()
+        );
+    }
+
+    static UserDetailsAdminDto toDto(UserDetailsAdmin model) {
+        return new UserDetailsAdminDto(
                 model.getId(),
                 model.getFirstName(),
                 model.getLastName(),

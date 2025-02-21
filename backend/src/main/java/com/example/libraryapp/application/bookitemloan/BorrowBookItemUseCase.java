@@ -33,7 +33,7 @@ class BorrowBookItemUseCase {
                 .checkIfBookItemRequestStatusIsReady(bookItemId, userId);
         BookItemLoan bookItemLoan = bookItemLoanService.saveLoan(bookItemId, userId, bookItem.getBookId());
         bookItemRequestFacade.changeBookItemRequestStatus(bookItemRequestId, BookItemRequestStatus.COMPLETED);
-        String bookTitle = bookFacade.getBook(bookItemLoan.getBookId()).getTitle();
+        String bookTitle = bookFacade.getBook(bookItem.getBookId()).getTitle();
         publisher.publish(new BookItemLoanedEvent(bookItemId, userId, bookTitle, bookItem.getIsReferenceOnly(), bookItemLoan.getCreationDate(), bookItemLoan.getDueDate()));
         return bookItemLoan;
     }

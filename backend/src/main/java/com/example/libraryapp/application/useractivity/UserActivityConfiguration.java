@@ -1,7 +1,7 @@
 package com.example.libraryapp.application.useractivity;
 
 import com.example.libraryapp.domain.message.ports.MessageProviderPort;
-import com.example.libraryapp.domain.useractivity.ports.UserActivityRepository;
+import com.example.libraryapp.domain.useractivity.ports.UserActivityRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class UserActivityConfiguration {
 
     @Bean
-    UserActivityFacade activityFacade(UserActivityRepository userActivityRepository) {
+    UserActivityFacade activityFacade(UserActivityRepositoryPort userActivityRepository) {
         return new UserActivityFacade(
                 new GetPageOfActivitiesByParamsUseCase(userActivityRepository),
                 new GetActivityUseCase(userActivityRepository),

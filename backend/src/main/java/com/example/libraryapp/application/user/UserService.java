@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.user;
 
+import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
@@ -17,10 +18,8 @@ import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.example.libraryapp.domain.user.exceptions.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.user.exceptions.UserNotFoundException;
-import com.example.libraryapp.domain.user.model.AdminUserDetails;
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserListPreview;
-import com.example.libraryapp.domain.user.ports.UserRepository;
+import com.example.libraryapp.domain.user.model.*;
+import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +32,9 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 class UserService {
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
     private final UserCredentialsService credentialsService;
+    private final AuthenticationFacade authFacade;
     private final BookFacade bookFacade;
     private final BookItemFacade bookItemFacade;
     private final BookItemLoanFacade bookItemLoanFacade;
@@ -44,20 +44,12 @@ class UserService {
     private final LibraryCardFacade libraryCardFacade;
     private final StatisticsFacade statisticsFacade;
 
-    Page<UserListPreview> getUserPreviewsByQuery(String query, Pageable pageable) {
-        return personFacade.getAllByQuery(query, pageable)
-                .map(person -> {
-                    User user = userRepository.findByPersonId(person.getId())
-                            .orElseThrow(UserNotFoundException::new);
-                    return new UserListPreview(
-                            user.getId(),
-                            person.getFirstName(),
-                            person.getLastName(),
-                            user.getEmail(),
-                            user.getRegistrationDate(),
-                            user.getStatus()
-                    );
-                });
+    Page<UserListPreviewProjection> getUserPreviewsByQuery(String query, Pageable pageable) {
+        return userRepository.findAllListPreviews(query, pageable);
+    }
+
+    Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     List<User> getAllByLoansCountDesc(int limit) {
@@ -65,6 +57,7 @@ class UserService {
     }
 
     User getUserById(Long id) {
+        authFacade.validateOwnerOrAdminAccess(id);
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
@@ -72,29 +65,34 @@ class UserService {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
-    AdminUserDetails getAdminUserDetailsById(Long userId) {
+    UserDetails getUserDetails(Long userId) {
         User user = getUserById(userId);
-        AdminUserDetails userDetails = createAdminUserDetails(user);
+        return createUserDetails(user);
+    }
+
+    UserDetailsAdmin getAdminUserDetailsById(Long userId) {
+        User user = getUserById(userId);
+        UserDetailsAdmin userDetails = createAdminUserDetails(user);
         return userDetails;
     }
 
-    UserListPreview getListPreviewById(Long userId) {
+    UserPreview getUserPreview(Long userId) {
+        authFacade.validateOwnerOrAdminAccess(userId);
         return userRepository.findById(userId)
                 .map(user -> {
                     PersonDto person = personFacade.getPersonById(user.getPersonId());
-                    return new UserListPreview(
+                    return new UserPreview(
                             user.getId(),
                             person.getFirstName(),
                             person.getLastName(),
-                            user.getEmail(),
-                            user.getRegistrationDate(),
-                            user.getStatus()
+                            user.getRole()
                     );
                 })
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     void deleteById(Long userId) {
+        authFacade.validateOwnerOrAdminAccess(userId);
         Long personId = userRepository.findById(userId)
                 .map(User::getPersonId)
                 .orElse(-1L);
@@ -113,6 +111,7 @@ class UserService {
     }
 
     User updateUser(Long userId, UserUpdateDto userData) {
+        authFacade.validateOwnerOrAdminAccess(userId);
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
 
@@ -125,7 +124,7 @@ class UserService {
         if (userData.getFirstName() != null) person.setFirstName(userData.getFirstName());
         if (userData.getLastName() != null) person.setLastName(userData.getLastName());
         if (userData.getPhone() != null) person.setPhone(userData.getPhone());
-        if (userData.getEmail() != null) {
+        if (userData.getEmail() != null && !user.getEmail().equals(userData.getEmail())) {
             credentialsService.validateEmail(userData.getEmail());
             user.setEmail(userData.getEmail());
         }
@@ -139,13 +138,14 @@ class UserService {
     }
 
     User updateUserByAdmin(Long userId, UserUpdateAdminDto userData) {
+        authFacade.validateOwnerOrAdminAccess(userId);
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
 
         if (userData.getFirstName() != null) person.setFirstName(userData.getFirstName());
         if (userData.getLastName() != null) person.setLastName(userData.getLastName());
-        if (userData.getEmail() != null) {
+        if (userData.getEmail() != null && !user.getEmail().equals(userData.getEmail())) {
             credentialsService.validateEmail(userData.getEmail());
             user.setEmail(userData.getEmail());
         }
@@ -211,7 +211,36 @@ class UserService {
         return userRepository.countNewRegisteredUsersByMonth(month, year);
     }
 
-    private AdminUserDetails createAdminUserDetails(User user) {
+    private UserDetails createUserDetails(User user) {
+        PersonDto person = personFacade.getPersonById(user.getPersonId());
+        LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
+        return new UserDetails(
+                user.getId(),
+                person.getFirstName(),
+                person.getLastName(),
+                person.getGender(),
+                person.getAddress().getStreetAddress(),
+                person.getAddress().getZipCode(),
+                person.getAddress().getCity(),
+                person.getAddress().getState(),
+                person.getAddress().getCountry(),
+                person.getDateOfBirth(),
+                user.getEmail(),
+                person.getPhone(),
+                person.getPesel(),
+                person.getNationality(),
+                person.getFathersName(),
+                person.getMothersName(),
+                card,
+                user.getRegistrationDate(),
+                user.getTotalBooksBorrowed(),
+                user.getTotalBooksRequested(),
+                user.getCharge(),
+                user.getStatus()
+        );
+    }
+
+    private UserDetailsAdmin createAdminUserDetails(User user) {
         PersonDto person = personFacade.getPersonById(user.getPersonId());
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
         Map<String, Integer> topGenres = bookItemLoanFacade.getAllLoansByUserId(user.getId()).stream()
@@ -239,7 +268,7 @@ class UserService {
         List<Long> requestedItemsIds = bookItemRequestFacade.getUserCurrentBookItemRequests(user.getId()).stream()
                 .map(BookItemRequestDto::bookItemId)
                 .toList();
-        return new AdminUserDetails(
+        return new UserDetailsAdmin(
                 user.getId(),
                 person.getFirstName(),
                 person.getLastName(),

@@ -43,7 +43,8 @@ public class CustomSecurityConfig {
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler(
                                 (request, response, authentication) -> SecurityContextHolder.clearContext()
-                        ))
+                        )
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .headers(headers -> headers

@@ -14,7 +14,7 @@ import static com.example.libraryapp.domain.user.model.Role.ADMIN;
 import static com.example.libraryapp.domain.user.model.Role.USER;
 
 @RestController
-@RequestMapping("/api/v1/actions")
+@RequestMapping("/api/v1/activities")
 @RequiredArgsConstructor
 class UserActivityController {
     private final UserActivityFacade userActivityFacade;

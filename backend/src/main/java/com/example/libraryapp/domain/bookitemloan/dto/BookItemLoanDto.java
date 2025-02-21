@@ -11,6 +11,5 @@ public record BookItemLoanDto(
         LocalDateTime returnDate,
         BookItemLoanStatus status,
         Long userId,
-        Long bookId,
         Long bookItemId
 ) { }

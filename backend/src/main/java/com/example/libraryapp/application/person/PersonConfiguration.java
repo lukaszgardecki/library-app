@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.person;
 
-import com.example.libraryapp.domain.person.ports.PersonRepository;
+import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPersonRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ public class PersonConfiguration {
         InMemoryPersonRepositoryAdapter personRepository = new InMemoryPersonRepositoryAdapter();
         PersonService personService = new PersonService(personRepository);
         return new PersonFacade(
-                new GetPageByQueryUseCase(personService),
+                new GetAllPersonsByQueryUseCase(personService),
                 new GetPersonUseCase(personRepository),
                 new SavePersonUseCase(personRepository),
                 new DeletePersonUseCase(personRepository),
@@ -23,11 +23,11 @@ public class PersonConfiguration {
 
     @Bean
     public PersonFacade personFacade(
-            PersonRepository personRepository
+            PersonRepositoryPort personRepository
     ) {
         PersonService personService = new PersonService(personRepository);
         return new PersonFacade(
-                new GetPageByQueryUseCase(personService),
+                new GetAllPersonsByQueryUseCase(personService),
                 new GetPersonUseCase(personRepository),
                 new SavePersonUseCase(personRepository),
                 new DeletePersonUseCase(personRepository),

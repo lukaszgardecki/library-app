@@ -2,7 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.domain.bookitem.ports.BookItemRepository;
+import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Objects.requireNonNull;
 
-public class InMemoryBookItemRepositoryAdapter implements BookItemRepository {
+public class InMemoryBookItemRepositoryAdapter implements BookItemRepositoryPort {
     private final ConcurrentHashMap<Long, BookItem> map = new ConcurrentHashMap<>();
     private static long id = 0;
 

@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.payment;
 
 import com.example.libraryapp.domain.payment.model.Payment;
-import com.example.libraryapp.domain.payment.ports.PaymentRepository;
+import com.example.libraryapp.domain.payment.ports.PaymentRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-class PaymentRepositoryAdapter implements PaymentRepository {
+class PaymentRepositoryAdapter implements PaymentRepositoryPort {
     private final JpaPaymentRepository repository;
 
     @Override

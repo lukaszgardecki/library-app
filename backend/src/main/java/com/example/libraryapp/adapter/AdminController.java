@@ -3,7 +3,7 @@ package com.example.libraryapp.adapter;
 import com.example.libraryapp.application.statistics.StatisticsFacade;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.statistics.dto.StatisticsDto;
-import com.example.libraryapp.domain.user.dto.AdminUserDetailsDto;
+import com.example.libraryapp.domain.user.dto.UserDetailsAdminDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
 import com.example.libraryapp.infrastructure.security.RoleAuthorization;
@@ -23,7 +23,7 @@ class AdminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        AdminUserDetailsDto userAdminInfo = userFacade.getUserAdminInfo(id);
+        UserDetailsAdminDto userAdminInfo = userFacade.getUserDetailsAdmin(id);
         return ResponseEntity.ok(userAdminInfo);
     }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
@@ -12,6 +12,10 @@ import { RegistrationFormComponent } from "../../components/registration-form/re
 import { TopBorrowersComponent } from "../../components/tables/top-borrowers/top-borrowers.component";
 import { UsersAgeGroupsChartComponent } from "../../components/charts/users-age-groups-chart/users-age-groups-chart.component";
 import { TopCitiesComponent } from "../../components/tables/top-cities/top-cities.component";
+import { Observable, Subscription } from 'rxjs';
+import { Page, Pageable } from '../../../../shared/models/page';
+import { UserListPreviewAdmin } from '../../shared/models/user-details';
+import { Statistics } from '../../shared/models/users-stats-admin';
 
 @Component({
   selector: 'app-users',
@@ -26,9 +30,9 @@ import { TopCitiesComponent } from "../../components/tables/top-cities/top-citie
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
-export class UsersComponent {
-  usersPage$ = this.userService.usersPage$;
-  usersStats$ = this.userService.getUsersStatsAdmin();
+export class UsersComponent implements OnInit {
+  usersPage: Page<UserListPreviewAdmin>;
+  usersStats$: Observable<Statistics>;
 
   constructor(
     private userService: UserService,
@@ -36,8 +40,16 @@ export class UsersComponent {
     private router: Router
   ) { }
 
+  ngOnInit(): void {
+    this.usersStats$ = this.userService.getUsersStatsAdmin();
+    this.userService.getUsersPage().subscribe({next: page => {this.usersPage = page}});
+  }
+  
+
   updateTable(event: TableUpdateEvent) {
-    this.userService.getUsersPage(event.page, event.size, event.sort, event.query);
+    const pageable = new Pageable(event.page, event.size, event.sort);
+    this.userService.getUsersPage(event.query, pageable).subscribe({next: page => {this.usersPage = page}});
+    // this.usersPage$ = this.userService.getUsersPage(event.page, event.size, event.sort, event.query);
   }
 
   showDetails(userId: number) {
