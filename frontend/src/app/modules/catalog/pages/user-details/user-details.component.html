@@ -419,7 +419,7 @@
                 <div class="section-content">
                     <app-annual-activity-chart
                         *ngIf="areAnnualLendingsDataAvailble(); else lack"
-                        [data]="user.lendingsPerMonth"
+                        [data]="user.loansPerMonth"
                     ></app-annual-activity-chart>
                 </div>
             </div>
@@ -444,23 +444,21 @@
             <div class="content">
                 <div class="section-header">{{ 'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate}}</div>
                 <div class="section-content">
-                    <ng-container *ngIf="lendingPage$ | async as lendingPage; else lack">
-                        <app-table
-                            *ngIf="lendingPage._embedded && lendingPage._embedded.lendingDtoList; else lack"
-                            [tableName]="'user-lendings'"
-                            [columns]="[
-                                { key: 'id', label: 'ID' },
-                                { key: 'bookItem.book.title', label: 'CAT.BOOK.TITLE' },
-                                { key: 'creationDate', label: 'CAT.LENDING.CREATION_DATE' },
-                                { key: 'dueDate', label: 'CAT.LENDING.DUE_DATE' },
-                                { key: 'status', label: 'CAT.LENDING.STATUS.NAME', type: 'lendingStatus' },
-                            ]"
-                            [data]="lendingPage._embedded.lendingDtoList || []"
-                            [page]="lendingPage.page"
-                            (onUpdate)="updateTable($event)"
-                            (onRowClick)="showDetails($event)"
-                        ></app-table>
-                    </ng-container>
+                    <app-table
+                        *ngIf="loanPage && loanPage.content; else lack"
+                        [tableName]="'user-loans'"
+                        [columns]="[
+                            { key: 'id', label: 'ID' },
+                            { key: 'bookTitle', label: 'CAT.BOOK.TITLE' },
+                            { key: 'creationDate', label: 'CAT.LENDING.CREATION_DATE' },
+                            { key: 'dueDate', label: 'CAT.LENDING.DUE_DATE' },
+                            { key: 'status', label: 'CAT.LENDING.STATUS.NAME', type: 'lendingStatus' },
+                        ]"
+                        [data]="loanPage.content || []"
+                        [page]="loanPage"
+                        (onUpdate)="updateTable($event)"
+                        (onRowClick)="showDetails($event)"
+                    ></app-table>
                 </div>
             </div>
         </div>

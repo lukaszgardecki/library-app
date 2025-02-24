@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset lukas:0010
 insert into
-    payment(amount, creation_date, member_id, method, status, description)
+    payment(amount, creation_date, user_id, method, status, description)
 values
     ('24.34', '2023-03-30 13:33:55', 1, 'CREDIT_CARD', 'FAILED', 'Late return'),
     ('24.34', '2023-03-30 13:35:23', 1, 'CREDIT_CARD', 'COMPLETED', 'Late return'),

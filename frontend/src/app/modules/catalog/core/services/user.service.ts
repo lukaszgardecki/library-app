@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { UsersPage } from '../../shared/models/users-page';
-import { UserDetails, UserDetailsAdmin, UserPreview, UserRegister, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
-import { Sort } from '../../shared/models/sort.interface';
-import { UserStatsAdmin } from '../../shared/models/users-stats-admin';
+import { map, Observable } from 'rxjs';
+import { UserDetails, UserDetailsAdmin, UserListPreviewAdmin, UserPreview, UserRegister, UserUpdate, UserUpdateAdmin } from '../../shared/models/user-details';
+import { Statistics } from '../../shared/models/users-stats-admin';
+import { Page, Pageable } from '../../../../shared/models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -15,27 +14,25 @@ export class UserService {
   private fakeUserURL;
   private baseAdminURL;
   private registerURL;
-  private usersPageSubject = new BehaviorSubject<UsersPage>(new UsersPage());
-  usersPage$ = this.usersPageSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService
   ) {
     let baseURL = configService.getApiUrl();
-    this.baseURL = `${baseURL}/members`;
+    this.baseURL = `${baseURL}/users`;
     this.fakeUserURL = `${baseURL}/fu`;
     this.registerURL = `${baseURL}/register`;
-    this.baseAdminURL = `${baseURL}/admin/members`;
+    this.baseAdminURL = `${baseURL}/admin/users`;
   }
 
-  getUsersPage(page: number, size: number, sort: Sort, query: string = ""): void {
-    let params = this.createParams(page, size, sort, query);
-    this.fetchUsersPage(params);
+  getUsersPage(query: string = "", pageable: Pageable = new Pageable()): Observable<Page<UserListPreviewAdmin>> {
+    let params = this.createParams(query, pageable);
+    return this.http.get<Page<UserListPreviewAdmin>>(`${this.baseURL}/list`, { params: params, withCredentials: true });
   }
 
-  getUsersStatsAdmin(): Observable<UserStatsAdmin> {
-    return this.http.get<UserStatsAdmin>(`${this.baseAdminURL}/stats`, { withCredentials: true }).pipe(
+  getUsersStatsAdmin(): Observable<Statistics> {
+    return this.http.get<Statistics>(`${this.baseAdminURL}/stats`, { withCredentials: true }).pipe(
       map(stats => {
         if (stats.favGenres) {
           stats.favGenres = new Map<string, number>(Object.entries(stats.favGenres));
@@ -52,7 +49,7 @@ export class UserService {
   }
 
   getUserDetailsById(id: number): Observable<UserDetails> {
-    return this.http.get<UserDetails>(`${this.baseURL}/${id}`, { withCredentials: true });
+    return this.http.get<UserDetails>(`${this.baseURL}/${id}/details`, { withCredentials: true });
   }
 
   getUserDetailsByIdAdmin(id: number): Observable<UserDetailsAdmin> {
@@ -79,22 +76,16 @@ export class UserService {
     return this.http.patch<UserDetails>(`${this.baseAdminURL}/${userId}`, user, { withCredentials: true });
   }
 
-  private fetchUsersPage(params: HttpParams): void {
-    this.http.get<UsersPage>(`${this.baseURL}`, { params: params, withCredentials: true })
-      .subscribe({
-        next: usersPage => {
-          this.usersPageSubject.next(usersPage);
-        }
-      });
-  }
-
-  private createParams(page: number | null, size: number | null, sort: Sort | null, query: string | null): HttpParams {
+  private createParams(query: string | null, pageable: Pageable): HttpParams {
     let params = new HttpParams();
+    const page = pageable.page;
+    const size = pageable.size;
+    const sort = pageable.sort;
     if (page !== null) { params = params.set("page", page); }
     if (size !== null) { params = params.set("size", size); }
     if (query !== null) { params = params.set("q", query); }
     if (sort?.direction) {
-        const sortParam = ['firstName', 'lastName'].includes(sort.columnKey) ? `person.${sort.columnKey}` : sort.columnKey;
+        const sortParam = ['firstName', 'lastName'].includes(sort.columnKey) ? `${sort.columnKey}` : sort.columnKey;
         const sortValue = `${sortParam},${sort.direction}`;
         params = params.set("sort", sortValue);
     }

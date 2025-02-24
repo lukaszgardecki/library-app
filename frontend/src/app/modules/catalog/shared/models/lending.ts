@@ -1,13 +1,12 @@
-import { BookItem } from "../../../../shared/models/book-item";
-import { LendingStatus } from "../enums/lending-status.enum";
-import { UserDetails } from "./user-details";
+import { LendingStatus as LoanStatus } from "../enums/loan-status.enum";
 
-export class Lending {
+export class Loan {
     id: number;
     creationDate: Date;
     dueDate: Date;
     returnDate: Date;
-    status: LendingStatus;
-    member: UserDetails;
-    bookItem: BookItem;
+    status: LoanStatus;
+    userId: number;
+    bookId: number;
+    bookItemId: number;
 }

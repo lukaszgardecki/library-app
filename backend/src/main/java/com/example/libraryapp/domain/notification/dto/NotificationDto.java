@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.notification.dto;
 
+import com.example.libraryapp.domain.notification.model.NotificationType;
 import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;
 
@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationDto extends RepresentationModel<NotificationDto> {
+public class NotificationDto {
     private Long id;
+    private Long userId;
     private LocalDateTime createdAt;
+    private NotificationType type;
     private String subject;
     private String content;
-    private Long bookId;
-    private String bookTitle;
-    private Long memberId;
-    private String type;
-    private Boolean read;
+    private Boolean isRead;
 }

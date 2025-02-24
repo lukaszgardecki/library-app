@@ -13,11 +13,11 @@ import { FormsModule } from '@angular/forms';
 import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { AnnualActivityChartComponent } from "../../components/charts/annual-activity-chart/annual-activity-chart.component";
-import { LendingService } from '../../core/services/lending.service';
+import { LoanService } from '../../core/services/loan.service';
 import { TableComponent } from "../../components/tables/table/table.component";
-import { LendingsPage } from '../../shared/models/lendings-page';
-import { Observable } from 'rxjs';
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
+import { Page, Pageable } from '../../../../shared/models/page';
+import { Loan } from '../../shared/models/lending';
 
 @Component({
   selector: 'app-user-details',
@@ -40,11 +40,11 @@ export class UserDetailsComponent {
   roles = Object.values(Role);
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
-  lendingPage$: Observable<LendingsPage>;
+  loanPage: Page<Loan>;
 
   constructor(
     private userService: UserService,
-    private lendingService: LendingService,
+    private loanService: LoanService,
     private location: Location,
     private route: ActivatedRoute,
   ) {}
@@ -60,7 +60,7 @@ export class UserDetailsComponent {
         this.favGenre = this.findFavouriteGenre();
       }
     });
-    this.lendingPage$ = this.lendingService.getCurrentLendingsByUserId(id);
+    this.loanService.getCurrentLoanListPreviewsByUserId(id).subscribe({next: page => this.loanPage = page});
   }
 
   editPersonalInfo() {
@@ -102,12 +102,13 @@ export class UserDetailsComponent {
   }
 
   areAnnualLendingsDataAvailble(): boolean {
-    return !this.user.lendingsPerMonth.every(value => value === 0);
+    return !this.user.loansPerMonth.every(value => value === 0);
   }
 
   updateTable(event: TableUpdateEvent) {
-    // TODO: dodać obsługę wyszukiwania wypożyczeń po tytule książki, id, statusie
-    console.log('Aktualizuję tabelę...')
+    const id = this.route.snapshot.params['id'];
+    const pageable = new Pageable(event.page, event.size, event.sort);
+    this.loanService.getCurrentLoanListPreviewsByUserId(id, event.query, pageable).subscribe({next: page => {this.loanPage = page}});
   }
 
   showDetails(lendingId: number) {

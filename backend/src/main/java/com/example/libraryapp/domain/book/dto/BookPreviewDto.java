@@ -1,14 +1,15 @@
 package com.example.libraryapp.domain.book.dto;
 
-import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class BookPreviewDto extends RepresentationModel<BookPreviewDto> {
+public class BookPreviewDto {
     private Long id;
     private String title;
     private String subject;

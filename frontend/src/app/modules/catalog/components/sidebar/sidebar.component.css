@@ -87,3 +87,16 @@
     padding-left: 3rem;
     color: var(--sidebar-color);
 }
+
+/* ### FOOTER - VERSION ### */
+.version {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 63px;
+    min-width: fit-content;
+    padding: 0px 0;
+    color: var(--sidebar-color);
+    text-align: center;
+}
+        

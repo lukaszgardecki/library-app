@@ -22,8 +22,8 @@ export class AuthenticationService {
   private currentUserSubject = new BehaviorSubject<UserPreview | null>(null);
   currentUser$: Observable<UserPreview | null> = this.currentUserSubject.asObservable();
 
-  private loanedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
-  private reservedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  // private loanedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  // private reservedItemsIdsSubject: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   private accessTokenSubject: BehaviorSubject<string | null>;
   private refreshTokenSubject: BehaviorSubject<string | null>;
   private refreshTokenTimeout: any;
@@ -46,8 +46,8 @@ export class AuthenticationService {
     this.baseURL = configService.getApiUrl();
     this.accessTokenSubject = new BehaviorSubject<string | null>(this.storageService.getAccessToken());
     this.refreshTokenSubject = new BehaviorSubject<string | null>(this.storageService.getRefreshToken());
-    this.loanedItemsIdsSubject.next(this.storageService.getLoanedIds());
-    this.reservedItemsIdsSubject.next(this.storageService.getReservedIds());
+    // this.loanedItemsIdsSubject.next(this.storageService.getLoanedIds());
+    // this.reservedItemsIdsSubject.next(this.storageService.getReservedIds());
 
     let tokensAreValid = this.isValidToken(this.refreshToken) && this.isValidToken(this.accessToken);
     if (tokensAreValid) {
@@ -101,7 +101,6 @@ export class AuthenticationService {
       next: () => {
         this.clearUserData();
         this.stopRefreshTokenTimer();
-        this.router.navigate(['login']);
       }
     });
   }
@@ -114,28 +113,28 @@ export class AuthenticationService {
     return Role.ADMIN == this.currentUserRole;
   }
 
-  hasUserBorrowed(bookItem: BookItem): Observable<boolean> {
-    return this.loanedItemsIdsSubject.asObservable().pipe(
-      map(ids => ids.includes(bookItem.id))
-    );
-  }
+  // hasUserBorrowed(bookItem: BookItem): Observable<boolean> {
+    // return this.loanedItemsIdsSubject.asObservable().pipe(
+    //   map(ids => ids.includes(bookItem.id))
+    // );
+  // }
 
-  hasUserReserved(bookItem: BookItem): Observable<boolean> {
-    return combineLatest([
-      this.reservedItemsIdsSubject.asObservable(),
-      this.hasUserBorrowed(bookItem)
-    ]).pipe(
-      map(([reservedIds, hasBorrowed]) => !hasBorrowed && reservedIds.includes(bookItem.id))
-    );
-  }
+  // hasUserReserved(bookItem: BookItem): Observable<boolean> {
+  //   return combineLatest([
+  //     this.reservedItemsIdsSubject.asObservable(),
+  //     this.hasUserBorrowed(bookItem)
+  //   ]).pipe(
+  //     map(([reservedIds, hasBorrowed]) => !hasBorrowed && reservedIds.includes(bookItem.id))
+  //   );
+  // }
 
-  addToReservedItemsIds(id: number) {
-    const ids = this.reservedItemsIdsSubject.value;
-    if (!ids.includes(id)) {
-      this.reservedItemsIdsSubject.next([...ids, id]);
-      this.storageService.saveReservedIds([...ids, id]);
-    }
-  }
+  // addToReservedItemsIds(id: number) {
+  //   const ids = this.reservedItemsIdsSubject.value;
+  //   if (!ids.includes(id)) {
+  //     this.reservedItemsIdsSubject.next([...ids, id]);
+  //     this.storageService.saveReservedIds([...ids, id]);
+  //   }
+  // }
 
   private initializeUserData(response: Token) {
     this.currentUserId = this.findUserIdInToken(response.refresh_token);
@@ -154,22 +153,22 @@ export class AuthenticationService {
       }
     })
 
-    this.userService.getUserDetailsById(this.currentUserId).subscribe({
-      next: user => {
-        this.loanedItemsIdsSubject.next(user.loanedItemsIds);
-        this.reservedItemsIdsSubject.next(user.reservedItemsIds);
-        this.storageService.saveLoanedIds(user.loanedItemsIds);
-        this.storageService.saveReservedIds(user.reservedItemsIds);
-      }
-    });
+    // this.userService.getUserDetailsById(this.currentUserId).subscribe({
+    //   next: user => {
+        // this.loanedItemsIdsSubject.next(user.loanedItemsIds);
+        // this.reservedItemsIdsSubject.next(user.reservedItemsIds);
+        // this.storageService.saveLoanedIds(user.loanedItemsIds);
+        // this.storageService.saveReservedIds(user.reservedItemsIds);
+    //   }
+    // });
   }
 
   private clearUserData() {
     this.currentUserSubject.next(null);
     this.currentUserId = -1;
     this.currentUserRole = null;
-    this.loanedItemsIdsSubject.next([]);
-    this.reservedItemsIdsSubject.next([]);
+    // this.loanedItemsIdsSubject.next([]);
+    // this.reservedItemsIdsSubject.next([]);
     this.storageService.clearStorage();
     this._isLoggedInSubject.next(false);
     this.accessTokenSubject.next(null);

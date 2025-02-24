@@ -89,7 +89,7 @@ export class AnnualActivityChartComponent {
               label: (context: TooltipItem<any>) => {
                 const index = context.dataIndex;
                 const value = context.raw;
-                const label = this.getMonthName(index);
+                const label = this.getMonthName(index+3);
                 return `${label}: ${value}`;
               }
             }
@@ -117,7 +117,7 @@ export class AnnualActivityChartComponent {
       case 9: monthName = this.translationService.translate('DATA.MONTH.SEP.NAME'); break;
       case 10: monthName = this.translationService.translate('DATA.MONTH.OCT.NAME'); break;
       case 11: monthName = this.translationService.translate('DATA.MONTH.NOV.NAME'); break;
-      case 0: monthName = this.translationService.translate('DATA.MONTH.DEC.NAME'); break;
+      case 12: monthName = this.translationService.translate('DATA.MONTH.DEC.NAME'); break;
       default: monthName = ''; break;
     }
     return monthName;

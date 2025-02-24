@@ -14,13 +14,13 @@ values
 
 insert into book_item (barcode, is_reference_only, borrowed, due_date, price, format, status, date_of_purchase, publication_date, book_id, rack_id)
 values
-    ('540200000001', true, null, null, 12.34, 'MAGAZINE', 'RESERVED', '2023-01-28', '2023-01-29', 1, 1),
+    ('540200000001', true, null, null, 12.34, 'MAGAZINE', 'REQUESTED', '2023-01-28', '2023-01-29', 1, 1),
     ('540200000002', true, '2023-02-20', '2023-02-22', 10.56, 'MAGAZINE', 'AVAILABLE', '2023-01-28', '2023-01-29', 1, 1),
     ('540200000003', true, null, null, 12.34, 'MAGAZINE', 'LOANED', '2023-01-28', '2023-01-29', 1, 1),
-    ('540200000004', true, null, null, 10.56, 'MAGAZINE', 'RESERVED', '2023-01-28', '2023-01-29', 2, 1),
-    ('540200000005', true, null, null, 12.34, 'MAGAZINE', 'RESERVED', '2023-01-28', '2023-01-29', 2, 1),
+    ('540200000004', true, null, null, 10.56, 'MAGAZINE', 'REQUESTED', '2023-01-28', '2023-01-29', 2, 1),
+    ('540200000005', true, null, null, 12.34, 'MAGAZINE', 'REQUESTED', '2023-01-28', '2023-01-29', 2, 1),
     ('540200000006', true, '2023-02-20', '2023-03-22', 10.56, 'MAGAZINE', 'LOANED', '2023-01-28', '2023-01-29', 2, 1),
-    ('540200000007', true, null, null, 12.34, 'MAGAZINE', 'RESERVED', '2023-01-28', '2023-01-29', 3, 1),
+    ('540200000007', true, null, null, 12.34, 'MAGAZINE', 'REQUESTED', '2023-01-28', '2023-01-29', 3, 1),
     ('540200000008', true, '2023-02-20', '2023-03-22', 10.56, 'MAGAZINE', 'LOANED', '2023-01-28', '2023-01-29', 3, 1),
     ('540200000009', true, '2023-02-20', '2023-03-22', 12.34, 'MAGAZINE', 'LOANED', '2023-01-28', '2023-01-29', 3, 1),
     ('540200000010', true, '2023-02-20', '2023-03-22', 10.56, 'MAGAZINE', 'LOANED', '2023-01-28', '2023-01-29', 4, 1),
@@ -36,8 +36,8 @@ values
     ('540200000019', false, null, null, 12.34, 'JOURNAL', 'AVAILABLE', '2023-01-28', '2023-01-29', 9, 1),
     ('540200000020', true, null, null, 12.34, 'JOURNAL', 'AVAILABLE', '2023-01-28', '2023-01-29', 9, 1),
 
-    ('540200000021', false, null, null, 40.00, 'NEWSPAPER', 'RESERVED', '2023-01-28', '2023-01-29', 11, 2),
-    ('540200000022', false, null, null, 40.00, 'NEWSPAPER', 'RESERVED', '2023-01-28', '2023-01-29', 12, 2),
+    ('540200000021', false, null, null, 40.00, 'NEWSPAPER', 'REQUESTED', '2023-01-28', '2023-01-29', 11, 2),
+    ('540200000022', false, null, null, 40.00, 'NEWSPAPER', 'REQUESTED', '2023-01-28', '2023-01-29', 12, 2),
     ('540200000023', false, null, null, 40.00, 'NEWSPAPER', 'AVAILABLE', '2023-01-28', '2023-01-29', 12, 2),
     ('540200000024', false, null, null, 40.00, 'NEWSPAPER', 'AVAILABLE', '2023-01-28', '2023-01-29', 13, 2),
     ('540200000025', false, null, null, 40.00, 'NEWSPAPER', 'AVAILABLE', '2023-01-28', '2023-01-29', 13, 2),
@@ -80,8 +80,8 @@ values
     ('540200000059', false, null, null, 78.00, 'PAPERBACK', 'AVAILABLE', '2023-01-28', '2023-01-29', 33, 5),
     ('540200000060', false, null, null, 78.00, 'PAPERBACK', 'AVAILABLE', '2023-01-28', '2023-01-29', 34, 5),
 
-    ('540200000061', false, null, null, 178.00, 'HARDCOVER', 'LOST', '2023-01-28', '2023-01-29', 34, null),
-    ('540200000062', false, null, null, 178.00, 'HARDCOVER', 'LOST', '2023-01-28', '2023-01-29', 35, null),
+    ('540200000061', false, null, null, 178.00, 'HARDCOVER', 'LOST', '2023-01-28', '2023-01-29', 34, 6),
+    ('540200000062', false, null, null, 178.00, 'HARDCOVER', 'LOST', '2023-01-28', '2023-01-29', 35, 6),
     ('540200000063', false, null, null, 178.00, 'HARDCOVER', 'AVAILABLE', '2023-01-28', '2023-01-29', 36, 6),
     ('540200000064', false, null, null, 178.00, 'HARDCOVER', 'AVAILABLE', '2023-01-28', '2023-01-29', 36, 6),
     ('540200000065', false, null, null, 178.00, 'HARDCOVER', 'AVAILABLE', '2023-01-28', '2023-01-29', 37, 6),

@@ -6,7 +6,7 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
         <div class="small-box text-bg-primary">
             <div class="inner">
-                <h3 *ngIf="usersStats$ | async as stats">{{ stats.todayLendings }}</h3>
+                <h3 *ngIf="usersStats$ | async as stats">{{ stats.todayLoans }}</h3>
                 <p>{{ 'CAT.STATS.LENDINGS_COUNT_TODAY' | translate }}</p>
             </div>
             <i class="bi bi-bookmark-check small-box-icon"></i>
@@ -55,8 +55,8 @@
         <div class="section-content" >
           <app-weekly-activity-chart
             *ngIf="usersStats$ | async as stats; else lack"
-            [data1]="stats.newLendingsLastWeekByDay"
-            [data2]="stats.returnedLendingsLastWeekByDay"
+            [data1]="stats.newLoansLastWeekByDay"
+            [data2]="stats.returnedLoansLastWeekByDay"
           ></app-weekly-activity-chart>
         </div>
       </div>
@@ -67,7 +67,7 @@
         <div class="section-content">
           <app-annual-activity-chart
             *ngIf="usersStats$ | async as stats; else lack"
-            [data]="stats.lendingsLastYearByMonth"
+            [data]="stats.loansLastYearByMonth"
           ></app-annual-activity-chart>
         </div>
       </div>
@@ -90,17 +90,17 @@
         <div class="section-header">{{ 'CAT.STATS.USERS_TOTAL' | translate }}</div>
         <div class="section-content">
           <app-table
-            *ngIf="usersPage$ | async as usersPage; else lack"
+            *ngIf="usersPage && usersPage.content; else lack"
             [tableName]="'user-list'"
             [columns]="[
                 { key: 'id', label: 'CAT.USER.ACCOUNT.ID' },
                 { key: 'firstName', label: 'CAT.USER.DETAILS.FIRST_NAME' },
                 { key: 'lastName', label: 'CAT.USER.DETAILS.LAST_NAME' },
                 { key: 'email', label: 'CAT.USER.ACCOUNT.EMAIL' },
-                { key: 'dateOfMembership', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
+                { key: 'registrationDate', label: 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' },
             ]"
-            [data]="usersPage?._embedded?.memberListPreviewDtoAdminList || []"
-            [page]="usersPage.page"
+            [data]="usersPage.content || []"
+            [page]="usersPage"
             (onUpdate)="updateTable($event)"
             (onRowClick)="showDetails($event)"
           ></app-table>

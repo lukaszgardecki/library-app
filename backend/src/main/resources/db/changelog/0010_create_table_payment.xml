@@ -11,13 +11,13 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="amount" type="DECIMAL(10,2)"/>
-            <column name="member_id" type="BIGINT">
+            <column name="creation_date" type="DATETIME"/>
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="description" type="VARCHAR(500)"/>
             <column name="method" type="VARCHAR(50)"/>
             <column name="status" type="VARCHAR(50)"/>
-            <column name="description" type="VARCHAR(50)"/>
-            <column name="creation_date" type="DATETIME"/>
         </createTable>
         <modifySql dbms="mysql">
             <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
