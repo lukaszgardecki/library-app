@@ -101,7 +101,6 @@ export class AuthenticationService {
       next: () => {
         this.clearUserData();
         this.stopRefreshTokenTimer();
-        this.router.navigate(['login']);
       }
     });
   }
