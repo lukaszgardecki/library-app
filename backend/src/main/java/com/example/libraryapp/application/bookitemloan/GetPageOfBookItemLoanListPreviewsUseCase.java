@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 @RequiredArgsConstructor
@@ -20,11 +19,13 @@ class GetPageOfBookItemLoanListPreviewsUseCase {
     private final BookItemRequestFacade bookItemRequestFacade;
 
     public Page<BookItemLoanListPreviewProjection> execute(Long userId, String query, BookItemLoanStatus status, Boolean renewable, Pageable pageable) {
-        Predicate<BookItemLoanListPreviewProjection> byRenewable = (loan) ->
-                Objects.equals(renewable, Boolean.TRUE)
-                && !loan.getDueDate().isBefore(LocalDate.now())
-                && !bookItemRequestFacade.isBookItemRequested(loan.getBookItemId());
         Page<BookItemLoanListPreviewProjection> resultPage = bookItemLoanRepository.findPageOfBookLoanListPreviews(userId, query, status, pageable);
+        if (!Boolean.TRUE.equals(renewable)) {
+            return resultPage;
+        }
+        Predicate<BookItemLoanListPreviewProjection> byRenewable = (loan) ->
+                        !loan.getDueDate().isBefore(LocalDate.now())
+                        && !bookItemRequestFacade.isBookItemRequested(loan.getBookItemId());
         List<BookItemLoanListPreviewProjection> filteredLoans = resultPage.getContent().stream()
                 .filter(byRenewable)
                 .toList();
