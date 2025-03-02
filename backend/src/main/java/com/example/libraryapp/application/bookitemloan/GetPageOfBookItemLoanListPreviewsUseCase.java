@@ -24,8 +24,8 @@ class GetPageOfBookItemLoanListPreviewsUseCase {
             return resultPage;
         }
         Predicate<BookItemLoanListPreviewProjection> byRenewable = (loan) ->
-                        !loan.getDueDate().isBefore(LocalDate.now())
-                        && !bookItemRequestFacade.isBookItemRequested(loan.getBookItemId());
+                !loan.getDueDate().isBefore(LocalDate.now())
+                && !bookItemRequestFacade.isBookItemRequested(loan.getBookItemId());
         List<BookItemLoanListPreviewProjection> filteredLoans = resultPage.getContent().stream()
                 .filter(byRenewable)
                 .toList();

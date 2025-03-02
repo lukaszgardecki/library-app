@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 
@@ -19,17 +20,6 @@ class TokenGenerator {
     private long tokenExpirationTime;
     @Value("${jwt.refresh-token.expiration}")
     private long refreshExpiration;
-
-//    AuthTokensDto generateAuth(UserDto user) {
-//        Fingerprint fingerprint = new Fingerprint();
-//        Map<String, Object> extraClaims = new HashMap<>();
-//        extraClaims.put(TokenUtils.FINGERPRINT_NAME, fingerprint.getHash());
-//        extraClaims.put(TokenUtils.ID_CLAIM_NAME, user.getId());
-//        extraClaims.put(TokenUtils.USER_ROLE, user.getRole().name());
-//        String accessToken = generateAccessToken(extraClaims, user.getEmail());
-//        String refreshToken = generateRefreshToken(extraClaims, user.getEmail());
-//        return new AuthTokensDto(accessToken, refreshToken, fingerprint.getCookie());
-//    }
 
     AuthTokensDto generateAuth(UserDto user) {
         Fingerprint fingerprint = FingerprintGenerator.generate();
@@ -62,15 +52,16 @@ class TokenGenerator {
             String username,
             long expiration
     ) {
+        Date now = new Date(System.currentTimeMillis());
         return Jwts
                 .builder()
                 .setHeaderParam(JwsHeader.TYPE, "JWT")
                 .setClaims(extraClaims)
                 .setSubject(username)
-                .setNotBefore(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setNotBefore(now)
+                .setExpiration(new Date(now.getTime() + expiration))
                 .setIssuer("http://localhost:8080/api/v1")
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setIssuedAt(now)
                 .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
     }

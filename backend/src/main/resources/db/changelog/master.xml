@@ -24,7 +24,8 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="../testdata/0002_rack_and_book_item.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0008_person.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0006_library_card.sql" relativeToChangelogFile="true" context="dev, test"/>
-    <include file="../testdata/0004_book_loan.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0005_book_item_request.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0004_book_item_loan.sql" relativeToChangelogFile="true" context="dev, test"/>
 <!--    <include file="../testdata/0007_token.sql" relativeToChangelogFile="true" context="dev, test"/>-->
 <!--    <include file="../testdata/0009_payment.sql" relativeToChangelogFile="true" context="dev, test"/>-->
 <!--    <include file="../testdata/0010_user_activity.sql" relativeToChangelogFile="true" context="dev, test"/>-->

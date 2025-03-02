@@ -6,16 +6,14 @@ import com.example.libraryapp.domain.statistics.dto.StatisticsDto;
 import com.example.libraryapp.domain.user.dto.UserDetailsAdminDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
-import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import static com.example.libraryapp.domain.user.model.Role.ADMIN;
 
 @RestController
 @RequestMapping("/api/v1/admin/users")
-@RoleAuthorization(ADMIN)
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 class AdminController {
     private final StatisticsFacade statisticsFacade;

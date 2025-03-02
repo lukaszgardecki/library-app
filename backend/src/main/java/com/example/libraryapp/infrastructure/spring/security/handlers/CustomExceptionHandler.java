@@ -1,4 +1,4 @@
-package com.example.libraryapp.infrastructure.spring;
+package com.example.libraryapp.infrastructure.spring.security.handlers;
 
 import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.auth.exceptions.ForbiddenAccessException;
@@ -42,6 +42,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -67,6 +68,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(JwtException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorMessage tokenException(RuntimeException ex, WebRequest request) {
+        System.out.println(Arrays.toString(ex.getStackTrace()));
         return new ErrorMessage(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
@@ -92,6 +94,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler({
+            EmailAlreadyExistsException.class,
             BookItemException.class,
             BookItemRequestException.class,
             BookItemLoanException.class,
@@ -106,25 +109,15 @@ public class CustomExceptionHandler {
         return new ErrorMessage(HttpStatus.CONFLICT, message, request);
     }
 
-    @ExceptionHandler({
-            AccessDeniedException.class,
-            BadCredentialsException.class,
-            EmailAlreadyExistsException.class
-    })
+    @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorMessage userNotAuthenticated(RuntimeException ex, WebRequest request) {
-        String message = "Undefined exception";
-        if (ex instanceof AccessDeniedException) {
-            message = msgProvider.getMessage(MessageKey.ACCESS_DENIED);
-        } else if (ex instanceof BadCredentialsException) {
-            message = msgProvider.getMessage(MessageKey.VALIDATION_BAD_CREDENTIALS);
-        } else if (ex instanceof EmailAlreadyExistsException e) {
-            message = msgProvider.getMessage(e.getMessageKey());
-        }
+        String message = msgProvider.getMessage(MessageKey.VALIDATION_BAD_CREDENTIALS);
         return new ErrorMessage(HttpStatus.UNAUTHORIZED, message, request);
     }
 
     @ExceptionHandler({
+            AccessDeniedException.class,
             ForbiddenAccessException.class,
             LockedException.class,
             DisabledException.class
@@ -132,7 +125,9 @@ public class CustomExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorMessage userHasNoAccessToData(RuntimeException ex, WebRequest request) {
         String message;
-        if (ex instanceof ForbiddenAccessException e) {
+        if (ex instanceof AccessDeniedException) {
+            message = msgProvider.getMessage(MessageKey.FORBIDDEN);
+        } else if (ex instanceof ForbiddenAccessException e) {
             message = msgProvider.getMessage(e.getMessageKey());
         } else {
             message = ex.getMessage();

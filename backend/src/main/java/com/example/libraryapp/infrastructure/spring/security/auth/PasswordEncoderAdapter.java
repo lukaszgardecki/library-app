@@ -1,4 +1,4 @@
-package com.example.libraryapp.infrastructure.spring;
+package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.domain.auth.ports.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,9 @@ import org.springframework.stereotype.Component;
 class PasswordEncoderAdapter implements PasswordEncoderPort {
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public String encode(CharSequence rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
-
 
 }

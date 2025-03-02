@@ -3,19 +3,17 @@ package com.example.libraryapp.adapter;
 import com.example.libraryapp.application.rack.RackFacade;
 import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.dto.RackToSaveDto;
-import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.example.libraryapp.domain.user.model.Role.ADMIN;
-
 @RestController
 @RequestMapping("/api/v1/racks")
-@RoleAuthorization({ADMIN})
+@PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
 @RequiredArgsConstructor
 class RackController {
     private final RackFacade rackFacade;

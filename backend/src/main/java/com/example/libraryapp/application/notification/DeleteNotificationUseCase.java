@@ -7,17 +7,17 @@ import java.util.List;
 
 @RequiredArgsConstructor
 class DeleteNotificationUseCase {
-    private final NotificationOwnershipService notificationOwnershipService;
+    private final NotificationAccessControlService notificationAccessControlService;
     private final NotificationRepositoryPort notificationRepository;
 
     void execute(Long notificationId) {
-        notificationOwnershipService.validateOwner(notificationId);
+        notificationAccessControlService.validateAccess(notificationId);
         notificationRepository.deleteById(notificationId);
     }
 
     void execute(List<Long> ids) {
         ids.stream()
-                .peek(notificationOwnershipService::validateOwner)
-                .forEach(notificationRepository::deleteById);
+            .peek(notificationAccessControlService::validateAccess)
+            .forEach(notificationRepository::deleteById);
     }
 }

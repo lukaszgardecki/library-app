@@ -2,18 +2,15 @@ package com.example.libraryapp.adapter;
 
 import com.example.libraryapp.application.librarycard.LibraryCardFacade;
 import com.example.libraryapp.domain.librarycard.dto.LibraryCardDto;
-import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import static com.example.libraryapp.domain.user.model.Role.ADMIN;
-import static com.example.libraryapp.domain.user.model.Role.CASHIER;
 
 @RestController
 @RequestMapping(value = "/api/v1/cards", produces = MediaType.APPLICATION_JSON_VALUE)
-@RoleAuthorization({ADMIN, CASHIER})
+@PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
 @RequiredArgsConstructor
 class LibraryCardController {
     private final LibraryCardFacade cardFacade;

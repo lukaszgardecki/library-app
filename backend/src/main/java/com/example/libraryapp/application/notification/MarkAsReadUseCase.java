@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class MarkAsReadUseCase {
-    private final NotificationOwnershipService notificationOwnershipService;
+    private final NotificationAccessControlService notificationAccessControlService;
     private final NotificationRepositoryPort notificationRepository;
 
     void execute(Long notificationId) {
-        notificationOwnershipService.validateOwner(notificationId);
+        notificationAccessControlService.validateAccess(notificationId);
         notificationRepository.markAsRead(notificationId);
     }
 }

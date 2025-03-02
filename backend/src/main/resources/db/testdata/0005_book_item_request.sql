@@ -1,7 +1,7 @@
 --liquibase formatted sql
---changeset lukas:0004
+--changeset lukas:0015
 insert into
-    reservation (creation_date, status, member_id, book_item_id)
+    book_request (creation_date, status, user_id, book_item_id)
 values
     ('2023-02-20 00:23:01', 'COMPLETED', 1, 2),
     ('2023-02-20 01:24:02', 'COMPLETED', 1, 3),

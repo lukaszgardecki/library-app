@@ -1,4 +1,4 @@
-package com.example.libraryapp.infrastructure.spring;
+package com.example.libraryapp.infrastructure.spring.security.handlers;
 
 import com.example.libraryapp.application.person.PersonFacade;
 import com.example.libraryapp.application.token.TokenFacade;

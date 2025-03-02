@@ -8,11 +8,11 @@ import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 class GetPageOfNotificationsByUserIdUseCase {
-    private final NotificationOwnershipService notificationOwnershipService;
+    private final NotificationAccessControlService notificationAccessControlService;
     private final NotificationRepositoryPort notificationRepository;
 
     Page<Notification> execute(Long userId, Pageable pageable) {
-        notificationOwnershipService.validateOwner(userId);
+        notificationAccessControlService.validateAccess(userId);
         return notificationRepository.findByUserId(userId, pageable);
     }
 }

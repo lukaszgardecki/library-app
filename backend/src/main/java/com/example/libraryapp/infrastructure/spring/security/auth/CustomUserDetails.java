@@ -1,7 +1,8 @@
-package com.example.libraryapp.infrastructure.security.config;
+package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.domain.user.model.AccountStatus;
 import com.example.libraryapp.domain.user.model.User;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,16 +10,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UserDetailsAdapter implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails, CredentialsContainer {
+    private final Long id;
     private final User user;
 
-    public UserDetailsAdapter(User user) {
+    public CustomUserDetails(User user) {
         this.user = user;
+        this.id = user.getId();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(user.getRole().name()));
+    public Collection<GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
     }
 
     @Override
@@ -49,5 +56,10 @@ public class UserDetailsAdapter implements UserDetails {
     @Override
     public boolean isEnabled() {
         return user.getStatus().equals(AccountStatus.ACTIVE);
+    }
+
+    @Override
+    public void eraseCredentials() {
+        user.setPassword("null");
     }
 }

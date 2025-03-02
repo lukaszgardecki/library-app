@@ -1,4 +1,4 @@
-package com.example.libraryapp.infrastructure.spring;
+package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
 import lombok.RequiredArgsConstructor;

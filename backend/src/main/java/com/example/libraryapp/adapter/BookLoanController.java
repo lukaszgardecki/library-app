@@ -5,18 +5,15 @@ import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
-import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-
-import static com.example.libraryapp.domain.user.model.Role.ADMIN;
-import static com.example.libraryapp.domain.user.model.Role.USER;
 
 @RestController
 @RequestMapping("/api/v1/loans")
@@ -26,14 +23,13 @@ class BookLoanController {
     private final AuthenticationFacade authFacade;
 
     @GetMapping
-    @RoleAuthorization({ADMIN, USER})
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
     public ResponseEntity<Page<BookItemLoanDto>> getAllBookLoans(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) BookItemLoanStatus status,
             @RequestParam(required = false) Boolean renewable,
             Pageable pageable
     ) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         Page<BookItemLoanDto> page = bookItemLoanFacade.getPageOfBookLoansByParams(
                 userId, status, renewable, pageable
         );
@@ -41,7 +37,7 @@ class BookLoanController {
     }
 
     @GetMapping("/list")
-    @RoleAuthorization({ADMIN, USER})
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
     public ResponseEntity<Page<BookItemLoanListPreviewDto>> getLoanListPreviews(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) BookItemLoanStatus status,
@@ -49,7 +45,6 @@ class BookLoanController {
             @RequestParam(value = "q", required = false) String query,
             Pageable pageable
     ) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         Page<BookItemLoanListPreviewDto> page = bookItemLoanFacade.getPageOfBookLoanListPreviewsByParams(
                 userId, query, status, renewable, pageable
         );
@@ -57,7 +52,7 @@ class BookLoanController {
     }
 
     @GetMapping("/{id}")
-    @RoleAuthorization({ADMIN, USER})
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<BookItemLoanDto> getBookLoanById(@PathVariable Long id) {
         BookItemLoanDto loan = bookItemLoanFacade.getBookLoan(id);
         authFacade.validateOwnerOrAdminAccess(loan.userId());
@@ -65,7 +60,7 @@ class BookLoanController {
     }
 
     @PostMapping
-    @RoleAuthorization({ADMIN})
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BookItemLoanDto> borrowABook(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
@@ -76,7 +71,7 @@ class BookLoanController {
     }
 
     @PostMapping("/renew")
-    @RoleAuthorization({ADMIN, USER})
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
     public ResponseEntity<BookItemLoanDto> renewABook(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
@@ -86,7 +81,7 @@ class BookLoanController {
     }
 
     @PatchMapping("/return")
-    @RoleAuthorization({ADMIN})
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> returnABook(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
@@ -96,7 +91,7 @@ class BookLoanController {
     }
 
     @PatchMapping("/lost")
-    @RoleAuthorization({ADMIN})
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> processLostBookItem(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId

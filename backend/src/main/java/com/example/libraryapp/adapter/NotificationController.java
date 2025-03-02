@@ -2,31 +2,29 @@ package com.example.libraryapp.adapter;
 
 import com.example.libraryapp.application.notification.NotificationFacade;
 import com.example.libraryapp.domain.notification.dto.NotificationDto;
-import com.example.libraryapp.infrastructure.security.RoleAuthorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.libraryapp.domain.user.model.Role.ADMIN;
-import static com.example.libraryapp.domain.user.model.Role.USER;
-
 @RestController
 @RequestMapping("/api/v1/notifications")
-@RoleAuthorization({ADMIN, USER})
+@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 @RequiredArgsConstructor
 class NotificationController {
     private final NotificationFacade notificationFacade;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<Page<NotificationDto>> getAllNotifications(
-            @RequestParam(required = false) Long memberId,
+            @RequestParam(required = false) Long userId,
             Pageable pageable
     ) {
-        Page<NotificationDto> page = notificationFacade.getPageOfNotificationsByUserId(memberId, pageable);
+        Page<NotificationDto> page = notificationFacade.getPageOfNotificationsByUserId(userId, pageable);
         return ResponseEntity.ok(page);
     }
 

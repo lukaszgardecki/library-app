@@ -1,12 +1,14 @@
-package com.example.libraryapp.infrastructure.security.filters;
+package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.application.token.TokenFacade;
+import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.message.ports.MessageProviderPort;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -26,19 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenFacade tokenFacade;
     private final UserDetailsService userDetailsService;
     private final HandlerExceptionResolver handlerExceptionResolver;
+    private final MessageProviderPort msgProvider;
 
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    ) {
         String requestURI = request.getRequestURI();
-        if (isNotAuthorizedEndpoint(requestURI)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         try {
             String token = tokenFacade.extractTokenFromHeader(request);
             String fingerprint = tokenFacade.extractFingerprintFromHeader(request);
@@ -53,28 +50,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             handlerExceptionResolver.resolveException(
-                    request, response, null, new JwtException(e.getMessage())
+                    request, response, null, new JwtException(msgProvider.getMessage(MessageKey.ACCESS_DENIED))
             );
         }
     }
 
-    private boolean isNotAuthorizedEndpoint(String requestURI) {
-        List<String> publicEndpoints = List.of(
-                // H2
-                "/h2-console", "/favicon.ico",
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        return path.startsWith("/ws")
+                || path.startsWith("/h2-console")
+                || path.startsWith("/favicon.ico")
 
                 // app version:
-                "/version",
+                || path.contains("/version")
 
                 // application endpoints:
-                "/authenticate",
-                "/register",
-                "/books",
+                || path.contains("/authenticate")
+                || path.contains("/register")
+                || (path.contains("/books") && Objects.equals(request.getMethod(), HttpMethod.GET.name()))
 
                 //fake users:
-                "/fu"
-        );
-        return publicEndpoints.stream().anyMatch(requestURI::contains);
+                || path.contains("/fu");
     }
 
     private void setAuthentication(HttpServletRequest request, UserDetails userDetails) {
