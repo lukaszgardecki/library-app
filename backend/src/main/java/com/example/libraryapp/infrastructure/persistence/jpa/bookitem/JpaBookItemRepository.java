@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,6 +28,7 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
             Pageable pageable
     );
 
+    @Modifying
     @Query("""
         UPDATE BookItemEntity bi
         SET bi.status = :status
