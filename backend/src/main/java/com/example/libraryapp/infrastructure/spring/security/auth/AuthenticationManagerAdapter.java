@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,9 +16,11 @@ public class AuthenticationManagerAdapter implements AuthenticationManagerPort {
 
     @Override
     public boolean authenticate(String username, String password) throws AuthenticationException {
-        return authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
-        ).isAuthenticated();
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return authentication.isAuthenticated();
     }
 
     @Override
