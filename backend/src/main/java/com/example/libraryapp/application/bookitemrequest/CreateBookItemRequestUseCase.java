@@ -34,7 +34,7 @@ class CreateBookItemRequestUseCase {
         BookItemRequest request;
         if (bookItem.getStatus() == BookItemStatus.AVAILABLE) {
             request = bookItemRequestService.saveRequest(bookItemId, userId);
-            publisher.publish(new BookItemRequestedEvent(bookItemId, userId, bookTitle));
+            publisher.publish(new BookItemRequestedEvent(BookItemRequestMapper.toDto(request), bookTitle));
         } else {
             request = bookItemRequestService.saveReservation(bookItemId, userId);
             int queuePosition = bookItemRequestService.getReservationQueuePosition(bookItemId, userId);

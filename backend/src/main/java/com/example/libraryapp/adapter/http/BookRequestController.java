@@ -19,8 +19,15 @@ import java.net.URI;
 class BookRequestController {
     private final BookItemRequestFacade bookItemRequestFacade;
 
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+    public ResponseEntity<Page<BookItemRequestDto>> getAllRequests(@RequestParam(required = false) BookItemRequestStatus status, Pageable pageable) {
+        Page<BookItemRequestDto> page = bookItemRequestFacade.getPageOfBookRequestsByStatus(status, pageable);
+        return ResponseEntity.ok(page);
+    }
+
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<BookItemRequestDto> requestBookItem(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
@@ -28,23 +35,8 @@ class BookRequestController {
         BookItemRequestDto savedBookRequest = bookItemRequestFacade.requestBookItem(bookItemId, userId);
         URI savedLoanURI = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedBookRequest.id())
+                .buildAndExpand(savedBookRequest.getId())
                 .toUri();
         return ResponseEntity.created(savedLoanURI).body(savedBookRequest);
-    }
-
-    @GetMapping("/pending")
-    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-    public ResponseEntity<Page<BookItemRequestDto>> getAllPendingReservations(Pageable pageable) {
-        Page<BookItemRequestDto> page = bookItemRequestFacade.getPageOfBookRequestsByStatus(BookItemRequestStatus.PENDING, pageable);
-        return ResponseEntity.ok(page);
-    }
-
-
-    @PostMapping("/{id}/ready")
-    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-    public ResponseEntity<Void> completeRequest(@PathVariable("id") Long requestId) {
-        bookItemRequestFacade.changeBookRequestStatusToReady(requestId);
-        return ResponseEntity.ok().build();
     }
 }

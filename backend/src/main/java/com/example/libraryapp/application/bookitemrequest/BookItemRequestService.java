@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 class BookItemRequestService {
@@ -22,11 +23,7 @@ class BookItemRequestService {
     }
 
     BookItemRequest getCurrentBookItemRequest(Long bookItemId, Long userId) {
-        List<BookItemRequestStatus> statusesToFind = getCurrentRequestStatuses();
-        return bookItemRequestRepository.findAll(bookItemId, userId)
-                .stream()
-                .filter(req -> statusesToFind.contains(req.getStatus()))
-                .findAny()
+        return findCurrentBookItemRequest(bookItemId, userId)
                 .orElseThrow(BookItemRequestNotFoundException::new);
     }
 
@@ -68,18 +65,25 @@ class BookItemRequestService {
     }
 
     void verifyIfCurrentRequestExists(Long bookItemId, Long userId) {
-        BookItemRequest currentRequest = getCurrentBookItemRequest(bookItemId, userId);
-        if (currentRequest != null) {
-            throw new BookItemRequestException(MessageKey.REQUEST_ALREADY_CREATED);
-        }
+        findCurrentBookItemRequest(bookItemId, userId)
+                .ifPresent(r -> { throw new BookItemRequestException(MessageKey.REQUEST_ALREADY_CREATED); });
     }
 
     List<BookItemRequestStatus> getCurrentRequestStatuses() {
         return List.of(
                 BookItemRequestStatus.PENDING,
+                BookItemRequestStatus.IN_PROGRESS,
                 BookItemRequestStatus.READY,
                 BookItemRequestStatus.RESERVED
         );
+    }
+
+    private Optional<BookItemRequest> findCurrentBookItemRequest(Long bookItemId, Long userId) {
+        List<BookItemRequestStatus> statusesToFind = getCurrentRequestStatuses();
+        return bookItemRequestRepository.findAll(bookItemId, userId)
+                .stream()
+                .filter(req -> statusesToFind.contains(req.getStatus()))
+                .findAny();
     }
 
     private BookItemRequest createBookItemRequestToSave(Long bookItemId, Long userId, BookItemRequestStatus status) {

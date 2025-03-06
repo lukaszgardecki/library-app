@@ -1,6 +1,5 @@
 package com.example.libraryapp.application.user;
 
-import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
@@ -34,7 +33,6 @@ import java.util.stream.Collectors;
 class UserService {
     private final UserRepositoryPort userRepository;
     private final UserCredentialsService credentialsService;
-    private final AuthenticationFacade authFacade;
     private final BookFacade bookFacade;
     private final BookItemFacade bookItemFacade;
     private final BookItemLoanFacade bookItemLoanFacade;
@@ -77,7 +75,6 @@ class UserService {
     }
 
     UserPreview getUserPreview(Long userId) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         return userRepository.findById(userId)
                 .map(user -> {
                     PersonDto person = personFacade.getPersonById(user.getPersonId());
@@ -92,7 +89,6 @@ class UserService {
     }
 
     void deleteById(Long userId) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         Long personId = userRepository.findById(userId)
                 .map(User::getPersonId)
                 .orElse(-1L);
@@ -111,7 +107,6 @@ class UserService {
     }
 
     User updateUser(Long userId, UserUpdateDto userData) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
 
@@ -138,7 +133,6 @@ class UserService {
     }
 
     User updateUserByAdmin(Long userId, UserUpdateAdminDto userData) {
-        authFacade.validateOwnerOrAdminAccess(userId);
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
@@ -266,7 +260,7 @@ class UserService {
                 .map(BookItemLoanDto::bookItemId)
                 .toList();
         List<Long> requestedItemsIds = bookItemRequestFacade.getUserCurrentBookItemRequests(user.getId()).stream()
-                .map(BookItemRequestDto::bookItemId)
+                .map(BookItemRequestDto::getBookItemId)
                 .toList();
         return new UserDetailsAdmin(
                 user.getId(),

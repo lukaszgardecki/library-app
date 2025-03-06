@@ -17,11 +17,11 @@ class BookItemRequestMapper {
 
     static BookItemRequest toModel(BookItemRequestDto model) {
         return new BookItemRequest(
-                model.id(),
-                model.creationDate(),
-                model.status(),
-                model.userId(),
-                model.bookItemId()
+                model.getId(),
+                model.getCreationDate(),
+                model.getStatus(),
+                model.getUserId(),
+                model.getBookItemId()
         );
     }
 }

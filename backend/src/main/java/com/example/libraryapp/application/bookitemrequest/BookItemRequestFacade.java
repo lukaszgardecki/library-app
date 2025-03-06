@@ -50,7 +50,7 @@ public class BookItemRequestFacade {
 
     public void cancelAllItemRequestsByUserId(Long userId) {
         getUserCurrentBookItemRequests(userId)
-                .forEach(req -> cancelBookItemRequest(req.bookItemId(), userId));
+                .forEach(req -> cancelBookItemRequest(req.getBookItemId(), userId));
     }
 
     public void changeBookItemRequestStatus(Long bookRequestId, BookItemRequestStatus newStatus) {

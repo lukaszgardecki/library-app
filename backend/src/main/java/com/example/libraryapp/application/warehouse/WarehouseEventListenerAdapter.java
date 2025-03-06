@@ -22,11 +22,8 @@ class WarehouseEventListenerAdapter implements WarehouseEventListenerPort {
 
     @Override
     public void onEvent(CustomEvent event) {
-        if (event instanceof BookItemRequestedEvent eventObj) {
-            System.out.println("Wysyłam wiadomość do magazynu o zarezerwowaniu książki");
-            // TODO: 03.12.2024 pomyśleć żeby ta ścieżka nie była wpisana na żywca tutaj tylko do jakiegoś configa...
-            // TODO: 12.12.2024 poprawić to bo do magazynu trzerba wysłać dane potrzebne magazynowi
-            messagingTemplate.convertAndSend("/queue/warehouse", eventObj.getBookItemId());
+        if (event instanceof BookItemRequestedEvent e) {
+            messagingTemplate.convertAndSend("/queue/warehouse/pending", e.getBookItemRequest());
         }
     }
 }
