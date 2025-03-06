@@ -9,7 +9,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of data; index as i" role="button">
-          <td *ngFor="let column of columns" (click)="showDetails(row.id)">
+          <td *ngFor="let column of columns" (click)="onClick(row)">
               {{ getValue(row, column.key) | enumName: column.type | translate }}
           </td>
         </tr>

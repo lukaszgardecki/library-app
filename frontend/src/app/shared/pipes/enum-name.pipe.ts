@@ -3,7 +3,8 @@ import { Gender } from '../../modules/catalog/shared/enums/gender.enum';
 import { CardStatus } from '../../modules/catalog/shared/enums/card-status.enum';
 import { AccountStatus } from '../../modules/catalog/shared/enums/account-status.enum';
 import { Role } from '../../modules/catalog/shared/enums/role.enum';
-import { LendingStatus } from '../../modules/catalog/shared/enums/loan-status.enum';
+import { BookItemLoanStatus } from '../../modules/catalog/shared/enums/book-item-loan-status';
+import { BookItemRequestStatus } from '../../modules/catalog/shared/enums/book-item-request-status';
 
 @Pipe({
   name: 'enumName',
@@ -38,9 +39,18 @@ export class EnumNamePipe implements PipeTransform {
     [Role.WAREHOUSE]: 'CAT.USER.ROLE.WAREHOUSE'
   };
 
-  private lendingStatusMap: { [key in LendingStatus]: string } = {
-    [LendingStatus.CURRENT]: 'CAT.LENDING.STATUS.CURRENT',
-    [LendingStatus.COMPLETED]: 'CAT.LENDING.STATUS.COMPLETED'
+  private loanStatusMap: { [key in BookItemLoanStatus]: string } = {
+    [BookItemLoanStatus.CURRENT]: 'CAT.LOAN.STATUS.CURRENT',
+    [BookItemLoanStatus.COMPLETED]: 'CAT.LOAN.STATUS.COMPLETED'
+  }
+
+  private requestStatusMap: { [key in BookItemRequestStatus]: string} = {
+    [BookItemRequestStatus.COMPLETED]: 'CAT.REQUEST.STATUS.COMPLETED',
+    [BookItemRequestStatus.READY]: 'CAT.REQUEST.STATUS.READY',
+    [BookItemRequestStatus.IN_PROGRESS]: 'CAT.REQUEST.STATUS.IN_PROGRESS',
+    [BookItemRequestStatus.PENDING]: 'CAT.REQUEST.STATUS.PENDING',
+    [BookItemRequestStatus.RESERVED]: 'CAT.REQUEST.STATUS.RESERVED',
+    [BookItemRequestStatus.CANCELED]: 'CAT.REQUEST.STATUS.CANCELED'
   }
 
   transform(value?: any, type?: string): string {
@@ -51,7 +61,8 @@ export class EnumNamePipe implements PipeTransform {
       case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
       case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
       case "role": return this.rolesMap[value as Role] || 'Unknown role';
-      case "lendingStatus": return this.lendingStatusMap[value as LendingStatus] || 'Unknown lending status';
+      case "book-item-loan-status": return this.loanStatusMap[value as BookItemLoanStatus] || 'Unknown book item loan status';
+      case "book-item-request-status": return this.requestStatusMap[value as BookItemRequestStatus] || 'Unknown book item request status';
       default: return value;
     }
   }

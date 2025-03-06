@@ -1,5 +1,3 @@
-import { HypermediaObject } from "./hypermedia-object";
-
 export class Book {
     id: number;
     title: string;
@@ -8,5 +6,4 @@ export class Book {
     isbn: string;
     language: string;
     pages: number;
-    _links: HypermediaObject;
 }

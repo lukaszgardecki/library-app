@@ -46,9 +46,15 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of data; index as i">
-        <td *ngFor="let column of columns" (click)="showDetails(row.id)">
-            {{ getValue(row, column.key) | enumName: column.type | translate }}
+        <td *ngFor="let column of columns" (click)="onClick(row)">
+            <!-- {{ getValue(row, column.key) | enumName: column.type | translate }} -->
+
+            <ng-container [ngSwitch]="column.type">
+              <span *ngSwitchCase="'date'">{{ getValue(row, column.key) | date: 'dd.MM.yyyy' }}</span>
+              <span *ngSwitchDefault>{{ getValue(row, column.key) | enumName: column.type | translate }}</span>
+            </ng-container>
         </td>
+        
       </tr>
     </tbody>
   </table>

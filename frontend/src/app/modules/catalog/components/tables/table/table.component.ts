@@ -18,14 +18,14 @@ import { EnumNamePipe } from '../../../../../shared/pipes/enum-name.pipe';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent {
+export class TableComponent<T> {
   @Input() tableName: string = "";
   tableId: string;
   @Input() columns: { key: string; label: string; type?: string }[] = [];
-  @Input() data?: any[] = [];
-  @Input() page: Page<any> = new Page();
+  @Input() data?: T[] = [];
+  @Input() page: Page<T> = new Page();
   @Output() onUpdate = new EventEmitter<TableUpdateEvent>();
-  @Output() onRowClick = new EventEmitter<number>();
+  @Output() onRowClick = new EventEmitter<T>();
   searchControl = new FormControl('');
   sortState: Sort = { columnKey: '', direction: undefined };
   pageSizes: Size[] = [
@@ -48,9 +48,9 @@ export class TableComponent {
       this.query = searchQuery ?? "";
       this.currentPage = 0;
       this.sortState = { columnKey: '', direction: undefined };
-      this.loadUsersPage();
+      this.updateTable();
     });
-    this.loadUsersPage();
+    this.updateTable();
     this.tableId = `${this.tableName}-${Math.random().toString().slice(2, 7)}`;
   }
 
@@ -67,16 +67,16 @@ export class TableComponent {
         : 'asc';
 
     this.sortState.columnKey = column;
-    this.loadUsersPage();
+    this.updateTable();
   }
 
-  showDetails(itemId: number) {
-    this.onRowClick.emit(itemId);
+  onClick(item: T) {
+    this.onRowClick.emit(item);
   }
 
   loadPage(pageIndex: number) {
     this.currentPage = pageIndex;
-    this.loadUsersPage();
+    this.updateTable();
   }
 
   getValue(obj: any, key: string): any {
@@ -90,7 +90,7 @@ export class TableComponent {
     this.selectedSize = this.pageSizes.find(size => size.value == event.target.value) || this.pageSizes[0];
     this.selectedSize.selected = true;
     this.currentPage = 0;
-    this.loadUsersPage();
+    this.updateTable();
   }
 
   saveAsPDF(): void {
@@ -98,7 +98,7 @@ export class TableComponent {
     this.pdfService.saveAsPDF(data, this.tableId);
   }
 
-  private loadUsersPage(): void {
+  private updateTable(): void {
     let event: TableUpdateEvent = { 
       page: this.currentPage, 
       size: this.selectedSize.value, 

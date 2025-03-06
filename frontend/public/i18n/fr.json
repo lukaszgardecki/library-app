@@ -220,7 +220,19 @@
         "BOOK": {
             "TITLE": "Titre"
         },
-        "LENDING": {
+        "REQUEST": {
+            "CREATION_DATE": "Date de création",
+            "STATUS": {
+                "NAME": "Statut",
+                "COMPLETED": "Terminé",
+                "READY": "Prêt à être récupéré",
+                "IN_PROGRESS": "En cours",
+                "PENDING": "Préparation",
+                "RESERVED": "Réservé",
+                "CANCELED": "Annulé"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Date de création",
             "DUE_DATE": "Date de retour",
             "STATUS": {

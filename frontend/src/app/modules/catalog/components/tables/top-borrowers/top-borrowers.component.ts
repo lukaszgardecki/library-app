@@ -10,14 +10,14 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './top-borrowers.component.html',
   styleUrl: './top-borrowers.component.css'
 })
-export class TopBorrowersComponent {
+export class TopBorrowersComponent<T> {
   @Input() columns: { key: string; label: string; type?: string }[] = [];
-  @Input() data?: any[] = [];
-  @Output() onRowClick = new EventEmitter<number>();
+  @Input() data?: T[] = [];
+  @Output() onRowClick = new EventEmitter<T>();
 
 
-  showDetails(itemId: number) {
-    this.onRowClick.emit(itemId);
+  onClick(item: T) {
+    this.onRowClick.emit(item);
   }
 
   getValue(obj: any, key: string): any {

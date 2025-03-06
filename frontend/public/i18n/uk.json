@@ -220,7 +220,19 @@
         "BOOK": {
             "TITLE": "Назва"
         },
-        "LENDING": {
+        "REQUEST": {
+            "CREATION_DATE": "Дата створення",
+            "STATUS": {
+                "NAME": "Статус",
+                "COMPLETED": "Виконано",
+                "READY": "Готове до отримання",
+                "IN_PROGRESS": "\u0412 \u043f\u0440\u043e\u0446\u0435\u0441\u0456",
+                "PENDING": "Підготовка",
+                "RESERVED": "Резервація",
+                "CANCELED": "Скасовано"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Дата створення",
             "DUE_DATE": "Дата повернення",
             "STATUS": {

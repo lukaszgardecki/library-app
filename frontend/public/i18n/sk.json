@@ -220,7 +220,19 @@
         "BOOK": {
             "TITLE": "Názov"
         },
-        "LENDING": {
+        "REQUEST": {
+            "CREATION_DATE": "Dátum vytvorenia",
+            "STATUS": {
+                "NAME": "Stav",
+                "COMPLETED": "Dokončené",
+                "READY": "Pripravené na vyzdvihnutie",
+                "IN_PROGRESS": "Prebieha",
+                "PENDING": "Príprava",
+                "RESERVED": "Rezervácia",
+                "CANCELED": "Zrušené"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Dátum vytvorenia",
             "DUE_DATE": "Dátum vrátenia",
             "STATUS": {

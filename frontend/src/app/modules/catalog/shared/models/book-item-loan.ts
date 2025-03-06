@@ -1,6 +1,6 @@
-import { LendingStatus as LoanStatus } from "../enums/loan-status.enum";
+import { BookItemLoanStatus as LoanStatus } from "../enums/book-item-loan-status";
 
-export class Loan {
+export class BookItemLoan {
     id: number;
     creationDate: Date;
     dueDate: Date;
