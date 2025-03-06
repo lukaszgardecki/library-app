@@ -1,4 +1,4 @@
-package com.example.libraryapp.adapter;
+package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
@@ -23,7 +23,7 @@ class BookLoanController {
     private final AuthenticationFacade authFacade;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<Page<BookItemLoanDto>> getAllBookLoans(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) BookItemLoanStatus status,
@@ -37,7 +37,7 @@ class BookLoanController {
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<Page<BookItemLoanListPreviewDto>> getLoanListPreviews(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) BookItemLoanStatus status,
@@ -52,7 +52,7 @@ class BookLoanController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
     public ResponseEntity<BookItemLoanDto> getBookLoanById(@PathVariable Long id) {
         BookItemLoanDto loan = bookItemLoanFacade.getBookLoan(id);
         authFacade.validateOwnerOrAdminAccess(loan.userId());
@@ -71,7 +71,7 @@ class BookLoanController {
     }
 
     @PostMapping("/renew")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('USER') and #userId == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<BookItemLoanDto> renewABook(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId

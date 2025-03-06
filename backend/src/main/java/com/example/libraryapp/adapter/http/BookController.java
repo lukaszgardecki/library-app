@@ -1,4 +1,4 @@
-package com.example.libraryapp.adapter;
+package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.domain.book.dto.BookDto;

@@ -1,4 +1,4 @@
-package com.example.libraryapp.adapter;
+package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.statistics.StatisticsFacade;
 import com.example.libraryapp.application.user.UserFacade;

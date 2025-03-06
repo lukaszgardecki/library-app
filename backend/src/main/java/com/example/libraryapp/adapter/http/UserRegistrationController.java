@@ -1,4 +1,4 @@
-package com.example.libraryapp.adapter;
+package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.user.dto.RegisterUserDto;

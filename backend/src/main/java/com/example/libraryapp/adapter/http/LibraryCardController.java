@@ -1,4 +1,4 @@
-package com.example.libraryapp.adapter;
+package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.librarycard.LibraryCardFacade;
 import com.example.libraryapp.domain.librarycard.dto.LibraryCardDto;
