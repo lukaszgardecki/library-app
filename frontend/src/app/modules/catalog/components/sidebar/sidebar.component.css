@@ -37,7 +37,7 @@
 .btn-label > a:hover,
 .btn-label .nav-item:hover,
 .btn-label.active > a,
-.btn-label.active .nav-item {
+.nav-link.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 

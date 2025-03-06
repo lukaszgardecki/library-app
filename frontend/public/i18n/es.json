@@ -138,7 +138,12 @@
             "USERS": "Usuarios",
             "BOOKS": "Libros",
             "CASHIER": "Cajero",
-            "WAREHOUSE": "Almacén",
+            "WAREHOUSE": {
+                "NAME": "Almac\u00e9n",
+                "TRANSACTIONS": "Entregar / Devolver",
+                "HISTORY": "Historial",
+                "RACKS": "Estantes y recursos"
+            },
             "REPORTS": "Informes",
             "SETTINGS": "Configuraciones"
         },

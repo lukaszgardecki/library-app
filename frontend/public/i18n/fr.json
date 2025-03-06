@@ -138,7 +138,12 @@
             "USERS": "Utilisateurs",
             "BOOKS": "Livres",
             "CASHIER": "Caissier",
-            "WAREHOUSE": "Entrepôt",
+            "WAREHOUSE": {
+                "NAME": "Entrep\u00f4t",
+                "TRANSACTIONS": "D\u00e9livrer / Retourner",
+                "HISTORY": "Historique",
+                "RACKS": "\u00c9tag\u00e8res et ressources"
+            },
             "REPORTS": "Rapports",
             "SETTINGS": "Paramètres"
         },

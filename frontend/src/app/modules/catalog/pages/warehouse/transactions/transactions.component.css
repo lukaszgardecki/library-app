@@ -1,0 +1,9 @@
+.a {
+    height: 100vh;
+}
+
+@media (min-width: 992px) {
+    .a {
+        height: 50vh;
+    }
+}

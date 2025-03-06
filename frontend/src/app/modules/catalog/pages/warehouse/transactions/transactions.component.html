@@ -1,0 +1,48 @@
+<div class="container-fluid">
+
+    <div class="row a">
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
+            <ng-container *ngIf="pendingRequestsPage$ | async as requestPage; else lack">
+                <app-table
+                    *ngIf="requestPage && requestPage.content; else lack"
+                    [tableName]="'warehouse-pending-requests'"
+                    [columns]="[
+                        { key: 'id', label: 'ID' },
+                        { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
+                        { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
+                    ]"
+                    [data]="requestPage.content || []"
+                    [page]="requestPage"
+                    (onUpdate)="updatePendingRequests($event)"
+                    (onRowClick)="accept($event)"
+                ></app-table>
+            </ng-container>
+        </app-basic-section>
+
+
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
+            <ng-container *ngIf="inProgressRequestsPage$ | async as requestPage; else lack">
+                <app-table
+                    *ngIf="requestPage && requestPage.content; else lack"
+                    [tableName]="'warehouse-pending-requests'"
+                    [columns]="[
+                        { key: 'id', label: 'ID' },
+                        { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
+                        { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
+                    ]"
+                    [data]="requestPage.content || []"
+                    [page]="requestPage"
+                    (onUpdate)="updateInProgressRequests($event)"
+                    (onRowClick)="backToPending($event)"
+                ></app-table>
+            </ng-container>
+        </app-basic-section>
+    </div>
+
+</div>
+
+<ng-template #lack>
+    <div class="lack-message">
+        {{  'DATA.LACK' | translate }}
+    </div>
+</ng-template>

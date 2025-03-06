@@ -1,0 +1,26 @@
+<div class="container-fluid">
+
+    <app-basic-section class="col-12" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
+        <ng-container *ngIf="allRequestsPage$ | async as requestPage; else lack">
+            <app-table
+                *ngIf="requestPage && requestPage.content; else lack"
+                [tableName]="'warehouse-pending-requests'"
+                [columns]="[
+                    { key: 'id', label: 'ID' },
+                    { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
+                    { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
+                ]"
+                [data]="requestPage.content || []"
+                [page]="requestPage"
+                (onUpdate)="updateAllRequests($event)"
+                (onRowClick)="display($event)"
+            ></app-table>
+        </ng-container>
+    </app-basic-section>
+</div>
+
+<ng-template #lack>
+    <div class="lack-message">
+        {{  'DATA.LACK' | translate }}
+    </div>
+</ng-template>

@@ -138,7 +138,12 @@
             "USERS": "Utenti",
             "BOOKS": "Libri",
             "CASHIER": "Cassa",
-            "WAREHOUSE": "Magazzino",
+            "WAREHOUSE": {
+                "NAME": "Magazzino",
+                "TRANSACTIONS": "Distribuire / Restituire",
+                "HISTORY": "Cronologia",
+                "RACKS": "Scaffali e risorse"
+            },
             "REPORTS": "Rapporti",
             "SETTINGS": "Impostazioni"
         },

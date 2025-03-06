@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ConfigService } from '../../core/services/config.service';
 
@@ -28,7 +28,11 @@ export class SidebarComponent implements OnInit {
     ] },
     { items: [
       { name: 'CAT.SIDEBAR.CASHIER', routerLink: '/library-app/cashier', icon: 'bi-cash-coin', selected: false },
-      { name: 'CAT.SIDEBAR.WAREHOUSE', routerLink: '/library-app/warehouse', icon: 'bi-stack', selected: false },
+      { name: 'CAT.SIDEBAR.WAREHOUSE.NAME', routerLink: '/library-app/warehouse', icon: 'bi-stack', selected: false, submenu: [
+        { name: 'CAT.SIDEBAR.WAREHOUSE.TRANSACTIONS', routerLink: 'transactions', selected: false },
+        { name: 'CAT.SIDEBAR.WAREHOUSE.HISTORY', routerLink: 'history', selected: false },
+        { name: 'CAT.SIDEBAR.WAREHOUSE.RACKS', routerLink: 'racks', selected: false }
+      ] },
       { name: 'CAT.SIDEBAR.REPORTS', routerLink: '/library-app/reports', icon: 'bi-speedometer', selected: false, submenu: [
         { name: 'Reports1', routerLink: '/library-app/reports', selected: false },
         { name: 'Reports2', routerLink: '/library-app/reports', selected: false },

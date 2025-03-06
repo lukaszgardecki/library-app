@@ -138,7 +138,12 @@
             "USERS": "Użytkownicy",
             "BOOKS": "Książki",
             "CASHIER": "Kasa",
-            "WAREHOUSE": "Magazyn",
+            "WAREHOUSE": {
+                "NAME": "Magazyn",
+                "TRANSACTIONS": "Wydaj / Zwróć",
+                "HISTORY": "Historia",
+                "RACKS": "Regały i zasoby"
+            },
             "REPORTS": "Raporty",
             "SETTINGS": "Ustawienia"
         },

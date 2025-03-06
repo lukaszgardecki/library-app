@@ -138,7 +138,12 @@
             "USERS": "Користувачі",
             "BOOKS": "Книги",
             "CASHIER": "Каса",
-            "WAREHOUSE": "Склад",
+            "WAREHOUSE": {
+                "NAME": "Склад",
+                "TRANSACTIONS": "Видача / Повернення",
+                "HISTORY": "Історія",
+                "RACKS": "Стелажі та ресурси"
+            },
             "REPORTS": "Звіти",
             "SETTINGS": "Налаштування"
         },

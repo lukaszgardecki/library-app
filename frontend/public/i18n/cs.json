@@ -138,7 +138,12 @@
             "USERS": "Uživatelé",
             "BOOKS": "Knihy",
             "CASHIER": "Pokladní",
-            "WAREHOUSE": "Sklad",
+            "WAREHOUSE": {
+                "NAME": "Sklad",
+                "TRANSACTIONS": "Vydat / Vr\u00e1tit",
+                "HISTORY": "Historie",
+                "RACKS": "Reg\u00e1ly a zdroje"
+            },
             "REPORTS": "Zprávy",
             "SETTINGS": "Nastavení"
         },
