@@ -1,8 +1,10 @@
 package com.example.libraryapp.domain.bookitem.dto;
 
-import com.example.libraryapp.domain.bookitem.model.BookItem;
-import com.example.libraryapp.domain.bookitem.model.BookItemFormat;
-import lombok.*;
+import com.example.libraryapp.domain.bookitem.model.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,11 +24,11 @@ public class BookItemToSaveDto {
 
     public BookItem toModel() {
         return BookItem.builder()
-                .isReferenceOnly(isReferenceOnly)
-                .price(price)
+                .isReferenceOnly(new IsReferenceOnly(isReferenceOnly))
+                .price(new Price(price))
                 .format(format)
-                .dateOfPurchase(dateOfPurchase)
-                .publicationDate(publicationDate)
+                .dateOfPurchase(new PurchaseDate(dateOfPurchase))
+                .publicationDate(new PublicationDate(publicationDate))
                 .build();
     }
 }

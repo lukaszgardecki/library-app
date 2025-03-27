@@ -5,6 +5,8 @@ import com.example.libraryapp.application.token.TokenFacade;
 import com.example.libraryapp.domain.auth.dto.LoginRequest;
 import com.example.libraryapp.domain.auth.dto.LoginResponse;
 import com.example.libraryapp.domain.token.dto.AuthTokensDto;
+import com.example.libraryapp.domain.user.model.Email;
+import com.example.libraryapp.domain.user.model.Password;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,9 @@ class AuthenticationController {
             @RequestBody LoginRequest body,
             HttpServletResponse response
     ) {
-        AuthTokensDto auth = authFacade.authenticate(body.getUsername(), body.getPassword());
+        AuthTokensDto auth = authFacade.authenticate(
+                new Email(body.getUsername()), new Password(body.getPassword())
+        );
         response.addHeader(auth.cookie().getName(), auth.cookie().getValue());
         return ResponseEntity.ok(new LoginResponse(auth.accessToken(), auth.refreshToken()));
     }

@@ -1,13 +1,15 @@
 package com.example.libraryapp.domain.useractivity.types.notify;
 
+import com.example.libraryapp.domain.notification.model.NotificationSubject;
+import com.example.libraryapp.domain.user.model.UserId;
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
 import lombok.Getter;
 
 @Getter
 public abstract class NotificationSentActivity extends UserActivity {
-    private String notificationSubject;
+    private NotificationSubject notificationSubject;
 
-    public NotificationSentActivity(Long userId, String notificationSubject) {
+    public NotificationSentActivity(UserId userId, NotificationSubject notificationSubject) {
         super(userId);
         this.notificationSubject = notificationSubject;
     }

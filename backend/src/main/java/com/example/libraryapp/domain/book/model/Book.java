@@ -10,11 +10,11 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class Book {
-    private Long id;
-    private String title;
-    private String subject;
-    private String publisher;
-    private String ISBN;
-    private String language;
-    private Integer pages;
+    private BookId id;
+    private Title title;
+    private Subject subject;
+    private Publisher publisher;
+    private Isbn ISBN;
+    private Language language;
+    private Pages pages;
 }

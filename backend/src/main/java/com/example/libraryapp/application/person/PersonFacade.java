@@ -2,6 +2,7 @@ package com.example.libraryapp.application.person;
 
 import com.example.libraryapp.domain.person.dto.PersonDto;
 import com.example.libraryapp.domain.person.model.Person;
+import com.example.libraryapp.domain.person.model.PersonId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class PersonFacade {
                 .toList();
     }
 
-    public PersonDto getPersonById(Long id) {
+    public PersonDto getPersonById(PersonId id) {
         Person person = getPersonUseCase.execute(id);
         return PersonMapper.toDto(person);
     }
@@ -41,7 +42,7 @@ public class PersonFacade {
         return PersonMapper.toDto(savedPerson);
     }
 
-    public void deletePerson(Long id) {
+    public void deletePerson(PersonId id) {
         deletePersonUseCase.execute(id);
     }
 

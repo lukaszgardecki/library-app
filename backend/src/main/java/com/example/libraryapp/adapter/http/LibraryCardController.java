@@ -2,6 +2,7 @@ package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.librarycard.LibraryCardFacade;
 import com.example.libraryapp.domain.librarycard.dto.LibraryCardDto;
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +18,19 @@ class LibraryCardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<LibraryCardDto> getLibraryCard(@PathVariable("id") Long cardId) {
-        LibraryCardDto card = cardFacade.getLibraryCard(cardId);
+        LibraryCardDto card = cardFacade.getLibraryCard(new LibraryCardId(cardId));
         return ResponseEntity.ok(card);
     }
 
     @PostMapping("/{id}/activate")
     public ResponseEntity<Void> activateCard(@PathVariable("id") Long cardId) {
-        cardFacade.activateLibraryCard(cardId);
+        cardFacade.activateLibraryCard(new LibraryCardId(cardId));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/deactivate")
     public ResponseEntity<Void> blockCard(@PathVariable("id") Long cardId) {
-        cardFacade.blockLibraryCard(cardId);
+        cardFacade.blockLibraryCard(new LibraryCardId(cardId));
         return ResponseEntity.ok().build();
     }
 }

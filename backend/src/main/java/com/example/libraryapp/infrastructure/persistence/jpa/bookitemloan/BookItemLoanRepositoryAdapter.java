@@ -1,9 +1,9 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitemloan;
 
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
+import com.example.libraryapp.domain.bookitemloan.model.*;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,45 +20,45 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     private final JpaBookItemLoanRepository repository;
 
     @Override
-    public Optional<BookItemLoan> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<BookItemLoan> findById(LoanId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
-    public Optional<BookItemLoan> findByParams(Long bookItemId, Long userId, BookItemLoanStatus status) {
-        return repository.findByParams(bookItemId, userId, status).map(this::toModel);
+    public Optional<BookItemLoan> findByParams(BookItemId bookItemId, UserId userId, LoanStatus status) {
+        return repository.findByParams(bookItemId.value(), userId.value(), status).map(this::toModel);
     }
 
     @Override
-    public Optional<BookItemLoan> findByParams(Long bookItemId, BookItemLoanStatus status) {
-        return repository.findByParams(bookItemId, status).map(this::toModel);
+    public Optional<BookItemLoan> findByParams(BookItemId bookItemId, LoanStatus status) {
+        return repository.findByParams(bookItemId.value(), status).map(this::toModel);
     }
 
     @Override
-    public List<BookItemLoan> findAllByUserId(Long userId) {
-        return repository.findAllByUserId(userId)
+    public List<BookItemLoan> findAllByUserId(UserId userId) {
+        return repository.findAllByUserId(userId.value())
                 .stream()
                 .map(this::toModel)
                 .toList();
     }
 
     @Override
-    public List<BookItemLoan> findAllCurrentLoansByUserId(Long userId) {
-        BookItemLoanStatus statusToFind = BookItemLoanStatus.CURRENT;
-        return repository.findAllCurrentLoansByUserId(userId, statusToFind)
+    public List<BookItemLoan> findAllCurrentLoansByUserId(UserId userId) {
+        LoanStatus statusToFind = LoanStatus.CURRENT;
+        return repository.findAllCurrentLoansByUserId(userId.value(), statusToFind)
                 .stream()
                 .map(this::toModel)
                 .toList();
     }
 
     @Override
-    public Page<BookItemLoan> findPageOfBookLoansByParams(Long userId, BookItemLoanStatus status, Pageable pageable) {
-        return repository.findAllByParams(userId, status, pageable).map(this::toModel);
+    public Page<BookItemLoan> findPageOfBookLoansByParams(UserId userId, LoanStatus status, Pageable pageable) {
+        return repository.findAllByParams(userId.value(), status, pageable).map(this::toModel);
     }
 
     @Override
-    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(Long userId, String query, BookItemLoanStatus status, Pageable pageable) {
-        return repository.findPageOfBookLoanListPreviews(userId, query, status.name(), pageable);
+    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(UserId userId, String query, LoanStatus status, Pageable pageable) {
+        return repository.findPageOfBookLoanListPreviews(userId.value(), query, status.name(), pageable);
     }
 
     @Override
@@ -88,31 +88,31 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     }
 
     @Override
-    public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
+    public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, LoanStatus status) {
         return repository.countBookItemLoansByDay(startDate.atStartOfDay(), endDate.atStartOfDay(), status);
     }
 
     private BookItemLoanEntity toEntity(BookItemLoan model) {
         return BookItemLoanEntity.builder()
-                .id(model.getId())
-                .creationDate(model.getCreationDate())
-                .dueDate(model.getDueDate())
-                .returnDate(model.getReturnDate())
+                .id(model.getId() != null ? model.getId().value() : null)
+                .creationDate(model.getCreationDate().value())
+                .dueDate(model.getDueDate().value())
+                .returnDate(model.getReturnDate().value())
                 .status(model.getStatus())
-                .userId(model.getUserId())
-                .bookItemId(model.getBookItemId())
+                .userId(model.getUserId().value())
+                .bookItemId(model.getBookItemId().value())
                 .build();
     }
 
     private BookItemLoan toModel(BookItemLoanEntity entity) {
         return BookItemLoan.builder()
-                .id(entity.getId())
-                .creationDate(entity.getCreationDate())
-                .dueDate(entity.getDueDate())
-                .returnDate(entity.getReturnDate())
+                .id(new LoanId(entity.getId()))
+                .creationDate(new LoanCreationDate(entity.getCreationDate()))
+                .dueDate(new LoanDueDate(entity.getDueDate()))
+                .returnDate(new LoanReturnDate(entity.getReturnDate()))
                 .status(entity.getStatus())
-                .userId(entity.getUserId())
-                .bookItemId(entity.getBookItemId())
+                .userId(new UserId(entity.getUserId()))
+                .bookItemId(new BookItemId(entity.getBookItemId()))
                 .build();
     }
 }

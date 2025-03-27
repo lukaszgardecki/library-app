@@ -1,9 +1,11 @@
 package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.bookitem.BookItemFacade;
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +30,7 @@ class BookItemController {
     ) {
         Page<BookItemDto> collectionModel;
         if (bookId != null) {
-            collectionModel = bookItemFacade.getPageOfBookItemsByBookId(bookId, pageable);
+            collectionModel = bookItemFacade.getPageOfBookItemsByBookId(new BookId(bookId), pageable);
         } else {
             collectionModel = bookItemFacade.getPageOfBookItems(pageable);
         }
@@ -37,7 +39,7 @@ class BookItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookItemDto> getBookItem(@PathVariable Long id) {
-        BookItemDto bookItem = bookItemFacade.getBookItem(id);
+        BookItemDto bookItem = bookItemFacade.getBookItem(new BookItemId(id));
         return ResponseEntity.ok(bookItem);
     }
 
@@ -56,14 +58,14 @@ class BookItemController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookItemDto> updateBookItem(@PathVariable Long id, @RequestBody BookItemToUpdateDto bookItem) {
-        BookItemDto updatedBookItem = bookItemFacade.updateBookItem(id, bookItem);
+        BookItemDto updatedBookItem = bookItemFacade.updateBookItem(new BookItemId(id), bookItem);
         return ResponseEntity.ok(updatedBookItem);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBookItemById(@PathVariable Long id) {
-        bookItemFacade.deleteBookItem(id);
+        bookItemFacade.deleteBookItem(new BookItemId(id));
         return ResponseEntity.noContent().build();
     }
 }

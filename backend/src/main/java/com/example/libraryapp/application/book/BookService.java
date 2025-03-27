@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.book;
 
 import com.example.libraryapp.domain.book.model.Book;
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 class BookService {
     private final BookRepositoryPort bookRepository;
 
-    Optional<Book> getBookById(Long id) {
+    Optional<Book> getBookById(BookId id) {
         return bookRepository.findById(id);
     }
 

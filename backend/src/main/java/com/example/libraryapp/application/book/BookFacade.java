@@ -3,6 +3,7 @@ package com.example.libraryapp.application.book;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
 import com.example.libraryapp.domain.book.model.Book;
+import com.example.libraryapp.domain.book.model.BookId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -12,7 +13,7 @@ public class BookFacade {
     private final UpdateBookUseCase updateBookUseCase;
     private final DeleteBookUseCase deleteBookUseCase;
 
-    public BookDto getBook(Long id) {
+    public BookDto getBook(BookId id) {
         Book book = getBookUseCase.execute(id);
         return BookMapper.toDto(book);
     }
@@ -22,12 +23,12 @@ public class BookFacade {
         return BookMapper.toDto(addedBook);
     }
 
-    public BookDto updateBook(Long id, BookToSaveDto bookToSave) {
+    public BookDto updateBook(BookId id, BookToSaveDto bookToSave) {
         Book updatedBook = updateBookUseCase.execute(id, BookMapper.toModel(bookToSave));
         return BookMapper.toDto(updatedBook);
     }
 
-    public void deleteBook(Long id) {
+    public void deleteBook(BookId id) {
         deleteBookUseCase.execute(id);
     }
 }

@@ -6,7 +6,7 @@ public interface BookItemLoanListPreviewProjection {
     Long getId();
     LocalDate getCreationDate();
     LocalDate getDueDate();
-    BookItemLoanStatus getStatus();
+    LoanStatus getStatus();
     Long getBookItemId();
     String getBookTitle();
 }

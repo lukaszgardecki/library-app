@@ -3,6 +3,7 @@ package com.example.libraryapp.adapter.websockets;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.domain.bookitemrequest.dto.BookItemRequestDto;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
+import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -19,7 +20,7 @@ class WarehouseWebSocketController {
     public BookItemRequestDto addToInProgress(@Payload BookItemRequestDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.IN_PROGRESS;
         bookItemRequest.setStatus(status);
-        bookItemRequestFacade.changeBookItemRequestStatus(bookItemRequest.getId(), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;
     }
 
@@ -28,7 +29,7 @@ class WarehouseWebSocketController {
     public BookItemRequestDto addToPending(@Payload BookItemRequestDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.PENDING;
         bookItemRequest.setStatus(status);
-        bookItemRequestFacade.changeBookItemRequestStatus(bookItemRequest.getId(), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;
     }
 }

@@ -1,11 +1,14 @@
 package com.example.libraryapp.domain.event.types.bookitem;
 
+import com.example.libraryapp.domain.book.model.Title;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.Getter;
 
 @Getter
 public class BookItemRenewalImpossibleEvent extends BookItemEvent {
 
-    public BookItemRenewalImpossibleEvent(Long bookItemId, Long userId, String bookTitle) {
+    public BookItemRenewalImpossibleEvent(BookItemId bookItemId, UserId userId, Title bookTitle) {
         super(bookItemId, userId, bookTitle);
     }
 }

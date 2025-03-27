@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 class GetPageOfBookItemsByBookIdUseCase {
     private final BookItemRepositoryPort bookItemRepository;
 
-    Page<BookItem> execute(Long bookId, Pageable pageable) {
+    Page<BookItem> execute(BookId bookId, Pageable pageable) {
         return bookItemRepository.findAllByBookId(bookId, pageable);
     }
 }

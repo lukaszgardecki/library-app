@@ -1,6 +1,7 @@
 package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
+import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +19,7 @@ class WarehouseController {
 
     @PostMapping("/book-requests/{id}/ready")
     public ResponseEntity<Void> completeRequest(@PathVariable("id") Long requestId) {
-        bookItemRequestFacade.changeBookRequestStatusToReady(requestId);
+        bookItemRequestFacade.changeBookRequestStatusToReady(new RequestId(requestId));
         return ResponseEntity.ok().build();
     }
 }

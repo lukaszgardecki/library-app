@@ -1,9 +1,8 @@
 package com.example.libraryapp.domain.user.model;
 
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
+import com.example.libraryapp.domain.person.model.PersonId;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -11,15 +10,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private Long id;
-    private LocalDate registrationDate;
-    private String password;
-    private String email;
+    private UserId id;
+    private RegistrationDate registrationDate;
+    private Password psswrd;
+    private Email email;
     private AccountStatus status;
     private Role role;
-    private int totalBooksBorrowed;
-    private int totalBooksRequested;
-    private BigDecimal charge;
-    private Long cardId;
-    private Long personId;
+    private TotalBooksBorrowed totalBooksBorrowed;
+    private TotalBooksRequested totalBooksRequested;
+    private UserCharge charge;
+    private LibraryCardId cardId;
+    private PersonId personId;
 }

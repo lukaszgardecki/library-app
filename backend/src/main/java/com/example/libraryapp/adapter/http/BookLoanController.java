@@ -2,9 +2,12 @@ package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanId;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +29,12 @@ class BookLoanController {
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<Page<BookItemLoanDto>> getAllBookLoans(
             @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) BookItemLoanStatus status,
+            @RequestParam(required = false) LoanStatus status,
             @RequestParam(required = false) Boolean renewable,
             Pageable pageable
     ) {
         Page<BookItemLoanDto> page = bookItemLoanFacade.getPageOfBookLoansByParams(
-                userId, status, renewable, pageable
+                new UserId(userId), status, renewable, pageable
         );
         return ResponseEntity.ok(page);
     }
@@ -40,13 +43,13 @@ class BookLoanController {
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     public ResponseEntity<Page<BookItemLoanListPreviewDto>> getLoanListPreviews(
             @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) BookItemLoanStatus status,
+            @RequestParam(required = false) LoanStatus status,
             @RequestParam(required = false) Boolean renewable,
             @RequestParam(value = "q", required = false) String query,
             Pageable pageable
     ) {
         Page<BookItemLoanListPreviewDto> page = bookItemLoanFacade.getPageOfBookLoanListPreviewsByParams(
-                userId, query, status, renewable, pageable
+                new UserId(userId), query, status, renewable, pageable
         );
         return ResponseEntity.ok(page);
     }
@@ -54,8 +57,8 @@ class BookLoanController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
     public ResponseEntity<BookItemLoanDto> getBookLoanById(@PathVariable Long id) {
-        BookItemLoanDto loan = bookItemLoanFacade.getBookLoan(id);
-        authFacade.validateOwnerOrAdminAccess(loan.userId());
+        BookItemLoanDto loan = bookItemLoanFacade.getBookLoan(new LoanId(id));
+        authFacade.validateOwnerOrAdminAccess(new UserId(loan.userId()));
         return ResponseEntity.ok(loan);
     }
 
@@ -65,7 +68,7 @@ class BookLoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        BookItemLoanDto savedBookItemLoan = bookItemLoanFacade.borrowBookItem(bookItemId, userId);
+        BookItemLoanDto savedBookItemLoan = bookItemLoanFacade.borrowBookItem(new BookItemId(bookItemId), new UserId(userId));
         URI savedCheckoutUri = createURI(savedBookItemLoan.id());
         return ResponseEntity.created(savedCheckoutUri).body(savedBookItemLoan);
     }
@@ -76,7 +79,7 @@ class BookLoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        BookItemLoanDto renewedLoan = bookItemLoanFacade.renewBookItemLoan(bookItemId, userId);
+        BookItemLoanDto renewedLoan = bookItemLoanFacade.renewBookItemLoan(new BookItemId(bookItemId), new UserId(userId));
         return ResponseEntity.ok(renewedLoan);
     }
 
@@ -86,7 +89,7 @@ class BookLoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        bookItemLoanFacade.returnBookItem(bookItemId, userId);
+        bookItemLoanFacade.returnBookItem(new BookItemId(bookItemId), new UserId(userId));
         return ResponseEntity.ok().build();
     }
 
@@ -96,7 +99,7 @@ class BookLoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        bookItemLoanFacade.processLostBookItem(bookItemId, userId);
+        bookItemLoanFacade.processLostBookItem(new BookItemId(bookItemId), new UserId(userId));
         return ResponseEntity.ok().build();
     }
 

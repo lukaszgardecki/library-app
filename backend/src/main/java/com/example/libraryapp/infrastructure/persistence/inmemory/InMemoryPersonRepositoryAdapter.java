@@ -1,6 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.person.model.Person;
+import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,14 +18,14 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
-    private final ConcurrentHashMap<Long, Person> map = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<PersonId, Person> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
     @Override
     public Person save(Person personToSave) {
         requireNonNull(personToSave, "Person to save cannot be null");
         if (personToSave.getId() == null) {
-            personToSave.setId(++id);
+            personToSave.setId(new PersonId(++id));
         }
         return map.put(personToSave.getId(), personToSave);
     }
@@ -37,8 +38,8 @@ public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
                         return true;
                     }
                     String lowerQuery = query.toLowerCase();
-                    return person.getFirstName().toLowerCase().contains(lowerQuery) ||
-                            person.getLastName().toLowerCase().contains(lowerQuery);
+                    return person.getFirstName().value().toLowerCase().contains(lowerQuery) ||
+                            person.getLastName().value().toLowerCase().contains(lowerQuery);
                 })
                .toList();
         int start = (int) pageable.getOffset();
@@ -55,19 +56,19 @@ public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
                         return true;
                     }
                     String lowerQuery = query.toLowerCase();
-                    return person.getFirstName().toLowerCase().contains(lowerQuery) ||
-                            person.getLastName().toLowerCase().contains(lowerQuery);
+                    return person.getFirstName().value().toLowerCase().contains(lowerQuery) ||
+                            person.getLastName().value().toLowerCase().contains(lowerQuery);
                 })
                 .toList();
     }
 
     @Override
-    public Optional<Person> findById(Long id) {
+    public Optional<Person> findById(PersonId id) {
         return Optional.ofNullable(map.get(id));
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(PersonId id) {
         map.remove(id);
     }
 
@@ -76,7 +77,7 @@ public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
         LocalDate currentDate = LocalDate.now();
         return map.values().stream()
                 .map(Person::getDateOfBirth)
-                .map(dob -> Period.between(dob, currentDate).getYears())
+                .map(birthDate -> Period.between(birthDate.value(), currentDate).getYears())
                 .filter(age -> age >= min && age <= max)
                 .count();
     }
@@ -84,7 +85,7 @@ public class InMemoryPersonRepositoryAdapter implements PersonRepositoryPort {
     @Override
     public List<Object[]> findCitiesByUserCountDesc(int limit) {
         Map<String, Long> cityCounts = map.values().stream()
-                .collect(Collectors.groupingBy(person -> person.getAddress().getCity(), Collectors.counting()));
+                .collect(Collectors.groupingBy(person -> person.getAddress().getCity().value(), Collectors.counting()));
         return cityCounts.entrySet().stream()
                 .sorted((entry1, entry2) -> Long.compare(entry2.getValue(), entry1.getValue()))
                 .map(entry -> new Object[] { entry.getKey(), entry.getValue() })

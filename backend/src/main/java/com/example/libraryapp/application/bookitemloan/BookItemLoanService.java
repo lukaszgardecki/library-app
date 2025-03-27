@@ -2,11 +2,13 @@ package com.example.libraryapp.application.bookitemloan;
 
 import com.example.libraryapp.domain.Constants;
 import com.example.libraryapp.domain.MessageKey;
+import com.example.libraryapp.domain.book.model.BookId;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanException;
 import com.example.libraryapp.domain.bookitemloan.exceptions.BookItemLoanNotFoundException;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.*;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -17,22 +19,22 @@ import java.util.List;
 class BookItemLoanService {
     private final BookItemLoanRepositoryPort bookItemLoanRepository;
 
-    BookItemLoan getBookItemLoanById(Long id) {
+    BookItemLoan getBookItemLoanById(LoanId id) {
         return bookItemLoanRepository.findById(id)
                 .orElseThrow(() -> new BookItemLoanNotFoundException(id));
     }
 
-    BookItemLoan getBookItemLoan(Long bookItemId, Long userId, BookItemLoanStatus status) {
+    BookItemLoan getBookItemLoan(BookItemId bookItemId, UserId userId, LoanStatus status) {
         return bookItemLoanRepository.findByParams(bookItemId, userId, status)
-                .orElseThrow(() -> new BookItemLoanNotFoundException(bookItemId));
+                .orElseThrow(BookItemLoanNotFoundException::new);
     }
 
-    BookItemLoan getBookItemLoan(Long bookItemId, BookItemLoanStatus status) {
+    BookItemLoan getBookItemLoan(BookItemId bookItemId, LoanStatus status) {
         return bookItemLoanRepository.findByParams(bookItemId, status)
-                .orElseThrow(() -> new BookItemLoanNotFoundException(bookItemId));
+                .orElseThrow(BookItemLoanNotFoundException::new);
     }
 
-    List<BookItemLoan> getAllBookItemLoans(Long userId) {
+    List<BookItemLoan> getAllBookItemLoans(UserId userId) {
         return bookItemLoanRepository.findAllByUserId(userId);
     }
 
@@ -44,19 +46,19 @@ class BookItemLoanService {
         return bookItemLoanRepository.save(bookItemLoan);
     }
 
-    BookItemLoan saveLoan(Long bookItemId, Long userId, Long bookId) {
+    BookItemLoan saveLoan(BookItemId bookItemId, UserId userId, BookId bookId) {
         BookItemLoan bookItemLoan = createBookItemLoanToSave(bookItemId, userId, bookId);
         return bookItemLoanRepository.save(bookItemLoan);
     }
 
     void validateBookItemLoanForRenewal(BookItemLoan loanToUpdate) {
-        if (loanToUpdate.getDueDate().isBefore(LocalDateTime.now())) {
+        if (loanToUpdate.getDueDate().value().isBefore(LocalDateTime.now())) {
             throw new BookItemLoanException(MessageKey.LOAN_RENEWAL_FAILED_RETURN_DATE);
         }
     }
 
-    long countByCreationDate(LocalDateTime date) {
-        return bookItemLoanRepository.countByCreationDate(date.toLocalDate());
+    long countByCreationDate(LoanCreationDate date) {
+        return bookItemLoanRepository.countByCreationDate(date.value().toLocalDate());
     }
 
     long countUniqueBorrowersInCurrentMonth() {
@@ -67,19 +69,19 @@ class BookItemLoanService {
         return bookItemLoanRepository.countBookItemLoansMonthly(startDate, endDate);
     }
 
-    List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
+    List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, LoanStatus status) {
         return bookItemLoanRepository.countBookItemLoansDaily(startDate, endDate, status);
     }
 
-    private BookItemLoan createBookItemLoanToSave(Long bookItemId, Long userId, Long bookId) {
+    private BookItemLoan createBookItemLoanToSave(BookItemId bookItemId, UserId userId, BookId bookId) {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusDays(Constants.MAX_LENDING_DAYS);
         return BookItemLoan.builder()
                 .bookItemId(bookItemId)
                 .userId(userId)
-                .status(BookItemLoanStatus.CURRENT)
-                .creationDate(startTime)
-                .dueDate(endTime)
+                .status(LoanStatus.CURRENT)
+                .creationDate(new LoanCreationDate(startTime))
+                .dueDate(new LoanDueDate(endTime))
                 .build();
     }
 }

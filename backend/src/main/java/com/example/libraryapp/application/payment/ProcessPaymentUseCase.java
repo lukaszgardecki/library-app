@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.payment;
 
 import com.example.libraryapp.domain.payment.model.Payment;
+import com.example.libraryapp.domain.payment.model.PaymentCreationDate;
 import com.example.libraryapp.domain.payment.model.PaymentProcessRequest;
 import com.example.libraryapp.domain.payment.model.PaymentStatus;
 import com.example.libraryapp.domain.payment.ports.PaymentStrategyPort;
@@ -22,7 +23,7 @@ class ProcessPaymentUseCase {
 
         Payment payment = Payment.builder()
                 .amount(request.getAmount())
-                .creationDate(LocalDateTime.now())
+                .creationDate(new PaymentCreationDate(LocalDateTime.now()))
                 .userId(request.getUserId())
                 .description(request.getDescription())
                 .method(request.getMethod())

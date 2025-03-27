@@ -1,5 +1,6 @@
 package com.example.libraryapp.infrastructure.spring;
 
+import com.example.libraryapp.domain.user.model.Email;
 import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.infrastructure.spring.security.auth.CustomUserDetails;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +40,7 @@ class SpringConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepositoryPort userRepository) {
-        return username -> userRepository.findByEmail(username)
+        return username -> userRepository.findByEmail(new Email(username))
                 .map(CustomUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email %s not found".formatted(username)));
     }

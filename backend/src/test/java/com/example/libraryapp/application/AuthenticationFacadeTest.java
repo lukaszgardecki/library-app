@@ -44,7 +44,7 @@ class AuthenticationFacadeTest {
         String username = "testUser";
         String password = "testPass";
         User user = testHelper.getUser();
-        user.setPassword(password);
+        user.setPsswrd(password);
         user.setEmail(username);
         userRepository.putUser(user);
 
@@ -65,7 +65,7 @@ class AuthenticationFacadeTest {
         String username = "testUser";
         String password = "testPass";
         User user = testHelper.getUser();
-        user.setPassword(password);
+        user.setPsswrd(password);
         user.setEmail(username);
         userRepository.putUser(user);
 
@@ -83,7 +83,7 @@ class AuthenticationFacadeTest {
         String username = "testUser";
         String password = "testPass";
         User user = testHelper.getUser();
-        user.setPassword(password);
+        user.setPsswrd(password);
         user.setEmail(username);
         userRepository.putUser(user);
         // When
@@ -100,7 +100,7 @@ class AuthenticationFacadeTest {
         String username = "testUser";
         String password = "testPass";
         User user = testHelper.getUser();
-        user.setPassword(password);
+        user.setPsswrd(password);
         user.setEmail(username);
         user.setStatus(accountStatus);
         userRepository.putUser(user);

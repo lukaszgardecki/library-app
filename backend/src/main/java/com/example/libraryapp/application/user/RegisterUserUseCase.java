@@ -2,12 +2,14 @@ package com.example.libraryapp.application.user;
 
 import com.example.libraryapp.application.librarycard.LibraryCardFacade;
 import com.example.libraryapp.application.person.PersonFacade;
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
 import com.example.libraryapp.domain.person.dto.AddressDto;
 import com.example.libraryapp.domain.person.dto.PersonDto;
+import com.example.libraryapp.domain.person.model.PersonFirstName;
+import com.example.libraryapp.domain.person.model.PersonId;
+import com.example.libraryapp.domain.person.model.PersonLastName;
 import com.example.libraryapp.domain.user.dto.RegisterUserDto;
-import com.example.libraryapp.domain.user.model.AccountStatus;
-import com.example.libraryapp.domain.user.model.Role;
-import com.example.libraryapp.domain.user.model.User;
+import com.example.libraryapp.domain.user.model.*;
 import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.domain.event.types.user.UserRegisteredEvent;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
@@ -24,30 +26,36 @@ class RegisterUserUseCase {
     private final UserCredentialsService credentialsService;
     private final EventPublisherPort publisher;
 
-    public Long execute(RegisterUserDto dto) {
-        credentialsService.validateEmail(dto.getEmail());
+    public UserId execute(RegisterUserDto dto) {
+        credentialsService.validateEmail(new Email(dto.getEmail()));
         PersonDto personToSave = createPersonToSave(dto);
         PersonDto savedPerson = personFacade.save(personToSave);
         User userToSave = createUserToSave(dto);
-        userToSave.setPersonId(savedPerson.getId());
+        userToSave.setPersonId(new PersonId(savedPerson.getId()));
         User savedUser = userRepository.save(userToSave);
-        Long cardId = libraryCardFacade.createNewLibraryCard(savedUser.getId());
+        LibraryCardId cardId = libraryCardFacade.createNewLibraryCard(savedUser.getId());
         savedUser.setCardId(cardId);
         userRepository.save(savedUser);
-        publisher.publish(new UserRegisteredEvent(savedUser.getId(), savedPerson.getFirstName(), savedPerson.getLastName()));
+        publisher.publish(
+                new UserRegisteredEvent(
+                        savedUser.getId(),
+                        new PersonFirstName(savedPerson.getFirstName()),
+                        new PersonLastName(savedPerson.getLastName())
+                )
+        );
         return savedUser.getId();
     }
 
     private User createUserToSave(RegisterUserDto dto) {
         return User.builder()
-                .registrationDate(LocalDate.now())
-                .password(credentialsService.encodePassword(dto.getPassword()))
-                .email(dto.getEmail())
+                .registrationDate(new RegistrationDate(LocalDate.now()))
+                .psswrd(new Password(credentialsService.encodePassword(dto.getPassword())))
+                .email(new Email(dto.getEmail()))
                 .status(AccountStatus.PENDING)
                 .role(Role.USER)
-                .totalBooksBorrowed(0)
-                .totalBooksRequested(0)
-                .charge(BigDecimal.ZERO)
+                .totalBooksBorrowed(new TotalBooksBorrowed(0))
+                .totalBooksRequested(new TotalBooksRequested(0))
+                .charge(new UserCharge(BigDecimal.ZERO))
                 .build();
     }
 

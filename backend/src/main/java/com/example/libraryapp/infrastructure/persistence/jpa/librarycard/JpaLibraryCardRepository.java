@@ -12,7 +12,7 @@ interface JpaLibraryCardRepository extends JpaRepository<LibraryCardEntity, Long
     @Query("""
         UPDATE LibraryCardEntity lc
         SET lc.status = :status
-        WHERE lc.userId = :userId
+        WHERE lc.id = :cardId
     """)
-    void changeStatusByUserId(@Param("status") LibraryCardStatus status, @Param("userId") Long userId);
+    void changeStatusByUserId(@Param("status") LibraryCardStatus status, @Param("cardId") Long cardId);
 }

@@ -1,6 +1,6 @@
 package com.example.libraryapp.application.statistics;
 
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 class CountDailyLoansLastWeekUseCase {
     private final StatisticsService statisticsService;
 
-    List<Long> execute(BookItemLoanStatus status) {
+    List<Long> execute(LoanStatus status) {
         LocalDate now = LocalDate.now();
         LocalDate startDate = now.minusDays(6);
         List<Object[]> rawCounts = statisticsService.countBookItemLoansByDay(startDate, now, status);

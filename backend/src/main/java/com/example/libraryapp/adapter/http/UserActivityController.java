@@ -2,7 +2,9 @@ package com.example.libraryapp.adapter.http;
 
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.useractivity.UserActivityFacade;
+import com.example.libraryapp.domain.user.model.UserId;
 import com.example.libraryapp.domain.useractivity.dto.UserActivityDto;
+import com.example.libraryapp.domain.useractivity.model.UserActivityId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,14 +27,14 @@ class UserActivityController {
             @RequestParam(required = false) String type,
             Pageable pageable
     ) {
-        Page<UserActivityDto> page = userActivityFacade.getPageOfActivities(userId, type, pageable);
+        Page<UserActivityDto> page = userActivityFacade.getPageOfActivities(new UserId(userId), type, pageable);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserActivityDto> getActionById(@PathVariable Long id) {
-        UserActivityDto activity = userActivityFacade.getActivity(id);
-        authFacade.validateOwnerOrAdminAccess(activity.getUserId());
+        UserActivityDto activity = userActivityFacade.getActivity(new UserActivityId(id));
+        authFacade.validateOwnerOrAdminAccess(new UserId(activity.getUserId()));
         return ResponseEntity.ok(activity);
     }
 }

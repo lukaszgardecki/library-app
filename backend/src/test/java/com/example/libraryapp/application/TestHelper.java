@@ -60,7 +60,7 @@ class TestHelper {
                         LocalDate.of(1990, 1, 1),
                         LocalTime.of(12, 0)
                 ))
-                .password("password")
+                .psswrd("password")
                 .email("test@email.com")
                 .status(AccountStatus.ACTIVE)
                 .role(Role.USER)

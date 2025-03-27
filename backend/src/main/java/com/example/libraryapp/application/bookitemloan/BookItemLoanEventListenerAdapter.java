@@ -1,7 +1,7 @@
 package com.example.libraryapp.application.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanListenerPort;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.domain.event.types.CustomEvent;
@@ -26,7 +26,7 @@ class BookItemLoanEventListenerAdapter implements BookItemLoanListenerPort {
     @Override
     public void onEvent(CustomEvent event) {
         if (event instanceof BookItemReservedEvent e) {
-            BookItemLoan currentLoan = bookItemLoanService.getBookItemLoan(e.getBookItemId(), BookItemLoanStatus.CURRENT);
+            BookItemLoan currentLoan = bookItemLoanService.getBookItemLoan(e.getBookItemId(), LoanStatus.CURRENT);
             publisher.publish(new BookItemRenewalImpossibleEvent(e.getBookItemId(), currentLoan.getUserId(), e.getBookTitle()));
         }
     }

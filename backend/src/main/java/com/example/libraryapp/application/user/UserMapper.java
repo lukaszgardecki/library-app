@@ -1,5 +1,7 @@
 package com.example.libraryapp.application.user;
 
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
+import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.user.dto.*;
 import com.example.libraryapp.domain.user.model.*;
 
@@ -7,31 +9,31 @@ class UserMapper {
 
     static User toModel(UserDto user) {
         return User.builder()
-                .id(user.getId())
-                .registrationDate(user.getRegistrationDate())
-                .email(user.getEmail())
+                .id(new UserId(user.getId()))
+                .registrationDate(new RegistrationDate(user.getRegistrationDate()))
+                .email(new Email(user.getEmail()))
                 .status(user.getStatus())
                 .role(user.getRole())
-                .totalBooksBorrowed(user.getTotalBooksBorrowed())
-                .totalBooksRequested(user.getTotalBooksReserved())
-                .charge(user.getCharge())
-                .cardId(user.getCardId())
-                .personId(user.getPersonId())
+                .totalBooksBorrowed(new TotalBooksBorrowed(user.getTotalBooksBorrowed()))
+                .totalBooksRequested(new TotalBooksRequested(user.getTotalBooksReserved()))
+                .charge(new UserCharge(user.getCharge()))
+                .cardId(new LibraryCardId(user.getCardId()))
+                .personId(new PersonId(user.getPersonId()))
                 .build();
     }
 
     static UserDto toDto(User model) {
         return UserDto.builder()
-                .id(model.getId())
-                .registrationDate(model.getRegistrationDate())
-                .email(model.getEmail())
+                .id(model.getId().value())
+                .registrationDate(model.getRegistrationDate().value())
+                .email(model.getEmail().value())
                 .status(model.getStatus())
                 .role(model.getRole())
-                .totalBooksBorrowed(model.getTotalBooksBorrowed())
-                .totalBooksReserved(model.getTotalBooksRequested())
-                .charge(model.getCharge())
-                .cardId(model.getCardId())
-                .personId(model.getPersonId())
+                .totalBooksBorrowed(model.getTotalBooksBorrowed().value())
+                .totalBooksReserved(model.getTotalBooksRequested().value())
+                .charge(model.getCharge().value())
+                .cardId(model.getCardId().value())
+                .personId(model.getPersonId().value())
                 .build();
     }
 

@@ -13,8 +13,8 @@ class SystemNotificationSenderAdapter implements SystemNotificationPort {
 
     @Override
     public void send(Notification notification) {
-        System.out.println("Wysyłam powiadomienie systemowe: " + notification.getContent());
-        String userId = String.valueOf(notification.getUserId());
+        System.out.println("Wysyłam powiadomienie systemowe: " + notification.getContent().value());
+        String userId = String.valueOf(notification.getUserId().value());
         messagingTemplate.convertAndSendToUser(userId, "/queue/notifications", notification);
     }
 }

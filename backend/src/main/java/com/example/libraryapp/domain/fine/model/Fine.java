@@ -1,5 +1,7 @@
 package com.example.libraryapp.domain.fine.model;
 
+import com.example.libraryapp.domain.bookitemloan.model.LoanId;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,11 +14,11 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 public class Fine {
-    private Long id;
-    private Long userId;
-    private Long loanId;
-    private BigDecimal amount;
-    private String description;
+    private FineId id;
+    private UserId userId;
+    private LoanId loanId;
+    private FineAmount amount;
+    private FineDescription description;
     private FineStatus status;
 
     public boolean isPaid() {

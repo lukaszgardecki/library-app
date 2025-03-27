@@ -6,8 +6,13 @@ import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.domain.event.types.user.UserLogoutEvent;
 import com.example.libraryapp.domain.person.dto.PersonDto;
+import com.example.libraryapp.domain.person.model.PersonFirstName;
+import com.example.libraryapp.domain.person.model.PersonId;
+import com.example.libraryapp.domain.person.model.PersonLastName;
 import com.example.libraryapp.domain.token.dto.TokenDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
+import com.example.libraryapp.domain.user.model.Email;
+import com.example.libraryapp.domain.user.model.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +41,17 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         if (storedToken != null) {
             String username = tokenFacade.getUsernameFrom(storedToken.getToken());
-            UserDto user = userFacade.getUserByEmail(username);
+            UserDto user = userFacade.getUserByEmail(new Email(username));
             tokenFacade.revokeUserTokens(user.getId());
             SecurityContextHolder.clearContext();
-            PersonDto person = personFacade.getPersonById(user.getPersonId());
-            publisher.publish(new UserLogoutEvent(user.getId(), person.getFirstName(), person.getLastName()));
+            PersonDto person = personFacade.getPersonById(new PersonId(user.getPersonId()));
+            publisher.publish(
+                    new UserLogoutEvent(
+                            new UserId(user.getId()),
+                            new PersonFirstName(person.getFirstName()),
+                            new PersonLastName(person.getLastName())
+                    )
+            );
         }
     }
 }

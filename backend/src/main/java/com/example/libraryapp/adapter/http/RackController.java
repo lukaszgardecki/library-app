@@ -3,6 +3,7 @@ package com.example.libraryapp.adapter.http;
 import com.example.libraryapp.application.rack.RackFacade;
 import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.dto.RackToSaveDto;
+import com.example.libraryapp.domain.rack.model.RackId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,7 @@ class RackController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RackDto> getRackById(@PathVariable Long id) {
-        RackDto rackDto = rackFacade.getRack(id);
+        RackDto rackDto = rackFacade.getRack(new RackId(id));
         return ResponseEntity.ok(rackDto);
     }
 
@@ -37,7 +38,7 @@ class RackController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRackById(@PathVariable Long id) {
-        rackFacade.deleteRack(id);
+        rackFacade.deleteRack(new RackId(id));
         return ResponseEntity.noContent().build();
     }
 }

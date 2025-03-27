@@ -1,7 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.notification;
 
-import com.example.libraryapp.domain.notification.model.Notification;
+import com.example.libraryapp.domain.notification.model.*;
 import com.example.libraryapp.domain.notification.ports.NotificationRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +18,13 @@ class NotificationRepositoryPortAdapter implements NotificationRepositoryPort {
     private final JpaNotificationRepository repository;
 
     @Override
-    public Page<Notification> findByUserId(Long userId, Pageable pageable) {
-        return repository.findAllByParams(userId, pageable).map(this::toModel);
+    public Page<Notification> findByUserId(UserId userId, Pageable pageable) {
+        return repository.findAllByParams(userId.value(), pageable).map(this::toModel);
     }
 
     @Override
-    public Optional<Notification> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<Notification> findById(NotificationId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
@@ -34,43 +35,43 @@ class NotificationRepositoryPortAdapter implements NotificationRepositoryPort {
 
     @Override
     @Transactional
-    public void markAsRead(Long id) {
-        repository.markAsRead(id);
+    public void markAsRead(NotificationId id) {
+        repository.markAsRead(id.value());
     }
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(NotificationId id) {
+        repository.deleteById(id.value());
     }
 
     @Override
     @Transactional
-    public void deleteByIds(List<Long> ids) {
-        repository.deleteAllById(ids);
+    public void deleteByIds(List<NotificationId> ids) {
+        repository.deleteAllById(ids.stream().map(NotificationId::value).toList());
     }
 
     private NotificationEntity toEntity(Notification model) {
         return NotificationEntity.builder()
-                .id(model.getId())
-                .createdAt(model.getCreatedAt())
-                .subject(model.getSubject())
-                .content(model.getContent())
+                .id(model.getId() != null ? model.getId().value() : null)
+                .createdAt(model.getCreatedAt().value())
+                .subject(model.getSubject().value())
+                .content(model.getContent().value())
                 .type(model.getType())
-                .isRead(model.getIsRead())
-                .userId(model.getUserId())
+                .isRead(model.getIsRead().value())
+                .userId(model.getUserId().value())
                 .build();
     }
 
     private Notification toModel(NotificationEntity entity) {
         return Notification.builder()
-                .id(entity.getId())
-                .createdAt(entity.getCreatedAt())
-                .subject(entity.getSubject())
-                .content(entity.getContent())
+                .id(new NotificationId(entity.getId()))
+                .createdAt(new NotificationCreationDate(entity.getCreatedAt()))
+                .subject(new NotificationSubject(entity.getSubject()))
+                .content(new NotificationContent(entity.getContent()))
                 .type(entity.getType())
-                .isRead(entity.getIsRead())
-                .userId(entity.getUserId())
+                .isRead(new IsRead(entity.getIsRead()))
+                .userId(new UserId(entity.getUserId()))
                 .build();
     }
 

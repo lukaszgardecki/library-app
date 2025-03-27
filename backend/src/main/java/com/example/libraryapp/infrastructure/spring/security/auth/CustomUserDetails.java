@@ -1,7 +1,9 @@
 package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.domain.user.model.AccountStatus;
+import com.example.libraryapp.domain.user.model.Password;
 import com.example.libraryapp.domain.user.model.User;
+import com.example.libraryapp.domain.user.model.UserId;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserDetails extends User implements UserDetails, CredentialsContainer {
-    private final Long id;
+    private final UserId id;
     private final User user;
 
     public CustomUserDetails(User user) {
@@ -19,7 +21,7 @@ public class CustomUserDetails extends User implements UserDetails, CredentialsC
         this.id = user.getId();
     }
 
-    public Long getId() {
+    public UserId getId() {
         return id;
     }
 
@@ -30,12 +32,12 @@ public class CustomUserDetails extends User implements UserDetails, CredentialsC
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return user.getPsswrd().value();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getEmail().value();
     }
 
     @Override
@@ -60,6 +62,6 @@ public class CustomUserDetails extends User implements UserDetails, CredentialsC
 
     @Override
     public void eraseCredentials() {
-        user.setPassword("null");
+        user.setPsswrd(new Password("null"));
     }
 }

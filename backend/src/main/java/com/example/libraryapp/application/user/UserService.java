@@ -8,11 +8,15 @@ import com.example.libraryapp.application.fine.FineFacade;
 import com.example.libraryapp.application.librarycard.LibraryCardFacade;
 import com.example.libraryapp.application.person.PersonFacade;
 import com.example.libraryapp.application.statistics.StatisticsFacade;
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
 import com.example.libraryapp.domain.bookitemrequest.dto.BookItemRequestDto;
+import com.example.libraryapp.domain.fine.model.FineAmount;
 import com.example.libraryapp.domain.librarycard.dto.LibraryCardDto;
 import com.example.libraryapp.domain.person.dto.PersonDto;
+import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
 import com.example.libraryapp.domain.user.exceptions.UserHasNotReturnedBooksException;
@@ -23,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,32 +57,32 @@ class UserService {
         return userRepository.findAllByLoansCountDesc(limit);
     }
 
-    User getUserById(Long id) {
+    User getUserById(UserId id) {
 //        authFacade.validateOwnerOrAdminAccess(id);
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
-    User getUserByEmail(String email) {
+    User getUserByEmail(Email email) {
         return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
-    UserDetails getUserDetails(Long userId) {
+    UserDetails getUserDetails(UserId userId) {
         User user = getUserById(userId);
         return createUserDetails(user);
     }
 
-    UserDetailsAdmin getAdminUserDetailsById(Long userId) {
+    UserDetailsAdmin getAdminUserDetailsById(UserId userId) {
         User user = getUserById(userId);
         UserDetailsAdmin userDetails = createAdminUserDetails(user);
         return userDetails;
     }
 
-    UserPreview getUserPreview(Long userId) {
+    UserPreview getUserPreview(UserId userId) {
         return userRepository.findById(userId)
                 .map(user -> {
                     PersonDto person = personFacade.getPersonById(user.getPersonId());
                     return new UserPreview(
-                            user.getId(),
+                            user.getId().value(),
                             person.getFirstName(),
                             person.getLastName(),
                             user.getRole()
@@ -88,15 +91,15 @@ class UserService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    void deleteById(Long userId) {
-        Long personId = userRepository.findById(userId)
+    void deleteById(UserId userId) {
+        PersonId personId = userRepository.findById(userId)
                 .map(User::getPersonId)
-                .orElse(-1L);
+                .orElse(new PersonId(-1L));
         userRepository.deleteById(userId);
         personFacade.deletePerson(personId);
     }
 
-    void validateUserToDelete(Long userId) {
+    void validateUserToDelete(UserId userId) {
         bookItemLoanFacade.getCurrentLoansByUserId(userId)
                 .stream()
                 .findAny()
@@ -106,7 +109,7 @@ class UserService {
         fineFacade.validateUserForFines(userId);
     }
 
-    User updateUser(Long userId, UserUpdateDto userData) {
+    User updateUser(UserId userId, UserUpdateDto userData) {
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
 
@@ -119,12 +122,13 @@ class UserService {
         if (userData.getFirstName() != null) person.setFirstName(userData.getFirstName());
         if (userData.getLastName() != null) person.setLastName(userData.getLastName());
         if (userData.getPhone() != null) person.setPhone(userData.getPhone());
-        if (userData.getEmail() != null && !user.getEmail().equals(userData.getEmail())) {
-            credentialsService.validateEmail(userData.getEmail());
-            user.setEmail(userData.getEmail());
+        if (userData.getEmail() != null && !user.getEmail().value().equals(userData.getEmail())) {
+            Email email = new Email(userData.getEmail());
+            credentialsService.validateEmail(email);
+            user.setEmail(email);
         }
         if (userData.getPassword() != null) {
-            user.setPassword(credentialsService.encodePassword(userData.getPassword()));
+            user.setPsswrd(new Password(credentialsService.encodePassword(userData.getPassword())));
         }
         userRepository.save(user);
         personFacade.save(person);
@@ -132,16 +136,17 @@ class UserService {
         return user;
     }
 
-    User updateUserByAdmin(Long userId, UserUpdateAdminDto userData) {
+    User updateUserByAdmin(UserId userId, UserUpdateAdminDto userData) {
         User user = getUserById(userId);
         PersonDto person = personFacade.getPersonById(user.getPersonId());
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
 
         if (userData.getFirstName() != null) person.setFirstName(userData.getFirstName());
         if (userData.getLastName() != null) person.setLastName(userData.getLastName());
-        if (userData.getEmail() != null && !user.getEmail().equals(userData.getEmail())) {
-            credentialsService.validateEmail(userData.getEmail());
-            user.setEmail(userData.getEmail());
+        if (userData.getEmail() != null && !user.getEmail().value().equals(userData.getEmail())) {
+            Email email = new Email(userData.getEmail());
+            credentialsService.validateEmail(email);
+            user.setEmail(email);
         }
         if (userData.getStreetAddress() != null) person.getAddress().setStreetAddress(userData.getStreetAddress());
         if (userData.getZipCode() != null) person.getAddress().setZipCode(userData.getZipCode());
@@ -168,32 +173,32 @@ class UserService {
         return user;
     }
 
-    void updateUserOnRequest(Long userId) {
+    void updateUserOnRequest(UserId userId) {
         userRepository.incrementTotalBooksRequested(userId);
     }
 
-    void updateUserOnRequestCancellation(Long userId) {
+    void updateUserOnRequestCancellation(UserId userId) {
         userRepository.decrementTotalBooksRequested(userId);
     }
 
-    void updateUserOnReturn(Long userId) {
+    void updateUserOnReturn(UserId userId) {
         userRepository.decrementTotalBooksBorrowed(userId);
     }
 
-    void updateUserOnLoss(Long userId) {
+    void updateUserOnLoss(UserId userId) {
         userRepository.decrementTotalBooksBorrowed(userId);
     }
 
-    void updateUserOnRenewal(Long userId) {
+    void updateUserOnRenewal(UserId userId) {
         // nothing ?
     }
 
-    void updateUserOnLoan(Long userId) {
+    void updateUserOnLoan(UserId userId) {
         userRepository.decrementTotalBooksRequested(userId);
         userRepository.incrementTotalBooksBorrowed(userId);
     }
 
-    void updateUserOnFinePaid(Long userId, BigDecimal fineAmount) {
+    void updateUserOnFinePaid(UserId userId, FineAmount fineAmount) {
         userRepository.reduceChargeByAmount(userId, fineAmount);
     }
 
@@ -209,7 +214,7 @@ class UserService {
         PersonDto person = personFacade.getPersonById(user.getPersonId());
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
         return new UserDetails(
-                user.getId(),
+                user.getId().value(),
                 person.getFirstName(),
                 person.getLastName(),
                 person.getGender(),
@@ -219,17 +224,17 @@ class UserService {
                 person.getAddress().getState(),
                 person.getAddress().getCountry(),
                 person.getDateOfBirth(),
-                user.getEmail(),
+                user.getEmail().value(),
                 person.getPhone(),
                 person.getPesel(),
                 person.getNationality(),
                 person.getFathersName(),
                 person.getMothersName(),
                 card,
-                user.getRegistrationDate(),
-                user.getTotalBooksBorrowed(),
-                user.getTotalBooksRequested(),
-                user.getCharge(),
+                user.getRegistrationDate().value(),
+                user.getTotalBooksBorrowed().value(),
+                user.getTotalBooksRequested().value(),
+                user.getCharge().value(),
                 user.getStatus()
         );
     }
@@ -240,8 +245,8 @@ class UserService {
         Map<String, Integer> topGenres = bookItemLoanFacade.getAllLoansByUserId(user.getId()).stream()
                 .collect(Collectors.groupingBy(
                         loan -> {
-                            BookItemDto bookItem = bookItemFacade.getBookItem(loan.bookItemId());
-                            return bookFacade.getBook(bookItem.getBookId()).getSubject();
+                            BookItemDto bookItem = bookItemFacade.getBookItem(new BookItemId(loan.bookItemId()));
+                            return bookFacade.getBook(new BookId(bookItem.getBookId())).getSubject();
                         },
                         Collectors.summingInt(lending -> 1)
                 ))
@@ -263,7 +268,7 @@ class UserService {
                 .map(BookItemRequestDto::getBookItemId)
                 .toList();
         return new UserDetailsAdmin(
-                user.getId(),
+                user.getId().value(),
                 person.getFirstName(),
                 person.getLastName(),
                 person.getGender(),
@@ -273,17 +278,17 @@ class UserService {
                 person.getAddress().getState(),
                 person.getAddress().getCountry(),
                 person.getDateOfBirth(),
-                user.getEmail(),
+                user.getEmail().value(),
                 person.getPhone(),
                 person.getPesel(),
                 person.getNationality(),
                 person.getFathersName(),
                 person.getMothersName(),
                 card,
-                user.getRegistrationDate(),
-                user.getTotalBooksBorrowed(),
-                user.getTotalBooksRequested(),
-                user.getCharge(),
+                user.getRegistrationDate().value(),
+                user.getTotalBooksBorrowed().value(),
+                user.getTotalBooksRequested().value(),
+                user.getCharge().value(),
                 user.getStatus(),
                 loanedItemsIds,
                 requestedItemsIds,

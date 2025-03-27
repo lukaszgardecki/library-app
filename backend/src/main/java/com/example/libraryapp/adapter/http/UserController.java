@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserListPreviewDto;
 import com.example.libraryapp.domain.user.dto.UserPreviewDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateDto;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,35 +40,35 @@ class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        UserDto user = userFacade.getUserById(id);
+        UserDto user = userFacade.getUserById(new UserId(id));
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}/details")
     @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
     public ResponseEntity<UserDto> getUserDetailsById(@PathVariable Long id) {
-        UserDto user = userFacade.getUserById(id);
+        UserDto user = userFacade.getUserById(new UserId(id));
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}/preview")
     @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
     public ResponseEntity<UserPreviewDto> getUserPreviewById(@PathVariable Long id) {
-        UserPreviewDto userPreview = userFacade.getUserPreview(id);
+        UserPreviewDto userPreview = userFacade.getUserPreview(new UserId(id));
         return ResponseEntity.ok(userPreview);
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateDto user) {
-        UserDto updatedUser = userFacade.updateUser(id, user);
+        UserDto updatedUser = userFacade.updateUser(new UserId(id), user);
         return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
-        userFacade.deleteUserById(id);
+        userFacade.deleteUserById(new UserId(id));
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.libraryapp.infrastructure.spring.security.auth;
 
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
+import com.example.libraryapp.domain.user.model.Email;
+import com.example.libraryapp.domain.user.model.Password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,17 +17,17 @@ public class AuthenticationManagerAdapter implements AuthenticationManagerPort {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public boolean authenticate(String username, String password) throws AuthenticationException {
+    public boolean authenticate(Email username, Password password) throws AuthenticationException {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
+                new UsernamePasswordAuthenticationToken(username.value(), password.value())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication.isAuthenticated();
     }
 
     @Override
-    public String getCurrentUsername() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    public Email getCurrentUsername() {
+        return new Email(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 

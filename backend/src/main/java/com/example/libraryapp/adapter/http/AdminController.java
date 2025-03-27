@@ -6,6 +6,7 @@ import com.example.libraryapp.domain.statistics.dto.StatisticsDto;
 import com.example.libraryapp.domain.user.dto.UserDetailsAdminDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.dto.UserUpdateAdminDto;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +22,7 @@ class AdminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        UserDetailsAdminDto userAdminInfo = userFacade.getUserDetailsAdmin(id);
+        UserDetailsAdminDto userAdminInfo = userFacade.getUserDetailsAdmin(new UserId(id));
         return ResponseEntity.ok(userAdminInfo);
     }
 
@@ -33,7 +34,7 @@ class AdminController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateAdminDto userData) {
-        UserDto user = userFacade.updateUserByAdmin(id, userData);
+        UserDto user = userFacade.updateUserByAdmin(new UserId(id), userData);
         return ResponseEntity.ok(user);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +23,7 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
         WHERE (:userId IS NULL OR b.userId = :userId)
         AND (:status IS NULL OR b.status = :status)
     """)
-    Page<BookItemLoanEntity> findAllByParams(Long userId, @Param("status") BookItemLoanStatus status, Pageable pageable);
+    Page<BookItemLoanEntity> findAllByParams(Long userId, @Param("status") LoanStatus status, Pageable pageable);
 
     @Query(
             value = """
@@ -76,7 +76,7 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
     """)
     List<BookItemLoanEntity> findAllCurrentLoansByUserId(
             @Param("userId") Long userId,
-            @Param("status") BookItemLoanStatus status
+            @Param("status") LoanStatus status
     );
 
 
@@ -90,7 +90,7 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
     Optional<BookItemLoanEntity> findByParams(
             @Param("bookItemId") Long bookItemId,
             @Param("userId") Long userId,
-            @Param("status") BookItemLoanStatus status
+            @Param("status") LoanStatus status
     );
 
     @Query("""
@@ -101,7 +101,7 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
     """)
     Optional<BookItemLoanEntity> findByParams(
             @Param("bookItemId") Long bookItemId,
-            @Param("status") BookItemLoanStatus status
+            @Param("status") LoanStatus status
     );
 
     // TODO: 04.02.2025 sprawdzić czy metoda poniżej robi porpawne zapytanie
@@ -139,7 +139,7 @@ public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEnt
     List<Object[]> countBookItemLoansByDay(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
-            @Param("status") BookItemLoanStatus status
+            @Param("status") LoanStatus status
     );
 
     @Query("""

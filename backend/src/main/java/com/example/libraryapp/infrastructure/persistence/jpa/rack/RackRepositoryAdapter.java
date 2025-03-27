@@ -1,6 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.rack;
 
 import com.example.libraryapp.domain.rack.model.Rack;
+import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.rack.model.RackLocationId;
 import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,13 +17,13 @@ class RackRepositoryAdapter implements RackRepositoryPort {
 
 
     @Override
-    public Optional<Rack> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<Rack> findById(RackId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
-    public Optional<Rack> findByLocation(String location) {
-        return repository.findByLocationIdentifier(location).map(this::toModel);
+    public Optional<Rack> findByLocation(RackLocationId location) {
+        return repository.findByLocationIdentifier(location.value()).map(this::toModel);
     }
 
     @Override
@@ -32,21 +34,21 @@ class RackRepositoryAdapter implements RackRepositoryPort {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(RackId id) {
+        repository.deleteById(id.value());
     }
 
     private RackEntity toEntity(Rack model) {
         return new RackEntity(
-                model.getId(),
-                model.getLocationIdentifier()
+                model.getId() != null ? model.getId().value() : null,
+                model.getLocationIdentifier().value()
         );
     }
 
     private Rack toModel(RackEntity entity) {
         return new Rack(
-                entity.getId(),
-                entity.getLocationIdentifier()
+                new RackId(entity.getId()),
+                new RackLocationId(entity.getLocationIdentifier())
         );
     }
 }

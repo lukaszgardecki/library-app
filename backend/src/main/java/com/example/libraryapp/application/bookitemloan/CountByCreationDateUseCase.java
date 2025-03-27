@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitemloan;
 
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 class CountByCreationDateUseCase {
     private final BookItemLoanService bookItemLoanService;
 
-    long execute(LocalDateTime day) {
+    long execute(LoanCreationDate day) {
         return bookItemLoanService.countByCreationDate(day);
     }
 }

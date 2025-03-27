@@ -2,56 +2,55 @@ package com.example.libraryapp.application.person;
 
 import com.example.libraryapp.domain.person.dto.AddressDto;
 import com.example.libraryapp.domain.person.dto.PersonDto;
-import com.example.libraryapp.domain.person.model.Address;
-import com.example.libraryapp.domain.person.model.Person;
+import com.example.libraryapp.domain.person.model.*;
 
 class PersonMapper {
 
     static Person toModel(PersonDto dto) {
         return Person.builder()
-                .id(dto.getId())
-                .firstName(dto.getFirstName())
-                .lastName(dto.getLastName())
+                .id(new PersonId(dto.getId()))
+                .firstName(new PersonFirstName(dto.getFirstName()))
+                .lastName(new PersonLastName(dto.getLastName()))
                 .gender(dto.getGender())
-                .pesel(dto.getPesel())
-                .dateOfBirth(dto.getDateOfBirth())
-                .nationality(dto.getNationality())
-                .fathersName(dto.getFathersName())
-                .mothersName(dto.getMothersName())
+                .pesel(new Pesel(dto.getPesel()))
+                .dateOfBirth(new BirthDate(dto.getDateOfBirth()))
+                .nationality(new Nationality(dto.getNationality()))
+                .fathersName(new FatherName(dto.getFathersName()))
+                .mothersName(new MotherName(dto.getMothersName()))
                 .address(
                         Address.builder()
-                                .streetAddress(dto.getAddress().getStreetAddress())
-                                .city(dto.getAddress().getCity())
-                                .state(dto.getAddress().getState())
-                                .zipCode(dto.getAddress().getZipCode())
-                                .country(dto.getAddress().getCountry())
+                                .streetAddress(new Address.StreetAddress(dto.getAddress() != null ? dto.getAddress().getStreetAddress() : null))
+                                .city(new Address.City(dto.getAddress() != null ? dto.getAddress().getCity() : null))
+                                .state(new Address.State(dto.getAddress() != null ? dto.getAddress().getState() : null))
+                                .zipCode(new Address.ZipCode(dto.getAddress() != null ? dto.getAddress().getZipCode() : null))
+                                .country(new Address.Country(dto.getAddress() != null ? dto.getAddress().getCountry() : null))
                                 .build()
                 )
-                .phone(dto.getPhone())
+                .phone(new PhoneNumber(dto.getPhone()))
                 .build();
     }
 
     static PersonDto toDto(Person model) {
         return PersonDto.builder()
-                .id(model.getId())
-                .firstName(model.getFirstName())
-                .lastName(model.getLastName())
+                .id(model.getId().value())
+                .firstName(model.getFirstName().value())
+                .lastName(model.getLastName().value())
                 .gender(model.getGender())
-                .pesel(model.getPesel())
-                .dateOfBirth(model.getDateOfBirth())
-                .nationality(model.getNationality())
-                .fathersName(model.getFathersName())
-                .mothersName(model.getMothersName())
+                .pesel(model.getPesel().value())
+                .dateOfBirth(model.getDateOfBirth().value())
+                .nationality(model.getNationality().value())
+                .fathersName(model.getFathersName().value())
+                .mothersName(model.getMothersName().value())
                 .address(
                         AddressDto.builder()
-                                .streetAddress(model.getAddress().getStreetAddress())
-                                .city(model.getAddress().getCity())
-                                .state(model.getAddress().getState())
-                                .zipCode(model.getAddress().getZipCode())
-                                .country(model.getAddress().getCountry())
+                                .streetAddress(model.getAddress().getStreetAddress().value())
+                                .city(model.getAddress().getCity().value())
+                                .state(model.getAddress().getState().value())
+                                .zipCode(model.getAddress().getZipCode().value())
+                                .country(model.getAddress().getCountry().value())
                                 .build()
                 )
-                .phone(model.getPhone())
+                .phone(model.getPhone().value())
                 .build();
     }
 }

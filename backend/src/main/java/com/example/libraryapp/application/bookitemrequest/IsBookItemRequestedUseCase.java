@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.bookitemrequest;
 
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.List;
 class IsBookItemRequestedUseCase {
     private final BookItemRequestService bookItemRequestService;
 
-    boolean execute(Long bookItemId) {
+    boolean execute(BookItemId bookItemId) {
         return bookItemRequestService.getAllByBookItemIdAndStatuses(bookItemId, List.of(
                 BookItemRequestStatus.PENDING,
                 BookItemRequestStatus.READY,

@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.bookitemloan.dto;
 
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ public record BookItemLoanDto(
         LocalDateTime creationDate,
         LocalDateTime dueDate,
         LocalDateTime returnDate,
-        BookItemLoanStatus status,
+        LoanStatus status,
         Long userId,
         Long bookItemId
 ) { }

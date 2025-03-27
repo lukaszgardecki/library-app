@@ -29,6 +29,7 @@ public enum MessageKey {
     BOOK_ITEM_DELETION_FAILED("book-item.deletion-failed"),
 
     // BOOK ITEM LOAN
+    LOAN_NOT_FOUND("loan.not-found"),
     LOAN_NOT_FOUND_ID("loan.not-found.id"),
     LOAN_LIMIT_EXCEEDED("loan.limit-exceeded"),
     LOAN_RENEWAL_FAILED_RETURN_DATE("loan.renewal-failed.return-date"),

@@ -1,31 +1,32 @@
 package com.example.libraryapp.application.notification;
 
 import com.example.libraryapp.domain.notification.dto.NotificationDto;
-import com.example.libraryapp.domain.notification.model.Notification;
+import com.example.libraryapp.domain.notification.model.*;
+import com.example.libraryapp.domain.user.model.UserId;
 
 class NotificationMapper {
 
     static Notification toModel(NotificationDto dto) {
         return Notification.builder()
-                .id(dto.getId())
+                .id(new NotificationId(dto.getId()))
                 .type(dto.getType())
-                .createdAt(dto.getCreatedAt())
-                .subject(dto.getSubject())
-                .content(dto.getContent())
-                .userId(dto.getUserId())
-                .isRead(dto.getIsRead())
+                .createdAt(new NotificationCreationDate(dto.getCreatedAt()))
+                .subject(new NotificationSubject(dto.getSubject()))
+                .content(new NotificationContent(dto.getContent()))
+                .userId(new UserId(dto.getUserId()))
+                .isRead(new IsRead(dto.getIsRead()))
                 .build();
     }
 
     static NotificationDto toDto(Notification model) {
         return NotificationDto.builder()
-                .id(model.getId())
+                .id(model.getId().value())
                 .type(model.getType())
-                .createdAt(model.getCreatedAt())
-                .subject(model.getSubject())
-                .content(model.getContent())
-                .userId(model.getUserId())
-                .isRead(model.getIsRead())
+                .createdAt(model.getCreatedAt().value())
+                .subject(model.getSubject().value())
+                .content(model.getContent().value())
+                .userId(model.getUserId().value())
+                .isRead(model.getIsRead().value())
                 .build();
     }
 }

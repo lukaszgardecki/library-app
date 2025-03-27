@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.statistics;
 
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,6 @@ class CountTodayLoansUseCase {
     private final StatisticsService statisticsService;
 
     long execute() {
-        return statisticsService.countBookItemLoansByDay(LocalDateTime.now());
+        return statisticsService.countBookItemLoansByDay(new LoanCreationDate(LocalDateTime.now()));
     }
 }

@@ -1,7 +1,8 @@
 package com.example.libraryapp.application.statistics;
 
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import com.example.libraryapp.domain.statistics.dto.StatisticsDto;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -28,15 +29,15 @@ public class StatisticsFacade {
           countAllUsersUseCase.execute(),
           getTopGenresUseCase.execute(),
           countMonthlyLoansLastYearUseCase.execute(),
-          countDailyLoansLastWeekUseCase.execute(BookItemLoanStatus.CURRENT),
-          countDailyLoansLastWeekUseCase.execute(BookItemLoanStatus.COMPLETED),
+          countDailyLoansLastWeekUseCase.execute(LoanStatus.CURRENT),
+          countDailyLoansLastWeekUseCase.execute(LoanStatus.COMPLETED),
           getTopBorrowersUseCase.execute(),
           countUsersByAgeGroupsUseCase.execute(),
           getTopCitiesByUserCountUseCase.execute()
         );
     }
 
-    public List<Integer> countUserLoansPerMonth(Long userId) {
+    public List<Integer> countUserLoansPerMonth(UserId userId) {
         return countUserLoansPerMonthUseCase.execute(userId);
     }
 }

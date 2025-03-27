@@ -1,6 +1,7 @@
 package com.example.libraryapp.application.bookitemloan;
 
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 class GetAllUserLoansUseCase {
     private final BookItemLoanService bookItemLoanService;
 
-    List<BookItemLoan> execute(Long userId) {
+    List<BookItemLoan> execute(UserId userId) {
         return bookItemLoanService.getAllBookItemLoans(userId);
     }
 }

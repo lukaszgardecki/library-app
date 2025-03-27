@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.person.ports;
 
 import com.example.libraryapp.domain.person.model.Person;
+import com.example.libraryapp.domain.person.model.PersonId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,9 +15,9 @@ public interface PersonRepositoryPort {
 
     List<Person> findAllByQuery(String query);
 
-    Optional<Person> findById(Long id);
+    Optional<Person> findById(PersonId id);
 
-    void deleteById(Long id);
+    void deleteById(PersonId id);
 
     long countByAgeBetween(int min, int max);
 

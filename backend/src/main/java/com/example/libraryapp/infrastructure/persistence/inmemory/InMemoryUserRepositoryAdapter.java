@@ -1,7 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
+import com.example.libraryapp.domain.fine.model.FineAmount;
+import com.example.libraryapp.domain.person.model.PersonId;
+import com.example.libraryapp.domain.user.model.*;
 import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static java.util.Objects.requireNonNull;
 
 public class InMemoryUserRepositoryAdapter implements UserRepositoryPort {
-    private final ConcurrentHashMap<Long, User> map = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UserId, User> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
     @Override
@@ -39,12 +40,12 @@ public class InMemoryUserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(UserId id) {
         return Optional.ofNullable(map.get(id));
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public boolean existsByEmail(Email email) {
         return map.values().stream()
                 .anyMatch(user -> user.getEmail().equals(email));
     }
@@ -53,65 +54,65 @@ public class InMemoryUserRepositoryAdapter implements UserRepositoryPort {
     public User save(User user) {
         requireNonNull(user, "User cannot be null");
         if (user.getId() == null) {
-            user.setId(++id);
+            user.setId(new UserId(++id));
         }
         map.put(user.getId(), requireNonNull(user));
         return user;
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> findByEmail(Email email) {
         return map.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst();
     }
 
     @Override
-    public Optional<User> findByPersonId(Long personId) {
+    public Optional<User> findByPersonId(PersonId personId) {
         return map.values().stream()
                 .filter(user -> user.getPersonId().equals(personId))
                 .findFirst();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UserId id) {
         map.remove(id);
     }
 
     @Override
-    public void incrementTotalBooksRequested(Long userId) {
+    public void incrementTotalBooksRequested(UserId userId) {
         User user = map.get(userId);
-        user.setTotalBooksRequested(user.getTotalBooksRequested() + 1);
+        user.setTotalBooksRequested(new TotalBooksRequested(user.getTotalBooksRequested().value() + 1));
         map.put(userId, user);
     }
 
     @Override
-    public void decrementTotalBooksRequested(Long userId) {
+    public void decrementTotalBooksRequested(UserId userId) {
         User user = map.get(userId);
-        user.setTotalBooksRequested(user.getTotalBooksRequested() - 1);
+        user.setTotalBooksRequested(new TotalBooksRequested(user.getTotalBooksRequested().value() - 1));
         map.put(userId, user);
     }
 
     @Override
-    public void incrementTotalBooksBorrowed(Long userId) {
+    public void incrementTotalBooksBorrowed(UserId userId) {
         User user = map.get(userId);
-        user.setTotalBooksBorrowed(user.getTotalBooksBorrowed() + 1);
+        user.setTotalBooksBorrowed(new TotalBooksBorrowed(user.getTotalBooksBorrowed().value() + 1));
         map.put(userId, user);
     }
 
     @Override
-    public void decrementTotalBooksBorrowed(Long userId) {
+    public void decrementTotalBooksBorrowed(UserId userId) {
         User user = map.get(userId);
-        user.setTotalBooksBorrowed(user.getTotalBooksBorrowed() - 1);
+        user.setTotalBooksBorrowed(new TotalBooksBorrowed(user.getTotalBooksBorrowed().value() - 1));
         map.put(userId, user);
     }
 
     @Override
-    public void reduceChargeByAmount(Long userId, BigDecimal amount) {
+    public void reduceChargeByAmount(UserId userId, FineAmount amount) {
         User user = map.get(userId);
         if (user != null) {
-            BigDecimal currentCharge = user.getCharge();
-            user.setCharge(currentCharge.subtract(amount));
+            BigDecimal currentCharge = user.getCharge().value();
+            user.setCharge(new UserCharge(currentCharge.subtract(amount.value())));
         }
     }
 
@@ -124,8 +125,8 @@ public class InMemoryUserRepositoryAdapter implements UserRepositoryPort {
     public long countNewRegisteredUsersByMonth(int month, int year) {
         return map.values().stream()
                 .filter(user -> {
-                    int monthVal = user.getRegistrationDate().getMonth().getValue();
-                    int yearVal = user.getRegistrationDate().getYear();
+                    int monthVal = user.getRegistrationDate().value().getMonth().getValue();
+                    int yearVal = user.getRegistrationDate().value().getYear();
                     return monthVal == month && yearVal == year;
                 })
                 .count();

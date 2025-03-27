@@ -1,41 +1,45 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
-import com.example.libraryapp.domain.bookitem.model.BookItem;
+import com.example.libraryapp.domain.bookitem.model.*;
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
+import com.example.libraryapp.domain.rack.model.RackId;
 
 class BookItemMapper {
 
     static BookItemDto toDto(BookItem model) {
         return new BookItemDto(
-                model.getId(),
-                model.getBarcode(),
-                model.getIsReferenceOnly(),
-                model.getBorrowed(),
-                model.getDueDate(),
-                model.getPrice(),
+                model.getId().value(),
+                model.getBarcode().value(),
+                model.getIsReferenceOnly().value(),
+                model.getBorrowedDate().value() != null ? model.getBorrowedDate().value().toLocalDate() : null,
+                model.getDueDate().value() != null ? model.getDueDate().value().toLocalDate() : null,
+                model.getPrice().value(),
                 model.getFormat(),
                 model.getStatus(),
-                model.getDateOfPurchase(),
-                model.getPublicationDate(),
-                model.getBookId(),
-                model.getRackId()
+                model.getDateOfPurchase().value(),
+                model.getPublicationDate().value(),
+                model.getBookId().value(),
+                model.getRackId().value()
         );
     }
 
     static BookItem toModel(BookItemDto dto) {
         return new BookItem(
-                dto.getId(),
-                dto.getBarcode(),
-                dto.getIsReferenceOnly(),
-                dto.getBorrowed(),
-                dto.getDueDate(),
-                dto.getPrice(),
+                new BookItemId(dto.getId()),
+                new BookItemBarcode(dto.getBarcode()),
+                new IsReferenceOnly(dto.getIsReferenceOnly()),
+                new LoanCreationDate(dto.getBorrowed() != null ? dto.getBorrowed().atStartOfDay() : null),
+                new LoanDueDate(dto.getDueDate() != null ? dto.getDueDate().atStartOfDay() : null),
+                new Price(dto.getPrice()),
                 dto.getFormat(),
                 dto.getStatus(),
-                dto.getDateOfPurchase(),
-                dto.getPublicationDate(),
-                dto.getBookId(),
-                dto.getRackId()
+                new PurchaseDate(dto.getDateOfPurchase()),
+                new PublicationDate(dto.getPublicationDate()),
+                new BookId(dto.getBookId()),
+                new RackId(dto.getRackId())
         );
     }
 }

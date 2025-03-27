@@ -1,9 +1,15 @@
 package com.example.libraryapp.domain.bookitem.dto;
 
-import com.example.libraryapp.domain.bookitem.model.BookItem;
-import com.example.libraryapp.domain.bookitem.model.BookItemFormat;
-import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
-import lombok.*;
+import com.example.libraryapp.domain.book.model.BookId;
+import com.example.libraryapp.domain.bookitem.model.*;
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanReturnDate;
+import com.example.libraryapp.domain.rack.model.RackId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,16 +32,16 @@ public class BookItemToUpdateDto {
 
     public BookItem toModel() {
         return BookItem.builder()
-                .isReferenceOnly(isReferenceOnly)
-                .borrowed(borrowed)
-                .dueDate(dueDate)
-                .price(price)
+                .isReferenceOnly(new IsReferenceOnly(isReferenceOnly))
+                .borrowedDate(new LoanCreationDate(borrowed.atStartOfDay()))
+                .dueDate(new LoanDueDate(dueDate.atStartOfDay()))
+                .price(new Price(price))
                 .format(format)
                 .status(status)
-                .dateOfPurchase(dateOfPurchase)
-                .publicationDate(publicationDate)
-                .bookId(bookId)
-                .rackId(rackId)
+                .dateOfPurchase(new PurchaseDate(dateOfPurchase))
+                .publicationDate(new PublicationDate(publicationDate))
+                .bookId(new BookId(bookId))
+                .rackId(new RackId(rackId))
                 .build();
     }
 

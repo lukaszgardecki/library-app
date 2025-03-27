@@ -8,9 +8,15 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class Address {
-    private String streetAddress;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String country;
+    private StreetAddress streetAddress;
+    private City city;
+    private State state;
+    private ZipCode zipCode;
+    private Country country;
+
+    public record StreetAddress(String value) { }
+    public record City(String value) { }
+    public record State(String value) { }
+    public record ZipCode(String value) { }
+    public record Country(String value) { }
 }

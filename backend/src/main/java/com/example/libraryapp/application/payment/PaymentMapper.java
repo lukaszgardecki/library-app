@@ -3,19 +3,18 @@ package com.example.libraryapp.application.payment;
 import com.example.libraryapp.domain.payment.dto.PaymentCardDetailsDto;
 import com.example.libraryapp.domain.payment.dto.PaymentDto;
 import com.example.libraryapp.domain.payment.dto.PaymentProcessRequestDto;
-import com.example.libraryapp.domain.payment.model.Payment;
-import com.example.libraryapp.domain.payment.model.PaymentCardDetails;
-import com.example.libraryapp.domain.payment.model.PaymentProcessRequest;
+import com.example.libraryapp.domain.payment.model.*;
+import com.example.libraryapp.domain.user.model.UserId;
 
 class PaymentMapper {
 
     static Payment toModel(PaymentDto dto) {
         return new Payment(
-                dto.getId(),
-                dto.getAmount(),
-                dto.getCreationDate(),
-                dto.getUserId(),
-                dto.getDescription(),
+                new PaymentId(dto.getId()),
+                new PaymentAmount(dto.getAmount()),
+                new PaymentCreationDate(dto.getCreationDate()),
+                new UserId(dto.getUserId()),
+                new PaymentDescription(dto.getDescription()),
                 dto.getMethod(),
                 dto.getStatus()
         );
@@ -23,11 +22,11 @@ class PaymentMapper {
 
     static PaymentDto toDto(Payment model) {
         return new PaymentDto(
-                model.getId(),
-                model.getAmount(),
-                model.getCreationDate(),
-                model.getUserId(),
-                model.getDescription(),
+                model.getId().value(),
+                model.getAmount().value(),
+                model.getCreationDate().value(),
+                model.getUserId().value(),
+                model.getDescription().value(),
                 model.getMethod(),
                 model.getStatus()
         );
@@ -35,9 +34,9 @@ class PaymentMapper {
 
     static PaymentProcessRequest toModel(PaymentProcessRequestDto dto) {
         return new PaymentProcessRequest(
-                dto.getAmount(),
-                dto.getUserId(),
-                dto.getDescription(),
+                new PaymentAmount(dto.getAmount()),
+                new UserId(dto.getUserId()),
+                new PaymentDescription(dto.getDescription()),
                 dto.getMethod(),
                 toModel(dto.getCardPaymentDetails())
         );
@@ -45,9 +44,9 @@ class PaymentMapper {
 
     static PaymentProcessRequestDto toDto(PaymentProcessRequest model) {
         return new PaymentProcessRequestDto(
-                model.getAmount(),
-                model.getUserId(),
-                model.getDescription(),
+                model.getAmount().value(),
+                model.getUserId().value(),
+                model.getDescription().value(),
                 model.getMethod(),
                 toDto(model.getCardPaymentDetails())
         );

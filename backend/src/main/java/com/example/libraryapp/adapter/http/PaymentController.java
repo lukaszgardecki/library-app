@@ -3,6 +3,8 @@ package com.example.libraryapp.adapter.http;
 import com.example.libraryapp.application.payment.PaymentFacade;
 import com.example.libraryapp.domain.payment.dto.PaymentDto;
 import com.example.libraryapp.domain.payment.dto.PaymentProcessRequestDto;
+import com.example.libraryapp.domain.payment.model.PaymentId;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,14 +27,14 @@ class PaymentController {
             @RequestParam Long userId,
             Pageable pageable
     ) {
-        Page<PaymentDto> userPayments = paymentFacade.getAllByUserId(userId, pageable);
+        Page<PaymentDto> userPayments = paymentFacade.getAllByUserId(new UserId(userId), pageable);
         return ResponseEntity.ok(userPayments);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<PaymentDto> getPaymentById(@PathVariable("id") Long paymentId) {
-        PaymentDto payment = paymentFacade.getPayment(paymentId);
+        PaymentDto payment = paymentFacade.getPayment(new PaymentId(paymentId));
         return ResponseEntity.ok(payment);
     }
 

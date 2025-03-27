@@ -2,13 +2,14 @@ package com.example.libraryapp.application.book;
 
 import com.example.libraryapp.domain.book.exceptions.BookNotFoundException;
 import com.example.libraryapp.domain.book.model.Book;
+import com.example.libraryapp.domain.book.model.BookId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class UpdateBookUseCase {
     private final BookService bookService;
 
-    Book execute(Long id, Book fieldsToUpdate) {
+    Book execute(BookId id, Book fieldsToUpdate) {
         Book book = bookService.getBookById(id)
                 .map(b -> updateBookFields(b, fieldsToUpdate))
                 .orElseThrow(() -> new BookNotFoundException(id));

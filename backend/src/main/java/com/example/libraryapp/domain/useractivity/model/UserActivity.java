@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.useractivity.model;
 
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,14 +13,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class UserActivity {
-    protected Long id;
-    protected Long userId;
+    protected UserActivityId id;
+    protected UserId userId;
     protected UserActivityType type;
-    protected String message;
-    protected LocalDateTime createdAt;
+    protected UserActivityMessage message;
+    protected UserActivityCreationDate createdAt;
 
-    protected UserActivity(Long userId) {
+    protected UserActivity(UserId userId) {
         this.userId = userId;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = new UserActivityCreationDate(LocalDateTime.now());
     }
 }

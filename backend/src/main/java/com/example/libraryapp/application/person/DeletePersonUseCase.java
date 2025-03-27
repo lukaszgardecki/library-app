@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.person;
 
+import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 class DeletePersonUseCase {
     private final PersonRepositoryPort personRepository;
 
-    void execute(Long personId) {
+    void execute(PersonId personId) {
         personRepository.deleteById(personId);
     }
 }

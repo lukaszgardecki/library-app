@@ -1,9 +1,12 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanId;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +20,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
-    private final ConcurrentHashMap<Long, BookItemLoan> map = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<LoanId, BookItemLoan> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
     @Override
-    public Optional<BookItemLoan> findById(Long id) {
+    public Optional<BookItemLoan> findById(LoanId id) {
         return Optional.ofNullable(map.get(id));
     }
 
     @Override
-    public Optional<BookItemLoan> findByParams(Long bookItemId, Long userId, BookItemLoanStatus status) {
+    public Optional<BookItemLoan> findByParams(BookItemId bookItemId, UserId userId, LoanStatus status) {
         return map.values().stream()
                 .filter(loan -> loan.getBookItemId().equals(bookItemId)
                         && loan.getUserId().equals(userId)
@@ -35,7 +38,7 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
-    public Optional<BookItemLoan> findByParams(Long bookItemId, BookItemLoanStatus status) {
+    public Optional<BookItemLoan> findByParams(BookItemId bookItemId, LoanStatus status) {
         return map.values().stream()
                 .filter(loan -> loan.getBookItemId().equals(bookItemId)
                         && loan.getStatus().equals(status))
@@ -43,23 +46,23 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
-    public List<BookItemLoan> findAllByUserId(Long userId) {
+    public List<BookItemLoan> findAllByUserId(UserId userId) {
         return map.values().stream()
                 .filter(loan -> loan.getUserId().equals(userId))
                 .toList();
     }
 
     @Override
-    public List<BookItemLoan> findAllCurrentLoansByUserId(Long userId) {
+    public List<BookItemLoan> findAllCurrentLoansByUserId(UserId userId) {
         return map.values().stream()
-                .filter(loan -> loan.getUserId().equals(userId) && loan.getStatus() != BookItemLoanStatus.CURRENT)
+                .filter(loan -> loan.getUserId().equals(userId) && loan.getStatus() != LoanStatus.CURRENT)
                 .toList();
     }
 
     @Override
-    public Page<BookItemLoan> findPageOfBookLoansByParams(Long userId, BookItemLoanStatus status, Pageable pageable) {
+    public Page<BookItemLoan> findPageOfBookLoansByParams(UserId userId, LoanStatus status, Pageable pageable) {
         List<BookItemLoan> filteredLoans = map.values().stream()
-                .filter(loan -> loan.getBookItemId().equals(userId) && loan.getStatus().equals(status))
+                .filter(loan -> loan.getUserId().equals(userId) && loan.getStatus().equals(status))
                 .toList();
 
         int start = (int) pageable.getOffset();
@@ -69,7 +72,7 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
-    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(Long userId, String query, BookItemLoanStatus status, Pageable pageable) {
+    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(UserId userId, String query, LoanStatus status, Pageable pageable) {
         // TODO: 20.02.2025 jak to zaimplementować?
         return null;
     }
@@ -83,7 +86,7 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     @Override
     public BookItemLoan save(BookItemLoan bookItemLoan) {
         if (bookItemLoan.getId() == null) {
-            bookItemLoan.setId(++id);
+            bookItemLoan.setId(new LoanId(++id));
         }
         return map.put(bookItemLoan.getId(), bookItemLoan);
     }
@@ -91,7 +94,7 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     @Override
     public long countByCreationDate(LocalDate date) {
         return map.values().stream()
-                .filter(loan -> loan.getCreationDate().toLocalDate().equals(date))
+                .filter(loan -> loan.getCreationDate().value().toLocalDate().equals(date))
                 .count();
     }
 
@@ -100,7 +103,7 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
         YearMonth currentMonth = YearMonth.now();
         return map.values().stream()
                 .filter(loan -> {
-                    LocalDate loanDate = loan.getCreationDate().toLocalDate();
+                    LocalDate loanDate = loan.getCreationDate().value().toLocalDate();
                     return YearMonth.from(loanDate).equals(currentMonth);
                 })
                 .map(BookItemLoan::getUserId)
@@ -112,11 +115,11 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     public List<Object[]> countBookItemLoansMonthly(LocalDate startDate, LocalDate endDate) {
         return map.values().stream()
                 .filter(loan -> {
-                    LocalDate loanDate = loan.getCreationDate().toLocalDate();
+                    LocalDate loanDate = loan.getCreationDate().value().toLocalDate();
                     return !loanDate.isBefore(startDate) && !loanDate.isAfter(endDate);
                 })
                 .collect(Collectors.groupingBy(
-                        loan -> YearMonth.from(loan.getCreationDate().toLocalDate()),
+                        loan -> YearMonth.from(loan.getCreationDate().value().toLocalDate()),
                         Collectors.counting()
                 ))
                 .entrySet().stream()
@@ -126,14 +129,14 @@ public class InMemoryBookItemLoanRepositoryAdapter implements BookItemLoanReposi
     }
 
     @Override
-    public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
+    public List<Object[]> countBookItemLoansDaily(LocalDate startDate, LocalDate endDate, LoanStatus status) {
         return map.values().stream()
                 .filter(loan -> {
-                    LocalDate loanDate = loan.getCreationDate().toLocalDate();
+                    LocalDate loanDate = loan.getCreationDate().value().toLocalDate();
                     return !loanDate.isBefore(startDate) && !loanDate.isAfter(endDate) && loan.getStatus() == status;
                 })
                 .collect(Collectors.groupingBy(
-                        loan -> loan.getCreationDate().getDayOfWeek().getValue(),
+                        loan -> loan.getCreationDate().value().getDayOfWeek().getValue(),
                         Collectors.counting()
                 ))
                 .entrySet().stream()

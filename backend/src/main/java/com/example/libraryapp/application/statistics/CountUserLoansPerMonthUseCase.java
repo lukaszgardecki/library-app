@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.statistics;
 
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.time.YearMonth;
@@ -11,7 +12,7 @@ import java.util.Map;
 class CountUserLoansPerMonthUseCase {
     private final StatisticsService statisticsService;
 
-    List<Integer> execute(Long userId) {
+    List<Integer> execute(UserId userId) {
         List<Integer> loansPerMonth = new ArrayList<>();
         YearMonth currentMonth = YearMonth.now();
         Map<YearMonth, Long> loanMap = statisticsService.getUserLoansPerMonth(userId);

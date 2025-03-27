@@ -35,4 +35,12 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
         WHERE bi.id = :id
     """)
     void updateStatus(Long id, BookItemStatus status);
+
+    @Modifying
+    @Query("""
+        UPDATE BookItemEntity bi
+        SET bi.barcode = :barcode
+        WHERE bi.id =:id
+    """)
+    void updateBarcode(Long id, String barcode);
 }

@@ -3,6 +3,7 @@ package com.example.libraryapp.adapter.http;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.dto.BookToSaveDto;
+import com.example.libraryapp.domain.book.model.BookId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
-        BookDto book = bookFacade.getBook(id);
+        BookDto book = bookFacade.getBook(new BookId(id));
         return ResponseEntity.ok(book);
     }
 
@@ -38,14 +39,14 @@ class BookController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookToSaveDto book) {
-        BookDto updatedBook = bookFacade.updateBook(id, book);
+        BookDto updatedBook = bookFacade.updateBook(new BookId(id), book);
         return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        bookFacade.deleteBook(id);
+        bookFacade.deleteBook(new BookId(id));
         return ResponseEntity.noContent().build();
     }
 }
