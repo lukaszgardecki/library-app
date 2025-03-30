@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopBorrowersComponent } from './top-borrowers.component';
+import { CardInProgressComponent } from './card-in-progress.component';
 
-describe('TopBorrowersComponent', () => {
-  let component: TopBorrowersComponent;
-  let fixture: ComponentFixture<TopBorrowersComponent>;
+describe('CardInProgressComponent', () => {
+  let component: CardInProgressComponent;
+  let fixture: ComponentFixture<CardInProgressComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TopBorrowersComponent]
+      imports: [CardInProgressComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TopBorrowersComponent);
+    fixture = TestBed.createComponent(CardInProgressComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

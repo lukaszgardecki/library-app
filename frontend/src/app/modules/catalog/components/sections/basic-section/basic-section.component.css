@@ -7,10 +7,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: var(--radius);
     height: 100%;
+    padding: 15px;
 }
 
 .section-header {
-    padding: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
     border-bottom: 1px solid var(--light-color);
 }
 
@@ -18,8 +20,8 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding: 15px;
-    flex: 1;
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 .section-content .lack-message {

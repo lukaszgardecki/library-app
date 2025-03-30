@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Seitengröße",
+        "PAGINATION": {
+            "PAGE_SIZE": "Seitengröße",
+            "SHOWING_ROWS": "Angezeigt {{start}}-{{end}} von {{total}} Zeilen"
+        },
         "SEARCH": "Suchen...",
         "LACK": "Keine Daten",
         "SHARE": "Teilen",
         "EXPORT": "Exportieren",
+        "TIME": {
+            "SECONDS_AGO": "vor {{time}} Sek.",
+            "MINUTES_AGO": "vor {{time}} Min.",
+            "HOURS_AGO": "vor {{time}} Std."
+        },
         "DAY": {
             "MON": {
                 "NAME": "Montag",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Zurück",
+            "BACK_TO_PENDING": "Zur\u00fcck zu ausstehenden",
             "CANCEL": "Abbrechen",
             "EDIT": "Bearbeiten",
+            "CONFIRM": "Best\u00e4tigen",
+            "COMPLETE": "Abschlie\u00dfen",
+            "ACCEPT": "Akzeptieren",
             "SAVE": "Speichern",
             "SAVE_TO_FILE": "In Datei speichern"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Best\u00e4tigung des Abschlusses der Bestellung",
+                    "BODY": "Sind Sie sicher, dass Sie diese Bestellung abschlie\u00dfen m\u00f6chten? Diese Aktion kann nicht r\u00fcckg\u00e4ngig gemacht werden."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Anmeldung",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Titel"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "Strichcode",
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Gebundene Ausgabe",
+                "PAPERBACK": "Taschenbuch",
+                "AUDIO_BOOK": "H\u00F6rbuch",
+                "EBOOK": "E-Book",
+                "NEWSPAPER": "Zeitung",
+                "MAGAZINE": "Magazin",
+                "JOURNAL": "Fachzeitschrift"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Erstellungsdatum",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Status",
                 "CURRENT": "Aktuell",
                 "COMPLETED": "Abgeschlossen"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Regal"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Neue Bestellungen",
+                "LACK": "Keine neuen Bestellungen"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In Bearbeitung",
+                "LACK": "Keine Bestellungen in Bearbeitung"
             }
         },
         "STATS": {

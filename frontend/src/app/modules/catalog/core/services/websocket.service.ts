@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, IMessage, StompHeaders } from '@stomp/stompjs';
 import { AuthenticationService } from './authentication.service';
-import { BookItemRequest } from '../../shared/models/book-item-request';
+import { BookItemRequest, WarehouseBookItemRequestListView } from '../../shared/models/book-item-request';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -97,7 +97,7 @@ export class WebsocketService {
     });
   }
 
-  sendToTopic(topic: string, item: BookItemRequest) {
+  sendToTopic(topic: string, item: WarehouseBookItemRequestListView) {
     this.stompClient.publish({ destination: topic, body: JSON.stringify(item) });
   }
 }

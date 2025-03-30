@@ -1,9 +1,9 @@
 package com.example.libraryapp.adapter.websockets;
 
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
-import com.example.libraryapp.domain.bookitemrequest.dto.BookItemRequestDto;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
+import com.example.libraryapp.domain.warehouse.dto.WarehouseBookItemRequestListViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -17,19 +17,17 @@ class WarehouseWebSocketController {
 
     @MessageMapping("/warehouse/move_to_in_progress")
     @SendTo("/queue/warehouse/remove_from_pending")
-    public BookItemRequestDto addToInProgress(@Payload BookItemRequestDto bookItemRequest) {
+    public WarehouseBookItemRequestListViewDto addToInProgress(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.IN_PROGRESS;
-        bookItemRequest.setStatus(status);
-        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getRequestId()), status);
         return bookItemRequest;
     }
 
     @MessageMapping("/warehouse/move_to_pending")
     @SendTo("/queue/warehouse/remove_from_in-progress")
-    public BookItemRequestDto addToPending(@Payload BookItemRequestDto bookItemRequest) {
+    public WarehouseBookItemRequestListViewDto addToPending(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.PENDING;
-        bookItemRequest.setStatus(status);
-        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getRequestId()), status);
         return bookItemRequest;
     }
 }

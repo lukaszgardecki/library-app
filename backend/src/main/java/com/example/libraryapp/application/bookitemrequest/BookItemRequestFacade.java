@@ -6,6 +6,7 @@ import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import com.example.libraryapp.domain.user.model.UserId;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class BookItemRequestFacade {
                 .toList();
     }
 
-    public Page<BookItemRequestDto> getPageOfBookRequestsByStatus(BookItemRequestStatus status, Pageable pageable) {
+    public Page<BookItemRequestDto> getPageOfBookRequestsByStatus(@Nullable BookItemRequestStatus status, Pageable pageable) {
         return getPageOfBookItemRequestsByStatusUseCase.execute(status, pageable)
                 .map(BookItemRequestMapper::toDto);
     }

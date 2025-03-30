@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Taille de la page",
+        "PAGINATION": {
+            "PAGE_SIZE": "Taille de la page",
+            "SHOWING_ROWS": "Affichage {{start}}-{{end}} sur {{total}} lignes"
+        },
         "SEARCH": "Rechercher...",
         "LACK": "Pas de données",
         "SHARE": "Partager",
         "EXPORT": "Exporter",
+        "TIME": {
+            "SECONDS_AGO": "il y a {{time}} s",
+            "MINUTES_AGO": "il y a {{time}} min",
+            "HOURS_AGO": "il y a {{time}} h"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lundi",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Retour",
+            "BACK_TO_PENDING": "D\u00e9placer en attente",
             "CANCEL": "Annuler",
             "EDIT": "Modifier",
+            "CONFIRM": "Confirmer",
+            "COMPLETE": "Terminer",
+            "ACCEPT": "Accepter",
             "SAVE": "Enregistrer",
             "SAVE_TO_FILE": "Enregistrer dans un fichier"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmation de finalisation de la commande",
+                    "BODY": "\u00cates-vous s\u00fbr de vouloir finaliser cette commande ? Cette action est irr\u00e9versible."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Connexion",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Titre"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "Code-barres",
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Couverture rigide",
+                "PAPERBACK": "Broch\u00E9",
+                "AUDIO_BOOK": "Livre audio",
+                "EBOOK": "Livre num\u00E9rique",
+                "NEWSPAPER": "Journal",
+                "MAGAZINE": "Magazine",
+                "JOURNAL": "Revue scientifique"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Date de création",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Statut",
                 "CURRENT": "Actuel",
                 "COMPLETED": "Terminé"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "\u00c9tag\u00e8re"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nouvelles commandes",
+                "LACK": "Aucune nouvelle commande"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "En cours de traitement",
+                "LACK": "Aucune commande en cours"
             }
         },
         "STATS": {

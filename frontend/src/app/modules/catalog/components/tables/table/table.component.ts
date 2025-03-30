@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { Sort } from '../../../shared/models/sort.interface';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +19,8 @@ import { EnumNamePipe } from '../../../../../shared/pipes/enum-name.pipe';
   styleUrl: './table.component.css'
 })
 export class TableComponent<T> {
+
+  @ContentChild(TemplateRef) rowTemplate: TemplateRef<any>;
   @Input() tableName: string = "";
   tableId: string;
   @Input() columns: { key: string; label: string; type?: string }[] = [];
@@ -37,6 +39,12 @@ export class TableComponent<T> {
   selectedSize: Size = this.pageSizes[0];
   query: string;
   currentPage: number = 0;
+  @Input() options: TableOptions = {
+    pagination: true,
+    searchField: true,
+    pageSize: true,
+    shareExportBtns: true
+  }
 
   constructor(private pdfService: PdfService) { }
 
@@ -98,6 +106,14 @@ export class TableComponent<T> {
     this.pdfService.saveAsPDF(data, this.tableId);
   }
 
+  getStartRow(page: Page<any>): number {
+    return (page.number * page.size) + 1;
+  }
+  
+  getEndRow(page: Page<any>): number {
+    return Math.min((page.number + 1) * page.size, page.totalElements);
+  }
+
   private updateTable(): void {
     let event: TableUpdateEvent = { 
       page: this.currentPage, 
@@ -109,4 +125,9 @@ export class TableComponent<T> {
   }
 }
 
-
+export interface TableOptions {
+  pagination: boolean
+  pageSize: boolean
+  searchField: boolean
+  shareExportBtns: boolean
+}

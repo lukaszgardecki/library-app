@@ -9,7 +9,6 @@ import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/
 import { AnnualActivityChartComponent } from '../../components/charts/annual-activity-chart/annual-activity-chart.component';
 import { WeeklyActivityChartComponent } from "../../components/charts/weekly-activity-chart/weekly-activity-chart.component";
 import { RegistrationFormComponent } from "../../components/registration-form/registration-form.component";
-import { TopBorrowersComponent } from "../../components/tables/top-borrowers/top-borrowers.component";
 import { UsersAgeGroupsChartComponent } from "../../components/charts/users-age-groups-chart/users-age-groups-chart.component";
 import { TopCitiesComponent } from "../../components/tables/top-cities/top-cities.component";
 import { Observable } from 'rxjs';
@@ -25,7 +24,7 @@ import { BasicSectionComponent } from "../../components/sections/basic-section/b
     CommonModule, TranslateModule, RouterModule,
     TableComponent, FavGenreChartComponent, AnnualActivityChartComponent,
     WeeklyActivityChartComponent, RegistrationFormComponent,
-    TopBorrowersComponent, UsersAgeGroupsChartComponent,
+    UsersAgeGroupsChartComponent,
     TopCitiesComponent,
     BasicSectionComponent
 ],

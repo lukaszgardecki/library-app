@@ -25,10 +25,6 @@ export class BookItemRequestService {
     return this.http.get<Page<BookItemRequest>>(`${this.baseURL}`, { params: params, withCredentials: true });
   }
 
-  completeRequest(bookItemRequestId: number): Observable<BookItemRequest> {
-    return this.http.post<BookItemRequest>(`${this.baseURL}/book-requests/${bookItemRequestId}/ready`, {}, { withCredentials: true });
-  }
-
   private createParams(status: BookItemRequestStatus | null, query: string | null, pageable: Pageable): HttpParams {
     let params = new HttpParams();
     const page = pageable.page;

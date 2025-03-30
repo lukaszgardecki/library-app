@@ -1,14 +1,20 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-basic-section',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './basic-section.component.html',
   styleUrl: './basic-section.component.css'
 })
 export class BasicSectionComponent {
-  @Input() name: String;
-  @HostBinding('class') classList = 'p-2';
+  @Input() name: string;
+  @Output() onScroll = new EventEmitter();
 
+
+  scroll(event: any): void {
+    this.onScroll.emit(event)
+  }
 }

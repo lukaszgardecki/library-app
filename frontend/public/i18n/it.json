@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Dimensione pagina",
+        "PAGINATION": {
+            "PAGE_SIZE": "Dimensione pagina",
+            "SHOWING_ROWS": "Mostrando {{start}}-{{end}} di {{total}} righe"
+        },
         "SEARCH": "Cerca...",
         "LACK": "Nessun dato",
         "SHARE": "Condividi",
         "EXPORT": "Esporta",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sec fa",
+            "MINUTES_AGO": "{{time}} min fa",
+            "HOURS_AGO": "{{time}} h fa"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lunedì",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Indietro",
+            "BACK_TO_PENDING": "Sposta in sospeso",
             "CANCEL": "Annulla",
             "EDIT": "Modifica",
+            "CONFIRM": "Conferma",
+            "COMPLETE": "Completa",
+            "ACCEPT": "Accetta",
             "SAVE": "Salva",
             "SAVE_TO_FILE": "Salva su file"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Conferma completamento ordine",
+                    "BODY": "Sei sicuro di voler completare questo ordine? Questa azione non pu\u00f2 essere annullata."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Accesso",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Titolo"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "Codice a barre",
+            "FORMAT": {
+                "NAME": "Formato",
+                "HARDCOVER": "Copertina rigida",
+                "PAPERBACK": "Brossura",
+                "AUDIO_BOOK": "Audiolibro",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Giornale",
+                "MAGAZINE": "Rivista",
+                "JOURNAL": "Rivista scientifica"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Data di creazione",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Stato",
                 "CURRENT": "Attuale",
                 "COMPLETED": "Completato"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Scaffale"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nuovi ordini",
+                "LACK": "Nessun nuovo ordine"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In corso",
+                "LACK": "Nessun ordine in corso"
             }
         },
         "STATS": {

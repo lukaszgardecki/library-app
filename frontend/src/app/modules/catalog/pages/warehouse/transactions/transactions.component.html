@@ -1,48 +1,55 @@
-<div class="container-fluid">
+<div class="container-fluid h-100 d-flex flex-column">
 
-    <div class="row a">
-        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
-            <ng-container *ngIf="pendingRequestsPage$ | async as requestPage; else lack">
-                <app-table
-                    *ngIf="requestPage && requestPage.content; else lack"
-                    [tableName]="'warehouse-pending-requests'"
-                    [columns]="[
-                        { key: 'id', label: 'ID' },
-                        { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
-                        { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
-                    ]"
-                    [data]="requestPage.content || []"
-                    [page]="requestPage"
-                    (onUpdate)="updatePendingRequests($event)"
-                    (onRowClick)="accept($event)"
-                ></app-table>
+    <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.TRANSACTIONS' | translate }}</h1>
+
+    <div class="row flex-grow-1" style="height: 0;">
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.PENDING_REQUESTS.HEADER' | translate" (onScroll)="onScroll($event)">
+            <ng-container *ngIf="pendingRequestsPage$ | async as requestPage">
+                <div *ngIf="requestPage.content.length > 0; else lackPending">
+                    <app-card-pending
+                        *ngFor="let request of requestPage.content;let i = index"
+                        [request]="request"
+                        [number]="i+1"
+                        [selectedRequest]="selectedPendingEl"
+                        (onSelect)="activePendingRequest($event)"
+                        (onAccept)="accept($event)"
+                    ></app-card-pending>
+                </div>
             </ng-container>
         </app-basic-section>
 
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.IN_PROGRESS_REQUESTS.HEADER' | translate ">
+            <ng-container *ngIf="inProgressRequestsPage$ | async as requestPage">
+                <div *ngIf="requestPage.content.length > 0; else lackInProgress">
+                    <app-card-in-progress
+                            *ngFor="let request of requestPage.content;let i = index"
+                            [request]="request"
+                            [number]="i+1"
+                            [selectedRequest]="selectedInProgressEl"
+                            (onSelect)="activeInProgressRequest($event)"
+                            (onBackToPending)="backToPending($event)"
+                    ></app-card-in-progress>
 
-        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
-            <ng-container *ngIf="inProgressRequestsPage$ | async as requestPage; else lack">
-                <app-table
-                    *ngIf="requestPage && requestPage.content; else lack"
-                    [tableName]="'warehouse-pending-requests'"
-                    [columns]="[
-                        { key: 'id', label: 'ID' },
-                        { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
-                        { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
-                    ]"
-                    [data]="requestPage.content || []"
-                    [page]="requestPage"
-                    (onUpdate)="updateInProgressRequests($event)"
-                    (onRowClick)="backToPending($event)"
-                ></app-table>
+                    <app-confirm-modal-dialog
+                        [title]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE'"
+                        [body]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY'"
+                        (onConfirm)="completeSelectedRequest()"
+                    ></app-confirm-modal-dialog>
+                </div>
             </ng-container>
         </app-basic-section>
     </div>
 
 </div>
 
-<ng-template #lack>
+<ng-template #lackPending>
     <div class="lack-message">
-        {{  'DATA.LACK' | translate }}
+        {{  'CAT.WAREHOUSE.PENDING_REQUESTS.LACK' | translate }}
+    </div>
+</ng-template>
+
+<ng-template #lackInProgress>
+    <div class="lack-message">
+        {{  'CAT.WAREHOUSE.IN_PROGRESS_REQUESTS.LACK' | translate }}
     </div>
 </ng-template>

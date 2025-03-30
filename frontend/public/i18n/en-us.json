@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Page size",
+        "PAGINATION": {
+            "PAGE_SIZE": "Page size",
+            "SHOWING_ROWS": "Showing {{start}}-{{end}} of {{total}} rows"
+        },
         "SEARCH": "Search...",
         "LACK": "No data",
         "SHARE": "Share",
         "EXPORT": "Export",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sec. ago",
+            "MINUTES_AGO": "{{time}} min. ago",
+            "HOURS_AGO": "{{time}} hr. ago"
+        },
         "DAY": {
             "MON": {
                 "NAME": "Monday",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Back",
+            "BACK_TO_PENDING": "Move to pending",
             "CANCEL": "Cancel",
             "EDIT": "Edit",
+            "CONFIRM": "Confirm",
+            "COMPLETE": "Complete",
+            "ACCEPT": "Accept",
             "SAVE": "Save",
             "SAVE_TO_FILE": "Save to file"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Order Completion Confirmation",
+                    "BODY": "Are you sure you want to complete this order? This action cannot be undone."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Login",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Title"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "Barcode",
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Hardcover",
+                "PAPERBACK": "Paperback",
+                "AUDIO_BOOK": "Audiobook",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Newspaper",
+                "MAGAZINE": "Magazine",
+                "JOURNAL": "Journal"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Creation Date",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Status",
                 "CURRENT": "Current",
                 "COMPLETED": "Completed"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Rack"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "New Orders",
+                "LACK": "No new orders"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In Progress",
+                "LACK": "No orders in progress"
             }
         },
         "STATS": {

@@ -11,9 +11,15 @@ th:hover {
   outline-offset: -2px;
 }
 
+tr {
+  font-size: 0.9rem;
+}
+
 tr:hover {
   cursor: pointer;
 }
+
+/* td {padding-top: 50px;} */
 
 .col-title {
   text-align: left;

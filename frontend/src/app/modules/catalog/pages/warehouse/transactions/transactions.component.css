@@ -1,9 +1,29 @@
-.a {
-    height: 100vh;
+app-basic-section {
+    height: 100%;
+}
+app-basic-section:first-child {flex: 0 0 40%;}
+app-basic-section:last-child {flex: 0 0 60%;}
+
+app-card-pending,
+app-card-in-progress {
+    display: block;
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+  
+app-card-pending:nth-child(odd),
+app-card-in-progress:nth-child(odd) {
+    background-color: rgba(241, 241, 241, 0.8); 
 }
 
-@media (min-width: 992px) {
-    .a {
-        height: 50vh;
-    }
+app-card-pending:nth-child(even),
+app-card-in-progress:nth-child(even) {
+    background-color: white;
+}
+
+.lack-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 }

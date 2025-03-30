@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Velikost stránky",
+        "PAGINATION": {
+            "PAGE_SIZE": "Velikost stránky",
+            "SHOWING_ROWS": "Zobrazeno {{start}}-{{end}} z {{total}} \u0159\u00e1dk\u016f"
+        },
         "SEARCH": "Hledat...",
         "LACK": "Nedostatek dat",
         "SHARE": "Sdílet",
         "EXPORT": "Exportovat",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} s p\u0159ed",
+            "MINUTES_AGO": "{{time}} min p\u0159ed",
+            "HOURS_AGO": "{{time}} hod. p\u0159ed"
+        },
         "DAY": {
             "MON": {
                 "NAME": "pondělí",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Zpět",
+            "BACK_TO_PENDING": "P\u0159esunout do \u010dekaj\u00edc\u00edch",
             "CANCEL": "Zrušit",
             "EDIT": "Upravit",
+            "CONFIRM": "Potvrdit",
+            "COMPLETE": "Dokon\u010dit",
+            "ACCEPT": "P\u0159ijmout",
             "SAVE": "Uložit",
             "SAVE_TO_FILE": "Uložit do souboru"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Potvrzen\u00ed dokon\u010den\u00ed objedn\u00e1vky",
+                    "BODY": "Opravdu chcete dokon\u010dit tuto objedn\u00e1vku? Tuto akci nelze vr\u00e1tit zp\u011bt."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Přihlášení",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Název"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "K\u00f3d \u010d\u00e1rov\u00fd",
+            "FORMAT": {
+                "NAME": "Form\u00e1t",
+                "HARDCOVER": "\u010C\u00E1st\u011B v pevn\u00E9 vazb\u011B",
+                "PAPERBACK": "M\u011Bkk\u00E1 vazba",
+                "AUDIO_BOOK": "Audiokniha",
+                "EBOOK": "Elektronick\u00E1 kniha",
+                "NEWSPAPER": "Noviny",
+                "MAGAZINE": "\u010Casopis",
+                "JOURNAL": "\u010Casopis odborn\u00FD"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Datum vytvoření",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Stav",
                 "CURRENT": "Aktuální",
                 "COMPLETED": "Dokončeno"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Reg\u00e1l"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nov\u00e9 objedn\u00e1vky",
+                "LACK": "Nen\u00ed \u017e\u00e1dn\u00e9 nov\u00e9 objedn\u00e1vky"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "Prob\u00edhaj\u00edc\u00ed objedn\u00e1vky",
+                "LACK": "Nen\u00ed \u017e\u00e1dn\u00e9 prob\u00edhaj\u00edc\u00ed objedn\u00e1vky"
             }
         },
         "STATS": {

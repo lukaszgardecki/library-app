@@ -29,7 +29,7 @@ class BookRequestController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id.value")
     public ResponseEntity<BookItemRequestDto> requestBookItem(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId

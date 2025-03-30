@@ -1,9 +1,9 @@
 export enum BookItemFormat {
-    HARDCOVER,
-    PAPERBACK,
-    AUDIO_BOOK,
-    EBOOK,
-    NEWSPAPER,
-    MAGAZINE,
-    JOURNAL
+    HARDCOVER = "HARDCOVER",
+    PAPERBACK = "PAPERBACK",
+    AUDIO_BOOK = "AUDIO_BOOK",
+    EBOOK = "EBOOK",
+    NEWSPAPER = "NEWSPAPER",
+    MAGAZINE = "MAGAZINE",
+    JOURNAL = "JOURNAL"
 }

@@ -90,8 +90,9 @@
     </app-basic-section>
 
     <app-basic-section class="col-12 col-xl-6 col-xxl-3" [name]="'CAT.STATS.USERS_TOP_BORROWERS' | translate">
-      <app-top-borrowers
+      <app-table
         *ngIf="usersStats$ | async as stats; else lack"
+        [tableName]="'top-users-list'"
         [columns]="[
             { key: 'rank', label: 'CAT.STATS.RANK' },
             { key: 'fullName', label: 'CAT.USER.BORROWER' },
@@ -99,7 +100,13 @@
         ]"
         [data]="stats.topBorrowers || []"
         (onRowClick)="showDetails($event)"
-      ></app-top-borrowers>
+        [options]="{
+          pagination: false,
+          searchField: false,
+          pageSize: false,
+          shareExportBtns: false
+        }"
+    ></app-table>
     </app-basic-section>
 
     <app-basic-section class="col-md-6 col-sm-12 col-12 col-xxl-3" [name]="'CAT.STATS.USERS_AGE_GROUPS.HEADER' | translate">

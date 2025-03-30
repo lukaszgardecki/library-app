@@ -1,6 +1,6 @@
 <div class="content">
-    <div class="section-header">{{ name }}</div>
-    <div class="section-content">
+    <div *ngIf="name" class="section-header">{{ name | translate }}</div>
+    <div class="section-content" (scroll)="scroll($event)">
         <ng-content></ng-content>
     </div>
 </div>

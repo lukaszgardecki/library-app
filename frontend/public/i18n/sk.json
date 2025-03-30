@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Veľkosť stránky",
+        "PAGINATION": {
+            "PAGE_SIZE": "Veľkosť stránky",
+            "SHOWING_ROWS": "Zobrazen\u00e9 {{start}}-{{end}} z {{total}} riadkov"
+        },
         "SEARCH": "Hľadať...",
         "LACK": "Žiadne údaje",
         "SHARE": "Zdieľať",
         "EXPORT": "Exportovať",
+        "TIME": {
+            "SECONDS_AGO": "pred {{time}} s",
+            "MINUTES_AGO": "pred {{time}} min",
+            "HOURS_AGO": "pred {{time}} hod"
+        },
         "DAY": {
             "MON": {
                 "NAME": "pondelok",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Späť",
+            "BACK_TO_PENDING": "Presun\u00fa\u0165 do \u010dakaj\u00facich",
             "CANCEL": "Zrušiť",
             "EDIT": "Upraviť",
+            "CONFIRM": "Potvrdi\u0165",
+            "COMPLETE": "Dokon\u010di\u0165",
+            "ACCEPT": "Prija\u0165",
             "SAVE": "Uložiť",
             "SAVE_TO_FILE": "Uložiť do súboru"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Potvrdenie dokon\u010denia objedn\u00e1vky",
+                    "BODY": "Naozaj chcete dokon\u010di\u0165 t\u00fato objedn\u00e1vku? T\u00fato akciu nie je mo\u017en\u00e9 vr\u00e1ti\u0165 sp\u00e4\u0165."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Prihlásenie",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Názov"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "\u010c\u00edarov\u00fd k\u00f3d",
+            "FORMAT": {
+                "NAME": "Form\u00e1t",
+                "HARDCOVER": "Tvrd\u00E1 v\u00E4zba",
+                "PAPERBACK": "M\u00E4kk\u00E1 v\u00E4zba",
+                "AUDIO_BOOK": "Audiokniha",
+                "EBOOK": "Elektronick\u00E1 kniha",
+                "NEWSPAPER": "Noviny",
+                "MAGAZINE": "\u010Casopis",
+                "JOURNAL": "Odborn\u00FD \u010Dasopis"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Dátum vytvorenia",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Stav",
                 "CURRENT": "Aktuálne",
                 "COMPLETED": "Dokončené"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Reg\u00e1l"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nov\u00e9 objedn\u00e1vky",
+                "LACK": "Ch\u00fdbaj\u00fa nov\u00e9 objedn\u00e1vky"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "Prebiehaj\u00face objedn\u00e1vky",
+                "LACK": "Ch\u00fdbaj\u00fa prebiehaj\u00face objedn\u00e1vky"
             }
         },
         "STATS": {

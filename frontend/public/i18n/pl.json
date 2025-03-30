@@ -1,10 +1,18 @@
-{
+{   
     "DATA": {
-        "PAGE_SIZE": "Rozmiar strony",
+        "PAGINATION": {
+            "PAGE_SIZE": "Rozmiar strony",
+            "SHOWING_ROWS": "Wyświetlono od {{start}} do {{end}} z {{total}} wierszy"
+        },
         "SEARCH": "Szukaj...",
         "LACK": "Brak danych",
         "SHARE": "Udostępnij",
         "EXPORT": "Eksportuj",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sek. temu",
+            "MINUTES_AGO": "{{time}} min temu",
+            "HOURS_AGO": "{{time}} godz. temu"
+        },
         "DAY": {
             "MON": {
                 "NAME": "poniedziałek",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Wróć",
+            "BACK_TO_PENDING": "Przenieś do oczekujących",
             "CANCEL": "Anuluj",
             "EDIT": "Edytuj",
+            "CONFIRM": "Potwierdź",
+            "COMPLETE": "Zakończ",
+            "ACCEPT": "Akceptuj",
             "SAVE": "Zapisz",
             "SAVE_TO_FILE": "Zapisz do pliku"
+        },
+        "DIALOG":{
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Potwierdzenie zakończenia zamówienia",
+                    "BODY": "Czy na pewno chcesz zakończyć to zamówienie? Tego działania nie można cofnąć."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Logowanie",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Tytuł"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "Kod kreskowy",
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Twarda oprawa",
+                "PAPERBACK": "Miękka oprawa",
+                "AUDIO_BOOK": "Audiobook",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Gazeta",
+                "MAGAZINE": "Magazyn",
+                "JOURNAL": "Czasopismo"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Data utworzenia",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Status",
                 "CURRENT": "Aktualne",
                 "COMPLETED": "Zakończone"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Regał"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nowe zamówienia",
+                "LACK": "Brak nowych zamówień"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "W trakcie realizacji",
+                "LACK": "Brak zamówień w trakcie realizacji"
             }
         },
         "STATS": {

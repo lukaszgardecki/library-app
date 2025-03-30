@@ -1,14 +1,20 @@
-<div class="container-fluid">
+<div class="container-fluid h-100 d-flex flex-column">
 
-    <app-basic-section class="col-12" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate ">
+    <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.HISTORY' | translate }}</h1>
+
+    <app-basic-section class="col-12 flex-grow-1" style="height: 0;">
         <ng-container *ngIf="allRequestsPage$ | async as requestPage; else lack">
             <app-table
+                class="h-100"
                 *ngIf="requestPage && requestPage.content; else lack"
                 [tableName]="'warehouse-pending-requests'"
                 [columns]="[
-                    { key: 'id', label: 'ID' },
+                    { key: 'requestId', label: 'ID' },
                     { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
-                    { key: 'status', label: 'CAT.REQUEST.STATUS.NAME', type: 'book-item-request-status' }
+                    { key: 'bookTitle', label: 'Tytuł' },
+                    { key: 'bookItemFormat', label: 'Format', type: 'book-item-format' },
+                    { key: 'status', label: 'Status', type: 'book-item-request-status' },
+                    { key: 'rackLocationId', label: 'Nr regału' },
                 ]"
                 [data]="requestPage.content || []"
                 [page]="requestPage"

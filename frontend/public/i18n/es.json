@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Tamaño de página",
+        "PAGINATION": {
+            "PAGE_SIZE": "Tamaño de página",
+            "SHOWING_ROWS": "Mostrando {{start}}-{{end}} de {{total}} filas"
+        },
         "SEARCH": "Buscar...",
         "LACK": "Falta de datos",
         "SHARE": "Compartir",
         "EXPORT": "Exportar",
+        "TIME": {
+            "SECONDS_AGO": "hace {{time}} s",
+            "MINUTES_AGO": "hace {{time}} min",
+            "HOURS_AGO": "hace {{time}} h"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lunes",
@@ -89,10 +97,22 @@
     "CAT": {
         "BTN": {
             "BACK": "Volver",
+            "BACK_TO_PENDING": "Mover a pendientes",
             "CANCEL": "Cancelar",
             "EDIT": "Editar",
+            "CONFIRM": "Confirmar",
+            "COMPLETE": "Finalizar",
+            "ACCEPT": "Aceptar",
             "SAVE": "Guardar",
             "SAVE_TO_FILE": "Guardar en archivo"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmaci\u00f3n de finalizaci\u00f3n del pedido",
+                    "BODY": "\u00bfEst\u00e1s seguro de que deseas finalizar este pedido? Esta acci\u00f3n no se puede deshacer."
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Iniciar sesión",
@@ -220,6 +240,19 @@
         "BOOK": {
             "TITLE": "Título"
         },
+        "BOOK_ITEM": {
+            "BARCODE": "C\u00f3digo de barras",
+            "FORMAT": {
+                "NAME": "Formato",
+                "HARDCOVER": "Tapa dura",
+                "PAPERBACK": "Tapa blanda",
+                "AUDIO_BOOK": "Audiolibro",
+                "EBOOK": "Libro electr\u00F3nico",
+                "NEWSPAPER": "Peri\u00F3dico",
+                "MAGAZINE": "Revista",
+                "JOURNAL": "Revista cient\u00EDfica"
+            }
+        },
         "REQUEST": {
             "CREATION_DATE": "Fecha de creación",
             "STATUS": {
@@ -239,6 +272,19 @@
                 "NAME": "Estado",
                 "CURRENT": "Actual",
                 "COMPLETED": "Completado"
+            }
+        },
+        "RACK": {
+            "LOCATION_ID": "Estante"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nuevos pedidos",
+                "LACK": "No hay nuevos pedidos"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "En proceso",
+                "LACK": "No hay pedidos en proceso"
             }
         },
         "STATS": {
