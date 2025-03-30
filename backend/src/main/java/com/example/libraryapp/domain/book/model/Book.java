@@ -17,4 +17,6 @@ public class Book {
     private Isbn ISBN;
     private Language language;
     private Pages pages;
+    private BookFormat format;
+    private PublicationDate publicationDate;
 }

@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.warehouse.dto;
 
-import com.example.libraryapp.domain.bookitem.model.BookItemFormat;
+import com.example.libraryapp.domain.book.model.BookFormat;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +17,6 @@ public class WarehouseBookItemRequestListViewDto {
     private final LocalDateTime creationDate;
     private final String bookTitle;
     private final String barcode;
-    private final BookItemFormat bookItemFormat;
+    private final BookFormat bookFormat;
     private final String rackLocationId;
 }

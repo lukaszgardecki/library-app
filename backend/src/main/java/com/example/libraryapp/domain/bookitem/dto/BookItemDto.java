@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.bookitem.dto;
 
-import com.example.libraryapp.domain.bookitem.model.BookItemFormat;
+import com.example.libraryapp.domain.book.model.BookFormat;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import lombok.*;
 
@@ -18,10 +18,8 @@ public class BookItemDto {
     private LocalDate borrowed;
     private LocalDate dueDate;
     private BigDecimal price;
-    private BookItemFormat format;
     private BookItemStatus status;
     private LocalDate dateOfPurchase;
-    private LocalDate publicationDate;
     private Long bookId;
     private Long rackId;
 }

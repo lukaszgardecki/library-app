@@ -5,7 +5,7 @@ import { AccountStatus } from '../../modules/catalog/shared/enums/account-status
 import { Role } from '../../modules/catalog/shared/enums/role.enum';
 import { BookItemLoanStatus } from '../../modules/catalog/shared/enums/book-item-loan-status';
 import { BookItemRequestStatus } from '../../modules/catalog/shared/enums/book-item-request-status';
-import { BookItemFormat } from '../enums/book-item-format';
+import { BookFormat } from '../enums/book-format';
 
 @Pipe({
   name: 'enumName',
@@ -54,14 +54,14 @@ export class EnumNamePipe implements PipeTransform {
     [BookItemRequestStatus.CANCELED]: 'CAT.REQUEST.STATUS.CANCELED'
   }
 
-  private bookItemFormatMap: { [key in BookItemFormat]: string } = {
-    [BookItemFormat.HARDCOVER]: 'CAT.BOOK_ITEM.FORMAT.HARDCOVER',
-    [BookItemFormat.PAPERBACK]: 'CAT.BOOK_ITEM.FORMAT.PAPERBACK',
-    [BookItemFormat.AUDIO_BOOK]: 'CAT.BOOK_ITEM.FORMAT.AUDIO_BOOK',
-    [BookItemFormat.EBOOK]: 'CAT.BOOK_ITEM.FORMAT.EBOOK',
-    [BookItemFormat.NEWSPAPER]: 'CAT.BOOK_ITEM.FORMAT.NEWSPAPER',
-    [BookItemFormat.MAGAZINE]: 'CAT.BOOK_ITEM.FORMAT.MAGAZINE',
-    [BookItemFormat.JOURNAL]: 'CAT.BOOK_ITEM.FORMAT.JOURNAL'
+  private bookItemFormatMap: { [key in BookFormat]: string } = {
+    [BookFormat.HARDCOVER]: 'CAT.BOOK_ITEM.FORMAT.HARDCOVER',
+    [BookFormat.PAPERBACK]: 'CAT.BOOK_ITEM.FORMAT.PAPERBACK',
+    [BookFormat.AUDIO_BOOK]: 'CAT.BOOK_ITEM.FORMAT.AUDIO_BOOK',
+    [BookFormat.EBOOK]: 'CAT.BOOK_ITEM.FORMAT.EBOOK',
+    [BookFormat.NEWSPAPER]: 'CAT.BOOK_ITEM.FORMAT.NEWSPAPER',
+    [BookFormat.MAGAZINE]: 'CAT.BOOK_ITEM.FORMAT.MAGAZINE',
+    [BookFormat.JOURNAL]: 'CAT.BOOK_ITEM.FORMAT.JOURNAL'
   }
 
   transform(value?: any, type?: string): string {
@@ -74,7 +74,7 @@ export class EnumNamePipe implements PipeTransform {
       case "role": return this.rolesMap[value as Role] || 'Unknown role';
       case "book-item-loan-status": return this.loanStatusMap[value as BookItemLoanStatus] || 'Unknown book item loan status';
       case "book-item-request-status": return this.requestStatusMap[value as BookItemRequestStatus] || 'Unknown book item request status';
-      case "book-item-format": return this.bookItemFormatMap[value as BookItemFormat] || 'Unknown book item format';
+      case "book-format": return this.bookItemFormatMap[value as BookFormat] || 'Unknown book item format';
       default: return value;
     }
   }

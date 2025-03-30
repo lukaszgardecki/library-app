@@ -1,6 +1,6 @@
-package com.example.libraryapp.domain.bookitem.model;
+package com.example.libraryapp.domain.book.model;
 
-public enum BookItemFormat {
+public enum BookFormat {
     HARDCOVER,
     PAPERBACK,
     AUDIO_BOOK,

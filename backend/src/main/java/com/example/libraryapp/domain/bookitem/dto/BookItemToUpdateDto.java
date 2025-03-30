@@ -4,7 +4,6 @@ import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
-import com.example.libraryapp.domain.bookitemloan.model.LoanReturnDate;
 import com.example.libraryapp.domain.rack.model.RackId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,10 +22,8 @@ public class BookItemToUpdateDto {
     private LocalDate borrowed;
     private LocalDate dueDate;
     private BigDecimal price;
-    private BookItemFormat format;
     private BookItemStatus status;
     private LocalDate dateOfPurchase;
-    private LocalDate publicationDate;
     private Long bookId;
     private Long rackId;
 
@@ -36,10 +33,8 @@ public class BookItemToUpdateDto {
                 .borrowedDate(new LoanCreationDate(borrowed.atStartOfDay()))
                 .dueDate(new LoanDueDate(dueDate.atStartOfDay()))
                 .price(new Price(price))
-                .format(format)
                 .status(status)
                 .dateOfPurchase(new PurchaseDate(dateOfPurchase))
-                .publicationDate(new PublicationDate(publicationDate))
                 .bookId(new BookId(bookId))
                 .rackId(new RackId(rackId))
                 .build();

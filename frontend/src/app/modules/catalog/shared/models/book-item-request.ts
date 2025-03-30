@@ -1,4 +1,4 @@
-import { BookItemFormat } from "../../../../shared/enums/book-item-format"
+import { BookFormat as BookFormat } from "../../../../shared/enums/book-format"
 import { BookItemRequestStatus } from "../enums/book-item-request-status"
 
 export class BookItemRequest {
@@ -15,6 +15,6 @@ export interface WarehouseBookItemRequestListView {
     creationDate: Date
     bookTitle: string
     barcode: String
-    bookItemFormat: BookItemFormat
+    bookFormat: BookFormat
     rackLocationId: string
 }

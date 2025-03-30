@@ -1,7 +1,10 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.book;
 
+import com.example.libraryapp.domain.book.model.BookFormat;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "book")
@@ -20,4 +23,9 @@ class BookEntity {
     private String ISBN;
     private String language;
     private Integer pages;
+
+    @Enumerated(EnumType.STRING)
+    private BookFormat format;
+
+    private LocalDate publicationDate;
 }

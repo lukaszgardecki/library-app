@@ -1,4 +1,4 @@
-import { BookItemFormat } from "../enums/book-item-format";
+import { BookFormat } from "../enums/book-format";
 import { BookItemStatus } from "../enums/book-item-status";
 import { Book } from "./book";
 
@@ -11,7 +11,7 @@ export class BookItem {
     borrowed: Date;
     dueDate: Date;
     price: BigInt;
-    format: BookItemFormat;
+    format: BookFormat;
     status: BookItemStatus;
     dateOfPurchase: Date;
     publicationDate: Date;

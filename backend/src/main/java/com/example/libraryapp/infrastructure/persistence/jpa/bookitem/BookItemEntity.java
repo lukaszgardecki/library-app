@@ -1,6 +1,5 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitem;
 
-import com.example.libraryapp.domain.bookitem.model.BookItemFormat;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,13 +25,9 @@ class BookItemEntity {
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    private BookItemFormat format;
-
-    @Enumerated(EnumType.STRING)
     private BookItemStatus status;
 
     private LocalDate dateOfPurchase;
-    private LocalDate publicationDate;
     private Long bookId;
     private Long rackId;
 }

@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.bookitem.model;
+package com.example.libraryapp.domain.book.model;
 
 import java.time.LocalDate;
 

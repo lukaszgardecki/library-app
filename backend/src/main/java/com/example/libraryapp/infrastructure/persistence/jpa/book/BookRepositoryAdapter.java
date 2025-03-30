@@ -2,6 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.book;
 
 import com.example.libraryapp.domain.book.model.*;
 import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
+import com.example.libraryapp.domain.book.model.PublicationDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,9 @@ class BookRepositoryAdapter implements BookRepositoryPort {
                 model.getPublisher().value(),
                 model.getISBN().value(),
                 model.getLanguage().value(),
-                model.getPages().value()
+                model.getPages().value(),
+                model.getFormat(),
+                model.getPublicationDate().value()
         );
     }
 
@@ -50,7 +53,9 @@ class BookRepositoryAdapter implements BookRepositoryPort {
                 new Publisher(entity.getPublisher()),
                 new Isbn(entity.getISBN()),
                 new Language(entity.getLanguage()),
-                new Pages(entity.getPages())
+                new Pages(entity.getPages()),
+                entity.getFormat(),
+                new PublicationDate(entity.getPublicationDate())
         );
     }
 }

@@ -1,6 +1,9 @@
 package com.example.libraryapp.domain.book.dto;
 
+import com.example.libraryapp.domain.book.model.BookFormat;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,4 +16,6 @@ public class BookToSaveDto {
     private String ISBN;
     private String language;
     private Integer pages;
+    private BookFormat format;
+    private LocalDate publicationDate;
 }

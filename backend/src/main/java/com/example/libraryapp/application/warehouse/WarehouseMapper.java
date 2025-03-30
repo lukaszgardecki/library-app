@@ -12,7 +12,7 @@ class WarehouseMapper {
                 model.getBookItemRequest().getCreationDate(),
                 model.getBook().getTitle(),
                 model.getBookItem().getBarcode(),
-                model.getBookItem().getFormat(),
+                model.getBook().getFormat(),
                 model.getRack().getLocationIdentifier()
         );
     }

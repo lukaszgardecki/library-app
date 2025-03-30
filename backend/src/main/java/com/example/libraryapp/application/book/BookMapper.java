@@ -15,6 +15,8 @@ class BookMapper {
                 .ISBN(book.getISBN().value())
                 .language(book.getLanguage().value())
                 .pages(book.getPages().value())
+                .format(book.getFormat())
+                .publicationDate(book.getPublicationDate().value())
                 .build();
     }
 
@@ -27,6 +29,8 @@ class BookMapper {
                 .ISBN(new Isbn(dto.getISBN()))
                 .language(new Language(dto.getLanguage()))
                 .pages(new Pages(dto.getPages()))
+                .format(dto.getFormat())
+                .publicationDate(new PublicationDate(dto.getPublicationDate()))
                 .build();
     }
 
@@ -38,6 +42,8 @@ class BookMapper {
                 .ISBN(new Isbn(dto.getISBN()))
                 .language(new Language(dto.getLanguage()))
                 .pages(new Pages(dto.getPages()))
+                .format(dto.getFormat())
+                .publicationDate(new PublicationDate(dto.getPublicationDate()))
                 .build();
     }
 }

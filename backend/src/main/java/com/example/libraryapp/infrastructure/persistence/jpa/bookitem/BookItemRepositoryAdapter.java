@@ -5,7 +5,6 @@ import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
-import com.example.libraryapp.domain.bookitemloan.model.LoanReturnDate;
 import com.example.libraryapp.domain.rack.model.RackId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -72,10 +71,8 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .borrowed(model.getBorrowedDate() != null ? model.getBorrowedDate().value().toLocalDate() : null)
                 .dueDate(model.getDueDate() != null ? model.getDueDate().value().toLocalDate() : null)
                 .price(model.getPrice().value())
-                .format(model.getFormat())
                 .status(model.getStatus())
                 .dateOfPurchase(model.getDateOfPurchase().value())
-                .publicationDate(model.getPublicationDate().value())
                 .bookId(model.getBookId().value())
                 .rackId(model.getRackId().value())
                 .build();
@@ -89,10 +86,8 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .borrowedDate(new LoanCreationDate(entity.getBorrowed() != null ? entity.getBorrowed().atStartOfDay() : null ))
                 .dueDate(new LoanDueDate(entity.getDueDate() != null ? entity.getDueDate().atStartOfDay() : null ))
                 .price(new Price(entity.getPrice()))
-                .format(entity.getFormat())
                 .status(entity.getStatus())
                 .dateOfPurchase(new PurchaseDate(entity.getDateOfPurchase()))
-                .publicationDate(new PublicationDate(entity.getPublicationDate()))
                 .bookId(new BookId(entity.getBookId()))
                 .rackId(new RackId(entity.getRackId()))
                 .build();
