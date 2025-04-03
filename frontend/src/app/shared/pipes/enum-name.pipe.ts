@@ -6,12 +6,29 @@ import { Role } from '../../modules/catalog/shared/enums/role.enum';
 import { BookItemLoanStatus } from '../../modules/catalog/shared/enums/book-item-loan-status';
 import { BookItemRequestStatus } from '../../modules/catalog/shared/enums/book-item-request-status';
 import { BookFormat } from '../enums/book-format';
+import { BookItemStatus } from '../enums/book-item-status';
 
 @Pipe({
   name: 'enumName',
   standalone: true
 })
 export class EnumNamePipe implements PipeTransform {
+
+  transform(value?: any, type?: string): string {
+    if (!type) return value;
+
+    switch(type) {
+      case "account": return this.accountStatusMap[value as AccountStatus] || 'Unknown account status';
+      case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
+      case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
+      case "role": return this.rolesMap[value as Role] || 'Unknown role';
+      case "book-item-status": return this.bookItemStatusMap[value as BookItemStatus] || 'Unknown book item status';
+      case "book-item-loan-status": return this.loanStatusMap[value as BookItemLoanStatus] || 'Unknown book item loan status';
+      case "book-item-request-status": return this.requestStatusMap[value as BookItemRequestStatus] || 'Unknown book item request status';
+      case "book-format": return this.bookItemFormatMap[value as BookFormat] || 'Unknown book item format';
+      default: return value;
+    }
+  }
 
   private genderMap: { [key in Gender]: string } = {
     [Gender.MALE]: 'CAT.USER.DETAILS.GENDER.MALE',
@@ -64,18 +81,11 @@ export class EnumNamePipe implements PipeTransform {
     [BookFormat.JOURNAL]: 'CAT.BOOK_ITEM.FORMAT.JOURNAL'
   }
 
-  transform(value?: any, type?: string): string {
-    if (!type) return value;
-
-    switch(type) {
-      case "account": return this.accountStatusMap[value as AccountStatus] || 'Unknown account status';
-      case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
-      case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
-      case "role": return this.rolesMap[value as Role] || 'Unknown role';
-      case "book-item-loan-status": return this.loanStatusMap[value as BookItemLoanStatus] || 'Unknown book item loan status';
-      case "book-item-request-status": return this.requestStatusMap[value as BookItemRequestStatus] || 'Unknown book item request status';
-      case "book-format": return this.bookItemFormatMap[value as BookFormat] || 'Unknown book item format';
-      default: return value;
-    }
+  private bookItemStatusMap: { [key in BookItemStatus]: string} = {
+    [BookItemStatus.AVAILABLE]: 'CAT.BOOK_ITEM.STATUS.AVAILABLE',
+    [BookItemStatus.REQUESTED]: 'CAT.BOOK_ITEM.STATUS.REQUESTED',
+    [BookItemStatus.LOANED]: 'CAT.BOOK_ITEM.STATUS.LOANED',
+    [BookItemStatus.RETURNED]: 'CAT.BOOK_ITEM.STATUS.RETURNED',
+    [BookItemStatus.LOST]: 'CAT.BOOK_ITEM.STATUS.LOST'
   }
 }

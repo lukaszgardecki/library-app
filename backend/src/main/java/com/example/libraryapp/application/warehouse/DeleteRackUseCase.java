@@ -1,4 +1,4 @@
-package com.example.libraryapp.application.rack;
+package com.example.libraryapp.application.warehouse;
 
 import com.example.libraryapp.domain.rack.model.RackId;
 import lombok.RequiredArgsConstructor;

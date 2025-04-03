@@ -1,1 +1,129 @@
-<p>racks works!</p>
+<div class="container-fluid h-100 d-flex flex-column">
+    <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.RACKS' | translate }}</h1>
+    <div class="row flex-grow-1" style="height: 0;">
+        <app-basic-section class="" [name]="'Regały' | translate">
+            <ng-container class="" *ngIf="racksPage$ | async as page">
+
+                <div class="rack-list">
+                    <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchRacks">
+
+                    <div class="list" *ngIf="page.content.length > 0; else lackRacks" (scroll)="loadNextPageOfRacks($event)">
+                        <app-card-rack
+                            *ngFor="let rack of page.content;let i = index"
+                            [ngClass]="{'custom-focus': rack === selectedRack}" 
+                            [rack]="rack"
+                            [number]="i+1"
+                            [selectedRack]="selectedRack"
+                            (onSelect)="activeRack($event)"
+                        ></app-card-rack>
+                    </div>
+                </div>
+                
+                <div class="rack-info mt-2" >
+                    <div *ngIf="selectedRack">
+                        <div class="info-header">
+                            <h4>{{ selectedRack.name }}</h4>
+                            <div class="icon-buttons">
+                                <button class="icon-button edit-button" title="Edytuj"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button delete-button" title="Usuń"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid">
+                            <strong>ID:</strong>{{selectedRack.id }}
+                            <strong>Lokalizacja:</strong>{{selectedRack.location}}
+                            <strong>Ilość półek:</strong>{{selectedRack.shelvesCount}}
+                            <strong>Data utworzenia:</strong>{{selectedRack.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>Data ostatniej aktualizacji:</strong>{{selectedRack.updatedDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </app-basic-section>
+
+        <app-basic-section class="col-12 col-lg-6" [name]="'Półki' | translate" >
+            <ng-container class="" *ngIf="shelvesPage$ | async as page">
+                <div class="rack-list">
+                    <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchShelves">
+    
+                    <div class="list" *ngIf="page.content.length > 0; else lackShelves" (scroll)="loadNextPageOfShelves($event)">
+                        <app-card-shelf
+                            *ngFor="let shelf of page.content;let i = index"
+                            [ngClass]="{'custom-focus': shelf === selectedShelf}" 
+                            [shelf]="shelf"
+                            [number]="i+1"
+                            [selectedShelf]="selectedShelf"
+                            (onSelect)="activeShelf($event)"
+                        ></app-card-shelf>
+                    </div>
+                </div>
+
+                <div class="rack-info mt-2" >
+                    <div *ngIf="selectedShelf">
+                        <div class="info-header">
+                            <h4>{{ selectedShelf.name }}</h4>
+                            <div class="icon-buttons">
+                                <button class="icon-button edit-button" title="Edytuj"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button delete-button" title="Usuń"><i class="bi bi-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <strong>ID:</strong>{{selectedShelf.id}}
+                            <strong>Pozycja:</strong>{{selectedShelf.position}}
+                            <strong>Ilość książek:</strong>{{selectedShelf.bookItemsCount}}
+                            <strong>Data utworzenia:</strong>{{selectedShelf.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>Data ostatniej aktualizacji:</strong>{{selectedShelf.updatedDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </app-basic-section>
+
+        <app-basic-section class="col-12 col-lg-6" [name]="'Książki' | translate">
+            <ng-container class="" *ngIf="bookItemsPage$ | async as page">
+                <div class="rack-list">
+                    <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchBookItems">
+
+                    <div class="list" *ngIf="page.content.length > 0; else lackBookItems" (scroll)="loadNextPageOfBookItems($event)">
+                        <app-card-book-item
+                            *ngFor="let bookItem of page.content;let i = index"
+                            [ngClass]="{'custom-focus': bookItem === selectedBookItem}" 
+                            [bookItem]="bookItem"
+                            [number]="i+1"
+                            [selectedBookItem]="selectedBookItem"
+                            (onSelect)="activeBookItem($event)"
+                        ></app-card-book-item>
+                    </div>
+                    
+                </div>
+                <div class="rack-info mt-2" >
+                    <div *ngIf="selectedBookItem">
+                        <h4 class="">{{ 'Tytuł książki' }}</h4>
+                        <div class="grid">
+                            <strong>ID:</strong>{{selectedBookItem.id}}
+                            <strong>Kod kreskowy:</strong>{{selectedBookItem.barcode}}
+                            <strong>Status:</strong>{{selectedBookItem.status | enumName: 'book-item-status' | translate }}
+                            <strong>Data zakupu:</strong>{{selectedBookItem.dateOfPurchase | date: "dd.MM.yyyy" }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </app-basic-section>
+    </div>
+</div>
+
+<ng-template #lackRacks>
+    <div class="lack-message">
+        {{  'CAT.WAREHOUSE.PENDING_REQUESTS.LACK' | translate }}
+    </div>
+</ng-template>
+<ng-template #lackShelves>
+    <div class="lack-message">
+        {{  'NI MA PUEK' | translate }}
+    </div>
+</ng-template>
+<ng-template #lackBookItems>
+    <div class="lack-message">
+        {{  'NI MA KSIUNSZEK' | translate }}
+    </div>
+</ng-template>

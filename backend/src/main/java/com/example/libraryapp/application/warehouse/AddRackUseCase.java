@@ -1,4 +1,4 @@
-package com.example.libraryapp.application.rack;
+package com.example.libraryapp.application.warehouse;
 
 import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.rack.exceptions.RackException;
@@ -11,7 +11,7 @@ class AddRackUseCase {
     private final RackRepositoryPort rackRepository;
 
     Rack execute(Rack rack) {
-        rackRepository.findByLocation(rack.getLocationIdentifier())
+        rackRepository.findByLocation(rack.getLocation())
                 .ifPresent(r -> {
                     throw new RackException(MessageKey.RACK_LOCATION_ALREADY_EXISTS);
                 });

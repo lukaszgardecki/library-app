@@ -1,11 +1,10 @@
 package com.example.libraryapp.domain.bookitem.model;
 
-import com.example.libraryapp.domain.book.model.BookFormat;
 import com.example.libraryapp.domain.book.model.BookId;
-import com.example.libraryapp.domain.book.model.PublicationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.*;
 
 @Getter
@@ -24,4 +23,5 @@ public class BookItem {
     private PurchaseDate dateOfPurchase;
     private BookId bookId;
     private RackId rackId;
+    private ShelfId shelfId;
 }

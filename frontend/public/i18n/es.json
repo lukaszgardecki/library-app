@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "\u00A1El pedido se ha completado con \u00E9xito!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Iniciar sesión",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "C\u00f3digo de barras",
+            "STATUS": {
+                "NAME": "Estado",
+                "AVAILABLE": "Disponible",
+                "REQUESTED": "Reservado",
+                "LOANED": "Prestado",
+                "RETURNED": "Devuelto",
+                "LOST": "Perdido"
+            },
             "FORMAT": {
                 "NAME": "Formato",
                 "HARDCOVER": "Tapa dura",

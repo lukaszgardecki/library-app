@@ -8,7 +8,6 @@ app-card-pending,
 app-card-in-progress {
     display: block;
     border-bottom: 1px solid #ccc;
-    padding: 5px;
 }
   
 app-card-pending:nth-child(odd),

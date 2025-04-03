@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "L'ordine \u00E8 stato completato con successo!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Accesso",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "Codice a barre",
+            "STATUS": {
+                "NAME": "Stato",
+                "AVAILABLE": "Disponibile",
+                "REQUESTED": "Prenotato",
+                "LOANED": "Prestato",
+                "RETURNED": "Restituito",
+                "LOST": "Perso"
+            },
             "FORMAT": {
                 "NAME": "Formato",
                 "HARDCOVER": "Copertina rigida",

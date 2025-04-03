@@ -1,4 +1,3 @@
-import { BookFormat as BookFormat } from "../../../../shared/enums/book-format"
 import { BookItemRequestStatus } from "../enums/book-item-request-status"
 
 export class BookItemRequest {
@@ -9,12 +8,3 @@ export class BookItemRequest {
     bookItemId: number
 }
 
-export interface WarehouseBookItemRequestListView {
-    requestId: number
-    status: BookItemRequestStatus
-    creationDate: Date
-    bookTitle: string
-    barcode: String
-    bookFormat: BookFormat
-    rackLocationId: string
-}

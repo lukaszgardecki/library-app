@@ -2,11 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { WebsocketService } from './websocket.service';
-import { BookItemRequest, WarehouseBookItemRequestListView } from '../../shared/models/book-item-request';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BookItemRequest } from '../../shared/models/book-item-request';
+import { Rack, Shelf, WarehouseBookItemRequestListView, WarehouseItem } from "../../../../shared/models/rack";
+import { BehaviorSubject, catchError, Observable, Subscription, tap, throwError } from 'rxjs';
 import { Page, Pageable } from '../../../../shared/models/page';
 import { BookItemRequestStatus } from '../../shared/enums/book-item-request-status';
 import { AuthenticationService } from './authentication.service';
+import { BookItemService } from './book-item.service';
+import { BookItem } from '../../../../shared/models/book-item';
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +19,21 @@ export class WarehouseService {
   private pendingRequestsSubject = new BehaviorSubject<Page<WarehouseBookItemRequestListView>>(new Page<WarehouseBookItemRequestListView>);
   private inProgressRequestsSubject = new BehaviorSubject<Page<WarehouseBookItemRequestListView>>(new Page<WarehouseBookItemRequestListView>);
   private allRequestsSubject = new BehaviorSubject<Page<WarehouseBookItemRequestListView>>(new Page<WarehouseBookItemRequestListView>);
+  private rackSubject = new BehaviorSubject<Page<Rack>>(new Page<Rack>());
+  private shelfSubject = new BehaviorSubject<Page<Shelf>>(new Page<Shelf>());
+  private bookItemsSubject = new BehaviorSubject<Page<BookItem>>(new Page<BookItem>);
   pendingRequests$ = this.pendingRequestsSubject.asObservable();
   inProgressRequests$ = this.inProgressRequestsSubject.asObservable();
   allRequests$ = this.allRequestsSubject.asObservable();
-
+  racks$ = this.rackSubject.asObservable();
+  shelves$ = this.shelfSubject.asObservable();
+  bookItems$ = this.bookItemsSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private configService: ConfigService,
     private authService: AuthenticationService,
+    private bookItemService: BookItemService,
     private websocketService: WebsocketService,
   ) {
     let baseURL = configService.getApiUrl();
@@ -44,6 +53,7 @@ export class WarehouseService {
       this.websocketService.subscribeToTopic<WarehouseBookItemRequestListView>("/queue/warehouse/remove_from_in-progress").subscribe({
         next: request => {
           this.addTo(this.pendingRequestsSubject, request);
+          this.sortByDateAsc(this.pendingRequestsSubject.value.content);
           this.removeFrom(this.inProgressRequestsSubject, request);
           this.updateIn(this.allRequestsSubject, request);
         }
@@ -51,85 +61,155 @@ export class WarehouseService {
     }
   }
 
-  loadPageOfRequests(status: BookItemRequestStatus | null = null, query: string = "", pageable: Pageable = new Pageable()) {
-    return this.getNewPageOfRequests(status, query, pageable).subscribe({
+  loadPageOfRequests(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable } = {}) {
+    this.getPageOfRequests(options).subscribe({
       next: page => {
-        switch (status) {
+        switch (options.status) {
           case BookItemRequestStatus.PENDING: this.pendingRequestsSubject.next(page); break;
           case BookItemRequestStatus.IN_PROGRESS: this.inProgressRequestsSubject.next(page); break;
           case null: this.allRequestsSubject.next(page); break;
-          default: console.warn(`Nieznany status: ${status}`);
+          default: console.warn(`Nieznany status: ${options.status}`);
         }
       },
       error: err => console.error("Błąd pobierania danych:", err)
     });
   }
 
-  addNextPageToPendingRequests(): Subscription | undefined {
-    const currentPage = this.pendingRequestsSubject.value;
-    
-    if (currentPage.number + 1 == currentPage.totalPages) return undefined;
-    const pageable = new Pageable(currentPage.number+1, currentPage.size)
+  loadPageOfRacks(options: { query?: string, pageable?: Pageable } = {}) {
+    this.getPageOfRacks(options).subscribe({
+      next: page => this.rackSubject.next(page),
+      error: err => console.error("Błąd pobierania danych:", err)
+    })
+  }
 
-    return this.getNewPageOfRequests(BookItemRequestStatus.PENDING, "", pageable).subscribe({
-      next: page => this.addNewPageTo(this.pendingRequestsSubject, page),
+  loadPageOfShelves(options: { rackId?: number, query?: string, pageable?: Pageable } = {}) {
+    this.getPageOfShelves(options).subscribe({
+      next: page => this.shelfSubject.next(page),
       error: err => console.error("Błąd pobierania danych:", err)
     });
   }
 
-  moveToInProgress(bookItemRequest: WarehouseBookItemRequestListView): void {
-    this.websocketService.sendToTopic('/app/warehouse/move_to_in_progress', bookItemRequest);
-  }
-
-  moveToPending(bookItemRequest: WarehouseBookItemRequestListView): void {
-    this.websocketService.sendToTopic('/app/warehouse/move_to_pending', bookItemRequest);
-  }
-
-  completeRequest(bookItemRequest: WarehouseBookItemRequestListView): void { 
-    this.http.post<BookItemRequest>(`${this.baseURL}/book-requests/${bookItemRequest.requestId}/ready`, {}, { withCredentials: true }).subscribe({
-      next: () => this.removeFrom(this.inProgressRequestsSubject, bookItemRequest)
+  loadPageOfBookItems(options: { rackId?: number, shelfId?: number,  query?: string, pageable?: Pageable } = {}) {
+    this.getPageOfBookItems(options).subscribe({
+      next: page => this.bookItemsSubject.next(page),
+      error: err => console.error("Błąd pobierania danych:", err)
     });
   }
 
-  private getNewPageOfRequests(status: BookItemRequestStatus | null = null, query: string = "", pageable: Pageable = new Pageable()): Observable<Page<WarehouseBookItemRequestListView>> {
-    let params = this.createParams(status, query, pageable);
+
+  addNextPageToPendingRequests(): Subscription | undefined {
+    return this.addNextPageTo(this.pendingRequestsSubject, (pageable) => 
+      this.getPageOfRequests({ status: BookItemRequestStatus.PENDING, pageable })
+    );
+  }
+  
+  addNextPageToRacks(): Subscription | undefined {
+    return this.addNextPageTo(this.rackSubject, (pageable) => 
+      this.getPageOfRacks({ pageable })
+    );
+  }
+  
+  addNextPageToShelves(): Subscription | undefined {
+    return this.addNextPageTo(this.shelfSubject, (pageable) => 
+      this.getPageOfShelves({ pageable })
+    );
+  }
+
+  addNextPageToBookItems(): Subscription | undefined {
+    return this.addNextPageTo(this.bookItemsSubject, (pageable) =>
+      this.getPageOfBookItems({ pageable })
+    );
+  }
+
+  moveRequestToInProgress(bookItemRequest: WarehouseBookItemRequestListView): void {
+    this.websocketService.sendToTopic('/app/warehouse/move_to_in_progress', bookItemRequest);
+  }
+
+  moveRequestToPending(bookItemRequest: WarehouseBookItemRequestListView): void {
+    this.websocketService.sendToTopic('/app/warehouse/move_to_pending', bookItemRequest);
+  }
+
+  completeRequest(bookItemRequest: WarehouseBookItemRequestListView): Observable<BookItemRequest | null> { 
+    return this.http.post<BookItemRequest>(`${this.baseURL}/book-requests/${bookItemRequest.id}/ready`, {}, { withCredentials: true }).pipe(
+      tap(() => this.removeFrom(this.inProgressRequestsSubject, bookItemRequest)),
+      catchError(err => {
+        console.error('Błąd podczas oznaczania książki jako gotowej:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  private addNextPageTo<T>(
+    subject: BehaviorSubject<Page<T>>, 
+    fetchPage: (pageable: Pageable) => Observable<Page<T>>
+  ): Subscription | undefined {
+    const currentPage = subject.value;
+  
+    if (currentPage.number + 1 === currentPage.totalPages) return undefined;
+  
+    const pageable = new Pageable(currentPage.number + 1, currentPage.size);
+  
+    return fetchPage(pageable).subscribe({
+      next: page => this.addNewPageTo(subject, page),
+      error: err => console.error("Błąd pobierania danych:", err)
+    });
+  }
+
+  private getPageOfRequests(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable}): Observable<Page<WarehouseBookItemRequestListView>> {
+    let params = this.createParams(options.query, options.pageable);
+    if (options.status) { params = params.set("status", options.status)}
     return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/book-requests/list`, { params: params, withCredentials: true });
   }
 
-  private addNewPageTo(subject: BehaviorSubject<Page<WarehouseBookItemRequestListView>>, newPage: Page<WarehouseBookItemRequestListView>): void {
+  private getPageOfRacks(options: { query?: string, pageable?: Pageable }): Observable<Page<Rack>> {
+    let params = this.createParams(options.query, options.pageable);
+    return this.http.get<Page<Rack>>(`${this.baseURL}/racks`, { params: params, withCredentials: true });
+  }
+
+  private getPageOfShelves(options: { rackId?: number, query?: string, pageable?: Pageable }): Observable<Page<Shelf>> {
+    let params = this.createParams(options.query, options.pageable);
+    if (options.rackId) params = params.set("rack_id", options.rackId);
+    return this.http.get<Page<Shelf>>(`${this.baseURL}/shelves`, { params: params, withCredentials: true });
+  }
+
+  private getPageOfBookItems(options: { rackId?: number, shelfId?: number, query?: string, pageable?: Pageable }): Observable<Page<BookItem>> {
+    return this.bookItemService.getBookItems(options);
+  }
+
+  private addNewPageTo<T>(subject: BehaviorSubject<Page<T>>, newPage: Page<T>): void {
     const currentPage = subject.value;
     const updatedContent = [...currentPage.content, ...newPage.content];
-    const contentSortedByDate = this.sortByDateAsc(updatedContent); //to chyba nie jest portzebne
+    // const contentSortedByDate = this.sortByDateAsc(updatedContent);
   
-    const updatedPage: Page<WarehouseBookItemRequestListView> = {
-      content: contentSortedByDate,
+    const updatedPage: Page<T> = {
+      content: updatedContent,
       totalElements: newPage.totalElements,
       empty: newPage.empty, 
       first: newPage.first,
       last: newPage.last,
       number: newPage.number,
-      numberOfElements: contentSortedByDate.length,
+      numberOfElements: updatedContent.length,
       size: newPage.size,
       totalPages: newPage.totalPages
     };
     subject.next(updatedPage);
   }
 
-  private addTo(subject: BehaviorSubject<Page<WarehouseBookItemRequestListView>>, bookItemRequest: WarehouseBookItemRequestListView): void {
+  private addTo<T extends WarehouseItem>(subject: BehaviorSubject<Page<T>>, item: T): void {
     const currentPage = subject.value;
-    const updatedContent = [...currentPage.content, bookItemRequest];
-    const contentSortedByDate = this.sortByDateAsc(updatedContent);
-    const updatedPage = {
+    const updatedContent = [...currentPage.content, item];
+    // const contentSortedByDate: T[] = this.sortByDateAsc(updatedContent);
+    const updatedPage: Page<T> = {
       ...currentPage,
-      content: contentSortedByDate,
+      content: updatedContent,
       totalElements: currentPage.totalElements + 1
     };
     subject.next(updatedPage);
   }
   
-  private removeFrom(subject: BehaviorSubject<Page<WarehouseBookItemRequestListView>>, bookItemRequest: WarehouseBookItemRequestListView): void {
+  private removeFrom<T extends WarehouseItem>(subject: BehaviorSubject<Page<T>>, item: T): void {
     const currentPage = subject.value;
-    const updatedContent = currentPage.content.filter(item => item.requestId !== bookItemRequest.requestId);
+    const updatedContent = currentPage.content.filter(it => it.id !== item.id);
     const updatedPage = {
       ...currentPage,
       content: updatedContent,
@@ -138,19 +218,19 @@ export class WarehouseService {
     subject.next(updatedPage);
   }
 
-  private updateIn(subject: BehaviorSubject<Page<WarehouseBookItemRequestListView>>, bookItemRequest: WarehouseBookItemRequestListView): void {
+  private  updateIn<T extends WarehouseItem>(subject: BehaviorSubject<Page<T>>, item: T): void {
     const currentPage = subject.value;
-    const existingItemIndex = currentPage.content.findIndex(item => item.requestId === bookItemRequest.requestId);
+    const existingItemIndex = currentPage.content.findIndex(it => it.id === item.id);
     let updatedContent;
     
     if (existingItemIndex !== -1) {
       updatedContent = [
         ...currentPage.content.slice(0, existingItemIndex),
-        bookItemRequest,
+        item,
         ...currentPage.content.slice(existingItemIndex + 1)
       ];
     } else {
-      updatedContent = [...currentPage.content, bookItemRequest];
+      updatedContent = [...currentPage.content, item];
     }
     
     const updatedPage = {
@@ -160,26 +240,23 @@ export class WarehouseService {
     };
     subject.next(updatedPage);
   }
-  
 
-  private sortByDateAsc(reservations: WarehouseBookItemRequestListView[]): WarehouseBookItemRequestListView[] {
-    return reservations.sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
+  private sortByDateAsc(items: WarehouseBookItemRequestListView[]): void {
+    items.sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
   }
 
-  private createParams(status: BookItemRequestStatus | null, query: string | null, pageable: Pageable): HttpParams {
-      let params = new HttpParams();
-      const page = pageable.page;
-      const size = pageable.size;
-      const sort = pageable.sort;
-      if (page !== null) { params = params.set("page", page); }
-      if (size !== null) { params = params.set("size", size); }
-      if (query !== null) { params = params.set("q", query); }
-      if (status !== null) { params = params.set("status", status)}
-      if (sort?.direction) {
-          const sortParam = sort.columnKey;
-          const sortValue = `${sortParam},${sort.direction}`;
-          params = params.set("sort", sortValue);
+  private createParams(query?: string, pageable?: Pageable): HttpParams {
+    let params = new HttpParams();
+    if (query) { params = params.set("q", query); }
+    if (pageable != undefined) {
+      if (pageable.page) { params = params.set("page", pageable.page)}
+      if (pageable.size) { params = params.set("size", pageable.size)}
+      if (pageable.sort?.direction) {
+        const sortParam = pageable.sort.columnKey;
+        const sortValue = `${sortParam},${pageable.sort.direction}`;
+        params = params.set("sort", sortValue);
       }
-      return params;
     }
+    return params;
+  }
 }

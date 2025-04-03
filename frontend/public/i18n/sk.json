@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "Objedn\u00E1vka bola \u00FAspe\u0161ne dokon\u010Den\u00E1!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Prihlásenie",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "\u010c\u00edarov\u00fd k\u00f3d",
+            "STATUS": {
+                "NAME": "Stav",
+                "AVAILABLE": "Dostupn\u00fd",
+                "REQUESTED": "Rezervovan\u00fd",
+                "LOANED": "Po\u017ei\u010dan\u00fd",
+                "RETURNED": "Vr\u00e1ten\u00fd",
+                "LOST": "Straten\u00fd"
+            },
             "FORMAT": {
                 "NAME": "Form\u00e1t",
                 "HARDCOVER": "Tvrd\u00E1 v\u00E4zba",

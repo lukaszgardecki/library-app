@@ -19,7 +19,7 @@ class WarehouseWebSocketController {
     @SendTo("/queue/warehouse/remove_from_pending")
     public WarehouseBookItemRequestListViewDto addToInProgress(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.IN_PROGRESS;
-        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getRequestId()), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;
     }
 
@@ -27,7 +27,7 @@ class WarehouseWebSocketController {
     @SendTo("/queue/warehouse/remove_from_in-progress")
     public WarehouseBookItemRequestListViewDto addToPending(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.PENDING;
-        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getRequestId()), status);
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;
     }
 }

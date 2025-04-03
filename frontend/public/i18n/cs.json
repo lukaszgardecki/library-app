@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "Objedn\u00E1vka byla \u00FAsp\u011B\u0161n\u011B dokon\u010Dena!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Přihlášení",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "K\u00f3d \u010d\u00e1rov\u00fd",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Dostupn\u00fd",
+                "REQUESTED": "Rezervovan\u00fd",
+                "LOANED": "Vyp\u016fj\u010den\u00fd",
+                "RETURNED": "Vr\u00e1cen\u00fd",
+                "LOST": "Ztracen\u00fd"
+            },
             "FORMAT": {
                 "NAME": "Form\u00e1t",
                 "HARDCOVER": "\u010C\u00E1st\u011B v pevn\u00E9 vazb\u011B",

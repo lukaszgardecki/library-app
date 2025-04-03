@@ -26,8 +26,6 @@ public class BookItemConfiguration {
         return new BookItemFacade(
                 new GetBookItemUseCase(repository),
                 new GetPageOfBookItemsUseCase(repository),
-                new GetPageOfBookItemsByBookIdUseCase(repository),
-                new GetPageOfBookItemsByRackIdUseCase(repository),
                 new AddBookItemUseCase(bookItemService),
                 new UpdateBookItemUseCase(bookItemService),
                 new DeleteBookItemUseCase(repository, bookItemService, publisher),
@@ -49,8 +47,6 @@ public class BookItemConfiguration {
         return new BookItemFacade(
                 new GetBookItemUseCase(repository),
                 new GetPageOfBookItemsUseCase(repository),
-                new GetPageOfBookItemsByBookIdUseCase(repository),
-                new GetPageOfBookItemsByRackIdUseCase(repository),
                 new AddBookItemUseCase(bookItemService),
                 new UpdateBookItemUseCase(bookItemService),
                 new DeleteBookItemUseCase(repository, bookItemService, publisher),

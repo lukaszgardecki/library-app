@@ -4,8 +4,9 @@ import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.application.person.PersonFacade;
-import com.example.libraryapp.application.rack.RackFacade;
 import com.example.libraryapp.application.user.UserFacade;
+import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
+import com.example.libraryapp.domain.shelf.ports.ShelfRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,13 +21,21 @@ class WarehouseConfiguration {
             BookItemRequestFacade bookItemRequestFacade,
             UserFacade userFacade,
             PersonFacade personFacade,
-            RackFacade rackFacade
+            RackRepositoryPort rackRepository,
+            ShelfRepositoryPort shelfRepository
     ) {
-        WarehouseService warehouseService = new WarehouseService(
-                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackFacade
+        RackService rackService = new RackService(rackRepository, bookItemFacade);
+
+        BookItemRequestService bookItemRequestService = new BookItemRequestService(
+                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService
         );
         return new WarehouseFacade(
-                new GetBookItemRequestList(warehouseService)
+                new GetBookItemRequestList(bookItemRequestService),
+                new GetAllRacksUseCase(rackRepository),
+                new GetAllShelvesUseCase(shelfRepository),
+                new GetRackUseCase(rackService),
+                new AddRackUseCase(rackRepository),
+                new DeleteRackUseCase(rackService)
         );
     }
 
@@ -38,11 +47,13 @@ class WarehouseConfiguration {
             BookItemRequestFacade bookItemRequestFacade,
             UserFacade userFacade,
             PersonFacade personFacade,
-            RackFacade rackFacade
+            RackRepositoryPort rackRepository
     ) {
-        WarehouseService warehouseService = new WarehouseService(
-                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackFacade
+        RackService rackService = new RackService(rackRepository, bookItemFacade);
+
+        BookItemRequestService bookItemRequestService = new BookItemRequestService(
+                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService
         );
-        return new WarehouseEventListenerAdapter(messagingTemplate, warehouseService);
+        return new WarehouseEventListenerAdapter(messagingTemplate, bookItemRequestService);
     }
 }

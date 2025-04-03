@@ -6,6 +6,7 @@ import com.example.libraryapp.domain.bookitem.model.BookItemBarcode;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,11 +15,7 @@ import java.util.Optional;
 public interface BookItemRepositoryPort {
     Optional<BookItem> findById(BookItemId id);
 
-    Page<BookItem> findAll(Pageable pageable);
-
-    Page<BookItem> findAllByBookId(BookId bookId, Pageable pageable);
-
-    Page<BookItem> findAllByRackId(RackId rackId, Pageable pageable);
+    Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable);
 
     BookItem save(BookItem bookItem);
 

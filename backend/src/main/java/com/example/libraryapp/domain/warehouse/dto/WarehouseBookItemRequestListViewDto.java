@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class WarehouseBookItemRequestListViewDto {
-    private final Long requestId;
+    private final Long id;
     private final BookItemRequestStatus status;
     private final LocalDateTime creationDate;
     private final String bookTitle;
     private final String barcode;
     private final BookFormat bookFormat;
-    private final String rackLocationId;
+    private final String rackLocation;
 }

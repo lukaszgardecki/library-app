@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "La commande a \u00E9t\u00E9 r\u00E9alis\u00E9e avec succ\u00E8s!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Connexion",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "Code-barres",
+            "STATUS": {
+                "NAME": "Statut",
+                "AVAILABLE": "Disponible",
+                "REQUESTED": "R\u00e9serv\u00e9",
+                "LOANED": "Emprunt\u00e9",
+                "RETURNED": "Retourn\u00e9",
+                "LOST": "Perdu"
+            },
             "FORMAT": {
                 "NAME": "Format",
                 "HARDCOVER": "Couverture rigide",

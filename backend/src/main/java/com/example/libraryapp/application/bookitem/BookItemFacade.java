@@ -7,6 +7,8 @@ import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 public class BookItemFacade {
     private final GetBookItemUseCase getBookItemUseCase;
     private final GetPageOfBookItemsUseCase getPageOfBookItemsUseCase;
-    private final GetPageOfBookItemsByBookIdUseCase getPageOfBookItemsByBookIdUseCase;
-    private final GetPageOfBookItemsByRackIdUseCase getPageOfBookItemsByRackIdUseCase;
     private final AddBookItemUseCase addBookItemUseCase;
     private final UpdateBookItemUseCase updateBookItemUseCase;
     private final DeleteBookItemUseCase deleteBookItemUseCase;
@@ -28,16 +28,13 @@ public class BookItemFacade {
         return BookItemMapper.toDto(bookItem);
     }
 
-    public Page<BookItemDto> getPageOfBookItems(Pageable pageable) {
-        return getPageOfBookItemsUseCase.execute(pageable).map(BookItemMapper::toDto);
-    }
-
-    public Page<BookItemDto> getPageOfBookItemsByBookId(BookId bookId, Pageable pageable) {
-        return getPageOfBookItemsByBookIdUseCase.execute(bookId, pageable).map(BookItemMapper::toDto);
-    }
-
-    public Page<BookItemDto> getPageOfBookItemsByRackId(RackId rackId, Pageable pageable) {
-        return getPageOfBookItemsByRackIdUseCase.execute(rackId, pageable).map(BookItemMapper::toDto);
+    public Page<BookItemDto> getPageOfBookItems(
+            @Nullable BookId bookId,
+            @Nullable RackId rackId,
+            @Nullable ShelfId shelfId,
+            Pageable pageable
+    ) {
+        return getPageOfBookItemsUseCase.execute(bookId, rackId, shelfId, pageable).map(BookItemMapper::toDto);
     }
 
     public BookItemDto addBookItem(BookItemToSaveDto bookItem) {

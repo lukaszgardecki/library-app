@@ -106,11 +106,18 @@
             "SAVE": "Zapisz",
             "SAVE_TO_FILE": "Zapisz do pliku"
         },
-        "DIALOG":{
+        "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Potwierdzenie zakończenia zamówienia",
                     "BODY": "Czy na pewno chcesz zakończyć to zamówienie? Tego działania nie można cofnąć."
+                }
+            }
+        },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "Zamówienie zostało pomyślnie zrealizowane!"
                 }
             }
         },
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "Kod kreskowy",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Dostępny",
+                "REQUESTED": "Zarezerwowany",
+                "LOANED": "Wypożyczony",
+                "RETURNED": "Zwrócony",
+                "LOST": "Zgubiony"
+            },
             "FORMAT": {
                 "NAME": "Format",
                 "HARDCOVER": "Twarda oprawa",

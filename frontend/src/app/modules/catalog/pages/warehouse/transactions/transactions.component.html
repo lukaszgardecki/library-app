@@ -22,19 +22,13 @@
             <ng-container *ngIf="inProgressRequestsPage$ | async as requestPage">
                 <div *ngIf="requestPage.content.length > 0; else lackInProgress">
                     <app-card-in-progress
-                            *ngFor="let request of requestPage.content;let i = index"
-                            [request]="request"
-                            [number]="i+1"
-                            [selectedRequest]="selectedInProgressEl"
-                            (onSelect)="activeInProgressRequest($event)"
-                            (onBackToPending)="backToPending($event)"
-                    ></app-card-in-progress>
-
-                    <app-confirm-modal-dialog
-                        [title]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE'"
-                        [body]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY'"
-                        (onConfirm)="completeSelectedRequest()"
-                    ></app-confirm-modal-dialog>
+                        *ngFor="let request of requestPage.content;let i = index"
+                        [request]="request"
+                        [number]="i+1"
+                        [selectedRequest]="selectedInProgressEl"
+                        (onSelect)="activeInProgressRequest($event)"
+                        (onBackToPending)="backToPending($event)"
+                    ></app-card-in-progress>        
                 </div>
             </ng-container>
         </app-basic-section>
@@ -53,3 +47,13 @@
         {{  'CAT.WAREHOUSE.IN_PROGRESS_REQUESTS.LACK' | translate }}
     </div>
 </ng-template>
+
+<app-confirm-modal-dialog
+    [title]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE'"
+    [body]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY'"
+    (onConfirm)="completeSelectedRequest()"
+></app-confirm-modal-dialog>
+
+<app-confirmation-toast #confirmationToast class="bg-danger">
+    {{ 'CAT.TOAST.CONFIRMATION.REQUEST.COMPLETED' | translate }}
+</app-confirmation-toast>

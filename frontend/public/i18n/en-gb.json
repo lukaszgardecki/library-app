@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "The order has been successfully completed!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Login",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "Barcode",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Available",
+                "REQUESTED": "Reserved",
+                "LOANED": "Loaned",
+                "RETURNED": "Returned",
+                "LOST": "Lost"
+            },
             "FORMAT": {
                 "NAME": "Format",
                 "HARDCOVER": "Hardcover",

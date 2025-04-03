@@ -2,7 +2,7 @@
 
     <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.HISTORY' | translate }}</h1>
 
-    <app-basic-section class="col-12 flex-grow-1" style="height: 0;">
+    <app-basic-section class="flex-grow-1" style="height: 0;">
         <ng-container *ngIf="allRequestsPage$ | async as requestPage; else lack">
             <app-table
                 class="h-100"

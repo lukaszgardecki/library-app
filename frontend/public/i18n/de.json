@@ -114,6 +114,13 @@
                 }
             }
         },
+        "TOAST": {
+            "CONFIRMATION": {
+                "REQUEST": {
+                    "COMPLETED": "Die Bestellung wurde erfolgreich abgeschlossen!"
+                }
+            }
+        },
         "LOGIN": {
             "HEADER": "Anmeldung",
             "USERNAME": {
@@ -242,6 +249,14 @@
         },
         "BOOK_ITEM": {
             "BARCODE": "Strichcode",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Verf\u00fcgbar",
+                "REQUESTED": "Reserviert",
+                "LOANED": "Ausgeliehen",
+                "RETURNED": "Zur\u00fcckgegeben",
+                "LOST": "Verloren"
+            },
             "FORMAT": {
                 "NAME": "Format",
                 "HARDCOVER": "Gebundene Ausgabe",

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { WarehouseBookItemRequestListView } from '../../../../../shared/models/book-item-request';
+import { WarehouseBookItemRequestListView } from "../../../../../../../shared/models/rack";
 import { EnumNamePipe } from "../../../../../../../shared/pipes/enum-name.pipe";
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';

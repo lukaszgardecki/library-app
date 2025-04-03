@@ -6,6 +6,7 @@ import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,18 +26,8 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
     }
 
     @Override
-    public Page<BookItem> findAll(Pageable pageable) {
-        return repository.findAllByParams(null, null, pageable).map(this::toModel);
-    }
-
-    @Override
-    public Page<BookItem> findAllByBookId(BookId bookId, Pageable pageable) {
-        return repository.findAllByParams(bookId.value(), null, pageable).map(this::toModel);
-    }
-
-    @Override
-    public Page<BookItem> findAllByRackId(RackId rackId, Pageable pageable) {
-        return repository.findAllByParams(null, rackId.value(), pageable).map(this::toModel);
+    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable) {
+        return repository.findAllByParams(bookId.value(), rackId.value(), shelfId.value(), pageable).map(this::toModel);
     }
 
     @Override
@@ -75,6 +66,7 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .dateOfPurchase(model.getDateOfPurchase().value())
                 .bookId(model.getBookId().value())
                 .rackId(model.getRackId().value())
+                .shelfId(model.getShelfId().value())
                 .build();
     }
 
@@ -90,6 +82,7 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .dateOfPurchase(new PurchaseDate(entity.getDateOfPurchase()))
                 .bookId(new BookId(entity.getBookId()))
                 .rackId(new RackId(entity.getRackId()))
+                .shelfId(new ShelfId(entity.getShelfId()))
                 .build();
     }
 

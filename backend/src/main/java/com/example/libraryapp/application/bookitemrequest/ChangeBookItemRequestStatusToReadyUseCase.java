@@ -18,6 +18,12 @@ class ChangeBookItemRequestStatusToReadyUseCase {
     void execute(RequestId id) {
         bookItemRequestRepository.setBookRequestStatus(id, BookItemRequestStatus.READY);
         BookItemRequest bookItemRequest = bookItemRequestService.getCurrentBookItemRequestById(id);
-        publisher.publish(new BookItemRequestReadyEvent(bookItemRequest.getBookItemId(), bookItemRequest.getUserId(), new Title("TYTUŁ KSIĄŻKI")));
+        publisher.publish(
+                new BookItemRequestReadyEvent(
+
+                        // TODO: 01.04.2025 jak pobrać tytuł książki?
+                        bookItemRequest.getBookItemId(), bookItemRequest.getUserId(), new Title("TYTUŁ KSIĄŻKI")
+                )
+        );
     }
 }

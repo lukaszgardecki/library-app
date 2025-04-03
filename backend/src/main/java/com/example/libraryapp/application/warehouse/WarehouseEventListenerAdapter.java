@@ -13,7 +13,7 @@ import java.util.List;
 class WarehouseEventListenerAdapter implements WarehouseEventListenerPort {
     // TODO: 10.12.2024 przenieść tego message poza, wystawić port i zrobić takiego w aplikacji
     private final SimpMessagingTemplate messagingTemplate;
-    private final WarehouseService warehouseService;
+    private final BookItemRequestService bookItemRequestService;
 
     @Override
     public List<Class<? extends CustomEvent>> getSupportedEventTypes() {
@@ -25,10 +25,10 @@ class WarehouseEventListenerAdapter implements WarehouseEventListenerPort {
     @Override
     public void onEvent(CustomEvent event) {
         if (event instanceof BookItemRequestedEvent e) {
-            WarehouseBookItemRequest warehouseBookItemRequest = warehouseService.getWarehouseBookItemRequest(e.getBookItemRequest());
+            WarehouseBookItemRequest warehouseBookItemRequest = bookItemRequestService.getWarehouseBookItemRequest(e.getBookItemRequest());
             messagingTemplate.convertAndSend(
                     "/queue/warehouse/pending",
-                    WarehouseMapper.toRequestListViewDto(warehouseBookItemRequest)
+                    BookItemRequestMapper.toRequestListViewDto(warehouseBookItemRequest)
             );
         }
     }

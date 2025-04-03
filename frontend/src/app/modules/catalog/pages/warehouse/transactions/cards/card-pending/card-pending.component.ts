@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TimeAgoPipe } from "../../../../../../../shared/pipes/time-ago.pipe";
-import { WarehouseBookItemRequestListView } from '../../../../../shared/models/book-item-request';
+import { WarehouseBookItemRequestListView } from "../../../../../../../shared/models/rack";
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { EnumNamePipe } from "../../../../../../../shared/pipes/enum-name.pipe";

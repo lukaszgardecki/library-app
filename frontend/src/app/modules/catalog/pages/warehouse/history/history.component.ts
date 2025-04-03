@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { Page, Pageable } from '../../../../../shared/models/page';
-import { WarehouseBookItemRequestListView } from '../../../shared/models/book-item-request';
+import { WarehouseBookItemRequestListView } from "../../../../../shared/models/rack";
 import { WarehouseService } from '../../../core/services/warehouse.service';
 import { TableUpdateEvent } from '../../../shared/models/table-event.interface';
 
@@ -27,7 +27,7 @@ export class HistoryComponent {
 
   updateAllRequests(event: TableUpdateEvent) {
     const pageable = new Pageable(event.page, event.size, event.sort);
-    this.warehouseService.loadPageOfRequests(null, event.query, pageable)
+    this.warehouseService.loadPageOfRequests({ query: event.query, pageable: pageable })
   }
 
   display(bookItemRequest: WarehouseBookItemRequestListView) {

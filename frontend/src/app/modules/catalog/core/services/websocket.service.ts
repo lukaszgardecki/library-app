@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, IMessage, StompHeaders } from '@stomp/stompjs';
 import { AuthenticationService } from './authentication.service';
-import { BookItemRequest, WarehouseBookItemRequestListView } from '../../shared/models/book-item-request';
+import { BookItemRequest } from '../../shared/models/book-item-request';
+import { WarehouseBookItemRequestListView } from "../../../../shared/models/rack";
 import { StorageService } from './storage.service';
 
 @Injectable({

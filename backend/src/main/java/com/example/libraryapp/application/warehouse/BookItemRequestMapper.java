@@ -3,7 +3,7 @@ package com.example.libraryapp.application.warehouse;
 import com.example.libraryapp.domain.warehouse.dto.WarehouseBookItemRequestListViewDto;
 import com.example.libraryapp.domain.warehouse.model.WarehouseBookItemRequest;
 
-class WarehouseMapper {
+class BookItemRequestMapper {
 
     static WarehouseBookItemRequestListViewDto toRequestListViewDto(WarehouseBookItemRequest model) {
         return new WarehouseBookItemRequestListViewDto(
@@ -13,7 +13,7 @@ class WarehouseMapper {
                 model.getBook().getTitle(),
                 model.getBookItem().getBarcode(),
                 model.getBook().getFormat(),
-                model.getRack().getLocationIdentifier()
+                model.getRack().getLocation()
         );
     }
 }

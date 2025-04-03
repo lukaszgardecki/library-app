@@ -7,11 +7,11 @@ import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,30 +28,11 @@ public class InMemoryBookItemRepositoryAdapter implements BookItemRepositoryPort
     }
 
     @Override
-    public Page<BookItem> findAll(Pageable pageable) {
-        List<BookItem> allItems = new ArrayList<>(map.values());
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), allItems.size());
-        List<BookItem> pagedItems = allItems.subList(start, end);
-        return new PageImpl<>(pagedItems, pageable, allItems.size());
-    }
-
-    @Override
-    public Page<BookItem> findAllByBookId(BookId bookId, Pageable pageable) {
+    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable) {
         List<BookItem> filteredItems = map.values().stream()
-                .filter(bookItem -> bookItem.getBookId().equals(bookId))
-                .toList();
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), filteredItems.size());
-        List<BookItem> pagedItems = filteredItems.subList(start, end);
-        return new PageImpl<>(pagedItems, pageable, filteredItems.size());
-    }
-
-    @Override
-    public Page<BookItem> findAllByRackId(RackId rackId, Pageable pageable) {
-        List<BookItem> filteredItems = map.values().stream()
-                .filter(bookItem -> bookItem.getRackId().equals(rackId))
+                .filter(bookItem -> (bookId == null || bookItem.getBookId().equals(bookId)))
+                .filter(bookItem -> (rackId == null || bookItem.getRackId().equals(rackId)))
+                .filter(bookItem -> (shelfId == null || bookItem.getShelfId().equals(shelfId)))
                 .toList();
 
         int start = (int) pageable.getOffset();

@@ -1,12 +1,12 @@
 package com.example.libraryapp.application.bookitem;
 
 import com.example.libraryapp.domain.book.model.BookId;
-import com.example.libraryapp.domain.book.model.PublicationDate;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 
 class BookItemMapper {
 
@@ -21,7 +21,8 @@ class BookItemMapper {
                 model.getStatus(),
                 model.getDateOfPurchase().value(),
                 model.getBookId().value(),
-                model.getRackId().value()
+                model.getRackId().value(),
+                model.getShelfId().value()
         );
     }
 
@@ -36,7 +37,8 @@ class BookItemMapper {
                 dto.getStatus(),
                 new PurchaseDate(dto.getDateOfPurchase()),
                 new BookId(dto.getBookId()),
-                new RackId(dto.getRackId())
+                new RackId(dto.getRackId()),
+                new ShelfId(dto.getShelfId())
         );
     }
 }

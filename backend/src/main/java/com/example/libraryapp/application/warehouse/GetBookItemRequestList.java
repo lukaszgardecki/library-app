@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 @RequiredArgsConstructor
 class GetBookItemRequestList {
-    private final WarehouseService warehouseService;
+    private final BookItemRequestService bookItemRequestService;
 
     Page<WarehouseBookItemRequest> execute(BookItemRequestStatus status, Pageable pageable) {
-        return warehouseService.getBookRequestList(status, pageable);
+        return bookItemRequestService.getBookRequestList(status, pageable);
     }
 }

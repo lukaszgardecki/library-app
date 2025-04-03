@@ -30,4 +30,5 @@ class BookItemEntity {
     private LocalDate dateOfPurchase;
     private Long bookId;
     private Long rackId;
+    private Long shelfId;
 }

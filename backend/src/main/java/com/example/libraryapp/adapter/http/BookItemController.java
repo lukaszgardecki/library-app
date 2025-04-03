@@ -6,6 +6,8 @@ import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
+import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +28,15 @@ class BookItemController {
 
     @GetMapping
     public ResponseEntity<Page<BookItemDto>> getPageOfBookItems(
-            @RequestParam(value = "bookId", required = false) Long bookId, Pageable pageable
+            @RequestParam(value = "book_id", required = false) Long bookId,
+            @RequestParam(value = "rack_id", required = false) Long rackId,
+            @RequestParam(value = "shelf_id", required = false) Long shelfId,
+            Pageable pageable
     ) {
-        Page<BookItemDto> collectionModel;
-        if (bookId != null) {
-            collectionModel = bookItemFacade.getPageOfBookItemsByBookId(new BookId(bookId), pageable);
-        } else {
-            collectionModel = bookItemFacade.getPageOfBookItems(pageable);
-        }
-        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
+        Page<BookItemDto> page = bookItemFacade.getPageOfBookItems(
+                new BookId(bookId), new RackId(rackId), new ShelfId(shelfId), pageable
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

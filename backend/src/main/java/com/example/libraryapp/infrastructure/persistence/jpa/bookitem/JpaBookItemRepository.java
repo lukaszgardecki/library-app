@@ -10,21 +10,25 @@ import org.springframework.data.repository.query.Param;
 
 interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
 
-    @Query(value = """
-        SELECT bi
-        FROM BookItemEntity bi
-        WHERE (:bookId IS NULL OR bi.bookId = :bookId)
-            OR (:rackId IS NULL OR bi.rackId = :rackId)
-    """,
-    countQuery = """
-        SELECT COUNT(bi)
-        FROM BookItemEntity bi
-        WHERE (:bookId IS NULL OR bi.bookId = :bookId)
-            OR (:rackId IS NULL OR bi.rackId = :rackId)
+    @Query(
+        value = """
+            SELECT bi
+            FROM BookItemEntity bi
+            WHERE (:bookId IS NULL OR bi.bookId = :bookId)
+                AND (:rackId IS NULL OR bi.rackId = :rackId)
+                AND (:shelfId IS NULL OR bi.shelfId = :shelfId)
+        """,
+        countQuery = """
+            SELECT COUNT(bi)
+            FROM BookItemEntity bi
+            WHERE (:bookId IS NULL OR bi.bookId = :bookId)
+                AND (:rackId IS NULL OR bi.rackId = :rackId)
+                AND (:shelfId IS NULL OR bi.shelfId = :shelfId)
     """)
     Page<BookItemEntity> findAllByParams(
             @Param("bookId") Long bookId,
             @Param("rackId") Long rackId,
+            @Param("shelfId") Long shelfId,
             Pageable pageable
     );
 
