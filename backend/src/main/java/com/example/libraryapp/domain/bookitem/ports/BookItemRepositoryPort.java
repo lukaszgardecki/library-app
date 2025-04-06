@@ -21,6 +21,8 @@ public interface BookItemRepositoryPort {
 
     void deleteById(BookItemId id);
 
+    Long countByParams(RackId rackId, ShelfId shelfId);
+
     void updateStatus(BookItemId id, BookItemStatus status);
 
     void updateBarcode(BookItemId id, BookItemBarcode barcode);

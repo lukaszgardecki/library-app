@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Niepoprawne dane formularza.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "Zamówienie zostało pomyślnie zrealizowane!"
+                    "COMPLETE": {
+                        "SUCCESS": "Zamówienie zostało pomyślnie zrealizowane!",
+                        "FAILURE": "Nie udało się zrealizować zamówienia."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Regał został pomyślnie utworzony.",
+                        "FAILURE": "Nie udało się utworzyć regału."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Pomyślnie edytowano regał.",
+                        "FAILURE": "Nie można edytować regału."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Pomyślnie usunięto regał.",
+                        "FAILURE": {
+                            "MAIN": "Nie udało się usunąć regału.",
+                            "HAS_BOOKS": "Regał nie może zostać usunięty, dopóki ma książki na półkach."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "Półka została pomyślnie utworzona.",
+                        "FAILURE": ""
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Pomyślnie edytowano półkę.",
+                        "FAILURE": "Nie można edytować półki."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Pomyślnie usunięto półkę.",
+                        "FAILURE": {
+                            "MAIN": "Nie udało się usunąć półki.",
+                            "HAS_BOOKS": "Półka nie może zostać usunięta, dopóki wszystkie książki nie zostaną przeniesione."
+                        }
+                    }
                 }
             }
         },

@@ -56,6 +56,14 @@ public class InMemoryBookItemRepositoryAdapter implements BookItemRepositoryPort
     }
 
     @Override
+    public Long countByParams(RackId rackId, ShelfId shelfId) {
+        return map.values().stream()
+                .filter(item -> rackId == null || item.getRackId().value().equals(rackId.value()))
+                .filter(item -> shelfId == null || item.getShelfId().value().equals(shelfId.value()))
+                .count();
+    }
+
+    @Override
     public void updateStatus(BookItemId id, BookItemStatus status) {
         BookItem bookItem = map.get(id);
         bookItem.setStatus(status);

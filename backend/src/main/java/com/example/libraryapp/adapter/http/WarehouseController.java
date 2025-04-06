@@ -8,6 +8,8 @@ import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.dto.RackToSaveDto;
 import com.example.libraryapp.domain.rack.model.RackId;
 import com.example.libraryapp.domain.shelf.dto.ShelfDto;
+import com.example.libraryapp.domain.shelf.dto.ShelfToSaveDto;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import com.example.libraryapp.domain.warehouse.dto.WarehouseBookItemRequestListViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -78,9 +80,38 @@ class WarehouseController {
         return ResponseEntity.created(savedRackUri).body(savedRack);
     }
 
+    @PostMapping("/shelves")
+    public ResponseEntity<ShelfDto> addShelf(@RequestBody ShelfToSaveDto shelfToSave) {
+        ShelfDto savedShelf = warehouseFacade.addShelf(shelfToSave);
+
+        URI savedShelfUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedShelf.getId())
+                .toUri();
+        return ResponseEntity.created(savedShelfUri).body(savedShelf);
+    }
+
+    @PatchMapping("/racks/{id}")
+    public ResponseEntity<RackDto> updateRack(@RequestBody RackToSaveDto fields, @PathVariable Long id) {
+        RackDto updatedRack = warehouseFacade.updateRack(new RackId(id), fields);
+        return ResponseEntity.ok(updatedRack);
+    }
+
+    @PatchMapping("/shelves/{id}")
+    public ResponseEntity<ShelfDto> updateShelf(@RequestBody ShelfToSaveDto fields, @PathVariable Long id) {
+        ShelfDto updatedShelf = warehouseFacade.updateShelf(new ShelfId(id), fields);
+        return ResponseEntity.ok(updatedShelf);
+    }
+
     @DeleteMapping("/racks/{id}")
-    public ResponseEntity<?> deleteRackById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRackById(@PathVariable Long id) {
         warehouseFacade.deleteRack(new RackId(id));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/shelves/{id}")
+    public ResponseEntity<Void> deleteShelfById(@PathVariable Long id) {
+        warehouseFacade.deleteShelf(new ShelfId(id));
         return ResponseEntity.noContent().build();
     }
 }

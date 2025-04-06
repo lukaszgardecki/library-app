@@ -13,7 +13,6 @@ import { Shelf } from '../../../../../../../shared/models/rack';
 export class CardShelfComponent {
   @Input() selectedShelf: Shelf | undefined;
   @Input() shelf: Shelf;
-  @Input() number: number;
   @Output() onSelect = new EventEmitter<Shelf>();
 
   active(item: Shelf) {

@@ -27,11 +27,6 @@ class RackRepositoryAdapter implements RackRepositoryPort {
     }
 
     @Override
-    public Optional<Rack> findByLocation(RackLocationId location) {
-        return repository.findByLocationIdentifier(location.value()).map(this::toModel);
-    }
-
-    @Override
     @Transactional
     public Rack save(Rack rack) {
         return toModel(repository.save(toEntity(rack)));

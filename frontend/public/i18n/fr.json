@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Donn\u00E9es du formulaire invalides.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "La commande a \u00E9t\u00E9 r\u00E9alis\u00E9e avec succ\u00E8s!"
+                    "COMPLETE": {
+                        "SUCCESS": "La commande a \u00E9t\u00E9 r\u00E9alis\u00E9e avec succ\u00E8s !",
+                        "FAILURE": "La commande n'a pas pu \u00EAtre r\u00E9alis\u00E9e."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 cr\u00E9\u00E9 avec succ\u00E8s.",
+                        "FAILURE": "Impossible de cr\u00E9er le rack."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 modifi\u00E9 avec succ\u00E8s.",
+                        "FAILURE": "Le rack ne peut pas \u00EAtre modifi\u00E9."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 supprim\u00E9 avec succ\u00E8s.",
+                        "FAILURE": {
+                            "MAIN": "Impossible de supprimer le rack.",
+                            "HAS_BOOKS": "Le rack ne peut pas \u00EAtre supprim\u00E9 tant qu'il contient des livres."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 cr\u00E9\u00E9e avec succ\u00E8s.",
+                        "FAILURE": ""
+                    },
+                    "EDIT": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 modifi\u00E9e avec succ\u00E8s.",
+                        "FAILURE": "L'\u00E9tag\u00E8re ne peut pas \u00EAtre modifi\u00E9e."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 supprim\u00E9e avec succ\u00E8s.",
+                        "FAILURE": {
+                            "MAIN": "Impossible de supprimer l'\u00E9tag\u00E8re.",
+                            "HAS_BOOKS": "L'\u00E9tag\u00E8re ne peut pas \u00EAtre supprim\u00E9e tant que tous les livres ne sont pas d\u00E9plac\u00E9s."
+                        }
+                    }
                 }
             }
         },

@@ -5,7 +5,8 @@ export interface WarehouseItem {
     id: number;
 }
 
-export interface Rack extends WarehouseItem {
+export class Rack implements WarehouseItem {
+    id: number;
     name: string;
     location: string;
     createdDate: Date;
@@ -13,12 +14,22 @@ export interface Rack extends WarehouseItem {
     shelvesCount: number
 }
 
-export interface Shelf extends WarehouseItem {
+export class RackToSave {
+    name: string;
+}
+
+export class Shelf implements WarehouseItem {
+    id: number;
     name: string;
     position: number;
     createdDate: Date;
     updatedDate: Date;
     bookItemsCount: number;
+}
+
+export class ShelfToSave {
+    name: string;
+    rackId: number;
 }
 
 export interface WarehouseBookItemRequestListView extends WarehouseItem {

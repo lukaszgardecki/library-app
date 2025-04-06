@@ -1,23 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-confirmation-toast',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './confirmation-toast.component.html',
-  styleUrl: './confirmation-toast.component.css'
+  selector: 'app-failure-toast',
+  imports: [CommonModule, TranslateModule],
+  templateUrl: './failure-toast.component.html',
+  styleUrl: './failure-toast.component.css'
 })
-export class ConfirmationToastComponent {
+export class FailureToastComponent {
   @ViewChild('toastElement') toastEl!: ElementRef;
   isVisible: boolean = false;
   progressWidth: number = 100;
+  message: string = '';
 
   private duration = 3000;
   private intervalTime = 50;
   private intervalId: any;
 
-  showToast() {
+  showToast(message: string) {
+    this.message = message;
+    if (this.intervalId) clearInterval(this.intervalId)
     this.isVisible = true;
     this.progressWidth = 100;
 

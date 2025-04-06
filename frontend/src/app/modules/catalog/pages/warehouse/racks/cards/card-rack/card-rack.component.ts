@@ -13,7 +13,6 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CardRackComponent {
   @Input() selectedRack: Rack | undefined;
   @Input() rack: Rack;
-  @Input() number: number;
   @Output() onSelect = new EventEmitter<Rack>();
 
   active(item: Rack) {

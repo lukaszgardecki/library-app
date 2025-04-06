@@ -48,12 +48,11 @@
     </div>
 </ng-template>
 
-<app-confirm-modal-dialog
+<app-modal-dialog
+    [id]="'confirmDialog'"
     [title]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE'"
-    [body]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY'"
     (onConfirm)="completeSelectedRequest()"
-></app-confirm-modal-dialog>
+>{{ 'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY' | translate }}</app-modal-dialog>
 
-<app-confirmation-toast #confirmationToast class="bg-danger">
-    {{ 'CAT.TOAST.CONFIRMATION.REQUEST.COMPLETED' | translate }}
-</app-confirmation-toast>
+<app-success-toast #successToast></app-success-toast>
+<app-failure-toast #failureToast></app-failure-toast>

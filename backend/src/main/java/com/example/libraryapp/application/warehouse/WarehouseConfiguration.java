@@ -25,7 +25,7 @@ class WarehouseConfiguration {
             ShelfRepositoryPort shelfRepository
     ) {
         RackService rackService = new RackService(rackRepository, bookItemFacade);
-
+        ShelfService shelfService = new ShelfService(shelfRepository, bookItemFacade);
         BookItemRequestService bookItemRequestService = new BookItemRequestService(
                 bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService
         );
@@ -34,8 +34,12 @@ class WarehouseConfiguration {
                 new GetAllRacksUseCase(rackRepository),
                 new GetAllShelvesUseCase(shelfRepository),
                 new GetRackUseCase(rackService),
-                new AddRackUseCase(rackRepository),
-                new DeleteRackUseCase(rackService)
+                new AddRackUseCase(rackService),
+                new AddShelfUseCase(shelfService),
+                new UpdateRackUseCase(rackService),
+                new UpdateShelfUseCase(shelfService),
+                new DeleteRackUseCase(rackService),
+                new DeleteShelfUseCase(shelfService)
         );
     }
 

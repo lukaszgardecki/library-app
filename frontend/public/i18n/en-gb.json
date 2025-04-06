@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Invalid form data.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "The order has been successfully completed!"
+                    "COMPLETE": {
+                        "SUCCESS": "The order has been successfully completed!",
+                        "FAILURE": "The order could not be completed."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "The rack has been successfully created.",
+                        "FAILURE": "The rack could not be created."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The rack has been successfully edited.",
+                        "FAILURE": "The rack cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The rack has been successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "The rack could not be deleted.",
+                            "HAS_BOOKS": "The rack cannot be deleted as long as there are books on the shelves."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "The shelf has been successfully created.",
+                        "FAILURE": "The shelf could not be created."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The shelf has been successfully edited.",
+                        "FAILURE": "The shelf cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The shelf has been successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "The shelf could not be deleted.",
+                            "HAS_BOOKS": "The shelf cannot be deleted until all books have been removed."
+                        }
+                    }
                 }
             }
         },

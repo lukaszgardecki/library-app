@@ -8,11 +8,12 @@ import { WarehouseService } from '../../../core/services/warehouse.service';
 import { BookItemRequestStatus } from '../../../shared/enums/book-item-request-status';
 import { WarehouseBookItemRequestListView } from "../../../../../shared/models/rack";
 import { TableUpdateEvent } from '../../../shared/models/table-event.interface';
-import { ConfirmModalDialogComponent } from "../../../components/confirm-modal-dialog/confirm-modal-dialog.component";
+import { ModalDialogComponent } from "../../../components/modal-dialog/modal-dialog.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardInProgressComponent } from "./cards/card-in-progress/card-in-progress.component";
 import { CardPendingComponent } from "./cards/card-pending/card-pending.component";
-import { ConfirmationToastComponent } from "../../../components/toasts/confirmation-toast/confirmation-toast.component";
+import { SuccessToastComponent } from "../../../components/toasts/success-toast/success-toast.component";
+import { FailureToastComponent } from "../../../components/toasts/failure-toast/failure-toast.component";
 
 @Component({
   selector: 'app-transactions',
@@ -21,10 +22,11 @@ import { ConfirmationToastComponent } from "../../../components/toasts/confirmat
     CommonModule, TranslateModule,
     BasicSectionComponent,
     ReactiveFormsModule,
-    ConfirmModalDialogComponent,
+    ModalDialogComponent,
     CardInProgressComponent,
     CardPendingComponent,
-    ConfirmationToastComponent
+    SuccessToastComponent,
+    FailureToastComponent
 ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
@@ -35,7 +37,9 @@ export class TransactionsComponent implements OnInit {
   selectedPendingEl: WarehouseBookItemRequestListView | undefined;
   selectedInProgressEl: WarehouseBookItemRequestListView | undefined;
   isLoading = false;
-  @ViewChild('confirmationToast') toastComponent!: ConfirmationToastComponent;
+  @ViewChild('successToast') successToast!: SuccessToastComponent;
+  @ViewChild('failureToast') failureToast!: FailureToastComponent;
+
 
   constructor(private warehouseService: WarehouseService) {}
 
@@ -74,7 +78,8 @@ export class TransactionsComponent implements OnInit {
   completeSelectedRequest() {
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
-        next: () => this.toastComponent.showToast()
+        next: () => this.successToast.showToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),
+        error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE')
       });
     }
   }

@@ -6,6 +6,9 @@ import com.example.libraryapp.domain.rack.dto.RackToSaveDto;
 import com.example.libraryapp.domain.rack.model.Rack;
 import com.example.libraryapp.domain.rack.model.RackId;
 import com.example.libraryapp.domain.shelf.dto.ShelfDto;
+import com.example.libraryapp.domain.shelf.dto.ShelfToSaveDto;
+import com.example.libraryapp.domain.shelf.model.Shelf;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import com.example.libraryapp.domain.warehouse.dto.WarehouseBookItemRequestListViewDto;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,11 @@ public class WarehouseFacade {
     private final GetAllShelvesUseCase getAllShelvesUseCase;
     private final GetRackUseCase getRackUseCase;
     private final AddRackUseCase addRackUseCase;
+    private final AddShelfUseCase addShelfUseCase;
+    private final UpdateRackUseCase updateRackUseCase;
+    private final UpdateShelfUseCase updateShelfUseCase;
     private final DeleteRackUseCase deleteRackUseCase;
+    private final DeleteShelfUseCase deleteShelfUseCase;
 
     public Page<WarehouseBookItemRequestListViewDto> getBookItemRequestList(BookItemRequestStatus status, Pageable pageable) {
         return getBookItemRequestList.execute(status, pageable)
@@ -52,8 +59,30 @@ public class WarehouseFacade {
         return RackMapper.toDto(savedRack);
     }
 
+    public ShelfDto addShelf(ShelfToSaveDto dto) {
+        Shelf shelf = ShelfMapper.toModel(dto);
+        Shelf savedShelf = addShelfUseCase.execute(shelf);
+        return ShelfMapper.toDto(savedShelf);
+    }
+
+    public RackDto updateRack(RackId rackId, RackToSaveDto dto) {
+        Rack rack = RackMapper.toModel(dto);
+        Rack updatedRack = updateRackUseCase.execute(rackId, rack);
+        return RackMapper.toDto(updatedRack);
+    }
+
+    public ShelfDto updateShelf(ShelfId shelfId, ShelfToSaveDto dto) {
+        Shelf shelf = ShelfMapper.toModel(dto);
+        Shelf updatedShelf = updateShelfUseCase.execute(shelfId, shelf);
+        return ShelfMapper.toDto(updatedShelf);
+    }
+
     public void deleteRack(RackId id) {
         deleteRackUseCase.execute(id);
+    }
+
+    public void deleteShelf(ShelfId id) {
+        deleteShelfUseCase.execute(id);
     }
 
 }

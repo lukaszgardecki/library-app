@@ -1,6 +1,8 @@
 package com.example.libraryapp.application.warehouse;
 
+import com.example.libraryapp.domain.rack.model.RackId;
 import com.example.libraryapp.domain.shelf.dto.ShelfDto;
+import com.example.libraryapp.domain.shelf.dto.ShelfToSaveDto;
 import com.example.libraryapp.domain.shelf.model.*;
 
 class ShelfMapper {
@@ -27,10 +29,10 @@ class ShelfMapper {
                 .build();
     }
 
-//    static Rack toModel(RackToSaveDto dto) {
-//        return Rack.builder()
-//                .location(new RackLocationId(dto.getLocation()))
-//                .name(new RackName(dto.getName()))
-//                .build();
-//    }
+    static Shelf toModel(ShelfToSaveDto dto) {
+        return Shelf.builder()
+                .name(new ShelfName(dto.getName()))
+                .rackId(new RackId(dto.getRackId()))
+                .build();
+    }
 }

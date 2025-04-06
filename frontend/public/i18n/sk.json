@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Neplatn\u00E9 \u00FAdaje formul\u00E1ra.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "Objedn\u00E1vka bola \u00FAspe\u0161ne dokon\u010Den\u00E1!"
+                    "COMPLETE": {
+                        "SUCCESS": "Objedn\u00E1vka bola \u00FAspe\u0161ne dokon\u010Den\u00E1!",
+                        "FAILURE": "Objedn\u00E1vku sa nepodarilo dokon\u010Di\u0165."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne vytvoren\u00FD.",
+                        "FAILURE": "Reg\u00E1l sa nepodarilo vytvori\u0165."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne upraven\u00FD.",
+                        "FAILURE": "Reg\u00E1l sa ned\u00E1 upravi\u0165."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne odstr\u00E1nen\u00FD.",
+                        "FAILURE": {
+                            "MAIN": "Reg\u00E1l sa nepodarilo odstr\u00E1ni\u0165.",
+                            "HAS_BOOKS": "Reg\u00E1l nemo\u017Eno odstr\u00E1ni\u0165, pokia\u013E obsahuje knihy na policiach."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne vytvoren\u00E1.",
+                        "FAILURE": ""
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne upraven\u00E1.",
+                        "FAILURE": "Policu nie je mo\u017En\u00E9 upravi\u0165."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne odstr\u00E1nen\u00E1.",
+                        "FAILURE": {
+                            "MAIN": "Policu sa nepodarilo odstr\u00E1ni\u0165.",
+                            "HAS_BOOKS": "Policu nie je mo\u017En\u00E9 odstr\u00E1ni\u0165, pokia\u013E nie s\u00FA v\u0161etky knihy premiestnen\u00E9."
+                        }
+                    }
                 }
             }
         },

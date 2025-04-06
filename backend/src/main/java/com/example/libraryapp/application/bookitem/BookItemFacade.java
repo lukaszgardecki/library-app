@@ -20,6 +20,7 @@ public class BookItemFacade {
     private final AddBookItemUseCase addBookItemUseCase;
     private final UpdateBookItemUseCase updateBookItemUseCase;
     private final DeleteBookItemUseCase deleteBookItemUseCase;
+    private final CountByParamsUseCase countByParamsUseCase;
     private final VerifyAndGetBookItemForRequestUseCase verifyAndGetBookItemForRequestUseCase;
     private final VerifyAndGetBookItemForLoanUseCase verifyAndGetBookItemForLoanUseCase;
 
@@ -49,6 +50,10 @@ public class BookItemFacade {
 
     public void deleteBookItem(BookItemId bookItemId) {
         deleteBookItemUseCase.execute(bookItemId);
+    }
+
+    public Long countByParams(@Nullable RackId rackId,@Nullable ShelfId shelfId) {
+        return countByParamsUseCase.execute(rackId, shelfId);
     }
 
     public BookItemDto verifyAndGetBookItemForRequest(BookItemId bookItemId) {

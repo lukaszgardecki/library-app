@@ -2,11 +2,11 @@ package com.example.libraryapp.application.warehouse;
 
 import com.example.libraryapp.application.bookitem.BookItemFacade;
 import com.example.libraryapp.domain.MessageKey;
-import com.example.libraryapp.domain.rack.exceptions.RackException;
 import com.example.libraryapp.domain.rack.exceptions.RackNotFoundException;
 import com.example.libraryapp.domain.rack.model.Rack;
 import com.example.libraryapp.domain.rack.model.RackId;
 import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
+import com.example.libraryapp.domain.shelf.exceptions.ShelfException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -18,13 +18,13 @@ class RackService {
         return rackRepository.findById(id).orElseThrow(() -> new RackNotFoundException(id));
     }
 
+    Rack save(Rack rack) {
+        return rackRepository.save(rack);
+    }
+
     void verifyRackToDelete(RackId rackId) {
-        bookItemFacade.getPageOfBookItems(null, rackId, null, null)
-                .stream()
-                .findAny()
-                .ifPresent(bookItem -> {
-                    throw new RackException(MessageKey.RACK_DELETION_FAILED);
-                });
+        Long bookItemsCount = bookItemFacade.countByParams(rackId, null);
+        if (bookItemsCount > 0) throw new ShelfException(MessageKey.RACK_DELETION_FAILED);
     }
 
     void deleteById(RackId id) {

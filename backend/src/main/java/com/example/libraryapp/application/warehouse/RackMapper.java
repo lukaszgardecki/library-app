@@ -30,8 +30,8 @@ class RackMapper {
 
     static Rack toModel(RackToSaveDto dto) {
         return Rack.builder()
-                .location(new RackLocationId(dto.getLocation()))
                 .name(new RackName(dto.getName()))
+                .location(new RackLocationId(dto.getLocation()))
                 .build();
     }
 }

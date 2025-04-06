@@ -10,11 +10,11 @@ app-card-shelf,
 app-card-book-item {
     display: block;
 }
-  
+
 app-card-rack:nth-child(odd),
 app-card-shelf:nth-child(odd),
 app-card-book-item:nth-child(odd) {
-    background-color: rgba(241, 241, 241, 0.8); 
+    background-color: rgba(241, 241, 241, 0.8);
 }
 
 app-card-rack:nth-child(even),
@@ -35,9 +35,41 @@ app-card-book-item:nth-child(even) {
     overflow-y: auto;
 }
 
-.rack-list input {
+.input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+input {
     margin: 5px;
     padding: 5px;
+}
+
+.add-button {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+.disabled {
+    background-color: #d3d3d3;
+    color: #ffffff;
+    border: none;
+    opacity: 0.5;
+}
+
+.bi-plus-lg {
+    margin-right: 5px;
 }
 
 .rack-list .list {
@@ -80,10 +112,17 @@ app-card-book-item:nth-child(even) {
 .delete-button {color: #dc3545;}
 .delete-button:hover {background-color: rgba(220, 53, 69, 0.2);}
 
-.rack-info .grid {
+.grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
     font-size: 0.8rem;
+}
+
+app-modal-dialog .grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-size: 0.8rem;
+    align-items: center;
 }
 
 .custom-focus {

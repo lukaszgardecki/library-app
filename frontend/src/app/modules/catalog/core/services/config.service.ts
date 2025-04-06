@@ -31,6 +31,5 @@ export const AUTHORIZED_ENDPOINTS = [
   "/authenticate/logout",
   "/activities",
   "/notifications",
-  "/warehouse",
-  "/racks"
+  "/warehouse"
 ];

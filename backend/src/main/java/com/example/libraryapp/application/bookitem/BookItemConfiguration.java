@@ -29,6 +29,7 @@ public class BookItemConfiguration {
                 new AddBookItemUseCase(bookItemService),
                 new UpdateBookItemUseCase(bookItemService),
                 new DeleteBookItemUseCase(repository, bookItemService, publisher),
+                new CountByParamsUseCase(repository),
                 new VerifyAndGetBookItemForRequestUseCase(bookItemService),
                 new VerifyAndGetBookItemForLoanUseCase(bookItemService)
         );
@@ -50,6 +51,7 @@ public class BookItemConfiguration {
                 new AddBookItemUseCase(bookItemService),
                 new UpdateBookItemUseCase(bookItemService),
                 new DeleteBookItemUseCase(repository, bookItemService, publisher),
+                new CountByParamsUseCase(repository),
                 new VerifyAndGetBookItemForRequestUseCase(bookItemService),
                 new VerifyAndGetBookItemForLoanUseCase(bookItemService)
         );

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface JpaShelfRepository extends JpaRepository<ShelfEntity, Long> {
 
@@ -18,4 +19,7 @@ public interface JpaShelfRepository extends JpaRepository<ShelfEntity, Long> {
           )
     """)
     Page<ShelfEntity> findAllByParams(Long rackId, String query, Pageable pageable);
+
+    @Query("SELECT COALESCE(MAX(s.position), 0) FROM ShelfEntity s WHERE s.rackId = :rackId")
+    Integer findMaxPositionByRackId(@Param("rackId") Long rackId);
 }

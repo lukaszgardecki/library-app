@@ -13,6 +13,6 @@
     
     <div class="section-btn-panel justify-content-between p-2" [ngStyle]="{'display': request==selectedRequest ? 'flex' : 'none'}">
         <button type="button" class="btn btn-outline-danger btn-sm" (click)="onBackToPending.emit(request)"> {{ "CAT.BTN.BACK_TO_PENDING" | translate }} </button>
-        <button  type="button" class="btn btn-outline-success btn-sm" (click)="$event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#confirmModal" > {{ "CAT.BTN.COMPLETE" | translate }} </button>
+        <button  type="button" class="btn btn-outline-success btn-sm" (click)="$event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#confirmDialog" > {{ "CAT.BTN.COMPLETE" | translate }} </button>
     </div>
 </div>

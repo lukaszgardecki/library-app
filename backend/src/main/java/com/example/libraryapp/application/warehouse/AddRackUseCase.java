@@ -1,20 +1,22 @@
 package com.example.libraryapp.application.warehouse;
 
-import com.example.libraryapp.domain.MessageKey;
-import com.example.libraryapp.domain.rack.exceptions.RackException;
 import com.example.libraryapp.domain.rack.model.Rack;
-import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
+import com.example.libraryapp.domain.rack.model.RackCreatedDate;
+import com.example.libraryapp.domain.rack.model.RackShelvesCount;
+import com.example.libraryapp.domain.rack.model.RackUpdatedDate;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class AddRackUseCase {
-    private final RackRepositoryPort rackRepository;
+    private final RackService rackService;
 
     Rack execute(Rack rack) {
-        rackRepository.findByLocation(rack.getLocation())
-                .ifPresent(r -> {
-                    throw new RackException(MessageKey.RACK_LOCATION_ALREADY_EXISTS);
-                });
-        return rackRepository.save(rack);
+        LocalDateTime now = LocalDateTime.now();
+        rack.setCreatedDate(new RackCreatedDate(now));
+        rack.setUpdatedDate(new RackUpdatedDate(now));
+        rack.setShelvesCount(new RackShelvesCount(0));
+        return rackService.save(rack);
     }
 }

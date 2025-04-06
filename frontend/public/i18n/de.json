@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Ung\u00fcltige Formulardaten.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "Die Bestellung wurde erfolgreich abgeschlossen!"
+                    "COMPLETE": {
+                        "SUCCESS": "Die Bestellung wurde erfolgreich abgeschlossen!",
+                        "FAILURE": "Die Bestellung konnte nicht abgeschlossen werden."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Das Regal wurde erfolgreich erstellt.",
+                        "FAILURE": "Das Regal konnte nicht erstellt werden."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Das Regal wurde erfolgreich bearbeitet.",
+                        "FAILURE": "Das Regal kann nicht bearbeitet werden."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Das Regal wurde erfolgreich gel\u00f6scht.",
+                        "FAILURE": {
+                            "MAIN": "Das Regal konnte nicht gel\u00f6scht werden.",
+                            "HAS_BOOKS": "Das Regal kann nicht gel\u00f6scht werden, solange sich B\u00fccher auf den Regalb\u00f6den befinden."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "Das Regalbrett wurde erfolgreich erstellt.",
+                        "FAILURE": "Das Regalbrett konnte nicht erstellt werden."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Das Regalbrett wurde erfolgreich bearbeitet.",
+                        "FAILURE": "Das Regalbrett kann nicht bearbeitet werden."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Das Regalbrett wurde erfolgreich gel\u00f6scht.",
+                        "FAILURE": {
+                            "MAIN": "Das Regalbrett konnte nicht gel\u00f6scht werden.",
+                            "HAS_BOOKS": "Das Regalbrett kann nicht gel\u00f6scht werden, solange alle B\u00fccher nicht entfernt wurden."
+                        }
+                    }
                 }
             }
         },

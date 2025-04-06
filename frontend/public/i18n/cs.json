@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Neplatn\u00e1 data formul\u00e1\u0159e.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "Objedn\u00E1vka byla \u00FAsp\u011B\u0161n\u011B dokon\u010Dena!"
+                    "COMPLETE": {
+                        "SUCCESS": "Objedn\u00e1vka byla \u00fasp\u011b\u0161n\u011b vy\u0159\u00edzena!",
+                        "FAILURE": "Objedn\u00e1vku se nepoda\u0159ilo vy\u0159\u00eddit."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Reg\u00e1l byl \u00fasp\u011b\u0161n\u011b vytvo\u0159en.",
+                        "FAILURE": "Nepoda\u0159ilo se vytvo\u0159it reg\u00e1l."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "\u00dasp\u011b\u0161n\u011b upraven reg\u00e1l.",
+                        "FAILURE": "Nelze upravit reg\u00e1l."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "\u00dasp\u011b\u0161n\u011b odstran\u011bn reg\u00e1l.",
+                        "FAILURE": {
+                            "MAIN": "Nepoda\u0159ilo se odstranit reg\u00e1l.",
+                            "HAS_BOOKS": "Reg\u00e1l nelze odstranit, dokud m\u00e1 knihy na polic\u00edch."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "Police byla \u00fasp\u011b\u0161n\u011b vytvo\u0159ena.",
+                        "FAILURE": "Nepoda\u0159ilo se vytvo\u0159it polici."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "\u00dasp\u011b\u0161n\u011b upravena police.",
+                        "FAILURE": "Nelze upravit polici."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "\u00dasp\u011b\u0161n\u011b odstran\u011bna police.",
+                        "FAILURE": {
+                            "MAIN": "Nepoda\u0159ilo se odstranit polici.",
+                            "HAS_BOOKS": "Police nelze odstranit, dokud v\u0161echny knihy nebudou p\u0159esunuty."
+                        }
+                    }
                 }
             }
         },

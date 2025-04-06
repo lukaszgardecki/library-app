@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Datos de formulario no v\u00E1lidos.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "\u00A1El pedido se ha completado con \u00E9xito!"
+                    "COMPLETE": {
+                        "SUCCESS": "¡El pedido se ha completado con \u00E9xito!",
+                        "FAILURE": "No se pudo completar el pedido."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": "No se pudo crear el estante."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante mientras tenga libros en sus estantes."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": ""
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante hasta que se trasladen todos los libros."
+                        }
+                    }
                 }
             }
         },

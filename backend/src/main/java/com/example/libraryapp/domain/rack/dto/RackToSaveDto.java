@@ -10,6 +10,6 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class RackToSaveDto {
-    private String location;
     private String name;
+    private String location;
 }

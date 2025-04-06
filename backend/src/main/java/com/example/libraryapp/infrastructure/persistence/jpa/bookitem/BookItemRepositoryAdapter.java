@@ -54,6 +54,14 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
         repository.deleteById(id.value());
     }
 
+    @Override
+    public Long countByParams(RackId rackId, ShelfId shelfId) {
+        return repository.countByParams(
+                rackId != null ? rackId.value() : null,
+                shelfId != null ? shelfId.value() : null
+        );
+    }
+
     private BookItemEntity toEntity(BookItem model) {
         return BookItemEntity.builder()
                 .id(model.getId() != null ? model.getId().value() : null)

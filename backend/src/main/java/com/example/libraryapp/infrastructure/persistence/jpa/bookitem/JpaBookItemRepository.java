@@ -47,4 +47,12 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
         WHERE bi.id =:id
     """)
     void updateBarcode(Long id, String barcode);
+
+    @Query("""
+        SELECT COUNT(bi)
+        FROM BookItemEntity bi
+        WHERE (:rackId IS NULL OR bi.rackId = :rackId)
+              AND (:shelfId IS NULL OR bi.shelfId = :shelfId)
+    """)
+    Long countByParams(@Param("rackId") Long rackId, @Param("shelfId") Long shelfId);
 }

@@ -3,7 +3,7 @@
       <div class="toast-progress" [ngStyle]="{ width: progressWidth + '%' }"></div>
       <div class="toast-body flex-grow-1 d-flex align-items-center">
         <i class="bi bi-check-circle me-3 text-white fs-4"></i> 
-        <ng-content></ng-content>
+        {{ message | translate }}
       </div>
       <button type="button" class="btn-close btn-close-white ms-2" (click)="closeToast()" aria-label="Close"></button>
     </div>

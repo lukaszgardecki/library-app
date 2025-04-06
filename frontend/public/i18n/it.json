@@ -115,9 +115,47 @@
             }
         },
         "TOAST": {
-            "CONFIRMATION": {
+            "FORM_INVALID": "Dati del modulo non validi.",
+            "WAREHOUSE": {
                 "REQUEST": {
-                    "COMPLETED": "L'ordine \u00E8 stato completato con successo!"
+                    "COMPLETE": {
+                        "SUCCESS": "L'ordine \u00E8 stato completato con successo!",
+                        "FAILURE": "Impossibile completare l'ordine."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato creato con successo.",
+                        "FAILURE": "Impossibile creare lo scaffale."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato modificato con successo.",
+                        "FAILURE": "Impossibile modificare lo scaffale."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato eliminato con successo.",
+                        "FAILURE": {
+                            "MAIN": "Impossibile eliminare lo scaffale.",
+                            "HAS_BOOKS": "Lo scaffale non pu\u00F2 essere eliminato finch\u00E9 contiene libri."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "La mensola \u00E8 stata creata con successo.",
+                        "FAILURE": ""
+                    },
+                    "EDIT": {
+                        "SUCCESS": "La mensola \u00E8 stata modificata con successo.",
+                        "FAILURE": "Impossibile modificare la mensola."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "La mensola \u00E8 stata eliminata con successo.",
+                        "FAILURE": {
+                            "MAIN": "Impossibile eliminare la mensola.",
+                            "HAS_BOOKS": "La mensola non pu\u00F2 essere eliminata finch\u00E9 tutti i libri non vengono spostati."
+                        }
+                    }
                 }
             }
         },

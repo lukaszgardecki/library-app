@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
 import { WebsocketService } from './websocket.service';
 import { BookItemRequest } from '../../shared/models/book-item-request';
-import { Rack, Shelf, WarehouseBookItemRequestListView, WarehouseItem } from "../../../../shared/models/rack";
+import { Rack, Shelf, ShelfToSave, WarehouseBookItemRequestListView, WarehouseItem } from "../../../../shared/models/rack";
 import { BehaviorSubject, catchError, Observable, Subscription, tap, throwError } from 'rxjs';
 import { Page, Pageable } from '../../../../shared/models/page';
 import { BookItemRequestStatus } from '../../shared/enums/book-item-request-status';
@@ -136,6 +136,48 @@ export class WarehouseService {
         console.error('Błąd podczas oznaczania książki jako gotowej:', err);
         return throwError(() => err);
       })
+    );
+  }
+
+  addNewRack(rack: Rack): Observable<Rack> {
+    return this.http.post<Rack>(`${this.baseURL}/racks`, rack, { withCredentials: true }).pipe(
+      tap(newRack => this.addTo(this.rackSubject, newRack))
+    );
+  }
+
+  addNewShelf(shelf: ShelfToSave): Observable<Shelf> {
+    return this.http.post<Shelf>(`${this.baseURL}/shelves`, shelf, { withCredentials: true }).pipe(
+      tap(newShelf => this.addTo(this.shelfSubject, newShelf))
+    );
+  }
+
+  editRack(id: number, rack: Rack): Observable<Rack> {
+    return this.http.patch<Rack>(`${this.baseURL}/racks/${id}`, rack, { withCredentials: true }).pipe(
+      tap(updatedRack => {
+        this.updateIn(this.rackSubject, updatedRack);
+        // this.addTo(this.rackSubject, updatedRack);
+      })
+    );
+  }
+
+  editShelf(id: number, shelf: Shelf): Observable<Shelf> {
+    return this.http.patch<Shelf>(`${this.baseURL}/shelves/${id}`, shelf, { withCredentials: true }).pipe(
+      tap(updatedShelf => {
+        this.updateIn(this.shelfSubject, updatedShelf);
+        // this.addTo(this.shelfSubject, updatedShelf);
+      })
+    );
+  }
+
+  deleteRack(rack: Rack): Observable<void> {
+    return this.http.delete<void>(`${this.baseURL}/racks/${rack.id}`, { withCredentials: true }).pipe(
+      tap(() => this.removeFrom(this.rackSubject, rack))
+    );
+  }
+
+  deleteShelf(shelf: Shelf): Observable<void> {
+    return this.http.delete<void>(`${this.baseURL}/shelves/${shelf.id}`, { withCredentials: true }).pipe(
+      tap(() => this.removeFrom(this.shelfSubject, shelf))
     );
   }
 

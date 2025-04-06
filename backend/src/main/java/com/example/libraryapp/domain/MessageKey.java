@@ -44,9 +44,11 @@ public enum MessageKey {
 
     // RACK
     RACK_NOT_FOUND_ID("rack.not-found.id"),
-    RACK_NOT_FOUND_LOCATION("rack.not-found.location"),
-    RACK_LOCATION_ALREADY_EXISTS("rack.location.already-exists"),
     RACK_DELETION_FAILED("rack.deletion-failed"),
+
+    // SHELF
+    SHELF_NOT_FOUND_ID("shelf.not-found.id"),
+    SHELF_DELETION_FAILED("shelf.deletion-failed"),
 
     // TOKEN
     TOKEN_NOT_FOUND_HASH("token.not-found.hash"),

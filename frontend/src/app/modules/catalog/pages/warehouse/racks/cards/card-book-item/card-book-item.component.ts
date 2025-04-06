@@ -13,7 +13,6 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CardBookItemComponent {
   @Input() selectedBookItem: BookItem | undefined;
   @Input() bookItem: BookItem;
-  @Input() number: number;
   @Output() onSelect = new EventEmitter<BookItem>();
 
   active(item: BookItem) {
