@@ -13,8 +13,7 @@ import { CardBookItemComponent } from "./cards/card-book-item/card-book-item.com
 import { BookItem } from '../../../../../shared/models/book-item';
 import { EnumNamePipe } from "../../../../../shared/pipes/enum-name.pipe";
 import { ModalDialogComponent } from '../../../components/modal-dialog/modal-dialog.component';
-import { SuccessToastComponent } from '../../../components/toasts/success-toast/success-toast.component';
-import { FailureToastComponent } from "../../../components/toasts/failure-toast/failure-toast.component";
+import { ErrorToast, SuccessToast, ToastContainerComponent } from "../../../components/toasts/toast-container/toast-container.component";
 
 @Component({
   selector: 'app-racks',
@@ -24,8 +23,7 @@ import { FailureToastComponent } from "../../../components/toasts/failure-toast/
     BasicSectionComponent, CardRackComponent, CardShelfComponent, CardBookItemComponent,
     EnumNamePipe,
     ModalDialogComponent,
-    SuccessToastComponent,
-    FailureToastComponent
+    ToastContainerComponent
 ],
   templateUrl: './racks.component.html',
   styleUrl: './racks.component.css'
@@ -57,8 +55,7 @@ export class RacksComponent implements OnInit {
   editShelfForm: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required)
   });
-  @ViewChild('successToast') successToast!: SuccessToastComponent;
-  @ViewChild('failureToast') failureToast!: FailureToastComponent;
+  @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
   @ViewChild('rackDeleteModal') rackDeleteModal!: ModalDialogComponent;
   @ViewChild('shelfDeleteModal') shelfDeleteModal!: ModalDialogComponent;
 
@@ -99,7 +96,7 @@ export class RacksComponent implements OnInit {
 
   addRack() {
     if(this.newRackForm.invalid) {
-      this.failureToast.showToast('CAT.TOAST.FORM_INVALID');
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.FORM_INVALID'));
       return
     };
     const newRack: Rack = new Rack();
@@ -107,16 +104,16 @@ export class RacksComponent implements OnInit {
     newRack.location = this.newRackForm.value.location;
     this.warehouseService.addNewRack(newRack).subscribe({
       next: () => {
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.SUCCESS')
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.SUCCESS'));
         this.newRackForm.reset();
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.FAILURE')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.FAILURE'))
     });
   }
 
   addShelf() {
     if(this.newShelfForm.invalid || !this.selectedRack) {
-      this.failureToast.showToast('CAT.TOAST.FORM_INVALID');
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.FORM_INVALID'))
       return;
     }
     const newShelf: ShelfToSave = new ShelfToSave();
@@ -124,11 +121,11 @@ export class RacksComponent implements OnInit {
     newShelf.rackId = this.selectedRack.id;
     this.warehouseService.addNewShelf(newShelf).subscribe({
       next: () => {
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.SUCCESS');
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.SUCCESS'))
         this.newShelfForm.reset();
         if (this.selectedRack) this.selectedRack.shelvesCount += 1;
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.FAILURE')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.FAILURE'))
     });
   }
 
@@ -177,7 +174,7 @@ export class RacksComponent implements OnInit {
 
   editRack() {
     if (this.editRackForm.invalid || !this.selectedRack) {
-      this.failureToast.showToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE');
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE'));
       return
     }
     const rackToUpdate = new Rack()
@@ -186,15 +183,15 @@ export class RacksComponent implements OnInit {
     this.warehouseService.editRack(this.selectedRack.id, rackToUpdate).subscribe({
       next: updatedRack => {
         this.selectedRack = updatedRack;
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.SUCCESS');
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.SUCCESS'));
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE'))
     });
   }
 
   editShelf() {
     if (this.editShelfForm.invalid || !this.selectedShelf) {
-      this.failureToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE');
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE'));
       return
     }
     const shelfToUpdate = new Shelf();
@@ -202,16 +199,16 @@ export class RacksComponent implements OnInit {
     this.warehouseService.editShelf(this.selectedShelf.id, shelfToUpdate).subscribe({
       next: updatedShelf => {
         this.selectedShelf = updatedShelf;
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.SUCCESS');
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.SUCCESS'));
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE'))
     });
   }
 
   validateRackDeletion(event: Event) {
     event.stopPropagation();
     if (!this.selectedRack || this.selectedRack.shelvesCount > 0) {
-      this.failureToast.showToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.HAS_BOOKS')
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.HAS_BOOKS'))
       return;
     }
     this.rackDeleteModal.open();
@@ -221,7 +218,7 @@ export class RacksComponent implements OnInit {
   validateShelfDeletion(event: Event) {
     event.stopPropagation();
     if (!this.selectedShelf || this.selectedShelf.bookItemsCount > 0) {
-      this.failureToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.HAS_BOOKS');
+      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.HAS_BOOKS'));
       return;
     }
     this.shelfDeleteModal.open();
@@ -231,10 +228,10 @@ export class RacksComponent implements OnInit {
     if(!this.selectedRack) return;
     this.warehouseService.deleteRack(this.selectedRack).subscribe({
       next: () => {
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.SUCCESS');
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.SUCCESS'));
         this.selectedRack = undefined;
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.MAIN')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.MAIN'))
     })
   }
 
@@ -242,10 +239,10 @@ export class RacksComponent implements OnInit {
     if(!this.selectedShelf) return;
     this.warehouseService.deleteShelf(this.selectedShelf).subscribe({
       next: () => {
-        this.successToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.SUCCESS');
+        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.SUCCESS'));
         this.selectedShelf = undefined;
       },
-      error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.MAIN')
+      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.MAIN'))
     })
   }
 

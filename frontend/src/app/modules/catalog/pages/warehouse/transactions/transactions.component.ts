@@ -12,8 +12,7 @@ import { ModalDialogComponent } from "../../../components/modal-dialog/modal-dia
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardInProgressComponent } from "./cards/card-in-progress/card-in-progress.component";
 import { CardPendingComponent } from "./cards/card-pending/card-pending.component";
-import { SuccessToastComponent } from "../../../components/toasts/success-toast/success-toast.component";
-import { FailureToastComponent } from "../../../components/toasts/failure-toast/failure-toast.component";
+import { ErrorToast, SuccessToast, ToastContainerComponent } from '../../../components/toasts/toast-container/toast-container.component';
 
 @Component({
   selector: 'app-transactions',
@@ -25,8 +24,7 @@ import { FailureToastComponent } from "../../../components/toasts/failure-toast/
     ModalDialogComponent,
     CardInProgressComponent,
     CardPendingComponent,
-    SuccessToastComponent,
-    FailureToastComponent
+    ToastContainerComponent
 ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
@@ -37,8 +35,7 @@ export class TransactionsComponent implements OnInit {
   selectedPendingEl: WarehouseBookItemRequestListView | undefined;
   selectedInProgressEl: WarehouseBookItemRequestListView | undefined;
   isLoading = false;
-  @ViewChild('successToast') successToast!: SuccessToastComponent;
-  @ViewChild('failureToast') failureToast!: FailureToastComponent;
+  @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
 
 
   constructor(private warehouseService: WarehouseService) {}
@@ -78,8 +75,8 @@ export class TransactionsComponent implements OnInit {
   completeSelectedRequest() {
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
-        next: () => this.successToast.showToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),
-        error: () => this.failureToast.showToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE')
+        next: () => this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS')),
+        error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE'))
       });
     }
   }
