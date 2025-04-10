@@ -1,14 +1,14 @@
 <div class="container-fluid h-100 d-flex flex-column">
     <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.RACKS' | translate }}</h1>
     <div class="row flex-grow-1" style="height: 0;">
-        <app-basic-section class="" [name]="'Regały' | translate">
+        <app-basic-section class="" [name]="'CAT.WAREHOUSE.RACKS.HEADER' | translate">
             <ng-container class="" *ngIf="racksPage$ | async as page">
 
                 <div class="rack-list">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchRacks">
-                        <button class="btn add-button" (click)="$event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#addNewRackDialog">
-                            <i class="bi bi-plus-lg"></i> Dodaj
+                        <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchRacks">
+                        <button class="btn add-button" (click)="openAddRackModal()">
+                            <i class="bi bi-plus-lg"></i>{{ 'CAT.BTN.ADD' | translate }}
                         </button>
                     </div>
 
@@ -28,30 +28,30 @@
                         <div class="info-header">
                             <h4>{{ selectedRack.name }}</h4>
                             <div class="icon-buttons">
-                                <button class="icon-button edit-button" title="Edytuj" (click)="loadValuesToRackEditForm()" data-bs-toggle="modal" data-bs-target="#editRackDialog"><i class="bi bi-pencil-square"></i></button>
-                                <button class="icon-button delete-button" title="Usuń" (click)="validateRackDeletion($event)"><i class="bi bi-trash"></i></button>
+                                <button class="icon-button edit-button" [title]="'CAT.BTN.CANCEL' | translate" (click)="openEditRackModal()"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button delete-button" [title]="'CAT.BTN.DELETE' | translate" (click)="openDeleteRackModal()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                         
                         <div class="grid">
                             <strong>ID:</strong>{{selectedRack.id }}
-                            <strong>Lokalizacja:</strong>{{selectedRack.location}}
-                            <strong>Ilość półek:</strong>{{selectedRack.shelvesCount}}
-                            <strong>Data utworzenia:</strong>{{selectedRack.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
-                            <strong>Data ostatniej aktualizacji:</strong>{{selectedRack.updatedDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>{{ 'CAT.RACK.LOCATION' | translate }}</strong>{{selectedRack.location}}
+                            <strong>{{ 'CAT.RACK.SHELVES_COUNT' | translate }}</strong>{{selectedRack.shelvesCount}}
+                            <strong>{{ 'CAT.RACK.CREATION_DATE' | translate }}</strong>{{selectedRack.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>{{ 'CAT.RACK.LAST_UPDATE_DATE' | translate }}</strong>{{selectedRack.updatedDate | date: "dd.MM.yyyy HH:mm:ss" | nullPlaceholder }}
                         </div>
                     </div>
                 </div>
             </ng-container>
         </app-basic-section>
 
-        <app-basic-section class="col-12 col-lg-6" [name]="'Półki' | translate" >
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.SHELVES.HEADER' | translate" >
             <ng-container class="" *ngIf="shelvesPage$ | async as page">
                 <div class="rack-list">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchShelves">
-                        <button class="btn add-button" [disabled]="!selectedRack" [ngClass]="{'disabled': !selectedRack}" (click)="$event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#addNewShelfDialog">
-                            <i class="bi bi-plus-lg"></i> Dodaj
+                        <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchShelves">
+                        <button class="btn add-button" [disabled]="!selectedRack" [ngClass]="{'disabled': !selectedRack}" (click)="openAddShelfModal()">
+                            <i class="bi bi-plus-lg"></i>{{ 'CAT.BTN.ADD' | translate }}
                         </button>
                     </div>
     
@@ -71,26 +71,26 @@
                         <div class="info-header">
                             <h4>{{ selectedShelf.name }}</h4>
                             <div class="icon-buttons">
-                                <button class="icon-button edit-button" title="Edytuj" (click)="loadValuesToShelfEditForm()" data-bs-toggle="modal" data-bs-target="#editShelfDialog"><i class="bi bi-pencil-square"></i></button>
-                                <button class="icon-button delete-button" title="Usuń" (click)="validateShelfDeletion($event)"><i class="bi bi-trash"></i></button>
+                                <button class="icon-button edit-button" [title]="'CAT.BTN.CANCEL' | translate" (click)="openEditShelfModal()"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button delete-button" [title]="'CAT.BTN.DELETE' | translate" (click)="openDeleteShelfModal()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                         <div class="grid">
                             <strong>ID:</strong>{{selectedShelf.id}}
-                            <strong>Pozycja:</strong>{{selectedShelf.position}}
-                            <strong>Ilość książek:</strong>{{selectedShelf.bookItemsCount}}
-                            <strong>Data utworzenia:</strong>{{selectedShelf.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
-                            <strong>Data ostatniej aktualizacji:</strong>{{selectedShelf.updatedDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>{{ 'CAT.SHELF.POSITION' | translate }}</strong>{{selectedShelf.position}}
+                            <strong>{{ 'CAT.SHELF.BOOK_ITEMS_COUNT' | translate }}</strong>{{selectedShelf.bookItemsCount}}
+                            <strong>{{ 'CAT.SHELF.CREATION_DATE' | translate }}</strong>{{selectedShelf.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
+                            <strong>{{ 'CAT.SHELF.LAST_UPDATE_DATE' | translate }}</strong>{{selectedShelf.updatedDate | date: "dd.MM.yyyy HH:mm:ss" | nullPlaceholder }}
                         </div>
                     </div>
                 </div>
             </ng-container>
         </app-basic-section>
 
-        <app-basic-section class="col-12 col-lg-6" [name]="'Książki' | translate">
-            <ng-container class="" *ngIf="bookItemsPage$ | async as page">
+        <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.BOOK_ITEMS.HEADER' | translate">
+            <ng-container *ngIf="bookItemsPage$ | async as page">
                 <div class="rack-list">
-                    <input type="text" class="form-control" placeholder="Wyszukaj..." [formControl]="searchBookItems">
+                    <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchBookItems">
 
                     <div class="list" *ngIf="page.content.length > 0; else lackBookItems" (scroll)="loadNextPageOfBookItems($event)">
                         <app-card-book-item
@@ -105,7 +105,7 @@
                 </div>
                 <div class="rack-info mt-2" >
                     <div *ngIf="selectedBookItem">
-                        <h4 class="">{{ 'Tytuł książki' }}</h4>
+                        <h4>{{ 'Tytuł książki' }}</h4>
                         <div class="grid">
                             <strong>ID:</strong>{{selectedBookItem.id}}
                             <strong>Kod kreskowy:</strong>{{selectedBookItem.barcode}}
@@ -121,57 +121,43 @@
 
 <ng-template #lackRacks>
     <div class="lack-message">
-        {{ 'CAT.WAREHOUSE.PENDING_REQUESTS.LACK' | translate }}
+        {{ 'CAT.RACK.LACK' | translate }}
     </div>
 </ng-template>
 <ng-template #lackShelves>
     <div class="lack-message">
-        {{ 'NI MA PUEK' | translate }}
+        {{ 'CAT.SHELF.LACK' | translate }}
     </div>
 </ng-template>
 <ng-template #lackBookItems>
     <div class="lack-message">
-        {{ 'NI MA KSIUNSZEK' | translate }}
+        {{ 'CAT.BOOK_ITEM.LACK' | translate }}
     </div>
 </ng-template>
 
-<app-modal-dialog [id]="'addNewRackDialog'" [title]="'Dodaj nowy regał'" [submitBtnDisabled]="newRackForm.invalid" (onConfirm)="addRack()">
-    <div class="">
-        <div class="grid" [formGroup]="newRackForm">
-            <strong>Nazwa:</strong><input type="text" class="form-control" placeholder="Wpisz nazwę..." formControlName="name">
-            <strong>Lokalizacja:</strong><input type="text" class="form-control" placeholder="Wpisz lokalizację..." formControlName="location">
-        </div>
+<ng-template #addRackDialogBody>
+    <div class="grid" [formGroup]="newRackForm">
+        <strong>{{ 'CAT.RACK.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_NAME' | translate" formControlName="name">
+        <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_LOCATION' | translate" formControlName="location">
     </div>
-</app-modal-dialog>
-<app-modal-dialog [id]="'editRackDialog'" [title]="'Edytuj regał'" [submitBtnDisabled]="editRackForm.invalid" (onConfirm)="editRack()">
-    <div class="">
-        <div class="grid" [formGroup]="editRackForm">
-            <strong>Nazwa:</strong><input type="text" class="form-control" placeholder="Wpisz nazwę..." formControlName="name">
-            <strong>Lokalizacja:</strong><input type="text" class="form-control" placeholder="Wpisz lokalizację..." formControlName="location">
-        </div>
+</ng-template>
+<ng-template #editRackDialogBody>
+    <div class="grid" [formGroup]="editRackForm">
+        <strong>{{ 'CAT.RACK.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_NAME' | translate" formControlName="name">
+        <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_LOCATION' | translate" formControlName="location">
     </div>
-</app-modal-dialog>
-
-<app-modal-dialog [id]="'addNewShelfDialog'" [title]="'Dodaj nową półkę'" [submitBtnDisabled]="newShelfForm.invalid" (onConfirm)="addShelf()">
-    <div class="">
-        <div class="grid" [formGroup]="newShelfForm">
-            <strong>Nazwa:</strong><input type="text" class="form-control" placeholder="Wpisz nazwę..." formControlName="name">
-        </div>
+</ng-template>
+<ng-template #addShelfDialogBody>
+    <div class="grid" [formGroup]="newShelfForm">
+        <strong>{{ 'CAT.SHELF.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_SHELF.SHELF_NAME' | translate" formControlName="name">
     </div>
-</app-modal-dialog>
-<app-modal-dialog [id]="'editShelfDialog'" [title]="'Edytuj półkę'" [submitBtnDisabled]="editShelfForm.invalid" (onConfirm)="editShelf()">
-    <div class="">
-        <div class="grid" [formGroup]="editShelfForm">
-            <strong>Nazwa:</strong><input type="text" class="form-control" placeholder="Wpisz nazwę..." formControlName="name">
-        </div>
+</ng-template>
+<ng-template #editShelfDialogBody>
+    <div class="grid" [formGroup]="editShelfForm">
+        <strong>{{ 'CAT.SHELF.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_SHELF.SHELF_NAME' | translate" formControlName="name">
     </div>
-</app-modal-dialog>
-
-<app-modal-dialog [title]="'Usuń regał'" (onConfirm)="deleteRack()" #rackDeleteModal>
-    Czy na pewno chcesz usunąć {{ this.selectedRack?.name }}? Ta operacja jest nieodwracalna.
-</app-modal-dialog>
-<app-modal-dialog [title]="'Usuń półkę'" (onConfirm)="deleteShelf()" #shelfDeleteModal>
-    Czy na pewno chcesz usunąć {{ this.selectedShelf?.name }}? Ta operacja jest nieodwracalna.
-</app-modal-dialog>
+</ng-template>
 
 <app-toast-container #toastContainer></app-toast-container>
+
+<app-modal-host></app-modal-host>

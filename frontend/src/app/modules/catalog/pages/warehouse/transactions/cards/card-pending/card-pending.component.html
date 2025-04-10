@@ -13,7 +13,7 @@
     <div class="flex-column justify-content-center p-2" [ngStyle]="{'display': request==selectedRequest ? 'flex' : 'none'}">
         <div class="info">
             <strong>ID:</strong>{{request.id}}
-            <strong>{{ 'CAT.RACK.LOCATION_ID' | translate }}:</strong><strong>{{request.rackLocation}}</strong>
+            <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><strong>{{request.rackLocation}}</strong>
             <strong>{{ 'CAT.REQUEST.CREATION_DATE' | translate }}:</strong>{{request.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
             <strong>{{ 'CAT.BOOK.TITLE' | translate }}:</strong>{{request.bookTitle}}
             <strong>{{ 'CAT.BOOK_ITEM.BARCODE' | translate }}:</strong>{{request.barcode}}

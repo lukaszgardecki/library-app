@@ -13,7 +13,10 @@ export class ToastContainerComponent {
   private toastIdCounter = 0;
   @ViewChildren('toastElement') toastElements!: QueryList<ElementRef>;
 
-  show(type: ToastType) {
+  showSuccess = (message: string) => this.show(new SuccessToast(message));
+  showError = (message: string) => this.show(new ErrorToast(message)); 
+
+  private show(type: ToastType) {
     const toast = new ActiveToast(++this.toastIdCounter, type.message, type);
     this.toasts.push(toast);
 

@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { Modal } from 'bootstrap';
-
 @Component({
   selector: 'app-modal-dialog',
   imports: [CommonModule, TranslateModule],
@@ -10,24 +8,18 @@ import { Modal } from 'bootstrap';
   styleUrl: './modal-dialog.component.css'
 })
 export class ModalDialogComponent {
-  @Input() id: string;
-  @Input() title: string;
-  @Input() submitBtnDisabled: boolean = false;
-  @Output() onConfirm = new EventEmitter();
+  @Input() title: string = '';
+  @Input() body: any;
+  @Input() submitBtnDisabled: boolean = true;
+  @Output() onConfirm = new EventEmitter<void>();
+  public close!: () => void;
 
-  @ViewChild('modalRef', { static: true }) modalElement!: ElementRef;
-  private modalInstance!: Modal;
-
-  ngOnInit() {
-    // to wywala navbar...
-    this.modalInstance = new Modal(this.modalElement.nativeElement);
+  confirm() {
+    this.onConfirm.emit();
+    if (this.close) this.close();
   }
 
-  open() {
-    this.modalInstance.show();
-  }
-
-  close() {
-    this.modalInstance.hide();
+  isString(value: any): boolean {
+    return typeof value === 'string';
   }
 }

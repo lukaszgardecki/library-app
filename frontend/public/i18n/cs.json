@@ -99,18 +99,43 @@
             "BACK": "Zpět",
             "BACK_TO_PENDING": "P\u0159esunout do \u010dekaj\u00edc\u00edch",
             "CANCEL": "Zrušit",
+            "ADD": "P\u0159idat",
             "EDIT": "Upravit",
             "CONFIRM": "Potvrdit",
             "COMPLETE": "Dokon\u010dit",
             "ACCEPT": "P\u0159ijmout",
             "SAVE": "Uložit",
-            "SAVE_TO_FILE": "Uložit do souboru"
+            "SAVE_TO_FILE": "Uložit do souboru",
+            "DELETE": "Odstranit"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Potvrzen\u00ed dokon\u010den\u00ed objedn\u00e1vky",
                     "BODY": "Opravdu chcete dokon\u010dit tuto objedn\u00e1vku? Tuto akci nelze vr\u00e1tit zp\u011bt."
+                },
+                "ADD_RACK": {
+                    "TITLE": "P\u0159idat nov\u00FD reg\u00E1l",
+                    "RACK_NAME": "Zadejte n\u00E1zev...",
+                    "RACK_LOCATION": "Zadejte um\u00EDst\u011Bn\u00ED..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "P\u0159idat novou polici",
+                    "SHELF_NAME": "Zadejte n\u00E1zev..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Upravit reg\u00E1l"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Upravit polici"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Smazat reg\u00E1l",
+                    "BODY": "Opravdu chcete smazat {{item}}? Tuto akci nelze vr\u00E1tit zp\u011Bt."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Smazat polici",
+                    "BODY": "Opravdu chcete smazat {{item}}? Tuto akci nelze vr\u00E1tit zp\u011Bt."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Název"
         },
         "BOOK_ITEM": {
+            "LACK": "Chyb\u00ED knihy",
             "BARCODE": "K\u00f3d \u010d\u00e1rov\u00fd",
             "STATUS": {
                 "NAME": "Status",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Reg\u00e1l"
+            "LACK": "Chyb\u00ED reg\u00E1ly",
+            "NAME": "N\u00E1zev",
+            "LOCATION": "Lokalita",
+            "SHELVES_COUNT": "Po\u010Det polic",
+            "CREATION_DATE": "Datum vytvo\u0159en\u00ED",
+            "LAST_UPDATE_DATE": "Datum posledn\u00ED aktualizace"
+        },
+        "SHELF": {
+            "LACK": "Chyb\u00ED police",
+            "NAME": "N\u00E1zev",
+            "POSITION": "Pozice",
+            "BOOK_ITEMS_COUNT": "Po\u010Det knih",
+            "CREATION_DATE": "Datum vytvo\u0159en\u00ED",
+            "LAST_UPDATE_DATE": "Datum posledn\u00ED aktualizace"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "Prob\u00edhaj\u00edc\u00ed objedn\u00e1vky",
                 "LACK": "Nen\u00ed \u017e\u00e1dn\u00e9 prob\u00edhaj\u00edc\u00ed objedn\u00e1vky"
+            },
+            "RACKS": {
+                "HEADER": "Reg\u00E1ly"
+            },
+            "SHELVES": {
+                "HEADER": "Poli\u010Dky"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Knihy"
             }
         },
         "STATS": {

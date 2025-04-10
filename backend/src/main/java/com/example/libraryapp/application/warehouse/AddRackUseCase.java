@@ -13,9 +13,8 @@ class AddRackUseCase {
     private final RackService rackService;
 
     Rack execute(Rack rack) {
-        LocalDateTime now = LocalDateTime.now();
-        rack.setCreatedDate(new RackCreatedDate(now));
-        rack.setUpdatedDate(new RackUpdatedDate(now));
+        rack.setCreatedDate(new RackCreatedDate(LocalDateTime.now()));
+        rack.setUpdatedDate(new RackUpdatedDate(null));
         rack.setShelvesCount(new RackShelvesCount(0));
         return rackService.save(rack);
     }

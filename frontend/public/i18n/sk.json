@@ -99,18 +99,43 @@
             "BACK": "Späť",
             "BACK_TO_PENDING": "Presun\u00fa\u0165 do \u010dakaj\u00facich",
             "CANCEL": "Zrušiť",
+            "ADD": "Prida\u0165",
             "EDIT": "Upraviť",
             "CONFIRM": "Potvrdi\u0165",
             "COMPLETE": "Dokon\u010di\u0165",
             "ACCEPT": "Prija\u0165",
             "SAVE": "Uložiť",
-            "SAVE_TO_FILE": "Uložiť do súboru"
+            "SAVE_TO_FILE": "Uložiť do súboru",
+            "DELETE": "Odstr\u00e1ni\u0165"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Potvrdenie dokon\u010denia objedn\u00e1vky",
                     "BODY": "Naozaj chcete dokon\u010di\u0165 t\u00fato objedn\u00e1vku? T\u00fato akciu nie je mo\u017en\u00e9 vr\u00e1ti\u0165 sp\u00e4\u0165."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Prida\u0165 nov\u00FD reg\u00E1l",
+                    "RACK_NAME": "Zadajte n\u00E1zov...",
+                    "RACK_LOCATION": "Zadajte umiestnenie..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Prida\u0165 nov\u00FA policu",
+                    "SHELF_NAME": "Zadajte n\u00E1zov..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Upravi\u0165 reg\u00E1l"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Upravi\u0165 policu"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Odstr\u00E1ni\u0165 reg\u00E1l",
+                    "BODY": "Naozaj chcete odstr\u00E1ni\u0165 {{item}}? Toto opatrenie nemo\u017Eno vr\u00E1ti\u0165."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Odstr\u00E1ni\u0165 policu",
+                    "BODY": "Naozaj chcete odstr\u00E1ni\u0165 {{item}}? Toto opatrenie nemo\u017Eno vr\u00E1ti\u0165."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Názov"
         },
         "BOOK_ITEM": {
+            "LACK": "Ch\u00FDbaj\u00FA knihy",
             "BARCODE": "\u010c\u00edarov\u00fd k\u00f3d",
             "STATUS": {
                 "NAME": "Stav",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Reg\u00e1l"
+            "LACK": "Ch\u00FDbaj\u00FA reg\u00E1ly",
+            "NAME": "N\u00E1zov",
+            "LOCATION": "Lokalita",
+            "SHELVES_COUNT": "Po\u010Det pol\u00EDc",
+            "CREATION_DATE": "D\u00E1tum vytvorenia",
+            "LAST_UPDATE_DATE": "D\u00E1tum poslednej aktualiz\u00E1cie"
+        },
+        "SHELF": {
+            "LACK": "Ch\u00FDbaj\u00FA police",
+            "NAME": "N\u00E1zov",
+            "POSITION": "Poz\u00EDcia",
+            "BOOK_ITEMS_COUNT": "Po\u010Det kn\u00EDh",
+            "CREATION_DATE": "D\u00E1tum vytvorenia",
+            "LAST_UPDATE_DATE": "D\u00E1tum poslednej aktualiz\u00E1cie"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "Prebiehaj\u00face objedn\u00e1vky",
                 "LACK": "Ch\u00fdbaj\u00fa prebiehaj\u00face objedn\u00e1vky"
+            },
+            "RACKS": {
+                "HEADER": "Reg\u00E1ly"
+            },
+            "SHELVES": {
+                "HEADER": "Poli\u010Dky"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Knihy"
             }
         },
         "STATS": {

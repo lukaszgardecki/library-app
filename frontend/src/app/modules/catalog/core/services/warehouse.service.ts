@@ -155,7 +155,6 @@ export class WarehouseService {
     return this.http.patch<Rack>(`${this.baseURL}/racks/${id}`, rack, { withCredentials: true }).pipe(
       tap(updatedRack => {
         this.updateIn(this.rackSubject, updatedRack);
-        // this.addTo(this.rackSubject, updatedRack);
       })
     );
   }
@@ -164,7 +163,6 @@ export class WarehouseService {
     return this.http.patch<Shelf>(`${this.baseURL}/shelves/${id}`, shelf, { withCredentials: true }).pipe(
       tap(updatedShelf => {
         this.updateIn(this.shelfSubject, updatedShelf);
-        // this.addTo(this.shelfSubject, updatedShelf);
       })
     );
   }

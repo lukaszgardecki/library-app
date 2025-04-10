@@ -2,7 +2,10 @@ package com.example.libraryapp.application.warehouse;
 
 import com.example.libraryapp.domain.shelf.model.Shelf;
 import com.example.libraryapp.domain.shelf.model.ShelfId;
+import com.example.libraryapp.domain.shelf.model.ShelfUpdatedDate;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class UpdateShelfUseCase {
@@ -11,6 +14,7 @@ class UpdateShelfUseCase {
     Shelf execute(ShelfId shelfId, Shelf shelfFields) {
         Shelf shelfToUpdate = shelfService.getShelfById(shelfId);
         if (shelfFields.getName() != null) shelfToUpdate.setName(shelfFields.getName());
+        shelfToUpdate.setUpdatedDate(new ShelfUpdatedDate(LocalDateTime.now()));
         return shelfService.save(shelfToUpdate);
     }
 }

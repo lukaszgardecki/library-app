@@ -12,7 +12,7 @@ import { ModalDialogComponent } from "../../../components/modal-dialog/modal-dia
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardInProgressComponent } from "./cards/card-in-progress/card-in-progress.component";
 import { CardPendingComponent } from "./cards/card-pending/card-pending.component";
-import { ErrorToast, SuccessToast, ToastContainerComponent } from '../../../components/toasts/toast-container/toast-container.component';
+import { ToastContainerComponent } from '../../../components/toasts/toast-container/toast-container.component';
 
 @Component({
   selector: 'app-transactions',
@@ -75,8 +75,8 @@ export class TransactionsComponent implements OnInit {
   completeSelectedRequest() {
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
-        next: () => this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS')),
-        error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE'))
+        next: () => this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),
+        error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE')
       });
     }
   }

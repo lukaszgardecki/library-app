@@ -10,10 +10,9 @@ class AddShelfUseCase {
     private final ShelfService shelfService;
 
     Shelf execute(Shelf shelf) {
-        LocalDateTime now = LocalDateTime.now();
         Integer lastPosition = shelfService.getMaxPositionByRackId(shelf.getRackId());
-        shelf.setCreatedDate(new ShelfCreatedDate(now));
-        shelf.setUpdatedDate(new ShelfUpdatedDate(now));
+        shelf.setCreatedDate(new ShelfCreatedDate(LocalDateTime.now()));
+        shelf.setUpdatedDate(new ShelfUpdatedDate(null));
         shelf.setPosition(new ShelfPosition(lastPosition + 1));
         shelf.setBookItemsCount(new BookItemsCount(0));
         return shelfService.save(shelf);

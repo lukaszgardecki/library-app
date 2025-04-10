@@ -99,18 +99,43 @@
             "BACK": "Back",
             "BACK_TO_PENDING": "Move to pending",
             "CANCEL": "Cancel",
+            "ADD": "Add",
             "EDIT": "Edit",
             "CONFIRM": "Confirm",
             "COMPLETE": "Complete",
             "ACCEPT": "Accept",
             "SAVE": "Save",
-            "SAVE_TO_FILE": "Save to file"
+            "SAVE_TO_FILE": "Save to file",
+            "DELETE": "Delete"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Confirmation of Order Completion",
                     "BODY": "Are you sure you want to complete this order? This action cannot be undone."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Add new rack",
+                    "RACK_NAME": "Enter name...",
+                    "RACK_LOCATION": "Enter location..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Add new shelf",
+                    "SHELF_NAME": "Enter name..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Edit rack"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Edit shelf"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Delete rack",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Delete shelf",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Title"
         },
         "BOOK_ITEM": {
+            "LACK": "No books",
             "BARCODE": "Barcode",
             "STATUS": {
                 "NAME": "Status",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Rack"
+            "LACK": "No racks",
+            "NAME": "Name",
+            "LOCATION": "Location",
+            "SHELVES_COUNT": "Number of shelves",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
+        },
+        "SHELF": {
+            "LACK": "No shelves",
+            "NAME": "Name",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Number of books",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "In Progress",
                 "LACK": "No orders in progress"
+            },
+            "RACKS": {
+                "HEADER": "Racks"
+            },
+            "SHELVES": {
+                "HEADER": "Shelves"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Books"
             }
         },
         "STATS": {

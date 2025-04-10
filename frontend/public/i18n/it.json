@@ -99,18 +99,43 @@
             "BACK": "Indietro",
             "BACK_TO_PENDING": "Sposta in sospeso",
             "CANCEL": "Annulla",
+            "ADD": "Aggiungi",
             "EDIT": "Modifica",
             "CONFIRM": "Conferma",
             "COMPLETE": "Completa",
             "ACCEPT": "Accetta",
             "SAVE": "Salva",
-            "SAVE_TO_FILE": "Salva su file"
+            "SAVE_TO_FILE": "Salva su file",
+            "DELETE": "Eliminare"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Conferma completamento ordine",
                     "BODY": "Sei sicuro di voler completare questo ordine? Questa azione non pu\u00f2 essere annullata."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Aggiungi nuova mensola",
+                    "RACK_NAME": "Inserisci nome...",
+                    "RACK_LOCATION": "Inserisci posizione..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Aggiungi nuovo ripiano",
+                    "SHELF_NAME": "Inserisci nome..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Modifica mensola"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Modifica ripiano"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Elimina mensola",
+                    "BODY": "Sei sicuro di voler eliminare {{item}}? Questa azione non pu\u00F2 essere annullata."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Elimina ripiano",
+                    "BODY": "Sei sicuro di voler eliminare {{item}}? Questa azione non pu\u00F2 essere annullata."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Titolo"
         },
         "BOOK_ITEM": {
+            "LACK": "Nessun libro disponibile",
             "BARCODE": "Codice a barre",
             "STATUS": {
                 "NAME": "Stato",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Scaffale"
+            "LACK": "Nessuna scaffalatura disponibile",
+            "NAME": "Nome",
+            "LOCATION": "Posizione",
+            "SHELVES_COUNT": "Numero di scaffali",
+            "CREATION_DATE": "Data di creazione",
+            "LAST_UPDATE_DATE": "Data dell'ultimo aggiornamento"
+        },
+        "SHELF": {
+            "LACK": "Nessuno scaffale disponibile",
+            "NAME": "Nome",
+            "POSITION": "Posizione",
+            "BOOK_ITEMS_COUNT": "Numero di libri",
+            "CREATION_DATE": "Data di creazione",
+            "LAST_UPDATE_DATE": "Data dell'ultimo aggiornamento"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "In corso",
                 "LACK": "Nessun ordine in corso"
+            },
+            "RACKS": {
+                "HEADER": "Scaffali"
+            },
+            "SHELVES": {
+                "HEADER": "Ripiani"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Libri"
             }
         },
         "STATS": {

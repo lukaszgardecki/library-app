@@ -99,18 +99,43 @@
             "BACK": "Wróć",
             "BACK_TO_PENDING": "Przenieś do oczekujących",
             "CANCEL": "Anuluj",
+            "ADD": "Dodaj",
             "EDIT": "Edytuj",
             "CONFIRM": "Potwierdź",
             "COMPLETE": "Zakończ",
             "ACCEPT": "Akceptuj",
             "SAVE": "Zapisz",
-            "SAVE_TO_FILE": "Zapisz do pliku"
+            "SAVE_TO_FILE": "Zapisz do pliku",
+            "DELETE": "Usuń"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Potwierdzenie zakończenia zamówienia",
                     "BODY": "Czy na pewno chcesz zakończyć to zamówienie? Tego działania nie można cofnąć."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Dodaj nowy regał",
+                    "RACK_NAME": "Wpisz nazwę...",
+                    "RACK_LOCATION": "Wpisz lokalizację..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Dodaj nową półkę",
+                    "SHELF_NAME": "Wpisz nazwę..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Edytuj regał"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Edytuj półkę"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Usuń regał",
+                    "BODY": "Czy na pewno chcesz usunąć {{item}}? Tego działania nie można cofnąć."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Usuń półkę",
+                    "BODY": "Czy na pewno chcesz usunąć {{item}}? Tego działania nie można cofnąć."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Tytuł"
         },
         "BOOK_ITEM": {
+            "LACK": "Brak książek",
             "BARCODE": "Kod kreskowy",
             "STATUS": {
                 "NAME": "Status",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Regał"
+            "LACK": "Brak regałów",
+            "NAME": "Nazwa",
+            "LOCATION": "Lokalizacja",
+            "SHELVES_COUNT": "Ilość półek",
+            "CREATION_DATE": "Data utworzenia",
+            "LAST_UPDATE_DATE": "Data ostatniej aktualizacji"
+        },
+        "SHELF": {
+            "LACK": "Brak półek",
+            "NAME": "Nazwa",
+            "POSITION": "Pozycja",
+            "BOOK_ITEMS_COUNT": "Ilość książek",
+            "CREATION_DATE": "Data utworzenia",
+            "LAST_UPDATE_DATE": "Data ostatniej aktualizacji"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "W trakcie realizacji",
                 "LACK": "Brak zamówień w trakcie realizacji"
+            },
+            "RACKS": {
+                "HEADER": "Regały"
+            },
+            "SHELVES": {
+                "HEADER": "Półki"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Książki"
             }
         },
         "STATS": {

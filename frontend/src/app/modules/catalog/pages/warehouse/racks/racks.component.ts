@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BasicSectionComponent } from "../../../components/sections/basic-section/basic-section.component";
-import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Page } from '../../../../../shared/models/page';
 import { Rack, Shelf, ShelfToSave } from '../../../../../shared/models/rack';
 import { CardRackComponent } from "./cards/card-rack/card-rack.component";
@@ -13,7 +13,11 @@ import { CardBookItemComponent } from "./cards/card-book-item/card-book-item.com
 import { BookItem } from '../../../../../shared/models/book-item';
 import { EnumNamePipe } from "../../../../../shared/pipes/enum-name.pipe";
 import { ModalDialogComponent } from '../../../components/modal-dialog/modal-dialog.component';
-import { ErrorToast, SuccessToast, ToastContainerComponent } from "../../../components/toasts/toast-container/toast-container.component";
+import { ToastContainerComponent } from "../../../components/toasts/toast-container/toast-container.component";
+import { NullPlaceholderPipe } from "../../../../../shared/pipes/null-placeholder.pipe";
+import { ModalHostComponent } from "../../../components/modal-dialog/modal-host/modal-host.component";
+import { ModalService } from '../../../core/services/modal.service';
+import { FormService } from '../../../core/services/form.service';
 
 @Component({
   selector: 'app-racks',
@@ -21,9 +25,8 @@ import { ErrorToast, SuccessToast, ToastContainerComponent } from "../../../comp
   imports: [
     CommonModule, TranslateModule, ReactiveFormsModule,
     BasicSectionComponent, CardRackComponent, CardShelfComponent, CardBookItemComponent,
-    EnumNamePipe,
-    ModalDialogComponent,
-    ToastContainerComponent
+    EnumNamePipe, NullPlaceholderPipe,
+    ToastContainerComponent, ModalHostComponent
 ],
   templateUrl: './racks.component.html',
   styleUrl: './racks.component.css'
@@ -41,26 +44,22 @@ export class RacksComponent implements OnInit {
   racksLoading = false;
   shelvesLoading = false;
   bookItemsLoading = false;
-  newRackForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    location: new FormControl('', Validators.required)
-  });
-  editRackForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    location: new FormControl('', Validators.required)
-  });
-  newShelfForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required)
-  });
-  editShelfForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required)
-  });
+  newRackForm: FormGroup;
+  editRackForm: FormGroup;
+  newShelfForm: FormGroup;
+  editShelfForm: FormGroup;
   @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
-  @ViewChild('rackDeleteModal') rackDeleteModal!: ModalDialogComponent;
-  @ViewChild('shelfDeleteModal') shelfDeleteModal!: ModalDialogComponent;
+
+  @ViewChild('addRackDialogBody') addRackDialogBody: TemplateRef<any>;
+  @ViewChild('editRackDialogBody') editRackDialogBody: TemplateRef<any>;
+  @ViewChild('addShelfDialogBody') addShelfDialogBody: TemplateRef<any>;
+  @ViewChild('editShelfDialogBody') editShelfDialogBody: TemplateRef<any>;
 
   constructor(
     private warehouseService: WarehouseService,
+    private modalService: ModalService,
+    private translate: TranslateService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -68,65 +67,19 @@ export class RacksComponent implements OnInit {
       this.warehouseService.loadPageOfShelves();
       this.warehouseService.loadPageOfBookItems();
 
-      this.searchRacks.valueChanges.pipe(
-          debounceTime(500),
-          distinctUntilChanged()
-      ).subscribe(searchQuery => {
+      this.formService.subscribeSearchField(this.searchRacks, (searchQuery) => {
         this.warehouseService.loadPageOfRacks({ query: searchQuery ?? undefined});
         this.warehouseService.loadPageOfShelves();
         this.selectedShelf = undefined;
       });
-
-      this.searchShelves.valueChanges.pipe(
-        debounceTime(500),
-        distinctUntilChanged()
-      ).subscribe(searchQuery => {
+      this.formService.subscribeSearchField(this.searchShelves, (searchQuery) => {
         this.warehouseService.loadPageOfShelves({ rackId: this.selectedRack?.id, query: searchQuery ?? undefined });
         this.warehouseService.loadPageOfBookItems();
         this.selectedShelf = undefined;
       });
-
-      this.searchBookItems.valueChanges.pipe(
-        debounceTime(500),
-        distinctUntilChanged()
-      ).subscribe(searchQuery => {
+      this.formService.subscribeSearchField(this.searchBookItems, (searchQuery) => {
         this.warehouseService.loadPageOfBookItems({ rackId: this.selectedRack?.id, shelfId: this.selectedShelf?.id, query: searchQuery ?? undefined });
       });
-  }
-
-  addRack() {
-    if(this.newRackForm.invalid) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.FORM_INVALID'));
-      return
-    };
-    const newRack: Rack = new Rack();
-    newRack.name = this.newRackForm.value.name;
-    newRack.location = this.newRackForm.value.location;
-    this.warehouseService.addNewRack(newRack).subscribe({
-      next: () => {
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.SUCCESS'));
-        this.newRackForm.reset();
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.CREATE.FAILURE'))
-    });
-  }
-
-  addShelf() {
-    if(this.newShelfForm.invalid || !this.selectedRack) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.FORM_INVALID'))
-      return;
-    }
-    const newShelf: ShelfToSave = new ShelfToSave();
-    newShelf.name = this.newShelfForm.value.name;
-    newShelf.rackId = this.selectedRack.id;
-    this.warehouseService.addNewShelf(newShelf).subscribe({
-      next: () => {
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.SUCCESS'))
-        this.newShelfForm.reset();
-        if (this.selectedRack) this.selectedRack.shelvesCount += 1;
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.CREATE.FAILURE'))
-    });
   }
 
   activeRack(rack: Rack) {
@@ -159,91 +112,10 @@ export class RacksComponent implements OnInit {
     this.selectedBookItem == bookItem ? this.unselectBookItem() : this.selectBookItem(bookItem);
   }
 
-  loadValuesToRackEditForm() {
-    this.editRackForm = new FormGroup({
-      name: new FormControl(this.selectedRack?.name, Validators.required),
-      location: new FormControl(this.selectedRack?.location, Validators.required)
-    });
-  }
-
   loadValuesToShelfEditForm() {
     this.editShelfForm = new FormGroup({
       name: new FormControl(this.selectedShelf?.name, Validators.required),
     });
-  }
-
-  editRack() {
-    if (this.editRackForm.invalid || !this.selectedRack) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE'));
-      return
-    }
-    const rackToUpdate = new Rack()
-    rackToUpdate.name = this.editRackForm.value.name;
-    rackToUpdate.location = this.editRackForm.value.location;
-    this.warehouseService.editRack(this.selectedRack.id, rackToUpdate).subscribe({
-      next: updatedRack => {
-        this.selectedRack = updatedRack;
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.SUCCESS'));
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE'))
-    });
-  }
-
-  editShelf() {
-    if (this.editShelfForm.invalid || !this.selectedShelf) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE'));
-      return
-    }
-    const shelfToUpdate = new Shelf();
-    shelfToUpdate.name = this.editShelfForm.value.name;
-    this.warehouseService.editShelf(this.selectedShelf.id, shelfToUpdate).subscribe({
-      next: updatedShelf => {
-        this.selectedShelf = updatedShelf;
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.SUCCESS'));
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE'))
-    });
-  }
-
-  validateRackDeletion(event: Event) {
-    event.stopPropagation();
-    if (!this.selectedRack || this.selectedRack.shelvesCount > 0) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.HAS_BOOKS'))
-      return;
-    }
-    this.rackDeleteModal.open();
-  }
-
-
-  validateShelfDeletion(event: Event) {
-    event.stopPropagation();
-    if (!this.selectedShelf || this.selectedShelf.bookItemsCount > 0) {
-      this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.HAS_BOOKS'));
-      return;
-    }
-    this.shelfDeleteModal.open();
-  }
-
-  deleteRack() {
-    if(!this.selectedRack) return;
-    this.warehouseService.deleteRack(this.selectedRack).subscribe({
-      next: () => {
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.SUCCESS'));
-        this.selectedRack = undefined;
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.MAIN'))
-    })
-  }
-
-  deleteShelf() {
-    if(!this.selectedShelf) return;
-    this.warehouseService.deleteShelf(this.selectedShelf).subscribe({
-      next: () => {
-        this.toastContainer.show(new SuccessToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.SUCCESS'));
-        this.selectedShelf = undefined;
-      },
-      error: () => this.toastContainer.show(new ErrorToast('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.MAIN'))
-    })
   }
 
   loadNextPageOfRacks(event: any): void {
@@ -280,6 +152,159 @@ export class RacksComponent implements OnInit {
         this.bookItemsLoading = false;
       })
     }
+  }
+
+  openAddRackModal() {
+    this.newRackForm = this.formService.createNewRackForm();
+    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_RACK.TITLE", body: this.addRackDialogBody, form: this.newRackForm, onConfirm: () => this.addRack()})
+  }
+
+  openAddShelfModal() {
+    this.newShelfForm = this.formService.createNewShelfForm();
+    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_SHELF.TITLE", body: this.addShelfDialogBody, form: this.newShelfForm, onConfirm: () => this.addShelf()})
+  }
+
+  openEditRackModal() {
+    this.editRackForm = this.formService.createEditRackForm(this.selectedRack);
+    this.openModal({title: "CAT.DIALOG.WAREHOUSE.EDIT_RACK.TITLE", body: this.editRackDialogBody, form: this.editRackForm, onConfirm: () => this.editRack()});
+  }
+  
+  openEditShelfModal() {
+    this.editShelfForm = this.formService.createEditShelfForm(this.selectedShelf);
+    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.EDIT_SHELF.TITLE", body: this.editShelfDialogBody, form: this.editShelfForm, onConfirm: () => this.editShelf()})
+  }
+  
+  openDeleteRackModal() {
+    if (!this.selectedRack || this.selectedRack.shelvesCount > 0) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.HAS_BOOKS')
+      return;
+    }
+    this.openModal({
+      title: "CAT.DIALOG.WAREHOUSE.DELETE_RACK.TITLE",
+      body: this.translate.instant('CAT.DIALOG.WAREHOUSE.DELETE_RACK.BODY', { item: this.selectedRack?.name }),
+      onConfirm: () => this.deleteRack()
+    });
+  }
+
+  openDeleteShelfModal() {
+    if (!this.selectedShelf || this.selectedShelf.bookItemsCount > 0) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.HAS_BOOKS');
+      return;
+    }
+    this.openModal({
+      title: "CAT.DIALOG.WAREHOUSE.DELETE_SHELF.TITLE",
+      body: this.translate.instant('CAT.DIALOG.WAREHOUSE.DELETE_SHELF.BODY', { item: this.selectedShelf?.name }),
+      onConfirm: () => this.deleteShelf()
+    });
+  }
+
+  private addRack() {
+    if(this.newRackForm.invalid) {
+      this.toastContainer.showError('CAT.TOAST.FORM_INVALID');
+      return
+    };
+    const newRack: Rack = new Rack();
+    newRack.name = this.newRackForm.value.name;
+    newRack.location = this.newRackForm.value.location;
+    this.warehouseService.addNewRack(newRack).subscribe({
+      next: () => {
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.RACK.CREATE.SUCCESS');
+        this.newRackForm.reset();
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.CREATE.FAILURE')
+    });
+  }
+
+  private addShelf() {
+    if(this.newShelfForm.invalid || !this.selectedRack) {
+      this.toastContainer.showError('CAT.TOAST.FORM_INVALID')
+      return;
+    }
+    const newShelf: ShelfToSave = new ShelfToSave();
+    newShelf.name = this.newShelfForm.value.name;
+    newShelf.rackId = this.selectedRack.id;
+    this.warehouseService.addNewShelf(newShelf).subscribe({
+      next: () => {
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.SHELF.CREATE.SUCCESS')
+        this.newShelfForm.reset();
+        if (this.selectedRack) this.selectedRack.shelvesCount += 1;
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.CREATE.FAILURE')
+    });
+  }
+
+  private editRack() {
+    if (this.editRackForm.invalid || !this.selectedRack) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE');
+      return
+    }
+    const rackToUpdate = new Rack()
+    rackToUpdate.name = this.editRackForm.value.name;
+    rackToUpdate.location = this.editRackForm.value.location;
+    this.warehouseService.editRack(this.selectedRack.id, rackToUpdate).subscribe({
+      next: updatedRack => {
+        this.selectedRack = updatedRack;
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.RACK.EDIT.SUCCESS');
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE')
+    });
+  }
+
+  private editShelf() {
+    if (this.editShelfForm.invalid || !this.selectedShelf) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE');
+      return
+    }
+    const shelfToUpdate = new Shelf();
+    shelfToUpdate.name = this.editShelfForm.value.name;
+    this.warehouseService.editShelf(this.selectedShelf.id, shelfToUpdate).subscribe({
+      next: updatedShelf => {
+        this.selectedShelf = updatedShelf;
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.SHELF.EDIT.SUCCESS');
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE')
+    });
+  }
+
+  private deleteRack() {
+    if(!this.selectedRack) return;
+    this.warehouseService.deleteRack(this.selectedRack).subscribe({
+      next: () => {
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.RACK.DELETE.SUCCESS');
+        this.selectedRack = undefined;
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.MAIN')
+    })
+  }
+
+  private deleteShelf() {
+    if(!this.selectedShelf) return;
+    this.warehouseService.deleteShelf(this.selectedShelf).subscribe({
+      next: () => {
+        this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.SHELF.DELETE.SUCCESS');
+        this.selectedShelf = undefined;
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.MAIN')
+    })
+  }
+
+  private openModal(options: { title?: string, body?: any, form?: FormGroup, onConfirm?: () => void}) {
+    const modalRef = this.modalService.open(ModalDialogComponent, {
+      title: options?.title,
+      body: options?.body,
+      submitBtnDisabled: options?.form ? options?.form.invalid : false,
+    });
+
+    options?.form?.statusChanges.subscribe(() => {
+      modalRef.instance.submitBtnDisabled = options?.form ? options?.form.invalid : true;
+    });
+
+    modalRef.instance.onConfirm.subscribe(() => {
+      if (options?.onConfirm) {
+        options.onConfirm();
+      }
+    });
+    modalRef.instance.close = () => modalRef.destroy();
   }
 
   private selectRack = (rack: Rack) => this.selectedRack = rack;

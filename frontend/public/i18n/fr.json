@@ -99,18 +99,43 @@
             "BACK": "Retour",
             "BACK_TO_PENDING": "D\u00e9placer en attente",
             "CANCEL": "Annuler",
+            "ADD": "Ajouter",
             "EDIT": "Modifier",
             "CONFIRM": "Confirmer",
             "COMPLETE": "Terminer",
             "ACCEPT": "Accepter",
             "SAVE": "Enregistrer",
-            "SAVE_TO_FILE": "Enregistrer dans un fichier"
+            "SAVE_TO_FILE": "Enregistrer dans un fichier",
+            "DELETE": "Supprimer"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Confirmation de finalisation de la commande",
                     "BODY": "\u00cates-vous s\u00fbr de vouloir finaliser cette commande ? Cette action est irr\u00e9versible."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Ajouter une nouvelle \u00E9tag\u00E8re",
+                    "RACK_NAME": "Entrez le nom...",
+                    "RACK_LOCATION": "Entrez l'emplacement..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Ajouter une nouvelle tablette",
+                    "SHELF_NAME": "Entrez le nom..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Modifier l'\u00E9tag\u00E8re"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Modifier la tablette"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Supprimer l'\u00E9tag\u00E8re",
+                    "BODY": "\u00CAtes-vous s\u00FBr de vouloir supprimer {{item}} ? Cette action est irr\u00E9versible."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Supprimer la tablette",
+                    "BODY": "\u00CAtes-vous s\u00FBr de vouloir supprimer {{item}} ? Cette action est irr\u00E9versible."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Titre"
         },
         "BOOK_ITEM": {
+            "LACK": "Pas de livres",
             "BARCODE": "Code-barres",
             "STATUS": {
                 "NAME": "Statut",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "\u00c9tag\u00e8re"
+            "LACK": "Pas de rayonnages",
+            "NAME": "Nom",
+            "LOCATION": "Emplacement",
+            "SHELVES_COUNT": "Nombre d'\u00E9tag\u00E8res",
+            "CREATION_DATE": "Date de cr\u00E9ation",
+            "LAST_UPDATE_DATE": "Date de derni\u00E8re mise \u00E0 jour"
+        },
+        "SHELF": {
+            "LACK": "Pas d'\u00E9tag\u00E8res",
+            "NAME": "Nom",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Nombre de livres",
+            "CREATION_DATE": "Date de cr\u00E9ation",
+            "LAST_UPDATE_DATE": "Date de derni\u00E8re mise \u00E0 jour"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "En cours de traitement",
                 "LACK": "Aucune commande en cours"
+            },
+            "RACKS": {
+                "HEADER": "\u00C9tag\u00E8res"
+            },
+            "SHELVES": {
+                "HEADER": "Rayons"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Livres"
             }
         },
         "STATS": {

@@ -99,18 +99,43 @@
             "BACK": "Zurück",
             "BACK_TO_PENDING": "Zur\u00fcck zu ausstehenden",
             "CANCEL": "Abbrechen",
+            "ADD": "Hinzuf\u00FCgen",
             "EDIT": "Bearbeiten",
             "CONFIRM": "Best\u00e4tigen",
             "COMPLETE": "Abschlie\u00dfen",
             "ACCEPT": "Akzeptieren",
             "SAVE": "Speichern",
-            "SAVE_TO_FILE": "In Datei speichern"
+            "SAVE_TO_FILE": "In Datei speichern",
+            "DELETE": "L\u00f6schen"
         },
         "DIALOG": {
             "WAREHOUSE": {
                 "CONFIRM_REQUEST": {
                     "TITLE": "Best\u00e4tigung des Abschlusses der Bestellung",
                     "BODY": "Sind Sie sicher, dass Sie diese Bestellung abschlie\u00dfen m\u00f6chten? Diese Aktion kann nicht r\u00fcckg\u00e4ngig gemacht werden."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Neues Regal hinzuf\u00FCgen",
+                    "RACK_NAME": "Name eingeben...",
+                    "RACK_LOCATION": "Standort eingeben..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Neues Regalbrett hinzuf\u00FCgen",
+                    "SHELF_NAME": "Name eingeben..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Regal bearbeiten"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Regalbrett bearbeiten"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Regal l\u00F6schen",
+                    "BODY": "M\u00F6chten Sie {{item}} wirklich l\u00F6schen? Diese Aktion kann nicht r\u00FCckg\u00E4ngig gemacht werden."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Regalbrett l\u00F6schen",
+                    "BODY": "M\u00F6chten Sie {{item}} wirklich l\u00F6schen? Diese Aktion kann nicht r\u00FCckg\u00E4ngig gemacht werden."
                 }
             }
         },
@@ -286,6 +311,7 @@
             "TITLE": "Titel"
         },
         "BOOK_ITEM": {
+            "LACK": "Keine B\u00FCcher vorhanden",
             "BARCODE": "Strichcode",
             "STATUS": {
                 "NAME": "Status",
@@ -328,7 +354,20 @@
             }
         },
         "RACK": {
-            "LOCATION_ID": "Regal"
+            "LACK": "Keine Regale vorhanden",
+            "NAME": "Name",
+            "LOCATION": "Standort",
+            "SHELVES_COUNT": "Anzahl der Regale",
+            "CREATION_DATE": "Erstellungsdatum",
+            "LAST_UPDATE_DATE": "Datum der letzten Aktualisierung"
+        },
+        "SHELF": {
+            "LACK": "Keine Regalb\u00F6den vorhanden",
+            "NAME": "Name",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Anzahl der B\u00FCcher",
+            "CREATION_DATE": "Erstellungsdatum",
+            "LAST_UPDATE_DATE": "Datum der letzten Aktualisierung"
         },
         "WAREHOUSE": {
             "PENDING_REQUESTS": {
@@ -338,6 +377,15 @@
             "IN_PROGRESS_REQUESTS": {
                 "HEADER": "In Bearbeitung",
                 "LACK": "Keine Bestellungen in Bearbeitung"
+            },
+            "RACKS": {
+                "HEADER": "Regale"
+            },
+            "SHELVES": {
+                "HEADER": "Regalb\u00F6den"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "B\u00FCcher"
             }
         },
         "STATS": {
