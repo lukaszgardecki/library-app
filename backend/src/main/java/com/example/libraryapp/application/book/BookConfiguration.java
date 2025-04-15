@@ -12,6 +12,7 @@ public class BookConfiguration {
         InMemoryBookRepositoryAdapter bookRepository = new InMemoryBookRepositoryAdapter();
         BookService bookService = new BookService(bookRepository);
         return new BookFacade(
+                new GetAllBooksUseCase(bookService),
                 new GetBookUseCase(bookService),
                 new AddBookUseCase(bookService),
                 new UpdateBookUseCase(bookService),
@@ -23,6 +24,7 @@ public class BookConfiguration {
     BookFacade bookFacade(BookRepositoryPort bookRepository) {
         BookService bookService = new BookService(bookRepository);
         return new BookFacade(
+                new GetAllBooksUseCase(bookService),
                 new GetBookUseCase(bookService),
                 new AddBookUseCase(bookService),
                 new UpdateBookUseCase(bookService),

@@ -26,8 +26,8 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
     }
 
     @Override
-    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable) {
-        return repository.findAllByParams(bookId.value(), rackId.value(), shelfId.value(), pageable).map(this::toModel);
+    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, String query, Pageable pageable) {
+        return repository.findAllByParams(bookId.value(), rackId.value(), shelfId.value(), query, pageable).map(this::toModel);
     }
 
     @Override
@@ -65,11 +65,11 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
     private BookItemEntity toEntity(BookItem model) {
         return BookItemEntity.builder()
                 .id(model.getId() != null ? model.getId().value() : null)
-                .barcode(model.getBarcode().value())
-                .isReferenceOnly(model.getIsReferenceOnly().value())
-                .borrowed(model.getBorrowedDate() != null ? model.getBorrowedDate().value().toLocalDate() : null)
-                .dueDate(model.getDueDate() != null ? model.getDueDate().value().toLocalDate() : null)
-                .price(model.getPrice().value())
+                .barcode(model.getBarcode() != null && model.getBarcode().value() != null ? model.getBarcode().value() : null)
+                .isReferenceOnly(model.getIsReferenceOnly() != null && model.getIsReferenceOnly().value() != null ? model.getIsReferenceOnly().value() : null)
+                .borrowed(model.getBorrowedDate() != null && model.getBorrowedDate().value() != null ? model.getBorrowedDate().value().toLocalDate() : null)
+                .dueDate(model.getDueDate() != null && model.getDueDate().value() != null ? model.getDueDate().value().toLocalDate() : null)
+                .price(model.getPrice() != null && model.getPrice().value() != null ? model.getPrice().value() : null)
                 .status(model.getStatus())
                 .dateOfPurchase(model.getDateOfPurchase().value())
                 .bookId(model.getBookId().value())

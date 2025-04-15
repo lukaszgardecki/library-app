@@ -2,17 +2,25 @@ package com.example.libraryapp.infrastructure.persistence.jpa.book;
 
 import com.example.libraryapp.domain.book.model.*;
 import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
-import com.example.libraryapp.domain.book.model.PublicationDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 class BookRepositoryAdapter implements BookRepositoryPort {
     private final JpaBookRepository repository;
+
+    @Override
+    public List<Book> findAllById(List<BookId> ids) {
+        List<Long> idList = ids.stream().map(BookId::value).toList();
+        return repository.findAllById(idList).stream()
+                .map(this::toModel)
+                .toList();
+    }
 
     @Override
     public Optional<Book> findById(BookId id) {

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,11 @@ class ShelfRepositoryAdapter implements ShelfRepositoryPort {
     @Override
     public Page<Shelf> findAllByParams(RackId rackId, String query, Pageable pageable) {
         return repository.findAllByParams(rackId.value(), query, pageable).map(this::toModel);
+    }
+
+    @Override
+    public List<Shelf> findAllByParams(RackId rackId, String query) {
+        return repository.findAllByParams(rackId.value(), query).stream().map(this::toModel).toList();
     }
 
     @Override

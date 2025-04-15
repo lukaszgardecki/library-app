@@ -2,15 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BasicSectionComponent } from "../../../components/sections/basic-section/basic-section.component";
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Page } from '../../../../../shared/models/page';
 import { Rack, Shelf, ShelfToSave } from '../../../../../shared/models/rack';
 import { CardRackComponent } from "./cards/card-rack/card-rack.component";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardShelfComponent } from "./cards/card-shelf/card-shelf.component";
 import { WarehouseService } from '../../../core/services/warehouse.service';
 import { CardBookItemComponent } from "./cards/card-book-item/card-book-item.component";
-import { BookItem } from '../../../../../shared/models/book-item';
+import { BookItemWithBook } from '../../../../../shared/models/book-item';
 import { EnumNamePipe } from "../../../../../shared/pipes/enum-name.pipe";
 import { ModalDialogComponent } from '../../../components/modal-dialog/modal-dialog.component';
 import { ToastContainerComponent } from "../../../components/toasts/toast-container/toast-container.component";
@@ -18,15 +18,16 @@ import { NullPlaceholderPipe } from "../../../../../shared/pipes/null-placeholde
 import { ModalHostComponent } from "../../../components/modal-dialog/modal-host/modal-host.component";
 import { ModalService } from '../../../core/services/modal.service';
 import { FormService } from '../../../core/services/form.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-racks',
   standalone: true,
   imports: [
-    CommonModule, TranslateModule, ReactiveFormsModule,
+    CommonModule, TranslateModule, ReactiveFormsModule, FormsModule,
     BasicSectionComponent, CardRackComponent, CardShelfComponent, CardBookItemComponent,
     EnumNamePipe, NullPlaceholderPipe,
-    ToastContainerComponent, ModalHostComponent
+    ToastContainerComponent, ModalHostComponent, NgSelectModule
 ],
   templateUrl: './racks.component.html',
   styleUrl: './racks.component.css'
@@ -34,10 +35,15 @@ import { FormService } from '../../../core/services/form.service';
 export class RacksComponent implements OnInit {
   racksPage$: Observable<Page<Rack>> = this.warehouseService.racks$;
   shelvesPage$: Observable<Page<Shelf>> = this.warehouseService.shelves$;
-  bookItemsPage$: Observable<Page<BookItem>> = this.warehouseService.bookItems$;
+  bookItemsPage$: Observable<Page<BookItemWithBook>> = this.warehouseService.bookItems$;
+  private moveBookItemsShelvesSubject: BehaviorSubject<Shelf[]> = new BehaviorSubject<Shelf[]>([]);
+  private moveBookItemsRacksSubject: BehaviorSubject<Rack[]> = new BehaviorSubject<Rack[]>([]);
+
+  moveBookItemsRacks$ = this.moveBookItemsRacksSubject.asObservable();
+  moveBookItemsShelves$ = this.moveBookItemsShelvesSubject.asObservable();
   selectedRack: Rack | undefined;
   selectedShelf: Shelf | undefined;
-  selectedBookItem: BookItem | undefined;
+  selectedBookItem: BookItemWithBook | undefined;
   searchRacks = new FormControl('');
   searchShelves = new FormControl('');
   searchBookItems = new FormControl('');
@@ -48,12 +54,14 @@ export class RacksComponent implements OnInit {
   editRackForm: FormGroup;
   newShelfForm: FormGroup;
   editShelfForm: FormGroup;
+  moveBookItemForm: FormGroup;
   @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
 
   @ViewChild('addRackDialogBody') addRackDialogBody: TemplateRef<any>;
   @ViewChild('editRackDialogBody') editRackDialogBody: TemplateRef<any>;
   @ViewChild('addShelfDialogBody') addShelfDialogBody: TemplateRef<any>;
   @ViewChild('editShelfDialogBody') editShelfDialogBody: TemplateRef<any>;
+  @ViewChild('moveBookItemDialogBody') moveBookItemDialogBody: TemplateRef<any>;
 
   constructor(
     private warehouseService: WarehouseService,
@@ -108,7 +116,7 @@ export class RacksComponent implements OnInit {
     this.unselectBookItem();
   }
 
-  activeBookItem(bookItem: BookItem) {
+  activeBookItem(bookItem: BookItemWithBook) {
     this.selectedBookItem == bookItem ? this.unselectBookItem() : this.selectBookItem(bookItem);
   }
 
@@ -198,6 +206,50 @@ export class RacksComponent implements OnInit {
     });
   }
 
+  openMoveBookItemModal() {
+    this.moveBookItemForm = this.formService.createMoveItemForm(this.selectedBookItem?.rackId ?? -1, this.selectedBookItem?.shelfId ?? -1);
+    this.loadMoveItemModalRacks();
+    this.loadMoveItemModalShelves(this.selectedBookItemRackId);
+    this.moveBookItemForm.get('rack')?.valueChanges.subscribe({
+      next: rackId => {
+        this.moveBookItemForm.get('shelf')?.reset();
+        this.loadMoveItemModalShelves(rackId);
+      }
+    });
+    this.openModal({
+      title: "CAT.DIALOG.WAREHOUSE.MOVE_BOOK_ITEM.TITLE",
+      body: this.moveBookItemDialogBody,
+      form: this.moveBookItemForm,
+      onConfirm: () => this.editBookItemLocation(this.selectedBookItem?.id ?? -1)
+    });
+  }
+
+  getRackLabel(racks: Rack[]): string {
+    const rack = racks.find(e => e.id == this.moveBookItemForm.get('rack')?.value);
+    return rack?.name || this.translate.instant('CAT.DIALOG.WAREHOUSE.MOVE_BOOK_ITEM.SELECT_RACK');
+  }
+
+  getShelfLabel(shelves: Shelf[]): string {
+    const shelf = shelves.find(e => e.id == this.moveBookItemForm.get('shelf')?.value);
+    return shelf?.name || this.translate.instant('CAT.DIALOG.WAREHOUSE.MOVE_BOOK_ITEM.SELECT_SHELF');
+  }
+
+  isSelectedRackInMoveItemForm(rack: Rack) {
+    return this.moveBookItemForm.get('rack')?.value == rack.id;
+  }
+
+  isSelectedShelfInMoveItemForm(shelf: Shelf) {
+    return this.moveBookItemForm.get('shelf')?.value == shelf.id;
+  }
+
+  loadRackToForm(rack: Rack) {
+    this.moveBookItemForm.get('rack')?.setValue(rack.id);
+  }
+
+  loadShelfToForm(shelf: Shelf) {
+    this.moveBookItemForm.get('shelf')?.setValue(shelf.id);
+  }
+
   private addRack() {
     if(this.newRackForm.invalid) {
       this.toastContainer.showError('CAT.TOAST.FORM_INVALID');
@@ -266,6 +318,32 @@ export class RacksComponent implements OnInit {
     });
   }
 
+  private editBookItemLocation(bookItemId: number) {
+    const newRackId: number = this.moveBookItemForm.get('rack')?.value;
+    const newShelfId: number = this.moveBookItemForm.get('shelf')?.value;
+    if (newRackId == null || newShelfId == null) return;
+    const options = { rackSelected: this.selectedRack != undefined, shelfSelected: this.selectedShelf != undefined }
+    this.warehouseService.editBookItemLocation(bookItemId, newRackId, newShelfId, options).subscribe({
+      next: updatedBookItem => {
+        if (this.selectedBookItem) {
+          const rackChanged = updatedBookItem.rackId !== this.selectedBookItem.rackId;
+          const shelfChanged = updatedBookItem.shelfId !== this.selectedBookItem.shelfId;
+          this.selectedBookItem.rackId = updatedBookItem.rackId;
+          this.selectedBookItem.shelfId = updatedBookItem.shelfId;
+
+          const shouldUnselectBookItem =
+          (this.isSelectedRack() && this.isSelectedShelf() && (rackChanged || shelfChanged)) ||
+          (this.isSelectedRack() && rackChanged) ||
+          (this.isSelectedShelf() && (rackChanged || shelfChanged));
+
+          if (shouldUnselectBookItem) {
+            this.unselectBookItem()
+          }
+        }
+      }
+    });
+  }
+
   private deleteRack() {
     if(!this.selectedRack) return;
     this.warehouseService.deleteRack(this.selectedRack).subscribe({
@@ -307,13 +385,35 @@ export class RacksComponent implements OnInit {
     modalRef.instance.close = () => modalRef.destroy();
   }
 
+  get selectedBookItemRackId(): number {
+    return this.selectedBookItem?.rackId ?? -1;
+  }
+
+  get selectedBookItemShelfId(): number {
+    return this.selectedBookItem?.shelfId ?? -1;
+  }
+
+  private loadMoveItemModalRacks(): void {
+    this.warehouseService.getRacksList().subscribe({
+      next: racks => this.moveBookItemsRacksSubject.next(racks)
+    });
+  }
+
+  private loadMoveItemModalShelves(rackId: number): void {
+    this.warehouseService.getShelvesList({rackId: rackId}).subscribe({
+      next: shelves => this.moveBookItemsShelvesSubject.next(shelves)
+    })
+  }
+
   private selectRack = (rack: Rack) => this.selectedRack = rack;
   private unselectRack = () => this.selectedRack = undefined;
+  private isSelectedRack = () => this.selectedRack != undefined;
 
   private selectShelf = (shelf: Shelf) => this.selectedShelf = shelf;
   private unselectShelf = () => this.selectedShelf = undefined;
+  private isSelectedShelf = () => this.selectedShelf != undefined;
 
-  private selectBookItem = (bookItem: BookItem) => this.selectedBookItem = bookItem;
+  private selectBookItem = (bookItem: BookItemWithBook) => this.selectedBookItem = bookItem;
   private unselectBookItem = () => this.selectedBookItem = undefined;
 
   private resestLoadings() {

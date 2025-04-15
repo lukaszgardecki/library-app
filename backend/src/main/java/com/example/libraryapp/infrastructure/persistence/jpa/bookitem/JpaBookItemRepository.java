@@ -17,6 +17,7 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
             WHERE (:bookId IS NULL OR bi.bookId = :bookId)
                 AND (:rackId IS NULL OR bi.rackId = :rackId)
                 AND (:shelfId IS NULL OR bi.shelfId = :shelfId)
+                AND (:query IS NULL OR LOWER(bi.barcode) LIKE LOWER(CONCAT('%', :query, '%')))
         """,
         countQuery = """
             SELECT COUNT(bi)
@@ -24,11 +25,13 @@ interface JpaBookItemRepository extends JpaRepository<BookItemEntity, Long> {
             WHERE (:bookId IS NULL OR bi.bookId = :bookId)
                 AND (:rackId IS NULL OR bi.rackId = :rackId)
                 AND (:shelfId IS NULL OR bi.shelfId = :shelfId)
+                AND (:query IS NULL OR LOWER(bi.barcode) LIKE LOWER(CONCAT('%', :query, '%')))
     """)
     Page<BookItemEntity> findAllByParams(
             @Param("bookId") Long bookId,
             @Param("rackId") Long rackId,
             @Param("shelfId") Long shelfId,
+            @Param("query") String query,
             Pageable pageable
     );
 

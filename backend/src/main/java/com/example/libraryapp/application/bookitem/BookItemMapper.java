@@ -1,7 +1,9 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookitem.dto.BookItemWithBookDto;
 import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
@@ -23,6 +25,22 @@ class BookItemMapper {
                 model.getBookId().value(),
                 model.getRackId().value(),
                 model.getShelfId().value()
+        );
+    }
+
+    static BookItemWithBookDto toDto(BookItem bookItem, BookDto book) {
+        return new BookItemWithBookDto(
+                bookItem.getId().value(),
+                bookItem.getBarcode().value(),
+                bookItem.getIsReferenceOnly().value(),
+                bookItem.getBorrowedDate().value() != null ? bookItem.getBorrowedDate().value().toLocalDate() : null,
+                bookItem.getDueDate().value() != null ? bookItem.getDueDate().value().toLocalDate() : null,
+                bookItem.getPrice().value(),
+                bookItem.getStatus(),
+                bookItem.getDateOfPurchase().value(),
+                book,
+                bookItem.getRackId().value(),
+                bookItem.getShelfId().value()
         );
     }
 

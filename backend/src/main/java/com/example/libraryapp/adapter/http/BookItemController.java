@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
+import com.example.libraryapp.domain.bookitem.dto.BookItemWithBookDto;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.rack.model.RackId;
 import com.example.libraryapp.domain.shelf.model.ShelfId;
@@ -27,14 +28,15 @@ class BookItemController {
     private final BookItemFacade bookItemFacade;
 
     @GetMapping
-    public ResponseEntity<Page<BookItemDto>> getPageOfBookItems(
+    public ResponseEntity<Page<BookItemWithBookDto>> getPageOfBookItems(
             @RequestParam(value = "book_id", required = false) Long bookId,
             @RequestParam(value = "rack_id", required = false) Long rackId,
             @RequestParam(value = "shelf_id", required = false) Long shelfId,
+            @RequestParam(value = "q", required = false) String query,
             Pageable pageable
     ) {
-        Page<BookItemDto> page = bookItemFacade.getPageOfBookItems(
-                new BookId(bookId), new RackId(rackId), new ShelfId(shelfId), pageable
+        Page<BookItemWithBookDto> page = bookItemFacade.getPageOfBookItems(
+                new BookId(bookId), new RackId(rackId), new ShelfId(shelfId), query, pageable
         );
         return new ResponseEntity<>(page, HttpStatus.OK);
     }

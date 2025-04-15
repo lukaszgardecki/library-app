@@ -6,12 +6,21 @@ import com.example.libraryapp.domain.book.model.Book;
 import com.example.libraryapp.domain.book.model.BookId;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class BookFacade {
+    private final GetAllBooksUseCase getAllBooksUseCase;
     private final GetBookUseCase getBookUseCase;
     private final AddBookUseCase addBookUseCase;
     private final UpdateBookUseCase updateBookUseCase;
     private final DeleteBookUseCase deleteBookUseCase;
+
+    public List<BookDto> getBooksByIds(List<BookId> ids) {
+        return getAllBooksUseCase.execute(ids).stream()
+                .map(BookMapper::toDto)
+                .toList();
+    }
 
     public BookDto getBook(BookId id) {
         Book book = getBookUseCase.execute(id);

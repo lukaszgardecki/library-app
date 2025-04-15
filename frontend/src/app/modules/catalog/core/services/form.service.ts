@@ -42,4 +42,11 @@ export class FormService {
       name: new FormControl(shelf?.name || '', Validators.required),
     });
   }
+
+  createMoveItemForm(rackIdInit: number, shelfIdInit: number) {
+    return new FormGroup({
+      rack: new FormControl(rackIdInit, Validators.required),
+      shelf: new FormControl(shelfIdInit, Validators.required)
+    });
+  }
 }

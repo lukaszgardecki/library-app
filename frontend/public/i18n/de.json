@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Regalbrett l\u00F6schen",
                     "BODY": "M\u00F6chten Sie {{item}} wirklich l\u00F6schen? Diese Aktion kann nicht r\u00FCckg\u00E4ngig gemacht werden."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Dokument verschieben",
+                    "BODY": "W\u00e4hlen Sie einen neuen Speicherort f\u00fcr das Dokument \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Regal ausw\u00e4hlen...",
+                    "SELECT_SHELF": "Regalboden ausw\u00e4hlen..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Titel"
+            "TITLE": "Titel",
+            "AUTHORS": "Autoren"
         },
         "BOOK_ITEM": {
             "LACK": "Keine B\u00FCcher vorhanden",
             "BARCODE": "Strichcode",
+            "PURCHASE_DATE": "Kaufdatum",
+            "RACK": "Regal",
+            "SHELF": "Regalboden",
             "STATUS": {
                 "NAME": "Status",
                 "AVAILABLE": "Verf\u00fcgbar",

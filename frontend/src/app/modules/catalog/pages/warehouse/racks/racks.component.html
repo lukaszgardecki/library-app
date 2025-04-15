@@ -5,7 +5,7 @@
             <ng-container class="" *ngIf="racksPage$ | async as page">
 
                 <div class="rack-list">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchRacks">
                         <button class="btn add-button" (click)="openAddRackModal()">
                             <i class="bi bi-plus-lg"></i>{{ 'CAT.BTN.ADD' | translate }}
@@ -28,7 +28,7 @@
                         <div class="info-header">
                             <h4>{{ selectedRack.name }}</h4>
                             <div class="icon-buttons">
-                                <button class="icon-button edit-button" [title]="'CAT.BTN.CANCEL' | translate" (click)="openEditRackModal()"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button edit-button" [title]="'CAT.BTN.EDIT' | translate" (click)="openEditRackModal()"><i class="bi bi-pencil-square"></i></button>
                                 <button class="icon-button delete-button" [title]="'CAT.BTN.DELETE' | translate" (click)="openDeleteRackModal()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
         <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.SHELVES.HEADER' | translate" >
             <ng-container class="" *ngIf="shelvesPage$ | async as page">
                 <div class="rack-list">
-                    <div class="input-group">
+                    <div class="input-group input-group-sm">
                         <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchShelves">
                         <button class="btn add-button" [disabled]="!selectedRack" [ngClass]="{'disabled': !selectedRack}" (click)="openAddShelfModal()">
                             <i class="bi bi-plus-lg"></i>{{ 'CAT.BTN.ADD' | translate }}
@@ -71,7 +71,7 @@
                         <div class="info-header">
                             <h4>{{ selectedShelf.name }}</h4>
                             <div class="icon-buttons">
-                                <button class="icon-button edit-button" [title]="'CAT.BTN.CANCEL' | translate" (click)="openEditShelfModal()"><i class="bi bi-pencil-square"></i></button>
+                                <button class="icon-button edit-button" [title]="'CAT.BTN.EDIT' | translate" (click)="openEditShelfModal()"><i class="bi bi-pencil-square"></i></button>
                                 <button class="icon-button delete-button" [title]="'CAT.BTN.DELETE' | translate" (click)="openDeleteShelfModal()"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
         <app-basic-section class="col-12 col-lg-6" [name]="'CAT.WAREHOUSE.BOOK_ITEMS.HEADER' | translate">
             <ng-container *ngIf="bookItemsPage$ | async as page">
                 <div class="rack-list">
-                    <input type="text" class="form-control" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchBookItems">
+                    <input type="text" class="form-control form-control-sm" [placeholder]="'DATA.SEARCH' | translate" [formControl]="searchBookItems">
 
                     <div class="list" *ngIf="page.content.length > 0; else lackBookItems" (scroll)="loadNextPageOfBookItems($event)">
                         <app-card-book-item
@@ -105,12 +105,23 @@
                 </div>
                 <div class="rack-info mt-2" >
                     <div *ngIf="selectedBookItem">
-                        <h4>{{ 'Tytuł książki' }}</h4>
+                
+                        <div class="info-header">
+                            <h4>{{ selectedBookItem.book.title }}</h4>
+                            <div class="icon-buttons">
+                                <button class="icon-button move-button" [title]="'Przenieś' | translate" (click)="openMoveBookItemModal()"><i class="bi bi-folder-symlink"></i></button>
+                            </div>
+                        </div>
+
                         <div class="grid">
                             <strong>ID:</strong>{{selectedBookItem.id}}
-                            <strong>Kod kreskowy:</strong>{{selectedBookItem.barcode}}
-                            <strong>Status:</strong>{{selectedBookItem.status | enumName: 'book-item-status' | translate }}
-                            <strong>Data zakupu:</strong>{{selectedBookItem.dateOfPurchase | date: "dd.MM.yyyy" }}
+                            <strong>{{ 'CAT.BOOK.TITLE' | translate }}:</strong>{{selectedBookItem.book.title}}
+                            <strong>{{ 'CAT.BOOK.AUTHORS' | translate }}:</strong>Autor1, Autor2
+                            <strong>{{ 'CAT.BOOK_ITEM.BARCODE' | translate }}:</strong>{{selectedBookItem.barcode}}
+                            <strong>{{ 'CAT.BOOK_ITEM.STATUS.NAME' | translate }}:</strong>{{selectedBookItem.status | enumName: 'book-item-status' | translate }}
+                            <strong>{{ 'CAT.BOOK_ITEM.PURCHASE_DATE' | translate }}:</strong>{{selectedBookItem.dateOfPurchase | date: "dd.MM.yyyy" }}
+                            <strong>{{ 'CAT.BOOK_ITEM.RACK' | translate }}:</strong>Regał
+                            <strong>{{ 'CAT.BOOK_ITEM.SHELF' | translate }}:</strong>Półka
                         </div>
                     </div>
                 </div>
@@ -156,6 +167,35 @@
     <div class="grid" [formGroup]="editShelfForm">
         <strong>{{ 'CAT.SHELF.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_SHELF.SHELF_NAME' | translate" formControlName="name">
     </div>
+</ng-template>
+<ng-template #moveBookItemDialogBody>
+    <div class="mb-3">{{ 'CAT.DIALOG.WAREHOUSE.MOVE_BOOK_ITEM.BODY' | translate: { name: selectedBookItem?.book?.title, id: selectedBookItem?.id } }}</div>
+    
+    <div class="grid-modal">
+        <ng-container *ngIf="moveBookItemsRacks$ | async as racks">
+            <strong>Regał:</strong>
+            <div class="dropdown">
+                <button class="btn btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
+                    <span>{{ getRackLabel(racks) }}</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" *ngFor="let rack of racks" (click)="loadRackToForm(rack)" [ngClass]="{'active': isSelectedRackInMoveItemForm(rack)}">{{ rack.name }}</a></li>
+                </ul>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="moveBookItemsShelves$ | async as shelves">
+            <strong>Półka:</strong>
+            <div class="dropdown">
+                <button class="btn btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+                  <span>{{ getShelfLabel(shelves) }}</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" *ngFor="let shelf of shelves" (click)="loadShelfToForm(shelf)" [ngClass]="{'active': isSelectedShelfInMoveItemForm(shelf)}">{{ shelf.name }}</a></li>
+                </ul>
+            </div>
+        </ng-container>
+    </div>
+        
 </ng-template>
 
 <app-toast-container #toastContainer></app-toast-container>

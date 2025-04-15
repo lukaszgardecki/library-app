@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,17 +27,19 @@ public class BookItemToUpdateDto {
     private LocalDate dateOfPurchase;
     private Long bookId;
     private Long rackId;
+    private Long shelfId;
 
     public BookItem toModel() {
         return BookItem.builder()
                 .isReferenceOnly(new IsReferenceOnly(isReferenceOnly))
-                .borrowedDate(new LoanCreationDate(borrowed.atStartOfDay()))
-                .dueDate(new LoanDueDate(dueDate.atStartOfDay()))
+                .borrowedDate(new LoanCreationDate(borrowed != null ? borrowed.atStartOfDay() : null))
+                .dueDate(new LoanDueDate(dueDate != null ? dueDate.atStartOfDay() : null))
                 .price(new Price(price))
                 .status(status)
                 .dateOfPurchase(new PurchaseDate(dateOfPurchase))
                 .bookId(new BookId(bookId))
                 .rackId(new RackId(rackId))
+                .shelfId(new ShelfId(shelfId))
                 .build();
     }
 

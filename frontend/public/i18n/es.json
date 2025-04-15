@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Eliminar balda",
                     "BODY": "\u00BFEsta seguro de que desea eliminar {{item}}? Esta acci\u00F3n no se puede deshacer."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Mover documento",
+                    "BODY": "Seleccione una nueva ubicaci\u00f3n para el documento \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Seleccione estanter\u00eda...",
+                    "SELECT_SHELF": "Seleccione balda..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Título"
+            "TITLE": "T\u00edtulo",
+            "AUTHORS": "Autores"
         },
         "BOOK_ITEM": {
             "LACK": "No hay libros",
             "BARCODE": "C\u00f3digo de barras",
+            "PURCHASE_DATE": "Fecha de compra",
+            "RACK": "Estanter\u00eda",
+            "SHELF": "Balda",
             "STATUS": {
                 "NAME": "Estado",
                 "AVAILABLE": "Disponible",

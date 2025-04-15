@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Smazat polici",
                     "BODY": "Opravdu chcete smazat {{item}}? Tuto akci nelze vr\u00E1tit zp\u011Bt."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "P\u0159esunout dokument",
+                    "BODY": "Vyberte nov\u00e9 um\u00edst\u011bn\u00ed pro dokument \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Vyberte reg\u00e1l...",
+                    "SELECT_SHELF": "Vyberte polici..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Název"
+            "TITLE": "N\u00e1zev",
+            "AUTHORS": "Auto\u0159i"
         },
         "BOOK_ITEM": {
             "LACK": "Chyb\u00ED knihy",
             "BARCODE": "K\u00f3d \u010d\u00e1rov\u00fd",
+            "PURCHASE_DATE": "Datum n\u00e1kupu",
+            "RACK": "Reg\u00e1l",
+            "SHELF": "Police",
             "STATUS": {
                 "NAME": "Status",
                 "AVAILABLE": "Dostupn\u00fd",

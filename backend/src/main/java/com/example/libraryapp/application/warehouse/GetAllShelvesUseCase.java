@@ -7,11 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 class GetAllShelvesUseCase {
     private final ShelfRepositoryPort shelfRepository;
 
     Page<Shelf> execute(RackId rackId, String query, Pageable pageable) {
         return shelfRepository.findAllByParams(rackId, query, pageable);
+    }
+
+    List<Shelf> execute(RackId rackId, String query) {
+        return shelfRepository.findAllByParams(rackId, query);
     }
 }

@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 public class WarehouseFacade {
     private final GetBookItemRequestList getBookItemRequestList;
@@ -34,18 +36,34 @@ public class WarehouseFacade {
                 .map(BookItemRequestMapper::toRequestListViewDto);
     }
 
-    public Page<RackDto> getAllRacks(@Nullable String query, Pageable pageable) {
+    public Page<RackDto> getAllRacksPaged(@Nullable String query, Pageable pageable) {
         return getAllRacksUseCase.execute(query, pageable)
                 .map(RackMapper::toDto);
     }
 
-    public Page<ShelfDto> getAllShelves(
+    public List<RackDto> getAllRacksList(String query) {
+        return getAllRacksUseCase.execute(query).stream()
+                .map(RackMapper::toDto)
+                .toList();
+    }
+
+    public Page<ShelfDto> getAllShelvesPaged(
             @Nullable RackId rackId,
             @Nullable String query,
             Pageable pageable
     ) {
         return getAllShelvesUseCase.execute(rackId, query, pageable)
                 .map(ShelfMapper::toDto);
+    }
+
+    public List<ShelfDto> getAllShelvesList(
+            @Nullable RackId rackId,
+            @Nullable String query
+    ) {
+        return getAllShelvesUseCase.execute(rackId, query)
+                .stream()
+                .map(ShelfMapper::toDto)
+                .toList();
     }
 
     public RackDto getRack(RackId id) {

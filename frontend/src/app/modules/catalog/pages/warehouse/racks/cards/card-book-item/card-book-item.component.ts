@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { BookItem } from '../../../../../../../shared/models/book-item';
+import { BookItemWithBook } from '../../../../../../../shared/models/book-item';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -11,11 +11,11 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './card-book-item.component.css'
 })
 export class CardBookItemComponent {
-  @Input() selectedBookItem: BookItem | undefined;
-  @Input() bookItem: BookItem;
-  @Output() onSelect = new EventEmitter<BookItem>();
+  @Input() selectedBookItem: BookItemWithBook | undefined;
+  @Input() bookItem: BookItemWithBook;
+  @Output() onSelect = new EventEmitter<BookItemWithBook>();
 
-  active(item: BookItem) {
+  active(item: BookItemWithBook) {
       this.onSelect.emit(item);
   }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,11 @@ class RackRepositoryAdapter implements RackRepositoryPort {
     @Override
     public Page<Rack> findAllByParams(String query, Pageable pageable) {
         return repository.findAllByParams(query, pageable).map(this::toModel);
+    }
+
+    @Override
+    public List<Rack> findAllByParams(String query) {
+        return repository.findAllByParams(query).stream().map(this::toModel).toList();
     }
 
     @Override

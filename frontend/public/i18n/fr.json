@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Supprimer la tablette",
                     "BODY": "\u00CAtes-vous s\u00FBr de vouloir supprimer {{item}} ? Cette action est irr\u00E9versible."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "D\u00e9placer le document",
+                    "BODY": "S\u00e9lectionnez un nouvel emplacement pour le document \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "S\u00e9lectionnez un rayonnage...",
+                    "SELECT_SHELF": "S\u00e9lectionnez une \u00e9tag\u00e8re..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Titre"
+            "TITLE": "Titre",
+            "AUTHORS": "Auteurs"
         },
         "BOOK_ITEM": {
             "LACK": "Pas de livres",
             "BARCODE": "Code-barres",
+            "PURCHASE_DATE": "Date d'achat",
+            "RACK": "Rayonnage",
+            "SHELF": "\u00c9tag\u00e8re",
             "STATUS": {
                 "NAME": "Statut",
                 "AVAILABLE": "Disponible",

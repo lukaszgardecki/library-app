@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface BookItemRepositoryPort {
     Optional<BookItem> findById(BookItemId id);
 
-    Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable);
+    Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, String query, Pageable pageable);
 
     BookItem save(BookItem bookItem);
 

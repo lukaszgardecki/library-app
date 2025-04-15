@@ -112,10 +112,36 @@ input {
 .delete-button {color: #dc3545;}
 .delete-button:hover {background-color: rgba(220, 53, 69, 0.2);}
 
-.grid {
+.move-button {color: #fd7e14;}
+.move-button:hover {background-color: rgba(253, 126, 20, 0.2);}
+
+.grid,
+.grid-modal {
     display: grid;
     grid-template-columns: 1fr 2fr;
     font-size: 0.8rem;
+}
+
+.grid-modal {
+    grid-auto-rows: 3rem;
+}
+
+.grid-modal .dropdown button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.grid-modal .dropdown-menu {
+    --bs-dropdown-link-active-bg: #6c757d;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.grid-modal .dropdown-menu li {
+    cursor: pointer;
 }
 
 app-modal-dialog .grid {
@@ -126,6 +152,7 @@ app-modal-dialog .grid {
 }
 
 .custom-focus {
+    font-weight: 600;
     position: relative;
     z-index: 10;
     box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);

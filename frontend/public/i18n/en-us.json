@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Delete shelf",
                     "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Move Document",
+                    "BODY": "Select a new location for the document \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Select rack...",
+                    "SELECT_SHELF": "Select shelf..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Title"
+            "TITLE": "Title",
+            "AUTHORS": "Authors"
         },
         "BOOK_ITEM": {
             "LACK": "No books",
             "BARCODE": "Barcode",
+            "PURCHASE_DATE": "Purchase date",
+            "RACK": "Rack",
+            "SHELF": "Shelf",
             "STATUS": {
                 "NAME": "Status",
                 "AVAILABLE": "Available",

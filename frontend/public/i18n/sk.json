@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Odstr\u00E1ni\u0165 policu",
                     "BODY": "Naozaj chcete odstr\u00E1ni\u0165 {{item}}? Toto opatrenie nemo\u017Eno vr\u00E1ti\u0165."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Presun\u00fa\u0165 dokument",
+                    "BODY": "Vyberte nov\u00e9 umiestnenie pre dokument \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Vyberte reg\u00e1l...",
+                    "SELECT_SHELF": "Vyberte policku..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Názov"
+            "TITLE": "N\u00e1zov",
+            "AUTHORS": "Autori"
         },
         "BOOK_ITEM": {
             "LACK": "Ch\u00FDbaj\u00FA knihy",
             "BARCODE": "\u010c\u00edarov\u00fd k\u00f3d",
+            "PURCHASE_DATE": "D\u00e1tum n\u00e1kupu",
+            "RACK": "Reg\u00e1l",
+            "SHELF": "Poli\u010dka",
             "STATUS": {
                 "NAME": "Stav",
                 "AVAILABLE": "Dostupn\u00fd",

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Page, Pageable } from '../../../../shared/models/page';
 import { ConfigService } from './config.service';
-import { BookItem } from '../../../../shared/models/book-item';
+import { BookItem, BookItemWithBook } from '../../../../shared/models/book-item';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,14 @@ export class BookItemService {
     let params = this.createParams(options.query, options.pageable);
     if (options.rackId) params = params.set("rack_id", options.rackId);
     if (options.shelfId) params = params.set("shelf_id", options.shelfId);
-    return this.http.get<Page<BookItem>>(`${this.baseURL}`, { params: params, withCredentials: true });
+    return this.http.get<Page<BookItemWithBook>>(`${this.baseURL}`, { params: params, withCredentials: true });
+  }
+
+  updateBookItem(id:number, rackId: number, shelfId: number) {
+    const fieldsToUpdate = new BookItem()
+    fieldsToUpdate.rackId = rackId;
+    fieldsToUpdate.shelfId = shelfId
+    return this.http.patch<BookItemWithBook>(`${this.baseURL}/${id}`, fieldsToUpdate, { withCredentials: true });
   }
 
   private createParams(query?: string, pageable?: Pageable): HttpParams {

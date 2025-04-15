@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Usuń półkę",
                     "BODY": "Czy na pewno chcesz usunąć {{item}}? Tego działania nie można cofnąć."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Przenieś dokument",
+                    "BODY": "Wybierz nową lokalizację dla dokumentu \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Wybierz regał...",
+                    "SELECT_SHELF": "Wybierz półkę..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Tytuł"
+            "TITLE": "Tytuł",
+            "AUTHORS": "Autorzy"
         },
         "BOOK_ITEM": {
             "LACK": "Brak książek",
             "BARCODE": "Kod kreskowy",
+            "PURCHASE_DATE": "Data zakupu",
+            "RACK": "Regał",
+            "SHELF": "Półka",
             "STATUS": {
                 "NAME": "Status",
                 "AVAILABLE": "Dostępny",

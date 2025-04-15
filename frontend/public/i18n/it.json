@@ -136,6 +136,12 @@
                 "DELETE_SHELF": {
                     "TITLE": "Elimina ripiano",
                     "BODY": "Sei sicuro di voler eliminare {{item}}? Questa azione non pu\u00F2 essere annullata."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Sposta documento",
+                    "BODY": "Seleziona una nuova posizione per il documento \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Seleziona scaffale...",
+                    "SELECT_SHELF": "Seleziona ripiano..."
                 }
             }
         },
@@ -308,11 +314,15 @@
             }
         },
         "BOOK": {
-            "TITLE": "Titolo"
+            "TITLE": "Titolo",
+            "AUTHORS": "Autori"
         },
         "BOOK_ITEM": {
             "LACK": "Nessun libro disponibile",
             "BARCODE": "Codice a barre",
+            "PURCHASE_DATE": "Data di acquisto",
+            "RACK": "Scaffale",
+            "SHELF": "Ripiano",
             "STATUS": {
                 "NAME": "Stato",
                 "AVAILABLE": "Disponibile",

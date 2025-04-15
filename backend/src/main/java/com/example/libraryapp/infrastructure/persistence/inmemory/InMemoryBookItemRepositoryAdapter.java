@@ -28,11 +28,12 @@ public class InMemoryBookItemRepositoryAdapter implements BookItemRepositoryPort
     }
 
     @Override
-    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, Pageable pageable) {
+    public Page<BookItem> findAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, String query, Pageable pageable) {
         List<BookItem> filteredItems = map.values().stream()
                 .filter(bookItem -> (bookId == null || bookItem.getBookId().equals(bookId)))
                 .filter(bookItem -> (rackId == null || bookItem.getRackId().equals(rackId)))
                 .filter(bookItem -> (shelfId == null || bookItem.getShelfId().equals(shelfId)))
+                .filter(bookItem -> (query == null || bookItem.getBarcode().value().toLowerCase().contains(query.toLowerCase())))
                 .toList();
 
         int start = (int) pageable.getOffset();

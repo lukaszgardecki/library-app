@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToSaveDto;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
+import com.example.libraryapp.domain.bookitem.dto.BookItemWithBookDto;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.rack.model.RackId;
@@ -29,13 +30,14 @@ public class BookItemFacade {
         return BookItemMapper.toDto(bookItem);
     }
 
-    public Page<BookItemDto> getPageOfBookItems(
+    public Page<BookItemWithBookDto> getPageOfBookItems(
             @Nullable BookId bookId,
             @Nullable RackId rackId,
             @Nullable ShelfId shelfId,
+            @Nullable String query,
             Pageable pageable
     ) {
-        return getPageOfBookItemsUseCase.execute(bookId, rackId, shelfId, pageable).map(BookItemMapper::toDto);
+        return getPageOfBookItemsUseCase.execute(bookId, rackId, shelfId, query, pageable);
     }
 
     public BookItemDto addBookItem(BookItemToSaveDto bookItem) {

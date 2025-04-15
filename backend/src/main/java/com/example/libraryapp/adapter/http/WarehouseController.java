@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,22 +46,34 @@ class WarehouseController {
     }
 
     @GetMapping("/racks")
-    public ResponseEntity<Page<RackDto>> getAllRacks(
+    public ResponseEntity<?> getAllRacks(
             @RequestParam(value = "q", required = false) String query,
+            @RequestParam(value = "paged", required = false, defaultValue = "true") boolean paged,
             Pageable pageable
     ) {
-        Page<RackDto> page = warehouseFacade.getAllRacks(query, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        if (paged) {
+            Page<RackDto> page = warehouseFacade.getAllRacksPaged(query, pageable);
+            return ResponseEntity.ok(page);
+        } else {
+            List<RackDto> list = warehouseFacade.getAllRacksList(query);
+            return ResponseEntity.ok(list);
+        }
     }
 
     @GetMapping("/shelves")
-    public ResponseEntity<Page<ShelfDto>> getAllShelves(
+    public ResponseEntity<?> getAllShelves(
             @RequestParam(value = "q", required = false) String query,
             @RequestParam(value = "rack_id", required = false) Long rackId,
+            @RequestParam(value = "paged", required = false, defaultValue = "true") boolean paged,
             Pageable pageable
     ) {
-        Page<ShelfDto> page = warehouseFacade.getAllShelves(new RackId(rackId), query, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        if (paged) {
+            Page<ShelfDto> page = warehouseFacade.getAllShelvesPaged(new RackId(rackId), query, pageable);
+            return ResponseEntity.ok(page);
+        } else {
+            List<ShelfDto> list = warehouseFacade.getAllShelvesList(new RackId(rackId), query);
+            return ResponseEntity.ok(list);
+        }
     }
 
     @GetMapping("/racks/{id}")

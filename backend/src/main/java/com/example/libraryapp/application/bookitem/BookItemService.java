@@ -2,8 +2,10 @@ package com.example.libraryapp.application.bookitem;
 
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
+import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.book.model.Title;
+import com.example.libraryapp.domain.bookitem.dto.BookItemWithBookDto;
 import com.example.libraryapp.domain.bookitem.exceptions.BookItemNotFoundException;
 import com.example.libraryapp.domain.bookitem.model.BookItem;
 import com.example.libraryapp.domain.bookitem.model.BookItemBarcode;
@@ -13,7 +15,16 @@ import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanReturnDate;
+import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 class BookItemService {
@@ -21,6 +32,18 @@ class BookItemService {
     private final BookItemRequestFacade bookItemRequestFacade;
     private final BookItemBarcodeGenerator generator;
     private final BookFacade bookFacade;
+
+    Page<BookItemWithBookDto> getAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, String query, Pageable pageable) {
+        Page<BookItem> bookItems = bookItemRepository.findAllByParams(bookId, rackId, shelfId, query, pageable);
+        List<BookId> ids = bookItems.map(BookItem::getBookId).toList();
+        List<BookDto> books = bookFacade.getBooksByIds(ids);
+        Map<Long, BookDto> bookMap = books.stream()
+                .collect(Collectors.toMap(BookDto::getId, Function.identity()));
+        return bookItems.map(bookItem -> {
+            BookDto bookDto = bookMap.get(bookItem.getBookId().value());
+            return BookItemMapper.toDto(bookItem, bookDto);
+        });
+    }
 
     BookItem getBookItemById(BookItemId id) {
         return bookItemRepository.findById(id)
