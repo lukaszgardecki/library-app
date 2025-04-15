@@ -13,7 +13,8 @@ class BookItemRequestMapper {
                 model.getBook().getTitle(),
                 model.getBookItem().getBarcode(),
                 model.getBook().getFormat(),
-                model.getRack().getLocation()
+                model.getRack().getName(),
+                model.getShelf().getName()
         );
     }
 }

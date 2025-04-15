@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "Neues Regal hinzuf\u00FCgen",
-                    "RACK_NAME": "Name eingeben...",
-                    "RACK_LOCATION": "Standort eingeben..."
+                    "RACK_NAME": "Name eingeben..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "Neues Regalbrett hinzuf\u00FCgen",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Erstellungsdatum",
+            "LOCATION": "Standort",
             "STATUS": {
                 "NAME": "Status",
                 "COMPLETED": "Abgeschlossen",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "Keine Regale vorhanden",
             "NAME": "Name",
-            "LOCATION": "Standort",
             "SHELVES_COUNT": "Anzahl der Regale",
             "CREATION_DATE": "Erstellungsdatum",
             "LAST_UPDATE_DATE": "Datum der letzten Aktualisierung"

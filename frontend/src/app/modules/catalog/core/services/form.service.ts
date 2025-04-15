@@ -19,8 +19,7 @@ export class FormService {
 
   createNewRackForm(): FormGroup {
     return new FormGroup({
-      name: new FormControl('', Validators.required),
-      location: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required)
     });
   }
 
@@ -32,8 +31,7 @@ export class FormService {
 
   createEditRackForm(rack?: Rack): FormGroup {
     return new FormGroup({
-      name: new FormControl(rack?.name || '', Validators.required),
-      location: new FormControl(rack?.location || '', Validators.required)
+      name: new FormControl(rack?.name || '', Validators.required)
     });
   }
 

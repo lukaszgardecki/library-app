@@ -10,7 +10,6 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="location" type="VARCHAR(100)"/>
             <column name="name" type="VARCHAR(100)"/>
             <column name="created_date" type="DATETIME"/>
             <column name="updated_date" type="DATETIME"/>

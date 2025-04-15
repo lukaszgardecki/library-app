@@ -15,6 +15,8 @@ import com.example.libraryapp.domain.person.dto.PersonDto;
 import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.dto.ShelfDto;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import com.example.libraryapp.domain.user.model.UserId;
 import com.example.libraryapp.domain.warehouse.model.WarehouseBookItemRequest;
@@ -30,6 +32,7 @@ class BookItemRequestService {
     private final UserFacade userFacade;
     private final PersonFacade personFacade;
     private final RackService rackService;
+    private final ShelfService shelfService;
 
     Page<WarehouseBookItemRequest> getBookRequestList(BookItemRequestStatus status, Pageable pageable) {
         Page<BookItemRequestDto> requests = bookItemRequestFacade.getPageOfBookRequestsByStatus(status, pageable);
@@ -42,6 +45,7 @@ class BookItemRequestService {
         UserDto user = userFacade.getUserById(new UserId(request.getUserId()));
         PersonDto person = personFacade.getPersonById(new PersonId(user.getPersonId()));
         RackDto rack = RackMapper.toDto(rackService.getRackById(new RackId(bookItem.getRackId())));
-        return new WarehouseBookItemRequest(book, bookItem, request, user, person,rack);
+        ShelfDto shelf = ShelfMapper.toDto(shelfService.getShelfById(new ShelfId(bookItem.getShelfId())));
+        return new WarehouseBookItemRequest(book, bookItem, request, user, person, rack, shelf);
     }
 }

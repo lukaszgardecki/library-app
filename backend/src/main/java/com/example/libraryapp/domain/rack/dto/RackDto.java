@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RackDto {
     private Long id;
-    private String location;
     private String name;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;

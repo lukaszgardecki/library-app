@@ -257,7 +257,6 @@ export class RacksComponent implements OnInit {
     };
     const newRack: Rack = new Rack();
     newRack.name = this.newRackForm.value.name;
-    newRack.location = this.newRackForm.value.location;
     this.warehouseService.addNewRack(newRack).subscribe({
       next: () => {
         this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.RACK.CREATE.SUCCESS');
@@ -292,7 +291,7 @@ export class RacksComponent implements OnInit {
     }
     const rackToUpdate = new Rack()
     rackToUpdate.name = this.editRackForm.value.name;
-    rackToUpdate.location = this.editRackForm.value.location;
+    console.log(rackToUpdate)
     this.warehouseService.editRack(this.selectedRack.id, rackToUpdate).subscribe({
       next: updatedRack => {
         this.selectedRack = updatedRack;

@@ -47,7 +47,6 @@ class RackRepositoryAdapter implements RackRepositoryPort {
     private RackEntity toEntity(Rack model) {
         return new RackEntity(
                 model.getId() != null ? model.getId().value() : null,
-                model.getLocation().value(),
                 model.getName().value(),
                 model.getCreatedDate().value(),
                 model.getUpdatedDate().value(),
@@ -58,7 +57,6 @@ class RackRepositoryAdapter implements RackRepositoryPort {
     private Rack toModel(RackEntity entity) {
         return new Rack(
                 new RackId(entity.getId()),
-                new RackLocationId(entity.getLocation()),
                 new RackName(entity.getName()),
                 new RackCreatedDate(entity.getCreatedDate()),
                 new RackUpdatedDate(entity.getUpdatedDate()),

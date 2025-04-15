@@ -27,7 +27,7 @@ class WarehouseConfiguration {
         RackService rackService = new RackService(rackRepository, bookItemFacade);
         ShelfService shelfService = new ShelfService(shelfRepository, bookItemFacade);
         BookItemRequestService bookItemRequestService = new BookItemRequestService(
-                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService
+                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService, shelfService
         );
         return new WarehouseFacade(
                 new GetBookItemRequestList(bookItemRequestService),
@@ -51,12 +51,13 @@ class WarehouseConfiguration {
             BookItemRequestFacade bookItemRequestFacade,
             UserFacade userFacade,
             PersonFacade personFacade,
-            RackRepositoryPort rackRepository
+            RackRepositoryPort rackRepository,
+            ShelfRepositoryPort shelfRepository
     ) {
         RackService rackService = new RackService(rackRepository, bookItemFacade);
-
+        ShelfService shelfService = new ShelfService(shelfRepository, bookItemFacade);
         BookItemRequestService bookItemRequestService = new BookItemRequestService(
-                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService
+                bookFacade, bookItemFacade, bookItemRequestFacade, userFacade, personFacade, rackService, shelfService
         );
         return new WarehouseEventListenerAdapter(messagingTemplate, bookItemRequestService);
     }

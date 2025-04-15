@@ -8,7 +8,6 @@ export interface WarehouseItem {
 export class Rack implements WarehouseItem {
     id: number;
     name: string;
-    location: string;
     createdDate: Date;
     updatedDate: Date;
     shelvesCount: number
@@ -38,5 +37,6 @@ export interface WarehouseBookItemRequestListView extends WarehouseItem {
     bookTitle: string
     barcode: String
     bookFormat: BookFormat
-    rackLocation: string
+    rackName: string
+    shelfName: string
 }

@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "A\u00F1adir nuevo estante",
-                    "RACK_NAME": "Introduzca el nombre...",
-                    "RACK_LOCATION": "Introduzca la ubicaci\u00F3n..."
+                    "RACK_NAME": "Introduzca el nombre..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "A\u00F1adir nueva balda",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Fecha de creación",
+            "LOCATION": "Ubicaci\u00F3n",
             "STATUS": {
                 "NAME": "Estado",
                 "COMPLETED": "Completado",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "Faltan estanter\u00EDas",
             "NAME": "Nombre",
-            "LOCATION": "Ubicaci\u00F3n",
             "SHELVES_COUNT": "Cantidad de estantes",
             "CREATION_DATE": "Fecha de creaci\u00F3n",
             "LAST_UPDATE_DATE": "Fecha de \u00FAltima actualizaci\u00F3n"

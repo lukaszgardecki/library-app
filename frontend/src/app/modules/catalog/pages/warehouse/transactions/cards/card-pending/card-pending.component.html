@@ -3,7 +3,7 @@
         <div class="px-2">{{number}}.</div>
         <div class="card-content">
             <div class="order-id">ID: {{request.id}}</div>
-            <div class="order-rack">{{request.rackLocation}}</div>
+            <div class="order-rack">{{request.rackName}}-{{request.shelfName}}</div>
             <div *ngIf="request.creationDate | timeAgo as timeAgoResult">
                 {{ timeAgoResult.unit | translate: { time: timeAgoResult.value } }}
             </div> 
@@ -13,7 +13,7 @@
     <div class="flex-column justify-content-center p-2" [ngStyle]="{'display': request==selectedRequest ? 'flex' : 'none'}">
         <div class="info">
             <strong>ID:</strong>{{request.id}}
-            <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><strong>{{request.rackLocation}}</strong>
+            <strong>{{ 'CAT.REQUEST.LOCATION' | translate }}:</strong><strong>{{request.rackName}}-{{request.shelfName}}</strong>
             <strong>{{ 'CAT.REQUEST.CREATION_DATE' | translate }}:</strong>{{request.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
             <strong>{{ 'CAT.BOOK.TITLE' | translate }}:</strong>{{request.bookTitle}}
             <strong>{{ 'CAT.BOOK_ITEM.BARCODE' | translate }}:</strong>{{request.barcode}}

@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.domain.bookitemrequest.dto.BookItemRequestDto;
 import com.example.libraryapp.domain.person.dto.PersonDto;
 import com.example.libraryapp.domain.rack.dto.RackDto;
+import com.example.libraryapp.domain.shelf.dto.ShelfDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,5 @@ public class WarehouseBookItemRequest {
     private final UserDto user;
     private final PersonDto person;
     private final RackDto rack;
+    private final ShelfDto shelf;
 }

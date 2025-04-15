@@ -35,7 +35,6 @@
                         
                         <div class="grid">
                             <strong>ID:</strong>{{selectedRack.id }}
-                            <strong>{{ 'CAT.RACK.LOCATION' | translate }}</strong>{{selectedRack.location}}
                             <strong>{{ 'CAT.RACK.SHELVES_COUNT' | translate }}</strong>{{selectedRack.shelvesCount}}
                             <strong>{{ 'CAT.RACK.CREATION_DATE' | translate }}</strong>{{selectedRack.createdDate | date: "dd.MM.yyyy HH:mm:ss" }}
                             <strong>{{ 'CAT.RACK.LAST_UPDATE_DATE' | translate }}</strong>{{selectedRack.updatedDate | date: "dd.MM.yyyy HH:mm:ss" | nullPlaceholder }}
@@ -149,13 +148,11 @@
 <ng-template #addRackDialogBody>
     <div class="grid" [formGroup]="newRackForm">
         <strong>{{ 'CAT.RACK.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_NAME' | translate" formControlName="name">
-        <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_LOCATION' | translate" formControlName="location">
     </div>
 </ng-template>
 <ng-template #editRackDialogBody>
     <div class="grid" [formGroup]="editRackForm">
         <strong>{{ 'CAT.RACK.NAME' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_NAME' | translate" formControlName="name">
-        <strong>{{ 'CAT.RACK.LOCATION' | translate }}:</strong><input type="text" class="form-control" [placeholder]="'CAT.DIALOG.WAREHOUSE.ADD_RACK.RACK_LOCATION' | translate" formControlName="location">
     </div>
 </ng-template>
 <ng-template #addShelfDialogBody>

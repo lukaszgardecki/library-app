@@ -18,5 +18,6 @@ public class WarehouseBookItemRequestListViewDto {
     private final String bookTitle;
     private final String barcode;
     private final BookFormat bookFormat;
-    private final String rackLocation;
+    private final String rackName;
+    private final String shelfName;
 }

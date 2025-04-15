@@ -13,7 +13,6 @@ class UpdateRackUseCase {
 
     Rack execute(RackId rackId, Rack rackFields) {
         Rack rackToUpdate = rackService.getRackById(rackId);
-        if (rackFields.getLocation() != null) rackToUpdate.setLocation(rackFields.getLocation());
         if (rackFields.getName() != null) rackToUpdate.setName(rackFields.getName());
         rackToUpdate.setUpdatedDate(new RackUpdatedDate(LocalDateTime.now()));
         return rackService.save(rackToUpdate);

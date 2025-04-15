@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "P\u0159idat nov\u00FD reg\u00E1l",
-                    "RACK_NAME": "Zadejte n\u00E1zev...",
-                    "RACK_LOCATION": "Zadejte um\u00EDst\u011Bn\u00ED..."
+                    "RACK_NAME": "Zadejte n\u00E1zev..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "P\u0159idat novou polici",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Datum vytvoření",
+            "LOCATION": "Lokalita",
             "STATUS": {
                 "NAME": "Stav",
                 "COMPLETED": "Dokončeno",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "Chyb\u00ED reg\u00E1ly",
             "NAME": "N\u00E1zev",
-            "LOCATION": "Lokalita",
             "SHELVES_COUNT": "Po\u010Det polic",
             "CREATION_DATE": "Datum vytvo\u0159en\u00ED",
             "LAST_UPDATE_DATE": "Datum posledn\u00ED aktualizace"

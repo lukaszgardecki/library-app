@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "Dodaj nowy regał",
-                    "RACK_NAME": "Wpisz nazwę...",
-                    "RACK_LOCATION": "Wpisz lokalizację..."
+                    "RACK_NAME": "Wpisz nazwę..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "Dodaj nową półkę",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Data utworzenia",
+            "LOCATION": "Lokalizacja",
             "STATUS": {
                 "NAME": "Status",
                 "COMPLETED": "Zrealizowane",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "Brak regałów",
             "NAME": "Nazwa",
-            "LOCATION": "Lokalizacja",
             "SHELVES_COUNT": "Ilość półek",
             "CREATION_DATE": "Data utworzenia",
             "LAST_UPDATE_DATE": "Data ostatniej aktualizacji"

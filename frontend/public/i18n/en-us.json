@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "Add new rack",
-                    "RACK_NAME": "Enter name...",
-                    "RACK_LOCATION": "Enter location..."
+                    "RACK_NAME": "Enter name..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "Add new shelf",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Creation Date",
+            "LOCATION": "Location",
             "STATUS": {
                 "NAME": "Status",
                 "COMPLETED": "Completed",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "No racks",
             "NAME": "Name",
-            "LOCATION": "Location",
             "SHELVES_COUNT": "Number of shelves",
             "CREATION_DATE": "Creation date",
             "LAST_UPDATE_DATE": "Last update date"

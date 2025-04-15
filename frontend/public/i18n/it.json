@@ -116,8 +116,7 @@
                 },
                 "ADD_RACK": {
                     "TITLE": "Aggiungi nuova mensola",
-                    "RACK_NAME": "Inserisci nome...",
-                    "RACK_LOCATION": "Inserisci posizione..."
+                    "RACK_NAME": "Inserisci nome..."
                 },
                 "ADD_SHELF": {
                     "TITLE": "Aggiungi nuovo ripiano",
@@ -344,6 +343,7 @@
         },
         "REQUEST": {
             "CREATION_DATE": "Data di creazione",
+            "LOCATION": "Posizione",
             "STATUS": {
                 "NAME": "Stato",
                 "COMPLETED": "Completato",
@@ -366,7 +366,6 @@
         "RACK": {
             "LACK": "Nessuna scaffalatura disponibile",
             "NAME": "Nome",
-            "LOCATION": "Posizione",
             "SHELVES_COUNT": "Numero di scaffali",
             "CREATION_DATE": "Data di creazione",
             "LAST_UPDATE_DATE": "Data dell'ultimo aggiornamento"

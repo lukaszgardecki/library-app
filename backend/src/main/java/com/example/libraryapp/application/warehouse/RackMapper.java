@@ -9,7 +9,6 @@ class RackMapper {
     static RackDto toDto(Rack model) {
         return RackDto.builder()
                 .id(model.getId().value())
-                .location(model.getLocation().value())
                 .name(model.getName().value())
                 .createdDate(model.getCreatedDate().value())
                 .updatedDate(model.getUpdatedDate().value())
@@ -20,7 +19,6 @@ class RackMapper {
     static Rack toModel(RackDto dto) {
         return Rack.builder()
                 .id(new RackId(dto.getId()))
-                .location(new RackLocationId(dto.getLocation()))
                 .name(new RackName(dto.getName()))
                 .createdDate(new RackCreatedDate(dto.getCreatedDate()))
                 .updatedDate(new RackUpdatedDate(dto.getUpdatedDate()))
@@ -31,7 +29,6 @@ class RackMapper {
     static Rack toModel(RackToSaveDto dto) {
         return Rack.builder()
                 .name(new RackName(dto.getName()))
-                .location(new RackLocationId(dto.getLocation()))
                 .build();
     }
 }
