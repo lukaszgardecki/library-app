@@ -164,22 +164,22 @@ export class RacksComponent implements OnInit {
 
   openAddRackModal() {
     this.newRackForm = this.formService.createNewRackForm();
-    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_RACK.TITLE", body: this.addRackDialogBody, form: this.newRackForm, onConfirm: () => this.addRack()})
+    this.modalService.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_RACK.TITLE", body: this.addRackDialogBody, form: this.newRackForm, onConfirm: () => this.addRack()})
   }
 
   openAddShelfModal() {
     this.newShelfForm = this.formService.createNewShelfForm();
-    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_SHELF.TITLE", body: this.addShelfDialogBody, form: this.newShelfForm, onConfirm: () => this.addShelf()})
+    this.modalService.openModal({ title: "CAT.DIALOG.WAREHOUSE.ADD_SHELF.TITLE", body: this.addShelfDialogBody, form: this.newShelfForm, onConfirm: () => this.addShelf()})
   }
 
   openEditRackModal() {
     this.editRackForm = this.formService.createEditRackForm(this.selectedRack);
-    this.openModal({title: "CAT.DIALOG.WAREHOUSE.EDIT_RACK.TITLE", body: this.editRackDialogBody, form: this.editRackForm, onConfirm: () => this.editRack()});
+    this.modalService.openModal({title: "CAT.DIALOG.WAREHOUSE.EDIT_RACK.TITLE", body: this.editRackDialogBody, form: this.editRackForm, onConfirm: () => this.editRack()});
   }
   
   openEditShelfModal() {
     this.editShelfForm = this.formService.createEditShelfForm(this.selectedShelf);
-    this.openModal({ title: "CAT.DIALOG.WAREHOUSE.EDIT_SHELF.TITLE", body: this.editShelfDialogBody, form: this.editShelfForm, onConfirm: () => this.editShelf()})
+    this.modalService.openModal({ title: "CAT.DIALOG.WAREHOUSE.EDIT_SHELF.TITLE", body: this.editShelfDialogBody, form: this.editShelfForm, onConfirm: () => this.editShelf()})
   }
   
   openDeleteRackModal() {
@@ -187,7 +187,7 @@ export class RacksComponent implements OnInit {
       this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.DELETE.FAILURE.HAS_BOOKS')
       return;
     }
-    this.openModal({
+    this.modalService.openModal({
       title: "CAT.DIALOG.WAREHOUSE.DELETE_RACK.TITLE",
       body: this.translate.instant('CAT.DIALOG.WAREHOUSE.DELETE_RACK.BODY', { item: this.selectedRack?.name }),
       onConfirm: () => this.deleteRack()
@@ -199,7 +199,7 @@ export class RacksComponent implements OnInit {
       this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.DELETE.FAILURE.HAS_BOOKS');
       return;
     }
-    this.openModal({
+    this.modalService.openModal({
       title: "CAT.DIALOG.WAREHOUSE.DELETE_SHELF.TITLE",
       body: this.translate.instant('CAT.DIALOG.WAREHOUSE.DELETE_SHELF.BODY', { item: this.selectedShelf?.name }),
       onConfirm: () => this.deleteShelf()
@@ -216,7 +216,7 @@ export class RacksComponent implements OnInit {
         this.loadMoveItemModalShelves(rackId);
       }
     });
-    this.openModal({
+    this.modalService.openModal({
       title: "CAT.DIALOG.WAREHOUSE.MOVE_BOOK_ITEM.TITLE",
       body: this.moveBookItemDialogBody,
       form: this.moveBookItemForm,
@@ -366,24 +366,24 @@ export class RacksComponent implements OnInit {
     })
   }
 
-  private openModal(options: { title?: string, body?: any, form?: FormGroup, onConfirm?: () => void}) {
-    const modalRef = this.modalService.open(ModalDialogComponent, {
-      title: options?.title,
-      body: options?.body,
-      submitBtnDisabled: options?.form ? options?.form.invalid : false,
-    });
+  // private openModal(options: { title?: string, body?: any, form?: FormGroup, onConfirm?: () => void}) {
+  //   const modalRef = this.modalService.open(ModalDialogComponent, {
+  //     title: options?.title,
+  //     body: options?.body,
+  //     submitBtnDisabled: options?.form ? options?.form.invalid : false,
+  //   });
 
-    options?.form?.statusChanges.subscribe(() => {
-      modalRef.instance.submitBtnDisabled = options?.form ? options?.form.invalid : true;
-    });
+  //   options?.form?.statusChanges.subscribe(() => {
+  //     modalRef.instance.submitBtnDisabled = options?.form ? options?.form.invalid : true;
+  //   });
 
-    modalRef.instance.onConfirm.subscribe(() => {
-      if (options?.onConfirm) {
-        options.onConfirm();
-      }
-    });
-    modalRef.instance.close = () => modalRef.destroy();
-  }
+  //   modalRef.instance.onConfirm.subscribe(() => {
+  //     if (options?.onConfirm) {
+  //       options.onConfirm();
+  //     }
+  //   });
+  //   modalRef.instance.close = () => modalRef.destroy();
+  // }
 
   get selectedBookItemRackId(): number {
     return this.selectedBookItem?.rackId ?? -1;

@@ -175,7 +175,7 @@
         <ng-container *ngIf="moveBookItemsRacks$ | async as racks">
             <strong>Regał:</strong>
             <div class="dropdown">
-                <button class="btn btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
+                <button class="btn btn-sm btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true"  aria-expanded="false">
                     <span>{{ getRackLabel(racks) }}</span>
                 </button>
                 <ul class="dropdown-menu">
@@ -186,7 +186,7 @@
         <ng-container *ngIf="moveBookItemsShelves$ | async as shelves">
             <strong>Półka:</strong>
             <div class="dropdown">
-                <button class="btn btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+                <button class="btn btn-sm btn-secondary bg-transparent text-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
                   <span>{{ getShelfLabel(shelves) }}</span>
                 </button>
                 <ul class="dropdown-menu">

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BasicSectionComponent } from '../../../components/sections/basic-section/basic-section.component';
 import { Observable } from 'rxjs';
 import { Page, Pageable } from '../../../../../shared/models/page';
@@ -8,11 +8,12 @@ import { WarehouseService } from '../../../core/services/warehouse.service';
 import { BookItemRequestStatus } from '../../../shared/enums/book-item-request-status';
 import { WarehouseBookItemRequestListView } from "../../../../../shared/models/rack";
 import { TableUpdateEvent } from '../../../shared/models/table-event.interface';
-import { ModalDialogComponent } from "../../../components/modal-dialog/modal-dialog.component";
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardInProgressComponent } from "./cards/card-in-progress/card-in-progress.component";
 import { CardPendingComponent } from "./cards/card-pending/card-pending.component";
 import { ToastContainerComponent } from '../../../components/toasts/toast-container/toast-container.component';
+import { ModalService } from '../../../core/services/modal.service';
+import { ModalHostComponent } from "../../../components/modal-dialog/modal-host/modal-host.component";
 
 @Component({
   selector: 'app-transactions',
@@ -21,10 +22,10 @@ import { ToastContainerComponent } from '../../../components/toasts/toast-contai
     CommonModule, TranslateModule,
     BasicSectionComponent,
     ReactiveFormsModule,
-    ModalDialogComponent,
     CardInProgressComponent,
     CardPendingComponent,
-    ToastContainerComponent
+    ToastContainerComponent,
+    ModalHostComponent
 ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
@@ -38,7 +39,11 @@ export class TransactionsComponent implements OnInit {
   @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
 
 
-  constructor(private warehouseService: WarehouseService) {}
+  constructor(
+    private warehouseService: WarehouseService,
+    private modalService: ModalService,
+    private translate: TranslateService,
+  ) {}
 
   ngOnInit(): void {
       this.pendingRequestsPage$ = this.warehouseService.pendingRequests$;
@@ -72,7 +77,20 @@ export class TransactionsComponent implements OnInit {
     this.warehouseService.moveRequestToPending(bookItemRequest);
   }
 
-  completeSelectedRequest() {
+  openConfirmBookItemRequestModal() {
+    if (!this.selectedInProgressEl) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE');
+      return;
+    }
+    this.modalService.openModal({
+      title: "CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE",
+      body: this.translate.instant('CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY'),
+      onConfirm: () => this.completeSelectedRequest()
+    });
+  }
+
+  private completeSelectedRequest() {
+    console.log("dupa")
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
         next: () => this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),

@@ -17,6 +17,7 @@ export class CardInProgressComponent {
   @Input() number: number;
   @Output() onSelect = new EventEmitter<WarehouseBookItemRequestListView>();
   @Output() onBackToPending = new EventEmitter<WarehouseBookItemRequestListView>();
+  @Output() onCompleteRequest = new EventEmitter<void>();
 
   active(request: WarehouseBookItemRequestListView) {
     this.onSelect.emit(request);

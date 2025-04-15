@@ -28,6 +28,7 @@
                         [selectedRequest]="selectedInProgressEl"
                         (onSelect)="activeInProgressRequest($event)"
                         (onBackToPending)="backToPending($event)"
+                        (onCompleteRequest)="openConfirmBookItemRequestModal()"
                     ></app-card-in-progress>        
                 </div>
             </ng-container>
@@ -48,10 +49,5 @@
     </div>
 </ng-template>
 
-<app-modal-dialog
-    [id]="'confirmDialog'"
-    [title]="'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.TITLE'"
-    (onConfirm)="completeSelectedRequest()"
->{{ 'CAT.DIALOG.WAREHOUSE.CONFIRM_REQUEST.BODY' | translate }}</app-modal-dialog>
-
 <app-toast-container #toastContainer></app-toast-container>
+<app-modal-host></app-modal-host>
