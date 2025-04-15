@@ -9,12 +9,11 @@
                 *ngIf="requestPage && requestPage.content; else lack"
                 [tableName]="'warehouse-pending-requests'"
                 [columns]="[
-                    { key: 'requestId', label: 'ID' },
+                    { key: 'id', label: 'ID' },
                     { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
                     { key: 'bookTitle', label: 'Tytuł' },
                     { key: 'bookFormat', label: 'Format', type: 'book-format' },
-                    { key: 'status', label: 'Status', type: 'book-item-request-status' },
-                    { key: 'rackLocationId', label: 'Nr regału' },
+                    { key: 'status', label: 'Status', type: 'book-item-request-status' }
                 ]"
                 [data]="requestPage.content || []"
                 [page]="requestPage"

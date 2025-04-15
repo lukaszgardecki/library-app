@@ -67,7 +67,7 @@ export class WarehouseService {
         switch (options.status) {
           case BookItemRequestStatus.PENDING: this.pendingRequestsSubject.next(page); break;
           case BookItemRequestStatus.IN_PROGRESS: this.inProgressRequestsSubject.next(page); break;
-          case null: this.allRequestsSubject.next(page); break;
+          case undefined: this.allRequestsSubject.next(page); break;
           default: console.warn(`Nieznany status: ${options.status}`);
         }
       },
