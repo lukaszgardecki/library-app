@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "Polica bola \u00FAspe\u0161ne vytvoren\u00E1.",
-                        "FAILURE": ""
+                        "FAILURE": "Policu sa nepodarilo vytvori\u0165."
                     },
                     "EDIT": {
                         "SUCCESS": "Polica bola \u00FAspe\u0161ne upraven\u00E1.",
@@ -185,6 +185,12 @@
                             "MAIN": "Policu sa nepodarilo odstr\u00E1ni\u0165.",
                             "HAS_BOOKS": "Policu nie je mo\u017En\u00E9 odstr\u00E1ni\u0165, pokia\u013E nie s\u00FA v\u0161etky knihy premiestnen\u00E9."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Dokument bol \u00faspe\u0161ne presunut\u00fd.",
+                        "FAILURE": "Dokument nie je mo\u017en\u00e9 presun\u00fa\u0165."
                     }
                 }
             }

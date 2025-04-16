@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "The shelf has been successfully created.",
-                        "FAILURE": ""
+                        "FAILURE": "The shelf could not be created."
                     },
                     "EDIT": {
                         "SUCCESS": "The shelf was successfully edited.",
@@ -185,6 +185,12 @@
                             "MAIN": "Failed to delete the shelf.",
                             "HAS_BOOKS": "The shelf cannot be deleted until all books are moved."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "The document was successfully moved.",
+                        "FAILURE": "The document could not be moved."
                     }
                 }
             }

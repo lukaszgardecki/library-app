@@ -186,6 +186,12 @@
                             "HAS_BOOKS": "The shelf cannot be deleted until all books have been removed."
                         }
                     }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "The document was successfully moved.",
+                        "FAILURE": "The document could not be moved."
+                    }
                 }
             }
         },

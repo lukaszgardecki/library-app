@@ -322,7 +322,10 @@ export class RacksComponent implements OnInit {
   private editBookItemLocation(bookItemId: number) {
     const newRackId: number = this.moveBookItemForm.get('rack')?.value;
     const newShelfId: number = this.moveBookItemForm.get('shelf')?.value;
-    if (newRackId == null || newShelfId == null) return;
+    if (newRackId == null || newShelfId == null) {
+      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.BOOK_ITEM.MOVED.FAILURE');
+      return
+    };
     const options = { rackSelected: this.selectedRack != undefined, shelfSelected: this.selectedShelf != undefined }
     this.warehouseService.editBookItemLocation(bookItemId, newRackId, newShelfId, options).subscribe({
       next: updatedBookItem => {
@@ -340,8 +343,10 @@ export class RacksComponent implements OnInit {
           if (shouldUnselectBookItem) {
             this.unselectBookItem()
           }
+          this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.BOOK_ITEM.MOVED.SUCCESS');
         }
-      }
+      },
+      error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.BOOK_ITEM.MOVED.FAILURE')
     });
   }
 

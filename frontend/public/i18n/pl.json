@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "Półka została pomyślnie utworzona.",
-                        "FAILURE": ""
+                        "FAILURE": "Nie udało się utworzyć półki."
                     },
                     "EDIT": {
                         "SUCCESS": "Pomyślnie edytowano półkę.",
@@ -185,6 +185,12 @@
                             "MAIN": "Nie udało się usunąć półki.",
                             "HAS_BOOKS": "Półka nie może zostać usunięta, dopóki wszystkie książki nie zostaną przeniesione."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Pomyślnie przeniesiono dokument.",
+                        "FAILURE": "Nie można przenieść dokumentu."
                     }
                 }
             }

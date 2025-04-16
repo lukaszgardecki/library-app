@@ -186,6 +186,12 @@
                             "HAS_BOOKS": "Das Regalbrett kann nicht gel\u00f6scht werden, solange alle B\u00fccher nicht entfernt wurden."
                         }
                     }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Dokument wurde erfolgreich verschoben.",
+                        "FAILURE": "Dokument konnte nicht verschoben werden."
+                    }
                 }
             }
         },

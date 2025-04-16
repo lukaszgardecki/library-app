@@ -186,6 +186,12 @@
                             "HAS_BOOKS": "Police nelze odstranit, dokud v\u0161echny knihy nebudou p\u0159esunuty."
                         }
                     }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Dokument byl \u00fa\u011b\u0161n\u011b p\u0159esunut.",
+                        "FAILURE": "Dokument nelze p\u0159esunout."
+                    }
                 }
             }
         },

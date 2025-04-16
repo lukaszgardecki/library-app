@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "La mensola \u00E8 stata creata con successo.",
-                        "FAILURE": ""
+                        "FAILURE": "Impossibile creare lo scaffale."
                     },
                     "EDIT": {
                         "SUCCESS": "La mensola \u00E8 stata modificata con successo.",
@@ -185,6 +185,12 @@
                             "MAIN": "Impossibile eliminare la mensola.",
                             "HAS_BOOKS": "La mensola non pu\u00F2 essere eliminata finch\u00E9 tutti i libri non vengono spostati."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Il documento \u00e8 stato spostato con successo.",
+                        "FAILURE": "Impossibile spostare il documento."
                     }
                 }
             }

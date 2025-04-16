@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 cr\u00E9\u00E9e avec succ\u00E8s.",
-                        "FAILURE": ""
+                        "FAILURE": "L'\u00e9tag\u00e8re n'a pas pu \u00eatre cr\u00e9\u00e9e."
                     },
                     "EDIT": {
                         "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 modifi\u00E9e avec succ\u00E8s.",
@@ -185,6 +185,12 @@
                             "MAIN": "Impossible de supprimer l'\u00E9tag\u00E8re.",
                             "HAS_BOOKS": "L'\u00E9tag\u00E8re ne peut pas \u00EAtre supprim\u00E9e tant que tous les livres ne sont pas d\u00E9plac\u00E9s."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Le document a \u00e9t\u00e9 d\u00e9plac\u00e9 avec succ\u00e8s.",
+                        "FAILURE": "Impossible de d\u00e9placer le document."
                     }
                 }
             }

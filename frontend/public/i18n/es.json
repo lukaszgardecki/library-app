@@ -173,7 +173,7 @@
                 "SHELF": {
                     "CREATE": {
                         "SUCCESS": "El estante se ha creado con \u00E9xito.",
-                        "FAILURE": ""
+                        "FAILURE": "No se pudo crear la estanter\u00eda."
                     },
                     "EDIT": {
                         "SUCCESS": "El estante se ha editado con \u00E9xito.",
@@ -185,6 +185,12 @@
                             "MAIN": "No se pudo eliminar el estante.",
                             "HAS_BOOKS": "No se puede eliminar el estante hasta que se trasladen todos los libros."
                         }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "El documento se movi\u00f3 correctamente.",
+                        "FAILURE": "No se pudo mover el documento."
                     }
                 }
             }
