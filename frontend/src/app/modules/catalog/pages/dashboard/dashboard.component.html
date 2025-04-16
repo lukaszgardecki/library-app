@@ -1,1 +1,107 @@
-<p>dashboard works</p>
+<div class="container-fluid">
+
+    <h1 class="h2">{{ 'CAT.SIDEBAR.DASHBOARD' | translate }}</h1>
+  
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+          <div class="small-box text-bg-primary">
+              <div class="inner">
+                  <h3 *ngIf="usersStats$ | async as stats">{{ stats.todayLoans }}</h3>
+                  <p>{{ 'CAT.STATS.LENDINGS_COUNT_TODAY' | translate }}</p>
+              </div>
+              <i class="bi bi-bookmark-check small-box-icon"></i>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+          <div class="small-box text-bg-success">
+              <div class="inner">
+                  <h3 *ngIf="usersStats$ | async as stats">{{ stats.activeUsersThisMonth }}</h3>
+                  <p>{{ 'CAT.STATS.USERS_ACTIVE_THIS_MONTH' | translate }}</p>
+              </div>
+              <i class="bi bi-activity small-box-icon"></i>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+          <div class="small-box text-bg-warning">
+              <div class="inner">
+                  <h3 *ngIf="usersStats$ | async as stats">{{ stats.newUsersThisMonth }}</h3>
+                  <p>{{ 'CAT.STATS.USERS_NEW_THIS_MONTH' | translate }}</p>
+              </div>
+              <i class="bi bi-person-plus-fill small-box-icon"></i>
+          </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+          <div class="small-box text-bg-danger">
+              <div class="inner">
+                  <h3 *ngIf="usersStats$ | async as stats">{{ stats.usersCount }}</h3>
+                  <p>{{ 'CAT.STATS.USERS_TOTAL' | translate }}</p>
+              </div>
+              <i class="bi bi-people-fill small-box-icon"></i>
+          </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <app-basic-section class="col-12 col-md-6 col-xxl-3 p-2" [name]="'CAT.USER.ACCOUNT.LENDINGS_WEEKLY' | translate">
+        <app-weekly-activity-chart
+          *ngIf="usersStats$ | async as stats; else lack"
+          [data1]="stats.newLoansLastWeekByDay"
+          [data2]="stats.returnedLoansLastWeekByDay"
+        ></app-weekly-activity-chart>
+      </app-basic-section>
+  
+      <app-basic-section class="col-12 col-md-6 col-xxl-3 p-2" [name]="'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate">
+        <app-annual-activity-chart
+          *ngIf="usersStats$ | async as stats; else lack"
+          [data]="stats.loansLastYearByMonth"
+        ></app-annual-activity-chart>
+      </app-basic-section>
+  
+      <app-basic-section class="col-12 col-md-6 col-xxl-3 p-2" [name]="'CAT.USER.ACCOUNT.FAV_GENRES' | translate">
+        <app-fav-genre-chart
+          *ngIf="usersStats$ | async as stats; else lack"
+          [data]="stats.favGenres"
+        ></app-fav-genre-chart>
+      </app-basic-section>
+  
+      <app-basic-section class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2" [name]="'CAT.STATS.USERS_AGE_GROUPS.HEADER' | translate">
+        <app-users-age-groups-chart
+          *ngIf="usersStats$ | async as stats; else lack"
+          [data]="stats.ageGroups"
+        ></app-users-age-groups-chart>
+      </app-basic-section>
+  
+      <app-basic-section class="col-md-6 col-sm-12 col-12 col-xxl-3 p-2" [name]="'CAT.STATS.USERS_TOP_CITIES' | translate">
+        <app-top-cities
+          *ngIf="usersStats$ | async as stats; else lack"
+          [columns]="[
+              'CAT.USER.DETAILS.CITY' ,
+              'CAT.STATS.AMOUNT' ,
+          ]"
+          [data]="stats.topCities"
+        ></app-top-cities>
+      </app-basic-section>
+
+      <app-basic-section class="col-12 col-md-6 col-xxl-3 p-2" [name]="'CAT.STATS.USERS_TOP_BORROWERS' | translate">
+        <app-table
+          *ngIf="usersStats$ | async as stats; else lack"
+          [tableName]="'top-users-list'"
+          [columns]="[
+              { key: 'rank', label: 'CAT.STATS.RANK' },
+              { key: 'fullName', label: 'CAT.USER.BORROWER' },
+              { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
+          ]"
+          [data]="stats.topBorrowers || []"
+          (onRowClick)="showDetails($event)"
+          [options]="{
+            pagination: false,
+            searchField: false,
+            pageSize: false,
+            shareExportBtns: false
+          }"
+        ></app-table>
+      </app-basic-section>
+  </div>
+  
+  
+  <ng-template #lack>{{ 'DATA.LACK' | translate }}</ng-template>
