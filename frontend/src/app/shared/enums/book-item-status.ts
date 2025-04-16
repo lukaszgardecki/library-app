@@ -1,6 +1,7 @@
 export enum BookItemStatus {
     AVAILABLE = "AVAILABLE",
-    RESERVED = "RESERVED",
+    REQUESTED = "REQUESTED",
     LOANED = "LOANED",
+    RETURNED = "RETURNED",
     LOST = "LOST"
 }

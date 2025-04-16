@@ -1,15 +1,15 @@
 package com.example.libraryapp.domain.event.types.fine;
 
 import com.example.libraryapp.domain.event.types.CustomEvent;
+import com.example.libraryapp.domain.fine.model.FineAmount;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.Getter;
-
-import java.math.BigDecimal;
 
 @Getter
 abstract class FineEvent extends CustomEvent {
-    private final BigDecimal fineAmount;
+    private final FineAmount fineAmount;
 
-    protected FineEvent(Long userId, BigDecimal fineAmount) {
+    protected FineEvent(UserId userId, FineAmount fineAmount) {
         super(userId);
         this.fineAmount = fineAmount;
     }

@@ -1,12 +1,13 @@
-import { HypermediaObject } from "./hypermedia-object";
+import { BookFormat } from "../enums/book-format";
 
 export class Book {
     id: number;
     title: string;
     subject: string;
     publisher: string;
-    isbn: string;
+    ISBN: string;
     language: string;
     pages: number;
-    _links: HypermediaObject;
+    format: BookFormat;
+    publicationDate: Date;
 }

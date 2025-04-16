@@ -11,7 +11,7 @@ public class BookItemLoanListPreview implements BookItemLoanListPreviewProjectio
     private Long id;
     private LocalDate creationDate;
     private LocalDate dueDate;
-    private BookItemLoanStatus status;
+    private LoanStatus status;
     private Long bookItemId;
     private String bookTitle;
 }

@@ -1,6 +1,10 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.useractivity;
 
+import com.example.libraryapp.domain.user.model.UserId;
 import com.example.libraryapp.domain.useractivity.model.UserActivity;
+import com.example.libraryapp.domain.useractivity.model.UserActivityCreationDate;
+import com.example.libraryapp.domain.useractivity.model.UserActivityId;
+import com.example.libraryapp.domain.useractivity.model.UserActivityMessage;
 import com.example.libraryapp.domain.useractivity.ports.UserActivityRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,13 +20,13 @@ class UserActivityRepositoryAdapter implements UserActivityRepositoryPort {
     private final JpaUserActivityRepository repository;
 
     @Override
-    public Optional<UserActivity> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<UserActivity> findById(UserActivityId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
-    public Page<UserActivity> findAllByParams(Long userId, String type, Pageable pageable) {
-        return repository.findAllByParams(userId, type, pageable).map(this::toModel);
+    public Page<UserActivity> findAllByParams(UserId userId, String type, Pageable pageable) {
+        return repository.findAllByParams(userId.value(), type, pageable).map(this::toModel);
     }
 
     @Override
@@ -33,21 +37,21 @@ class UserActivityRepositoryAdapter implements UserActivityRepositoryPort {
 
     private UserActivityEntity toEntity(UserActivity model) {
         return UserActivityEntity.builder()
-                .id(model.getId())
-                .userId(model.getUserId())
+                .id(model.getId() != null ? model.getId().value() : null)
+                .userId(model.getUserId().value())
                 .type(model.getType())
-                .message(model.getMessage())
-                .createdAt(model.getCreatedAt())
+                .message(model.getMessage().value())
+                .createdAt(model.getCreatedAt().value())
                 .build();
     }
 
     private UserActivity toModel(UserActivityEntity entity) {
         return UserActivity.builder()
-                .id(entity.getId())
-                .userId(entity.getUserId())
+                .id(new UserActivityId(entity.getId()))
+                .userId(new UserId(entity.getUserId()))
                 .type(entity.getType())
-                .message(entity.getMessage())
-                .createdAt(entity.getCreatedAt())
+                .message(new UserActivityMessage(entity.getMessage()))
+                .createdAt(new UserActivityCreationDate(entity.getCreatedAt()))
                 .build();
     }
 }

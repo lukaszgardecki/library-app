@@ -1,10 +1,7 @@
 package com.example.libraryapp.application.user;
 
 import com.example.libraryapp.domain.user.dto.*;
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserDetails;
-import com.example.libraryapp.domain.user.model.UserDetailsAdmin;
-import com.example.libraryapp.domain.user.model.UserPreview;
+import com.example.libraryapp.domain.user.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,58 +44,58 @@ public class UserFacade {
                 .map(UserMapper::toDto);
     }
 
-    public UserDto getUserById(Long id) {
+    public UserDto getUserById(UserId id) {
         User user = getUserUseCase.execute(id);
         return UserMapper.toDto(user);
     }
 
-    public UserDto getUserByEmail(String email) {
+    public UserDto getUserByEmail(Email email) {
         User user = getUserUseCase.execute(email);
         return UserMapper.toDto(user);
     }
 
-    public UserDetailsDto getUserDetails(Long id) {
+    public UserDetailsDto getUserDetails(UserId id) {
         UserDetails user = getUserDetailsUseCase.execute(id);
         return UserMapper.toDto(user);
     }
 
-    public UserDetailsAdminDto getUserDetailsAdmin(Long id) {
+    public UserDetailsAdminDto getUserDetailsAdmin(UserId id) {
         UserDetailsAdmin user = getUserDetailsAdminUseCase.execute(id);
         return UserMapper.toDto(user);
     }
 
-    public UserPreviewDto getUserPreview(Long id) {
+    public UserPreviewDto getUserPreview(UserId id) {
         UserPreview userPreview = getUserPreviewUseCase.execute(id);
         return UserMapper.toDto(userPreview);
     }
 
-    public Long registerNewUser(RegisterUserDto request) {
+    public UserId registerNewUser(RegisterUserDto request) {
         return registerUserUseCase.execute(request);
     }
 
-    public UserDto updateUser(Long id, UserUpdateDto userData) {
+    public UserDto updateUser(UserId id, UserUpdateDto userData) {
         User updatedUser = updateUserUseCase.execute(id, userData);
         return UserMapper.toDto(updatedUser);
     }
 
-    public UserDto updateUserByAdmin(Long id, UserUpdateAdminDto userData) {
+    public UserDto updateUserByAdmin(UserId id, UserUpdateAdminDto userData) {
         User updatedUser = updateUserByAdminUseCase.execute(id, userData);
         return UserMapper.toDto(updatedUser);
     }
 
-    public void deleteUserById(Long userId) {
+    public void deleteUserById(UserId userId) {
         deleteUserUseCase.execute(userId);
     }
 
-    public void verifyUserForBookItemRequest(Long userId) {
+    public void verifyUserForBookItemRequest(UserId userId) {
         verifyUserForBookItemRequestUseCase.execute(userId);
     }
 
-    public void verifyUserForBookItemLoan(Long userId) {
+    public void verifyUserForBookItemLoan(UserId userId) {
         verifyUserForBookItemLoanUseCase.execute(userId);
     }
 
-    public void verifyUserForBookItemRenewal(Long userId) {
+    public void verifyUserForBookItemRenewal(UserId userId) {
         verifyUserForBookItemRenewalUseCase.execute(userId);
     }
 

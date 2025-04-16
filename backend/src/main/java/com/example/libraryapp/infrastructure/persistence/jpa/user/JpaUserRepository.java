@@ -4,6 +4,7 @@ import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -56,6 +57,7 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByPersonId(Long personId);
 
+    @Modifying
     @Query("""
         UPDATE UserEntity u
         SET u.totalBooksRequested = u.totalBooksRequested + 1
@@ -63,6 +65,7 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
     """)
     void incrementTotalBooksRequested(Long userId);
 
+    @Modifying
     @Query("""
         UPDATE UserEntity u
         SET u.totalBooksRequested = u.totalBooksRequested - 1
@@ -70,6 +73,7 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
     """)
     void decrementTotalBooksRequested(Long userId);
 
+    @Modifying
     @Query("""
         UPDATE UserEntity u
         SET u.totalBooksBorrowed = u.totalBooksBorrowed - 1
@@ -77,6 +81,7 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
     """)
     void incrementTotalBooksBorrowed(Long userId);
 
+    @Modifying
     @Query("""
         UPDATE UserEntity u
         SET u.totalBooksBorrowed = u.totalBooksBorrowed + 1
@@ -84,6 +89,7 @@ interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
     """)
     void decrementTotalBooksBorrowed(Long userId);
 
+    @Modifying
     @Query("""
         UPDATE UserEntity u
         SET u.charge = u.charge - :amount

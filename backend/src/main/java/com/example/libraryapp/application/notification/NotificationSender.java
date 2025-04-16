@@ -9,6 +9,7 @@ import com.example.libraryapp.domain.event.types.notification.EmailNotificationS
 import com.example.libraryapp.domain.event.types.notification.SmsNotificationSentEvent;
 import com.example.libraryapp.domain.event.types.notification.SystemNotificationSentEvent;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ class NotificationSender {
     private final EventPublisherPort publisher;
 
     void send(Notification notification) {
-        Long userId = notification.getUserId();
+        UserId userId = notification.getUserId();
         systemNotificationPort.send(notification);
         publisher.publish(new SystemNotificationSentEvent(userId, notification.getSubject()));
 

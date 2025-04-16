@@ -1,7 +1,5 @@
 package com.example.libraryapp.application.payment;
 
-import com.example.libraryapp.application.auth.AuthenticationConfiguration;
-import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.domain.payment.ports.PaymentRepositoryPort;
 import com.example.libraryapp.infrastructure.persistence.inmemory.InMemoryPaymentRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
@@ -15,26 +13,22 @@ public class PaymentConfiguration {
         PaymentRequestFactory requestFactory = new PaymentRequestFactory();
         PaymentPortFactory portFactory = new PaymentPortFactory();
         PaymentService paymentService = new PaymentService(paymentRepository);
-        AuthenticationFacade authFacade = new AuthenticationConfiguration().authenticationFacade();
         return new PaymentFacade(
                 new ProcessPaymentUseCase(requestFactory, portFactory, paymentService),
                 new GetPaymentUseCase(paymentService),
-                new GetAllUserPaymentsUseCase(paymentService, authFacade)
+                new GetAllUserPaymentsUseCase(paymentService)
         );
     }
 
     @Bean
-    public PaymentFacade paymentFacade(
-        PaymentRepositoryPort paymentRepository,
-        AuthenticationFacade authFacade
-    ) {
+    public PaymentFacade paymentFacade(PaymentRepositoryPort paymentRepository) {
         PaymentRequestFactory requestFactory = new PaymentRequestFactory();
         PaymentPortFactory portFactory = new PaymentPortFactory();
         PaymentService paymentService = new PaymentService(paymentRepository);
         return new PaymentFacade(
                 new ProcessPaymentUseCase(requestFactory, portFactory, paymentService),
                 new GetPaymentUseCase(paymentService),
-                new GetAllUserPaymentsUseCase(paymentService, authFacade)
+                new GetAllUserPaymentsUseCase(paymentService)
         );
     }
 }

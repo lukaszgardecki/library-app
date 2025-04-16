@@ -10,8 +10,13 @@ export class AuthGuardComponent implements CanActivate, CanActivateChild {
   constructor(private authService: AuthenticationService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): MaybeAsync<GuardResult> {
-    return this.authService.isLoggedIn$.pipe(first(), map(value => {
-      if (value) {
+    const endpointSecured = route.data["expectedRoles"];
+    const userRole = this.authService.currentUserRole;
+
+    return this.authService.isLoggedIn$.pipe(first(), map(isLoggedIn => {
+      if (endpointSecured && endpointSecured.includes(userRole)) {
+        return true;
+      } else if (!endpointSecured && isLoggedIn) {
         return true;
       } else {
         this.router.navigate(['library-app/login']);

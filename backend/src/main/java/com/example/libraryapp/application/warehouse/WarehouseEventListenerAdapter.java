@@ -1,8 +1,9 @@
 package com.example.libraryapp.application.warehouse;
 
 import com.example.libraryapp.domain.event.types.CustomEvent;
-import com.example.libraryapp.domain.warehouse.ports.WarehouseEventListenerPort;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemRequestedEvent;
+import com.example.libraryapp.domain.warehouse.model.WarehouseBookItemRequest;
+import com.example.libraryapp.domain.warehouse.ports.WarehouseEventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
@@ -12,6 +13,7 @@ import java.util.List;
 class WarehouseEventListenerAdapter implements WarehouseEventListenerPort {
     // TODO: 10.12.2024 przenieść tego message poza, wystawić port i zrobić takiego w aplikacji
     private final SimpMessagingTemplate messagingTemplate;
+    private final BookItemRequestService bookItemRequestService;
 
     @Override
     public List<Class<? extends CustomEvent>> getSupportedEventTypes() {
@@ -22,11 +24,12 @@ class WarehouseEventListenerAdapter implements WarehouseEventListenerPort {
 
     @Override
     public void onEvent(CustomEvent event) {
-        if (event instanceof BookItemRequestedEvent eventObj) {
-            System.out.println("Wysyłam wiadomość do magazynu o zarezerwowaniu książki");
-            // TODO: 03.12.2024 pomyśleć żeby ta ścieżka nie była wpisana na żywca tutaj tylko do jakiegoś configa...
-            // TODO: 12.12.2024 poprawić to bo do magazynu trzerba wysłać dane potrzebne magazynowi
-            messagingTemplate.convertAndSend("/queue/warehouse", eventObj.getBookItemId());
+        if (event instanceof BookItemRequestedEvent e) {
+            WarehouseBookItemRequest warehouseBookItemRequest = bookItemRequestService.getWarehouseBookItemRequest(e.getBookItemRequest());
+            messagingTemplate.convertAndSend(
+                    "/queue/warehouse/pending",
+                    BookItemRequestMapper.toRequestListViewDto(warehouseBookItemRequest)
+            );
         }
     }
 }

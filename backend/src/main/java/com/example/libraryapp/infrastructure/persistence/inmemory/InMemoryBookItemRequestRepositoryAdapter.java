@@ -1,8 +1,11 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
+import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,30 +15,30 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryBookItemRequestRepositoryAdapter implements BookItemRequestRepositoryPort {
-    private final ConcurrentHashMap<Long, BookItemRequest> map = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<RequestId, BookItemRequest> map = new ConcurrentHashMap<>();
     private static long id = 0;
 
     @Override
-    public Optional<BookItemRequest> findById(Long id) {
+    public Optional<BookItemRequest> findById(RequestId id) {
         return Optional.ofNullable(map.get(id));
     }
 
     @Override
-    public List<BookItemRequest> findAll(Long bookItemId, Long userId) {
+    public List<BookItemRequest> findAll(BookItemId bookItemId, UserId userId) {
         return map.values().stream()
                 .filter(request -> request.getBookItemId().equals(bookItemId) && request.getUserId().equals(userId))
                 .toList();
     }
 
     @Override
-    public List<BookItemRequest> findAllByUserIdAndStatuses(Long userId, List<BookItemRequestStatus> statusesToFind) {
+    public List<BookItemRequest> findAllByUserIdAndStatuses(UserId userId, List<BookItemRequestStatus> statusesToFind) {
         return map.values().stream()
                 .filter(request -> request.getUserId().equals(userId) && statusesToFind.contains(request.getStatus()))
                 .toList();
     }
 
     @Override
-    public List<BookItemRequest> findByBookItemIdAndStatuses(Long bookItemId, List<BookItemRequestStatus> statusesToFind) {
+    public List<BookItemRequest> findByBookItemIdAndStatuses(BookItemId bookItemId, List<BookItemRequestStatus> statusesToFind) {
         return map.values().stream()
                 .filter(request -> request.getBookItemId().equals(bookItemId) && statusesToFind.contains(request.getStatus()))
                 .toList();
@@ -57,14 +60,14 @@ public class InMemoryBookItemRequestRepositoryAdapter implements BookItemRequest
     @Override
     public BookItemRequest save(BookItemRequest request) {
         if (request.getId() == null) {
-            request.setId(++id);
+            request.setId(new RequestId(++id));
         }
         return map.put(request.getId(), request);
     }
 
 
     @Override
-    public void setBookRequestStatus(Long id, BookItemRequestStatus status) {
+    public void setBookRequestStatus(RequestId id, BookItemRequestStatus status) {
         BookItemRequest request = map.get(id);
         if (request != null) {
             request.setStatus(status);

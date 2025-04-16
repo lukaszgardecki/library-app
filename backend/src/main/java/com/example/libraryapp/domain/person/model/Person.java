@@ -5,22 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 public class Person {
-    private Long id;
-    private String firstName;
-    private String lastName;
+    private PersonId id;
+    private PersonFirstName firstName;
+    private PersonLastName lastName;
     private Gender gender;
-    private String pesel;
-    private LocalDate dateOfBirth;
-    private String nationality;
-    private String fathersName;
-    private String mothersName;
+    private Pesel pesel;
+    private BirthDate dateOfBirth;
+    private Nationality nationality;
+    private FatherName fathersName;
+    private MotherName mothersName;
     private Address address;
-    private String phone;
+    private PhoneNumber phone;
 }

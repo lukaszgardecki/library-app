@@ -108,7 +108,7 @@
                 <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="./flags/{{ selectedLang.icon }}" width="25" [alt]="selectedLang.name">
                 </a>
-                <ul class="dropdown-menu dropdown-menu dropdown-menu-end position-absolute">
+                <ul class="dropdown-menu dropdown-menu-end position-absolute">
                     <a class="dropdown-item" role="button" *ngFor="let lang of languages" (click)="switchLanguage(lang)">
                         <img src="./flags/{{ lang.icon }}" width="25" [alt]="lang.name">
                         <span class="float-end text-secondary fs-7">{{ lang.name }}</span>

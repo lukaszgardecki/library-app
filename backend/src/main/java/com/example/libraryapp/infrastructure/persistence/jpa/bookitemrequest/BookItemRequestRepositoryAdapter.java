@@ -1,8 +1,12 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitemrequest;
 
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
+import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestCreationDate;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
+import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,29 +22,29 @@ class BookItemRequestRepositoryAdapter implements BookItemRequestRepositoryPort 
     private final JpaBookItemRequestRepository repository;
 
     @Override
-    public Optional<BookItemRequest> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<BookItemRequest> findById(RequestId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
-    public List<BookItemRequest> findAll(Long bookItemId, Long userId) {
-        return repository.findAll(bookItemId, userId)
+    public List<BookItemRequest> findAll(BookItemId bookItemId, UserId userId) {
+        return repository.findAll(bookItemId.value(), userId.value())
                 .stream()
                 .map(this::toModel)
                 .toList();
     }
 
     @Override
-    public List<BookItemRequest> findAllByUserIdAndStatuses(Long userId, List<BookItemRequestStatus> statusesToFind) {
-        return repository.findAllByUserIdAndStatuses(userId, statusesToFind)
+    public List<BookItemRequest> findAllByUserIdAndStatuses(UserId userId, List<BookItemRequestStatus> statusesToFind) {
+        return repository.findAllByUserIdAndStatuses(userId.value(), statusesToFind)
                 .stream()
                 .map(this::toModel)
                 .toList();
     }
 
     @Override
-    public List<BookItemRequest> findByBookItemIdAndStatuses(Long bookItemId, List<BookItemRequestStatus> statusesToFind) {
-        return repository.findAllByBookItemIdAndStatuses(bookItemId, statusesToFind).stream()
+    public List<BookItemRequest> findByBookItemIdAndStatuses(BookItemId bookItemId, List<BookItemRequestStatus> statusesToFind) {
+        return repository.findAllByBookItemIdAndStatuses(bookItemId.value(), statusesToFind).stream()
                 .map(this::toModel)
                 .toList();
     }
@@ -59,27 +63,27 @@ class BookItemRequestRepositoryAdapter implements BookItemRequestRepositoryPort 
 
     @Override
     @Transactional
-    public void setBookRequestStatus(Long id, BookItemRequestStatus status) {
-        repository.setBookRequestStatus(id, status);
+    public void setBookRequestStatus(RequestId id, BookItemRequestStatus status) {
+        repository.setBookRequestStatus(id.value(), status);
     }
 
     BookItemRequestEntity toEntity(BookItemRequest model) {
         return new BookItemRequestEntity(
-                model.getId(),
-                model.getCreationDate(),
+                model.getId() != null ? model.getId().value() : null,
+                model.getCreationDate().value(),
                 model.getStatus(),
-                model.getUserId(),
-                model.getBookItemId()
+                model.getUserId().value(),
+                model.getBookItemId().value()
         );
     }
 
     BookItemRequest toModel(BookItemRequestEntity entity) {
         return new BookItemRequest(
-                entity.getId(),
-                entity.getCreationDate(),
+                new RequestId(entity.getId()),
+                new BookItemRequestCreationDate(entity.getCreationDate()),
                 entity.getStatus(),
-                entity.getUserId(),
-                entity.getBookItemId()
+                new UserId(entity.getUserId()),
+                new BookItemId(entity.getBookItemId())
         );
     }
 }

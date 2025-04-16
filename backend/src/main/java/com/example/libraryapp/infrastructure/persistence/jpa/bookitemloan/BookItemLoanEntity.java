@@ -1,6 +1,6 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.bookitemloan;
 
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +22,7 @@ class BookItemLoanEntity {
     private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
-    private BookItemLoanStatus status;
+    private LoanStatus status;
     private Long userId;
     private Long bookItemId;
 }

@@ -1,0 +1,29 @@
+<div class="modal fade d-block show" style="background: rgba(0,0,0,0.5)" tabindex="-1" #modalRef data-bs-backdrop="static" data-bs-keyboard="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title">{{ title | translate }}</h5>
+                <button type="button" class="btn-close" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="isString(body); else templateOutlet">
+                    {{ body }}
+                </div>
+                <ng-template #templateOutlet>
+                    <div *ngTemplateOutlet="body"></div>
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="close()"> {{ "CAT.BTN.CANCEL" | translate }} </button>
+                <button type="button" class="btn btn-primary"
+                    (click)="confirm()"
+                    [disabled]="submitBtnDisabled"
+                    [ngClass]="{'disabled': submitBtnDisabled}"
+                    >
+                    {{ "CAT.BTN.CONFIRM" | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+  

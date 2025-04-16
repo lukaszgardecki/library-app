@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 class EmailNotificationSenderAdapter implements EmailNotificationPort {
     @Override
     public void send(Notification notification) {
-        System.out.println("Wysyłam email: " + notification.getContent());
+        System.out.println("Wysyłam email: " + notification.getContent().value());
     }
 }

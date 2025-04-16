@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Taille de la page",
+        "PAGINATION": {
+            "PAGE_SIZE": "Taille de la page",
+            "SHOWING_ROWS": "Affichage {{start}}-{{end}} sur {{total}} lignes"
+        },
         "SEARCH": "Rechercher...",
         "LACK": "Pas de données",
         "SHARE": "Partager",
         "EXPORT": "Exporter",
+        "TIME": {
+            "SECONDS_AGO": "il y a {{time}} s",
+            "MINUTES_AGO": "il y a {{time}} min",
+            "HOURS_AGO": "il y a {{time}} h"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lundi",
@@ -89,10 +97,103 @@
     "CAT": {
         "BTN": {
             "BACK": "Retour",
+            "BACK_TO_PENDING": "D\u00e9placer en attente",
             "CANCEL": "Annuler",
+            "ADD": "Ajouter",
             "EDIT": "Modifier",
+            "CONFIRM": "Confirmer",
+            "COMPLETE": "Terminer",
+            "ACCEPT": "Accepter",
             "SAVE": "Enregistrer",
-            "SAVE_TO_FILE": "Enregistrer dans un fichier"
+            "SAVE_TO_FILE": "Enregistrer dans un fichier",
+            "DELETE": "Supprimer"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmation de finalisation de la commande",
+                    "BODY": "\u00cates-vous s\u00fbr de vouloir finaliser cette commande ? Cette action est irr\u00e9versible."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Ajouter une nouvelle \u00E9tag\u00E8re",
+                    "RACK_NAME": "Entrez le nom..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Ajouter une nouvelle tablette",
+                    "SHELF_NAME": "Entrez le nom..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Modifier l'\u00E9tag\u00E8re"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Modifier la tablette"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Supprimer l'\u00E9tag\u00E8re",
+                    "BODY": "\u00CAtes-vous s\u00FBr de vouloir supprimer {{item}} ? Cette action est irr\u00E9versible."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Supprimer la tablette",
+                    "BODY": "\u00CAtes-vous s\u00FBr de vouloir supprimer {{item}} ? Cette action est irr\u00E9versible."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "D\u00e9placer le document",
+                    "BODY": "S\u00e9lectionnez un nouvel emplacement pour le document \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "S\u00e9lectionnez un rayonnage...",
+                    "SELECT_SHELF": "S\u00e9lectionnez une \u00e9tag\u00e8re..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Donn\u00E9es du formulaire invalides.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "La commande a \u00E9t\u00E9 r\u00E9alis\u00E9e avec succ\u00E8s !",
+                        "FAILURE": "La commande n'a pas pu \u00EAtre r\u00E9alis\u00E9e."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 cr\u00E9\u00E9 avec succ\u00E8s.",
+                        "FAILURE": "Impossible de cr\u00E9er le rack."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 modifi\u00E9 avec succ\u00E8s.",
+                        "FAILURE": "Le rack ne peut pas \u00EAtre modifi\u00E9."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Le rack a \u00E9t\u00E9 supprim\u00E9 avec succ\u00E8s.",
+                        "FAILURE": {
+                            "MAIN": "Impossible de supprimer le rack.",
+                            "HAS_BOOKS": "Le rack ne peut pas \u00EAtre supprim\u00E9 tant qu'il contient des livres."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 cr\u00E9\u00E9e avec succ\u00E8s.",
+                        "FAILURE": "L'\u00e9tag\u00e8re n'a pas pu \u00eatre cr\u00e9\u00e9e."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 modifi\u00E9e avec succ\u00E8s.",
+                        "FAILURE": "L'\u00E9tag\u00E8re ne peut pas \u00EAtre modifi\u00E9e."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "L'\u00E9tag\u00E8re a \u00E9t\u00E9 supprim\u00E9e avec succ\u00E8s.",
+                        "FAILURE": {
+                            "MAIN": "Impossible de supprimer l'\u00E9tag\u00E8re.",
+                            "HAS_BOOKS": "L'\u00E9tag\u00E8re ne peut pas \u00EAtre supprim\u00E9e tant que tous les livres ne sont pas d\u00E9plac\u00E9s."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Le document a \u00e9t\u00e9 d\u00e9plac\u00e9 avec succ\u00e8s.",
+                        "FAILURE": "Impossible de d\u00e9placer le document."
+                    }
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Connexion",
@@ -138,7 +239,12 @@
             "USERS": "Utilisateurs",
             "BOOKS": "Livres",
             "CASHIER": "Caissier",
-            "WAREHOUSE": "Entrepôt",
+            "WAREHOUSE": {
+                "NAME": "Entrep\u00f4t",
+                "TRANSACTIONS": "D\u00e9livrer / Retourner",
+                "HISTORY": "Historique",
+                "RACKS": "\u00c9tag\u00e8res et ressources"
+            },
             "REPORTS": "Rapports",
             "SETTINGS": "Paramètres"
         },
@@ -213,15 +319,88 @@
             }
         },
         "BOOK": {
-            "TITLE": "Titre"
+            "TITLE": "Titre",
+            "AUTHORS": "Auteurs"
         },
-        "LENDING": {
+        "BOOK_ITEM": {
+            "LACK": "Pas de livres",
+            "BARCODE": "Code-barres",
+            "PURCHASE_DATE": "Date d'achat",
+            "RACK": "Rayonnage",
+            "SHELF": "\u00c9tag\u00e8re",
+            "STATUS": {
+                "NAME": "Statut",
+                "AVAILABLE": "Disponible",
+                "REQUESTED": "R\u00e9serv\u00e9",
+                "LOANED": "Emprunt\u00e9",
+                "RETURNED": "Retourn\u00e9",
+                "LOST": "Perdu"
+            },
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Couverture rigide",
+                "PAPERBACK": "Broch\u00E9",
+                "AUDIO_BOOK": "Livre audio",
+                "EBOOK": "Livre num\u00E9rique",
+                "NEWSPAPER": "Journal",
+                "MAGAZINE": "Magazine",
+                "JOURNAL": "Revue scientifique"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Date de création",
+            "LOCATION": "Emplacement",
+            "STATUS": {
+                "NAME": "Statut",
+                "COMPLETED": "Terminé",
+                "READY": "Prêt à être récupéré",
+                "IN_PROGRESS": "En cours",
+                "PENDING": "Préparation",
+                "RESERVED": "Réservé",
+                "CANCELED": "Annulé"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Date de création",
             "DUE_DATE": "Date de retour",
             "STATUS": {
                 "NAME": "Statut",
                 "CURRENT": "Actuel",
                 "COMPLETED": "Terminé"
+            }
+        },
+        "RACK": {
+            "LACK": "Pas de rayonnages",
+            "NAME": "Nom",
+            "SHELVES_COUNT": "Nombre d'\u00E9tag\u00E8res",
+            "CREATION_DATE": "Date de cr\u00E9ation",
+            "LAST_UPDATE_DATE": "Date de derni\u00E8re mise \u00E0 jour"
+        },
+        "SHELF": {
+            "LACK": "Pas d'\u00E9tag\u00E8res",
+            "NAME": "Nom",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Nombre de livres",
+            "CREATION_DATE": "Date de cr\u00E9ation",
+            "LAST_UPDATE_DATE": "Date de derni\u00E8re mise \u00E0 jour"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nouvelles commandes",
+                "LACK": "Aucune nouvelle commande"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "En cours de traitement",
+                "LACK": "Aucune commande en cours"
+            },
+            "RACKS": {
+                "HEADER": "\u00C9tag\u00E8res"
+            },
+            "SHELVES": {
+                "HEADER": "Rayons"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Livres"
             }
         },
         "STATS": {

@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.notification.model;
 
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,17 +13,17 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class Notification {
-    protected Long id;
-    protected Long userId;
-    protected LocalDateTime createdAt;
+    protected NotificationId id;
+    protected UserId userId;
+    protected NotificationCreationDate createdAt;
     protected NotificationType type;
-    protected String subject;
-    protected String content;
-    protected Boolean isRead;
+    protected NotificationSubject subject;
+    protected NotificationContent content;
+    protected IsRead isRead;
 
-    protected Notification(Long userId) {
+    protected Notification(UserId userId) {
         this.userId = userId;
-        this.createdAt = LocalDateTime.now();
-        this.isRead = false;
+        this.createdAt = new NotificationCreationDate(LocalDateTime.now());
+        this.isRead = new IsRead(false);
     }
 }

@@ -52,7 +52,7 @@ public class UserConfiguration {
         InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
         UserCredentialsService credentialsService = new UserCredentialsService(userRepository, passwordEncoder);
         UserService userService = new UserService(
-                userRepository, credentialsService, authFacade, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
+                userRepository, credentialsService, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
                 fineFacade, personFacade, libraryCardFacade, statisticsFacade
         );
         return new UserFacade(
@@ -65,7 +65,7 @@ public class UserConfiguration {
                 new GetUserDetailsAdminUseCase(userService, authFacade),
                 new UpdateUserUseCase(userService),
                 new UpdateUserByAdminUseCase(userService),
-                new DeleteUserUseCase(userService, authFacade, bookItemRequestFacade),
+                new DeleteUserUseCase(userService, bookItemRequestFacade),
                 new VerifyUserForBookItemRequestUseCase(userService),
                 new VerifyUserForBookItemLoanUseCase(userService),
                 new VerifyUserForBookItemRenewalUseCase(userService),
@@ -92,7 +92,7 @@ public class UserConfiguration {
     ) {
         UserCredentialsService credentialsService = new UserCredentialsService(userRepository, passwordEncoder);
         UserService userService = new UserService(
-                userRepository, credentialsService, authFacade, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
+                userRepository, credentialsService, bookFacade, bookItemFacade, bookItemLoanFacade, bookItemRequestFacade,
                 fineFacade, personFacade, libraryCardFacade, statisticsFacade
         );
         return new UserFacade(
@@ -105,7 +105,7 @@ public class UserConfiguration {
                 new GetUserDetailsAdminUseCase(userService, authFacade),
                 new UpdateUserUseCase(userService),
                 new UpdateUserByAdminUseCase(userService),
-                new DeleteUserUseCase(userService, authFacade, bookItemRequestFacade),
+                new DeleteUserUseCase(userService, bookItemRequestFacade),
                 new VerifyUserForBookItemRequestUseCase(userService),
                 new VerifyUserForBookItemLoanUseCase(userService),
                 new VerifyUserForBookItemRenewalUseCase(userService),

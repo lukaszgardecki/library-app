@@ -9,13 +9,13 @@ import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/
 import { AnnualActivityChartComponent } from '../../components/charts/annual-activity-chart/annual-activity-chart.component';
 import { WeeklyActivityChartComponent } from "../../components/charts/weekly-activity-chart/weekly-activity-chart.component";
 import { RegistrationFormComponent } from "../../components/registration-form/registration-form.component";
-import { TopBorrowersComponent } from "../../components/tables/top-borrowers/top-borrowers.component";
 import { UsersAgeGroupsChartComponent } from "../../components/charts/users-age-groups-chart/users-age-groups-chart.component";
 import { TopCitiesComponent } from "../../components/tables/top-cities/top-cities.component";
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Page, Pageable } from '../../../../shared/models/page';
-import { UserListPreviewAdmin } from '../../shared/models/user-details';
+import { UserListPreviewAdmin, UserTopBorrowersAdmin } from '../../shared/models/user-details';
 import { Statistics } from '../../shared/models/users-stats-admin';
+import { BasicSectionComponent } from "../../components/sections/basic-section/basic-section.component";
 
 @Component({
   selector: 'app-users',
@@ -24,8 +24,9 @@ import { Statistics } from '../../shared/models/users-stats-admin';
     CommonModule, TranslateModule, RouterModule,
     TableComponent, FavGenreChartComponent, AnnualActivityChartComponent,
     WeeklyActivityChartComponent, RegistrationFormComponent,
-    TopBorrowersComponent, UsersAgeGroupsChartComponent,
-    TopCitiesComponent
+    UsersAgeGroupsChartComponent,
+    TopCitiesComponent,
+    BasicSectionComponent
 ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
@@ -52,7 +53,8 @@ export class UsersComponent implements OnInit {
     // this.usersPage$ = this.userService.getUsersPage(event.page, event.size, event.sort, event.query);
   }
 
-  showDetails(userId: number) {
+  showDetails(userPreview: UserListPreviewAdmin | UserTopBorrowersAdmin) {
+    const userId = userPreview.id;
     this.router.navigate([userId], { relativeTo: this.route });
   }
 

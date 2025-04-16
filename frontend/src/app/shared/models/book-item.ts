@@ -1,8 +1,7 @@
-import { BookItemFormat } from "../enums/book-item-format";
 import { BookItemStatus } from "../enums/book-item-status";
 import { Book } from "./book";
 
-import { Rack } from "./rack";
+import { Rack, WarehouseItem } from "./rack";
 
 export class BookItem {
     id: number;
@@ -11,10 +10,25 @@ export class BookItem {
     borrowed: Date;
     dueDate: Date;
     price: BigInt;
-    format: BookItemFormat;
     status: BookItemStatus;
     dateOfPurchase: Date;
-    publicationDate: Date;
+    bookId: number;
+    rackId: number;
+    shelfId: number;
+}
+
+export class BookItemWithBook implements WarehouseItem {
+    id: number;
+    barcode: string;
+    isReferenceOnly: boolean;
+    borrowed: Date;
+    dueDate: Date;
+    price: BigInt;
+    status: BookItemStatus;
+    dateOfPurchase: Date;
     book: Book;
-    rack: Rack;
+    rackId: number;
+    rackName: string;
+    shelfId: number;
+    shelfName: string;
 }

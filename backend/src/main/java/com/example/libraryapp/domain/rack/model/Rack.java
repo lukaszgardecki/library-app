@@ -10,6 +10,9 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 public class Rack {
-    private Long id;
-    private String locationIdentifier;
+    private RackId id;
+    private RackName name;
+    private RackCreatedDate createdDate;
+    private RackUpdatedDate updatedDate;
+    private RackShelvesCount shelvesCount;
 }

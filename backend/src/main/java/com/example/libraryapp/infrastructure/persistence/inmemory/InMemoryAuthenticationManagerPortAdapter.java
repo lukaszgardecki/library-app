@@ -2,6 +2,8 @@ package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.auth.ports.AuthenticationManagerPort;
 import com.example.libraryapp.domain.user.model.AccountStatus;
+import com.example.libraryapp.domain.user.model.Email;
+import com.example.libraryapp.domain.user.model.Password;
 import com.example.libraryapp.domain.user.model.User;
 import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +16,10 @@ public class InMemoryAuthenticationManagerPortAdapter implements AuthenticationM
     private final UserRepositoryPort userRepository;
 
     @Override
-    public boolean authenticate(String username, String password) {
+    public boolean authenticate(Email username, Password password) {
         Optional<User> userOpt = userRepository.findByEmail(username);
 
-        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+        if (userOpt.isPresent() && userOpt.get().getPsswrd().equals(password)) {
             if(userOpt.get().getStatus().equals(AccountStatus.ACTIVE)) return true;
             else throw new BadCredentialsException("Account is not active");
         } else {
@@ -26,7 +28,7 @@ public class InMemoryAuthenticationManagerPortAdapter implements AuthenticationM
     }
 
     @Override
-    public String getCurrentUsername() {
-        return "currentUsername";
+    public Email getCurrentUsername() {
+        return new Email("currentUsername");
     }
 }

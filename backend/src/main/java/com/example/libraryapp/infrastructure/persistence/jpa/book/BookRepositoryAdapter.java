@@ -1,11 +1,12 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.book;
 
-import com.example.libraryapp.domain.book.model.Book;
+import com.example.libraryapp.domain.book.model.*;
 import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,8 +15,16 @@ class BookRepositoryAdapter implements BookRepositoryPort {
     private final JpaBookRepository repository;
 
     @Override
-    public Optional<Book> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public List<Book> findAllById(List<BookId> ids) {
+        List<Long> idList = ids.stream().map(BookId::value).toList();
+        return repository.findAllById(idList).stream()
+                .map(this::toModel)
+                .toList();
+    }
+
+    @Override
+    public Optional<Book> findById(BookId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
@@ -26,31 +35,35 @@ class BookRepositoryAdapter implements BookRepositoryPort {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(BookId id) {
+        repository.deleteById(id.value());
     }
 
     private BookEntity toEntity(Book model) {
         return new BookEntity(
-                model.getId(),
-                model.getTitle(),
-                model.getSubject(),
-                model.getPublisher(),
-                model.getISBN(),
-                model.getLanguage(),
-                model.getPages()
+                model.getId() != null ? model.getId().value() : null,
+                model.getTitle().value(),
+                model.getSubject().value(),
+                model.getPublisher().value(),
+                model.getISBN().value(),
+                model.getLanguage().value(),
+                model.getPages().value(),
+                model.getFormat(),
+                model.getPublicationDate().value()
         );
     }
 
     private Book toModel(BookEntity entity) {
         return new Book(
-                entity.getId(),
-                entity.getTitle(),
-                entity.getSubject(),
-                entity.getPublisher(),
-                entity.getISBN(),
-                entity.getLanguage(),
-                entity.getPages()
+                new BookId(entity.getId()),
+                new Title(entity.getTitle()),
+                new Subject(entity.getSubject()),
+                new Publisher(entity.getPublisher()),
+                new Isbn(entity.getISBN()),
+                new Language(entity.getLanguage()),
+                new Pages(entity.getPages()),
+                entity.getFormat(),
+                new PublicationDate(entity.getPublicationDate())
         );
     }
 }

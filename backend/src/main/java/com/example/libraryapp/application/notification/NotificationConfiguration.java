@@ -15,12 +15,14 @@ class NotificationConfiguration {
             AuthenticationFacade authenticationFacade,
             NotificationRepositoryPort notificationRepositoryPort
     ) {
-        NotificationOwnershipService notificationOwnershipService = new NotificationOwnershipService(authenticationFacade);
+        NotificationService notificationService = new NotificationService(notificationRepositoryPort);
+        NotificationAccessControlService notificationAccessControlService =
+                new NotificationAccessControlService(notificationService, authenticationFacade);
         return new NotificationFacade(
-                new GetPageOfNotificationsByUserIdUseCase(notificationOwnershipService, notificationRepositoryPort),
-                new GetNotificationUseCase(notificationOwnershipService, notificationRepositoryPort),
-                new MarkAsReadUseCase(notificationOwnershipService, notificationRepositoryPort),
-                new DeleteNotificationUseCase(notificationOwnershipService, notificationRepositoryPort)
+                new GetPageOfNotificationsByUserIdUseCase(notificationAccessControlService, notificationRepositoryPort),
+                new GetNotificationUseCase(notificationAccessControlService, notificationService),
+                new MarkAsReadUseCase(notificationAccessControlService, notificationRepositoryPort),
+                new DeleteNotificationUseCase(notificationAccessControlService, notificationRepositoryPort)
         );
     }
 

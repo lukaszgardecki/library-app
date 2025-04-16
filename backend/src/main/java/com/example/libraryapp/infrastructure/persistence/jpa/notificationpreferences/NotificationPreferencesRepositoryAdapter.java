@@ -2,6 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.notificationprefer
 
 import com.example.libraryapp.domain.notification.model.NotificationPreferences;
 import com.example.libraryapp.domain.notification.ports.NotificationPreferencesRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +14,8 @@ class NotificationPreferencesRepositoryAdapter implements NotificationPreference
     private final JpaNotificationPreferencesRepository repository;
 
     @Override
-    public Optional<NotificationPreferences> findByUserId(Long userId) {
-        return repository.findByUserId(userId).map(this::toModel);
+    public Optional<NotificationPreferences> findByUserId(UserId userId) {
+        return repository.findByUserId(userId.value()).map(this::toModel);
     }
 
     private NotificationPreferencesEntity toEntity(NotificationPreferences model) {

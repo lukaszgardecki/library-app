@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Page size",
+        "PAGINATION": {
+            "PAGE_SIZE": "Page size",
+            "SHOWING_ROWS": "Showing {{start}}-{{end}} of {{total}} rows"
+        },
         "SEARCH": "Search...",
         "LACK": "No data",
         "SHARE": "Share",
         "EXPORT": "Export",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sec. ago",
+            "MINUTES_AGO": "{{time}} min. ago",
+            "HOURS_AGO": "{{time}} hr. ago"
+        },
         "DAY": {
             "MON": {
                 "NAME": "Monday",
@@ -89,10 +97,103 @@
     "CAT": {
         "BTN": {
             "BACK": "Back",
+            "BACK_TO_PENDING": "Move to pending",
             "CANCEL": "Cancel",
+            "ADD": "Add",
             "EDIT": "Edit",
+            "CONFIRM": "Confirm",
+            "COMPLETE": "Complete",
+            "ACCEPT": "Accept",
             "SAVE": "Save",
-            "SAVE_TO_FILE": "Save to file"
+            "SAVE_TO_FILE": "Save to file",
+            "DELETE": "Delete"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmation of Order Completion",
+                    "BODY": "Are you sure you want to complete this order? This action cannot be undone."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Add new rack",
+                    "RACK_NAME": "Enter name..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Add new shelf",
+                    "SHELF_NAME": "Enter name..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Edit rack"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Edit shelf"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Delete rack",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Delete shelf",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Move Document",
+                    "BODY": "Select a new location for the document \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Select rack...",
+                    "SELECT_SHELF": "Select shelf..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Invalid form data.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "The order has been successfully completed!",
+                        "FAILURE": "The order could not be completed."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "The rack has been successfully created.",
+                        "FAILURE": "The rack could not be created."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The rack has been successfully edited.",
+                        "FAILURE": "The rack cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The rack has been successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "The rack could not be deleted.",
+                            "HAS_BOOKS": "The rack cannot be deleted as long as there are books on the shelves."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "The shelf has been successfully created.",
+                        "FAILURE": "The shelf could not be created."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The shelf has been successfully edited.",
+                        "FAILURE": "The shelf cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The shelf has been successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "The shelf could not be deleted.",
+                            "HAS_BOOKS": "The shelf cannot be deleted until all books have been removed."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "The document was successfully moved.",
+                        "FAILURE": "The document could not be moved."
+                    }
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Login",
@@ -138,7 +239,12 @@
             "USERS": "Users",
             "BOOKS": "Books",
             "CASHIER": "Cashier",
-            "WAREHOUSE": "Warehouse",
+            "WAREHOUSE": {
+                "NAME": "Warehouse",
+                "TRANSACTIONS": "Issue / Return",
+                "HISTORY": "History",
+                "RACKS": "Shelves and resources"
+            },
             "REPORTS": "Reports",
             "SETTINGS": "Settings"
         },
@@ -213,15 +319,88 @@
             }
         },
         "BOOK": {
-            "TITLE": "Title"
+            "TITLE": "Title",
+            "AUTHORS": "Authors"
         },
-        "LENDING": {
+        "BOOK_ITEM": {
+            "LACK": "No books",
+            "BARCODE": "Barcode",
+            "PURCHASE_DATE": "Purchase date",
+            "RACK": "Rack",
+            "SHELF": "Shelf",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Available",
+                "REQUESTED": "Reserved",
+                "LOANED": "Loaned",
+                "RETURNED": "Returned",
+                "LOST": "Lost"
+            },
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Hardcover",
+                "PAPERBACK": "Paperback",
+                "AUDIO_BOOK": "Audiobook",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Newspaper",
+                "MAGAZINE": "Magazine",
+                "JOURNAL": "Journal"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Creation Date",
+            "LOCATION": "Location",
+            "STATUS": {
+                "NAME": "Status",
+                "COMPLETED": "Completed",
+                "READY": "Ready for Collection",
+                "IN_PROGRESS": "In Progress",
+                "PENDING": "Preparation",
+                "RESERVED": "Reservation",
+                "CANCELED": "Cancelled"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Creation Date",
             "DUE_DATE": "Return Date",
             "STATUS": {
                 "NAME": "Status",
                 "CURRENT": "Current",
                 "COMPLETED": "Completed"
+            }
+        },
+        "RACK": {
+            "LACK": "No racks",
+            "NAME": "Name",
+            "SHELVES_COUNT": "Number of shelves",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
+        },
+        "SHELF": {
+            "LACK": "No shelves",
+            "NAME": "Name",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Number of books",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "New Orders",
+                "LACK": "No new orders"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In Progress",
+                "LACK": "No orders in progress"
+            },
+            "RACKS": {
+                "HEADER": "Racks"
+            },
+            "SHELVES": {
+                "HEADER": "Shelves"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Books"
             }
         },
         "STATS": {

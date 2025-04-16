@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component;
 class SmsNotificationSenderAdapter implements SmsNotificationPort {
     @Override
     public void send(Notification notification) {
-        System.out.println("Wysyłam SMS: " + notification.getContent());
+        System.out.println("Wysyłam SMS: " + notification.getContent().value());
     }
 }

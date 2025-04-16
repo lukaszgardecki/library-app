@@ -1,7 +1,9 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.user;
 
-import com.example.libraryapp.domain.user.model.User;
-import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
+import com.example.libraryapp.domain.fine.model.FineAmount;
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
+import com.example.libraryapp.domain.person.model.PersonId;
+import com.example.libraryapp.domain.user.model.*;
 import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,23 +38,23 @@ class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<User> findById(UserId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return repository.findByEmail(email).map(this::toModel);
+    public Optional<User> findByEmail(Email email) {
+        return repository.findByEmail(email.value()).map(this::toModel);
     }
 
     @Override
-    public Optional<User> findByPersonId(Long personId) {
-        return repository.findByPersonId(personId).map(this::toModel);
+    public Optional<User> findByPersonId(PersonId personId) {
+        return repository.findByPersonId(personId.value()).map(this::toModel);
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return repository.existsByEmail(email);
+    public boolean existsByEmail(Email email) {
+        return repository.existsByEmail(email.value());
     }
 
     @Override
@@ -64,38 +65,38 @@ class UserRepositoryAdapter implements UserRepositoryPort {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(UserId id) {
+        repository.deleteById(id.value());
     }
 
     @Override
     @Transactional
-    public void incrementTotalBooksRequested(Long userId) {
-        repository.incrementTotalBooksRequested(userId);
+    public void incrementTotalBooksRequested(UserId userId) {
+        repository.incrementTotalBooksRequested(userId.value());
     }
 
     @Override
     @Transactional
-    public void decrementTotalBooksRequested(Long userId) {
-        repository.decrementTotalBooksRequested(userId);
+    public void decrementTotalBooksRequested(UserId userId) {
+        repository.decrementTotalBooksRequested(userId.value());
     }
 
     @Override
     @Transactional
-    public void incrementTotalBooksBorrowed(Long userId) {
-        repository.incrementTotalBooksBorrowed(userId);
+    public void incrementTotalBooksBorrowed(UserId userId) {
+        repository.incrementTotalBooksBorrowed(userId.value());
     }
 
     @Override
     @Transactional
-    public void decrementTotalBooksBorrowed(Long userId) {
-        repository.decrementTotalBooksBorrowed(userId);
+    public void decrementTotalBooksBorrowed(UserId userId) {
+        repository.decrementTotalBooksBorrowed(userId.value());
     }
 
     @Override
     @Transactional
-    public void reduceChargeByAmount(Long userId, BigDecimal amount) {
-        repository.reduceChargeByAmount(userId, amount);
+    public void reduceChargeByAmount(UserId userId, FineAmount amount) {
+        repository.reduceChargeByAmount(userId.value(), amount.value());
     }
 
     @Override
@@ -110,33 +111,33 @@ class UserRepositoryAdapter implements UserRepositoryPort {
 
     private UserEntity toEntity(User model) {
         return new UserEntity(
-                model.getId(),
-                model.getRegistrationDate(),
-                model.getPassword(),
-                model.getEmail(),
+                model.getId() != null ? model.getId().value() : null,
+                model.getRegistrationDate().value(),
+                model.getPsswrd().value(),
+                model.getEmail().value(),
                 model.getStatus(),
                 model.getRole(),
-                model.getTotalBooksBorrowed(),
-                model.getTotalBooksRequested(),
-                model.getCharge(),
-                model.getCardId(),
-                model.getPersonId()
+                model.getTotalBooksBorrowed().value(),
+                model.getTotalBooksRequested().value(),
+                model.getCharge().value(),
+                model.getCardId() != null ? model.getCardId().value() : null,
+                model.getPersonId().value()
         );
     }
 
     private User toModel(UserEntity entity) {
         return new User(
-                entity.getId(),
-                entity.getRegistrationDate(),
-                entity.getPassword(),
-                entity.getEmail(),
+                new UserId(entity.getId()),
+                new RegistrationDate(entity.getRegistrationDate()),
+                new Password(entity.getPassword()),
+                new Email(entity.getEmail()),
                 entity.getStatus(),
                 entity.getRole(),
-                entity.getTotalBooksBorrowed(),
-                entity.getTotalBooksRequested(),
-                entity.getCharge(),
-                entity.getCardId(),
-                entity.getPersonId()
+                new TotalBooksBorrowed(entity.getTotalBooksBorrowed()),
+                new TotalBooksRequested(entity.getTotalBooksRequested()),
+                new UserCharge(entity.getCharge()),
+                new LibraryCardId(entity.getCardId()),
+                new PersonId(entity.getPersonId())
         );
     }
 }

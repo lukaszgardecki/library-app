@@ -17,7 +17,7 @@ class HttpRequestExtractor {
 
     public String extractTokenFromHeader(HttpServletRequest request) {
         String BEARER_PREFIX = TokenType.BEARER.getPrefix();
-        return Optional.of(request.getHeader(HttpHeaders.AUTHORIZATION))
+        return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith(BEARER_PREFIX))
                 .map(authHeader -> authHeader.substring(BEARER_PREFIX.length()))
                 .orElseThrow(() -> new JwtException(MessageKey.ACCESS_DENIED.name()));

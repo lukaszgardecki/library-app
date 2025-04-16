@@ -1,15 +1,16 @@
 package com.example.libraryapp.application.notification;
 
+import com.example.libraryapp.domain.notification.model.NotificationId;
 import com.example.libraryapp.domain.notification.ports.NotificationRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class MarkAsReadUseCase {
-    private final NotificationOwnershipService notificationOwnershipService;
+    private final NotificationAccessControlService notificationAccessControlService;
     private final NotificationRepositoryPort notificationRepository;
 
-    void execute(Long notificationId) {
-        notificationOwnershipService.validateOwner(notificationId);
+    void execute(NotificationId notificationId) {
+        notificationAccessControlService.validateAccess(notificationId);
         notificationRepository.markAsRead(notificationId);
     }
 }

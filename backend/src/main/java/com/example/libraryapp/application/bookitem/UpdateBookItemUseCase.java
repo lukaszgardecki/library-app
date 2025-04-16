@@ -1,31 +1,33 @@
 package com.example.libraryapp.application.bookitem;
 
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.bookitem.dto.BookItemToUpdateDto;
-import com.example.libraryapp.domain.bookitem.model.BookItem;
+import com.example.libraryapp.domain.bookitem.model.*;
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
+import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class UpdateBookItemUseCase {
     private final BookItemService bookItemService;
 
-    BookItem execute(Long id, BookItemToUpdateDto fields) {
+    BookItem execute(BookItemId id, BookItemToUpdateDto fields) {
         BookItem bookItemToUpdate = bookItemService.getBookItemById(id);
-        BookItem updatedBookItem = updateFields(fields, bookItemToUpdate);
-        return bookItemService.save(updatedBookItem);
+        updateFields(fields, bookItemToUpdate);
+        return bookItemService.save(bookItemToUpdate);
     }
 
-    private BookItem updateFields(BookItemToUpdateDto fields, BookItem itemToUpdate) {
-        BookItem model = fields.toModel();
-        if (fields.getIsReferenceOnly() != null) itemToUpdate.setIsReferenceOnly(fields.getIsReferenceOnly());
-        if (fields.getBorrowed() != null) itemToUpdate.setBorrowed(fields.getBorrowed());
-        if (fields.getDueDate() != null) itemToUpdate.setDueDate(fields.getDueDate());
-        if (fields.getPrice() != null) itemToUpdate.setPrice(fields.getPrice());
-        if (fields.getFormat() != null) itemToUpdate.setFormat(fields.getFormat());
+    private void updateFields(BookItemToUpdateDto fields, BookItem itemToUpdate) {
+        if (fields.getIsReferenceOnly() != null) itemToUpdate.setIsReferenceOnly(new IsReferenceOnly(fields.getIsReferenceOnly()));
+        if (fields.getBorrowed() != null) itemToUpdate.setBorrowedDate(new LoanCreationDate(fields.getBorrowed().atStartOfDay()));
+        if (fields.getDueDate() != null) itemToUpdate.setDueDate(new LoanDueDate(fields.getDueDate().atStartOfDay()));
+        if (fields.getPrice() != null) itemToUpdate.setPrice(new Price(fields.getPrice()));
         if (fields.getStatus() != null) itemToUpdate.setStatus(fields.getStatus());
-        if (fields.getDateOfPurchase() != null) itemToUpdate.setDateOfPurchase(fields.getDateOfPurchase());
-        if (fields.getPublicationDate() != null) itemToUpdate.setPublicationDate(fields.getPublicationDate());
-        if (fields.getBookId() != null) itemToUpdate.setBookId(fields.getBookId());
-        if (fields.getRackId() != null) itemToUpdate.setRackId(fields.getRackId());
-        return model;
+        if (fields.getDateOfPurchase() != null) itemToUpdate.setDateOfPurchase(new PurchaseDate(fields.getDateOfPurchase()));
+        if (fields.getBookId() != null) itemToUpdate.setBookId(new BookId(fields.getBookId()));
+        if (fields.getRackId() != null) itemToUpdate.setRackId(new RackId(fields.getRackId()));
+        if (fields.getShelfId() != null) itemToUpdate.setShelfId(new ShelfId(fields.getShelfId()));
     }
 }

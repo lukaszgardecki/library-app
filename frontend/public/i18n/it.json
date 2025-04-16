@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Dimensione pagina",
+        "PAGINATION": {
+            "PAGE_SIZE": "Dimensione pagina",
+            "SHOWING_ROWS": "Mostrando {{start}}-{{end}} di {{total}} righe"
+        },
         "SEARCH": "Cerca...",
         "LACK": "Nessun dato",
         "SHARE": "Condividi",
         "EXPORT": "Esporta",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sec fa",
+            "MINUTES_AGO": "{{time}} min fa",
+            "HOURS_AGO": "{{time}} h fa"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lunedì",
@@ -89,10 +97,103 @@
     "CAT": {
         "BTN": {
             "BACK": "Indietro",
+            "BACK_TO_PENDING": "Sposta in sospeso",
             "CANCEL": "Annulla",
+            "ADD": "Aggiungi",
             "EDIT": "Modifica",
+            "CONFIRM": "Conferma",
+            "COMPLETE": "Completa",
+            "ACCEPT": "Accetta",
             "SAVE": "Salva",
-            "SAVE_TO_FILE": "Salva su file"
+            "SAVE_TO_FILE": "Salva su file",
+            "DELETE": "Eliminare"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Conferma completamento ordine",
+                    "BODY": "Sei sicuro di voler completare questo ordine? Questa azione non pu\u00f2 essere annullata."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Aggiungi nuova mensola",
+                    "RACK_NAME": "Inserisci nome..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Aggiungi nuovo ripiano",
+                    "SHELF_NAME": "Inserisci nome..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Modifica mensola"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Modifica ripiano"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Elimina mensola",
+                    "BODY": "Sei sicuro di voler eliminare {{item}}? Questa azione non pu\u00F2 essere annullata."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Elimina ripiano",
+                    "BODY": "Sei sicuro di voler eliminare {{item}}? Questa azione non pu\u00F2 essere annullata."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Sposta documento",
+                    "BODY": "Seleziona una nuova posizione per il documento \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Seleziona scaffale...",
+                    "SELECT_SHELF": "Seleziona ripiano..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Dati del modulo non validi.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "L'ordine \u00E8 stato completato con successo!",
+                        "FAILURE": "Impossibile completare l'ordine."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato creato con successo.",
+                        "FAILURE": "Impossibile creare lo scaffale."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato modificato con successo.",
+                        "FAILURE": "Impossibile modificare lo scaffale."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Lo scaffale \u00E8 stato eliminato con successo.",
+                        "FAILURE": {
+                            "MAIN": "Impossibile eliminare lo scaffale.",
+                            "HAS_BOOKS": "Lo scaffale non pu\u00F2 essere eliminato finch\u00E9 contiene libri."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "La mensola \u00E8 stata creata con successo.",
+                        "FAILURE": "Impossibile creare lo scaffale."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "La mensola \u00E8 stata modificata con successo.",
+                        "FAILURE": "Impossibile modificare la mensola."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "La mensola \u00E8 stata eliminata con successo.",
+                        "FAILURE": {
+                            "MAIN": "Impossibile eliminare la mensola.",
+                            "HAS_BOOKS": "La mensola non pu\u00F2 essere eliminata finch\u00E9 tutti i libri non vengono spostati."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Il documento \u00e8 stato spostato con successo.",
+                        "FAILURE": "Impossibile spostare il documento."
+                    }
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Accesso",
@@ -138,7 +239,12 @@
             "USERS": "Utenti",
             "BOOKS": "Libri",
             "CASHIER": "Cassa",
-            "WAREHOUSE": "Magazzino",
+            "WAREHOUSE": {
+                "NAME": "Magazzino",
+                "TRANSACTIONS": "Distribuire / Restituire",
+                "HISTORY": "Cronologia",
+                "RACKS": "Scaffali e risorse"
+            },
             "REPORTS": "Rapporti",
             "SETTINGS": "Impostazioni"
         },
@@ -213,15 +319,88 @@
             }
         },
         "BOOK": {
-            "TITLE": "Titolo"
+            "TITLE": "Titolo",
+            "AUTHORS": "Autori"
         },
-        "LENDING": {
+        "BOOK_ITEM": {
+            "LACK": "Nessun libro disponibile",
+            "BARCODE": "Codice a barre",
+            "PURCHASE_DATE": "Data di acquisto",
+            "RACK": "Scaffale",
+            "SHELF": "Ripiano",
+            "STATUS": {
+                "NAME": "Stato",
+                "AVAILABLE": "Disponibile",
+                "REQUESTED": "Prenotato",
+                "LOANED": "Prestato",
+                "RETURNED": "Restituito",
+                "LOST": "Perso"
+            },
+            "FORMAT": {
+                "NAME": "Formato",
+                "HARDCOVER": "Copertina rigida",
+                "PAPERBACK": "Brossura",
+                "AUDIO_BOOK": "Audiolibro",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Giornale",
+                "MAGAZINE": "Rivista",
+                "JOURNAL": "Rivista scientifica"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Data di creazione",
+            "LOCATION": "Posizione",
+            "STATUS": {
+                "NAME": "Stato",
+                "COMPLETED": "Completato",
+                "READY": "Pronto per il ritiro",
+                "IN_PROGRESS": "In corso",
+                "PENDING": "Preparazione",
+                "RESERVED": "Prenotazione",
+                "CANCELED": "Annullato"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Data di creazione",
             "DUE_DATE": "Data di restituzione",
             "STATUS": {
                 "NAME": "Stato",
                 "CURRENT": "Attuale",
                 "COMPLETED": "Completato"
+            }
+        },
+        "RACK": {
+            "LACK": "Nessuna scaffalatura disponibile",
+            "NAME": "Nome",
+            "SHELVES_COUNT": "Numero di scaffali",
+            "CREATION_DATE": "Data di creazione",
+            "LAST_UPDATE_DATE": "Data dell'ultimo aggiornamento"
+        },
+        "SHELF": {
+            "LACK": "Nessuno scaffale disponibile",
+            "NAME": "Nome",
+            "POSITION": "Posizione",
+            "BOOK_ITEMS_COUNT": "Numero di libri",
+            "CREATION_DATE": "Data di creazione",
+            "LAST_UPDATE_DATE": "Data dell'ultimo aggiornamento"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nuovi ordini",
+                "LACK": "Nessun nuovo ordine"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In corso",
+                "LACK": "Nessun ordine in corso"
+            },
+            "RACKS": {
+                "HEADER": "Scaffali"
+            },
+            "SHELVES": {
+                "HEADER": "Ripiani"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Libri"
             }
         },
         "STATS": {

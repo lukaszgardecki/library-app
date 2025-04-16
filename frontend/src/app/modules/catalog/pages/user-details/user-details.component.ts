@@ -13,11 +13,12 @@ import { FormsModule } from '@angular/forms';
 import { EnumNamePipe } from "../../../../shared/pipes/enum-name.pipe";
 import { FavGenreChartComponent } from "../../components/charts/fav-genre-chart/fav-genre-chart.component";
 import { AnnualActivityChartComponent } from "../../components/charts/annual-activity-chart/annual-activity-chart.component";
-import { LoanService } from '../../core/services/loan.service';
+import { LoanService } from '../../core/services/book-item-loan.service';
 import { TableComponent } from "../../components/tables/table/table.component";
 import { TableUpdateEvent } from '../../shared/models/table-event.interface';
 import { Page, Pageable } from '../../../../shared/models/page';
-import { Loan } from '../../shared/models/lending';
+import { BookItemLoan } from '../../shared/models/book-item-loan';
+import { BasicSectionComponent } from "../../components/sections/basic-section/basic-section.component";
 
 @Component({
   selector: 'app-user-details',
@@ -26,7 +27,8 @@ import { Loan } from '../../shared/models/lending';
     CommonModule, TranslateModule, FormsModule,
     NullPlaceholderPipe, EnumNamePipe,
     FavGenreChartComponent, AnnualActivityChartComponent,
-    TableComponent
+    TableComponent,
+    BasicSectionComponent
 ],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css'
@@ -40,7 +42,7 @@ export class UserDetailsComponent {
   roles = Object.values(Role);
   isPersonalInfoEditing = false;
   isAccountInfoEditing = false;
-  loanPage: Page<Loan>;
+  loanPage: Page<BookItemLoan>;
 
   constructor(
     private userService: UserService,
@@ -111,9 +113,10 @@ export class UserDetailsComponent {
     this.loanService.getCurrentLoanListPreviewsByUserId(id, event.query, pageable).subscribe({next: page => {this.loanPage = page}});
   }
 
-  showDetails(lendingId: number) {
+  showDetails(bookItemLoan: BookItemLoan) {
+    const loanId = bookItemLoan.id;
     // TODO: dodać nawigację do szczegółów wypożyczenia
-    console.log('Przechodzę do szczegółów wypożyczenia id: ' + lendingId)
+    console.log('Przechodzę do szczegółów wypożyczenia id: ' + loanId)
     // this.router.navigate([userId], { relativeTo: this.route });
   }
 

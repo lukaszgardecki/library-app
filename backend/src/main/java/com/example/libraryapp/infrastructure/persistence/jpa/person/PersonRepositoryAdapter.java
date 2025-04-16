@@ -1,7 +1,6 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.person;
 
-import com.example.libraryapp.domain.person.model.Address;
-import com.example.libraryapp.domain.person.model.Person;
+import com.example.libraryapp.domain.person.model.*;
 import com.example.libraryapp.domain.person.ports.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,14 +38,14 @@ class PersonRepositoryAdapter implements PersonRepositoryPort {
     }
 
     @Override
-    public Optional<Person> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<Person> findById(PersonId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(PersonId id) {
+        repository.deleteById(id.value());
     }
 
     @Override
@@ -61,53 +60,53 @@ class PersonRepositoryAdapter implements PersonRepositoryPort {
 
     private PersonEntity toEntity(Person model) {
         return new PersonEntity(
-                model.getId(),
-                model.getFirstName(),
-                model.getLastName(),
+                model.getId() != null ? model.getId().value() : null,
+                model.getFirstName().value(),
+                model.getLastName().value(),
                 model.getGender(),
-                model.getPesel(),
-                model.getDateOfBirth(),
-                model.getNationality(),
-                model.getFathersName(),
-                model.getMothersName(),
+                model.getPesel().value(),
+                model.getDateOfBirth().value(),
+                model.getNationality().value(),
+                model.getFathersName().value(),
+                model.getMothersName().value(),
                 toEntity(model.getAddress()),
-                model.getPhone()
+                model.getPhone().value()
         );
     }
 
     private Person toModel(PersonEntity entity) {
         return new Person(
-                entity.getId(),
-                entity.getFirstName(),
-                entity.getLastName(),
+                new PersonId(entity.getId()),
+                new PersonFirstName(entity.getFirstName()),
+                new PersonLastName(entity.getLastName()),
                 entity.getGender(),
-                entity.getPesel(),
-                entity.getDateOfBirth(),
-                entity.getNationality(),
-                entity.getFathersName(),
-                entity.getMothersName(),
+                new Pesel(entity.getPesel()),
+                new BirthDate(entity.getDateOfBirth()),
+                new Nationality(entity.getNationality()),
+                new FatherName(entity.getFathersName()),
+                new MotherName(entity.getMothersName()),
                 toModel(entity.getAddress()),
-                entity.getPhone()
+                new PhoneNumber(entity.getPhone())
         );
     }
 
     private AddressEntity toEntity(Address address) {
         return new AddressEntity(
-                address.getStreetAddress(),
-                address.getCity(),
-                address.getState(),
-                address.getZipCode(),
-                address.getCountry()
+                address.getStreetAddress().value(),
+                address.getCity().value(),
+                address.getState().value(),
+                address.getZipCode().value(),
+                address.getCountry().value()
         );
     }
 
     private Address toModel(AddressEntity address) {
         return new Address(
-                address.getStreetAddress(),
-                address.getCity(),
-                address.getState(),
-                address.getZipCode(),
-                address.getCountry()
+                new Address.StreetAddress(address.getStreetAddress()),
+                new Address.City(address.getCity()),
+                new Address.State(address.getState()),
+                new Address.ZipCode(address.getZipCode()),
+                new Address.Country(address.getCountry())
         );
     }
 }

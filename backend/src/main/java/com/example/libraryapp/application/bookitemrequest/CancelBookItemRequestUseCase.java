@@ -3,10 +3,14 @@ package com.example.libraryapp.application.bookitemrequest;
 import com.example.libraryapp.application.auth.AuthenticationFacade;
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitem.BookItemFacade;
+import com.example.libraryapp.domain.book.model.BookId;
+import com.example.libraryapp.domain.book.model.Title;
 import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemRequestCanceledEvent;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -17,12 +21,12 @@ class CancelBookItemRequestUseCase {
     private final BookFacade bookFacade;
     private final EventPublisherPort publisher;
 
-    void execute(Long bookItemId, Long userId) {
+    void execute(BookItemId bookItemId, UserId userId) {
         authFacade.validateOwnerOrAdminAccess(userId);
         BookItemRequest request = bookItemRequestService.getCurrentBookItemRequest(bookItemId, userId);
         bookItemRequestService.cancelRequest(request.getId());
         BookItemDto bookItem = bookItemFacade.getBookItem(bookItemId);
-        String bookTitle = bookFacade.getBook(bookItem.getBookId()).getTitle();
-        publisher.publish(new BookItemRequestCanceledEvent(request.getBookItemId(), request.getUserId(), bookTitle));
+        String bookTitle = bookFacade.getBook(new BookId(bookItem.getBookId())).getTitle();
+        publisher.publish(new BookItemRequestCanceledEvent(request.getBookItemId(), request.getUserId(), new Title(bookTitle)));
     }
 }

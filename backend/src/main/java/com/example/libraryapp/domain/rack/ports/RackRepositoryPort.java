@@ -1,16 +1,22 @@
 package com.example.libraryapp.domain.rack.ports;
 
 import com.example.libraryapp.domain.rack.model.Rack;
+import com.example.libraryapp.domain.rack.model.RackId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RackRepositoryPort {
 
-    Optional<Rack> findById(Long id);
+    Page<Rack> findAllByParams(String query, Pageable pageable);
 
-    Optional<Rack> findByLocation(String location);
+    List<Rack> findAllByParams(String query);
+
+    Optional<Rack> findById(RackId id);
 
     Rack save(Rack rack);
 
-    void deleteById(Long id);
+    void deleteById(RackId id);
 }

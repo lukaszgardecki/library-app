@@ -3,13 +3,32 @@ import { Gender } from '../../modules/catalog/shared/enums/gender.enum';
 import { CardStatus } from '../../modules/catalog/shared/enums/card-status.enum';
 import { AccountStatus } from '../../modules/catalog/shared/enums/account-status.enum';
 import { Role } from '../../modules/catalog/shared/enums/role.enum';
-import { LendingStatus } from '../../modules/catalog/shared/enums/loan-status.enum';
+import { BookItemLoanStatus } from '../../modules/catalog/shared/enums/book-item-loan-status';
+import { BookItemRequestStatus } from '../../modules/catalog/shared/enums/book-item-request-status';
+import { BookFormat } from '../enums/book-format';
+import { BookItemStatus } from '../enums/book-item-status';
 
 @Pipe({
   name: 'enumName',
   standalone: true
 })
 export class EnumNamePipe implements PipeTransform {
+
+  transform(value?: any, type?: string): string {
+    if (!type) return value;
+
+    switch(type) {
+      case "account": return this.accountStatusMap[value as AccountStatus] || 'Unknown account status';
+      case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
+      case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
+      case "role": return this.rolesMap[value as Role] || 'Unknown role';
+      case "book-item-status": return this.bookItemStatusMap[value as BookItemStatus] || 'Unknown book item status';
+      case "book-item-loan-status": return this.loanStatusMap[value as BookItemLoanStatus] || 'Unknown book item loan status';
+      case "book-item-request-status": return this.requestStatusMap[value as BookItemRequestStatus] || 'Unknown book item request status';
+      case "book-format": return this.bookItemFormatMap[value as BookFormat] || 'Unknown book item format';
+      default: return value;
+    }
+  }
 
   private genderMap: { [key in Gender]: string } = {
     [Gender.MALE]: 'CAT.USER.DETAILS.GENDER.MALE',
@@ -38,21 +57,35 @@ export class EnumNamePipe implements PipeTransform {
     [Role.WAREHOUSE]: 'CAT.USER.ROLE.WAREHOUSE'
   };
 
-  private lendingStatusMap: { [key in LendingStatus]: string } = {
-    [LendingStatus.CURRENT]: 'CAT.LENDING.STATUS.CURRENT',
-    [LendingStatus.COMPLETED]: 'CAT.LENDING.STATUS.COMPLETED'
+  private loanStatusMap: { [key in BookItemLoanStatus]: string } = {
+    [BookItemLoanStatus.CURRENT]: 'CAT.LOAN.STATUS.CURRENT',
+    [BookItemLoanStatus.COMPLETED]: 'CAT.LOAN.STATUS.COMPLETED'
   }
 
-  transform(value?: any, type?: string): string {
-    if (!type) return value;
+  private requestStatusMap: { [key in BookItemRequestStatus]: string} = {
+    [BookItemRequestStatus.COMPLETED]: 'CAT.REQUEST.STATUS.COMPLETED',
+    [BookItemRequestStatus.READY]: 'CAT.REQUEST.STATUS.READY',
+    [BookItemRequestStatus.IN_PROGRESS]: 'CAT.REQUEST.STATUS.IN_PROGRESS',
+    [BookItemRequestStatus.PENDING]: 'CAT.REQUEST.STATUS.PENDING',
+    [BookItemRequestStatus.RESERVED]: 'CAT.REQUEST.STATUS.RESERVED',
+    [BookItemRequestStatus.CANCELED]: 'CAT.REQUEST.STATUS.CANCELED'
+  }
 
-    switch(type) {
-      case "account": return this.accountStatusMap[value as AccountStatus] || 'Unknown account status';
-      case "card": return this.cardStatusMap[value as CardStatus] || 'Unknown card status';
-      case "gender": return this.genderMap[value as Gender] || 'Unknown gender';
-      case "role": return this.rolesMap[value as Role] || 'Unknown role';
-      case "lendingStatus": return this.lendingStatusMap[value as LendingStatus] || 'Unknown lending status';
-      default: return value;
-    }
+  private bookItemFormatMap: { [key in BookFormat]: string } = {
+    [BookFormat.HARDCOVER]: 'CAT.BOOK_ITEM.FORMAT.HARDCOVER',
+    [BookFormat.PAPERBACK]: 'CAT.BOOK_ITEM.FORMAT.PAPERBACK',
+    [BookFormat.AUDIO_BOOK]: 'CAT.BOOK_ITEM.FORMAT.AUDIO_BOOK',
+    [BookFormat.EBOOK]: 'CAT.BOOK_ITEM.FORMAT.EBOOK',
+    [BookFormat.NEWSPAPER]: 'CAT.BOOK_ITEM.FORMAT.NEWSPAPER',
+    [BookFormat.MAGAZINE]: 'CAT.BOOK_ITEM.FORMAT.MAGAZINE',
+    [BookFormat.JOURNAL]: 'CAT.BOOK_ITEM.FORMAT.JOURNAL'
+  }
+
+  private bookItemStatusMap: { [key in BookItemStatus]: string} = {
+    [BookItemStatus.AVAILABLE]: 'CAT.BOOK_ITEM.STATUS.AVAILABLE',
+    [BookItemStatus.REQUESTED]: 'CAT.BOOK_ITEM.STATUS.REQUESTED',
+    [BookItemStatus.LOANED]: 'CAT.BOOK_ITEM.STATUS.LOANED',
+    [BookItemStatus.RETURNED]: 'CAT.BOOK_ITEM.STATUS.RETURNED',
+    [BookItemStatus.LOST]: 'CAT.BOOK_ITEM.STATUS.LOST'
   }
 }

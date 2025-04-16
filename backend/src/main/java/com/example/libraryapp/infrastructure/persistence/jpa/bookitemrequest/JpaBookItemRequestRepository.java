@@ -4,7 +4,9 @@ import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -35,8 +37,14 @@ interface JpaBookItemRequestRepository extends JpaRepository<BookItemRequestEnti
     """)
     List<BookItemRequestEntity> findAllByBookItemIdAndStatuses(Long bookItemId, List<BookItemRequestStatus> statusesToFind);
 
-    Page<BookItemRequestEntity> findAllByStatus(BookItemRequestStatus status, Pageable pageable);
+    @Query("""
+        SELECT br
+        FROM BookItemRequestEntity br
+        WHERE :status IS NULL OR br.status = :status
+""")
+    Page<BookItemRequestEntity> findAllByStatus(@Param("status") BookItemRequestStatus status, Pageable pageable);
 
+    @Modifying
     @Query("""
         UPDATE BookItemRequestEntity br
         SET br.status = :status

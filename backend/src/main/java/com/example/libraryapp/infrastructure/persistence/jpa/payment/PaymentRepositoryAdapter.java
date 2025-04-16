@@ -1,7 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.payment;
 
-import com.example.libraryapp.domain.payment.model.Payment;
+import com.example.libraryapp.domain.payment.model.*;
 import com.example.libraryapp.domain.payment.ports.PaymentRepositoryPort;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,14 +16,14 @@ class PaymentRepositoryAdapter implements PaymentRepositoryPort {
     private final JpaPaymentRepository repository;
 
     @Override
-    public Page<Payment> findAllByUserId(Long userId, Pageable pageable) {
-        return repository.findAllByParams(userId, pageable)
+    public Page<Payment> findAllByUserId(UserId userId, Pageable pageable) {
+        return repository.findAllByParams(userId.value(), pageable)
                 .map(this::toModel);
     }
 
     @Override
-    public Optional<Payment> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Optional<Payment> findById(PaymentId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
@@ -33,11 +34,11 @@ class PaymentRepositoryAdapter implements PaymentRepositoryPort {
 
     private PaymentEntity toEntity(Payment model) {
         return PaymentEntity.builder()
-                .id(model.getId())
-                .amount(model.getAmount())
-                .creationDate(model.getCreationDate())
-                .userId(model.getUserId())
-                .description(model.getDescription())
+                .id(model.getId() != null ? model.getId().value() : null)
+                .amount(model.getAmount().value())
+                .creationDate(model.getCreationDate().value())
+                .userId(model.getUserId().value())
+                .description(model.getDescription().value())
                 .method(model.getMethod())
                 .status(model.getStatus())
                 .build();
@@ -45,11 +46,11 @@ class PaymentRepositoryAdapter implements PaymentRepositoryPort {
 
     private Payment toModel(PaymentEntity entity) {
         return Payment.builder()
-                .id(entity.getId())
-                .amount(entity.getAmount())
-                .creationDate(entity.getCreationDate())
-                .userId(entity.getUserId())
-                .description(entity.getDescription())
+                .id(new PaymentId(entity.getId()))
+                .amount(new PaymentAmount(entity.getAmount()))
+                .creationDate(new PaymentCreationDate(entity.getCreationDate()))
+                .userId(new UserId(entity.getUserId()))
+                .description(new PaymentDescription(entity.getDescription()))
                 .method(entity.getMethod())
                 .status(entity.getStatus())
                 .build();

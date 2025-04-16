@@ -2,6 +2,7 @@ package com.example.libraryapp.infrastructure.persistence.jpa.fine;
 
 import com.example.libraryapp.domain.fine.model.FineStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -11,6 +12,7 @@ interface JpaFineRepository extends JpaRepository<FineEntity, Long> {
 
     List<FineEntity> findAllByUserId(Long userId);
 
+    @Modifying
     @Query("""
         UPDATE FineEntity f
         SET f.status = :status

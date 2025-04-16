@@ -1,6 +1,10 @@
 package com.example.libraryapp.domain.user.ports;
 
+import com.example.libraryapp.domain.fine.model.FineAmount;
+import com.example.libraryapp.domain.person.model.PersonId;
+import com.example.libraryapp.domain.user.model.Email;
 import com.example.libraryapp.domain.user.model.User;
+import com.example.libraryapp.domain.user.model.UserId;
 import com.example.libraryapp.domain.user.model.UserListPreviewProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,27 +21,27 @@ public interface UserRepositoryPort {
 
     Page<UserListPreviewProjection> findAllListPreviews(String query, Pageable pageable);
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(UserId id);
 
-    boolean existsByEmail(String email);
+    boolean existsByEmail(Email email);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(Email email);
 
-    Optional<User> findByPersonId(Long personId);
+    Optional<User> findByPersonId(PersonId personId);
 
     User save(User user);
 
-    void deleteById(Long id);
+    void deleteById(UserId id);
 
-    void incrementTotalBooksRequested(Long userId);
+    void incrementTotalBooksRequested(UserId userId);
 
-    void decrementTotalBooksRequested(Long userId);
+    void decrementTotalBooksRequested(UserId userId);
 
-    void incrementTotalBooksBorrowed(Long userId);
+    void incrementTotalBooksBorrowed(UserId userId);
 
-    void decrementTotalBooksBorrowed(Long userId);
+    void decrementTotalBooksBorrowed(UserId userId);
 
-    void reduceChargeByAmount(Long userId, BigDecimal amount);
+    void reduceChargeByAmount(UserId userId, FineAmount amount);
 
     long count();
 

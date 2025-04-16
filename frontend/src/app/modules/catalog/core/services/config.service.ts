@@ -27,6 +27,7 @@ export const AUTHORIZED_ENDPOINTS = [
   "/users",
   "/loans",
   "/book-requests",
+  "/book-items",
   "/authenticate/logout",
   "/activities",
   "/notifications",

@@ -1,9 +1,11 @@
 package com.example.libraryapp.domain.bookitem.model;
 
+import com.example.libraryapp.domain.book.model.BookId;
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
+import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -11,16 +13,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class BookItem {
-    private Long id;
-    private String barcode;
-    private Boolean isReferenceOnly;
-    private LocalDate borrowed;
-    private LocalDate dueDate;
-    private BigDecimal price;
-    private BookItemFormat format;
+    private BookItemId id;
+    private BookItemBarcode barcode;
+    private IsReferenceOnly isReferenceOnly;
+    private LoanCreationDate borrowedDate;
+    private LoanDueDate dueDate;
+    private Price price;
     private BookItemStatus status;
-    private LocalDate dateOfPurchase;
-    private LocalDate publicationDate;
-    private Long bookId;
-    private Long rackId;
+    private PurchaseDate dateOfPurchase;
+    private BookId bookId;
+    private RackId rackId;
+    private ShelfId shelfId;
 }

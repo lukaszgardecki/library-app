@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.librarycard;
 
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
 import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 class ActivateLibraryCardUseCase {
     private final LibraryCardService libraryCardService;
 
-    void execute(Long userId) {
-        libraryCardService.changeLibraryCardStatusTo(LibraryCardStatus.ACTIVE, userId);
+    void execute(LibraryCardId cardId) {
+        libraryCardService.changeLibraryCardStatusTo(LibraryCardStatus.ACTIVE, cardId);
     }
 }

@@ -1,33 +1,34 @@
 package com.example.libraryapp.application.bookitemloan;
 
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanListPreviewDto;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
+import com.example.libraryapp.domain.bookitemloan.model.*;
+import com.example.libraryapp.domain.user.model.UserId;
 
 class BookItemLoanMapper {
 
     static BookItemLoan toModel(BookItemLoanDto dto) {
         return BookItemLoan.builder()
-                .id(dto.id())
-                .creationDate(dto.creationDate())
-                .dueDate(dto.dueDate())
-                .returnDate(dto.returnDate())
+                .id(new LoanId(dto.id()))
+                .creationDate(new LoanCreationDate(dto.creationDate()))
+                .dueDate(new LoanDueDate(dto.dueDate()))
+                .returnDate(new LoanReturnDate(dto.returnDate()))
                 .status(dto.status())
-                .userId(dto.userId())
-                .bookItemId(dto.bookItemId())
+                .userId(new UserId(dto.userId()))
+                .bookItemId(new BookItemId(dto.bookItemId()))
                 .build();
     }
 
     static BookItemLoanDto toDto(BookItemLoan model) {
         return new BookItemLoanDto(
-                model.getId(),
-                model.getCreationDate(),
-                model.getDueDate(),
-                model.getReturnDate(),
+                model.getId().value(),
+                model.getCreationDate().value(),
+                model.getDueDate().value(),
+                model.getReturnDate().value(),
                 model.getStatus(),
-                model.getUserId(),
-                model.getBookItemId()
+                model.getUserId().value(),
+                model.getBookItemId().value()
         );
     }
 

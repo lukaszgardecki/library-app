@@ -1,27 +1,23 @@
-<ng-container *ngIf="page && page.totalElements > 0">
-
-  <nav aria-label="Pagination">
-    <ul class="pagination pagination-sm justify-content-center user-select-none">
-      <li class="page-item" [class.disabled]="page.number === 0">
-        <a class="page-link px-3" (click)="changePage(0)"><i class="bi bi-chevron-bar-left"></i></a>
-      </li>
-      
-      <li class="page-item" [class.disabled]="page.number === 0">
-        <a class="page-link px-3" (click)="changePage(page.number - 1)"><i class="bi bi-chevron-left"></i></a>
-      </li>
-      
-      <li *ngFor="let pageNumber of pageNumbers" class="page-item" [class.active]="pageNumber === page.number">
-        <a class="page-link px-2" (click)="changePage(pageNumber)">{{ pageNumber + 1 }}</a>
-      </li>
-      
-      <li class="page-item" [class.disabled]="page.number === page.totalPages - 1">
-        <a class="page-link px-3" (click)="changePage(page.number + 1)"><i class="bi bi-chevron-right"></i></a>
-      </li>
-  
-      <li class="page-item" [class.disabled]="page.number === page.totalPages - 1">
-        <a class="page-link px-3" (click)="changePage(page.totalPages - 1)"><i class="bi bi-chevron-bar-right"></i></a>
-      </li>
-    </ul>
-  </nav>
+<nav *ngIf="page && page.totalElements > 0" aria-label="Pagination">
+  <ul class="pagination pagination-sm user-select-none m-0">
+    <li class="page-item" [class.disabled]="page.number === 0">
+      <a class="page-link" (click)="changePage(0)"><i class="bi bi-chevron-bar-left"></i></a>
+    </li>
     
-</ng-container>
+    <li class="page-item" [class.disabled]="page.number === 0">
+      <a class="page-link" (click)="changePage(page.number - 1)"><i class="bi bi-chevron-left"></i></a>
+    </li>
+    
+    <li *ngFor="let pageNumber of pageNumbers" class="page-item" [class.active]="pageNumber === page.number">
+      <a class="page-link" (click)="changePage(pageNumber)">{{ pageNumber + 1 }}</a>
+    </li>
+    
+    <li class="page-item" [class.disabled]="page.number === page.totalPages - 1">
+      <a class="page-link" (click)="changePage(page.number + 1)"><i class="bi bi-chevron-right"></i></a>
+    </li>
+
+    <li class="page-item" [class.disabled]="page.number === page.totalPages - 1">
+      <a class="page-link" (click)="changePage(page.totalPages - 1)"><i class="bi bi-chevron-bar-right"></i></a>
+    </li>
+  </ul>
+</nav>

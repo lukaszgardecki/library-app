@@ -1,5 +1,6 @@
 package com.example.libraryapp.application.book;
 
+import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.book.ports.BookRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -7,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 class DeleteBookUseCase {
     private final BookRepositoryPort bookRepository;
 
-    void execute(Long id) {
+    void execute(BookId id) {
         bookRepository.deleteById(id);
     }
 }

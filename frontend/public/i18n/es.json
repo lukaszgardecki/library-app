@@ -1,10 +1,18 @@
 {
     "DATA": {
-        "PAGE_SIZE": "Tamaño de página",
+        "PAGINATION": {
+            "PAGE_SIZE": "Tamaño de página",
+            "SHOWING_ROWS": "Mostrando {{start}}-{{end}} de {{total}} filas"
+        },
         "SEARCH": "Buscar...",
         "LACK": "Falta de datos",
         "SHARE": "Compartir",
         "EXPORT": "Exportar",
+        "TIME": {
+            "SECONDS_AGO": "hace {{time}} s",
+            "MINUTES_AGO": "hace {{time}} min",
+            "HOURS_AGO": "hace {{time}} h"
+        },
         "DAY": {
             "MON": {
                 "NAME": "lunes",
@@ -89,10 +97,103 @@
     "CAT": {
         "BTN": {
             "BACK": "Volver",
+            "BACK_TO_PENDING": "Mover a pendientes",
             "CANCEL": "Cancelar",
+            "ADD": "A\u00F1adir",
             "EDIT": "Editar",
+            "CONFIRM": "Confirmar",
+            "COMPLETE": "Finalizar",
+            "ACCEPT": "Aceptar",
             "SAVE": "Guardar",
-            "SAVE_TO_FILE": "Guardar en archivo"
+            "SAVE_TO_FILE": "Guardar en archivo",
+            "DELETE": "Eliminar"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmaci\u00f3n de finalizaci\u00f3n del pedido",
+                    "BODY": "\u00bfEst\u00e1s seguro de que deseas finalizar este pedido? Esta acci\u00f3n no se puede deshacer."
+                },
+                "ADD_RACK": {
+                    "TITLE": "A\u00F1adir nuevo estante",
+                    "RACK_NAME": "Introduzca el nombre..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "A\u00F1adir nueva balda",
+                    "SHELF_NAME": "Introduzca el nombre..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Editar estante"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Editar balda"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Eliminar estante",
+                    "BODY": "\u00BFEsta seguro de que desea eliminar {{item}}? Esta acci\u00F3n no se puede deshacer."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Eliminar balda",
+                    "BODY": "\u00BFEsta seguro de que desea eliminar {{item}}? Esta acci\u00F3n no se puede deshacer."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Mover documento",
+                    "BODY": "Seleccione una nueva ubicaci\u00f3n para el documento \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Seleccione estanter\u00eda...",
+                    "SELECT_SHELF": "Seleccione balda..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Datos de formulario no v\u00E1lidos.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "¡El pedido se ha completado con \u00E9xito!",
+                        "FAILURE": "No se pudo completar el pedido."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": "No se pudo crear el estante."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante mientras tenga libros en sus estantes."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": "No se pudo crear la estanter\u00eda."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante hasta que se trasladen todos los libros."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "El documento se movi\u00f3 correctamente.",
+                        "FAILURE": "No se pudo mover el documento."
+                    }
+                }
+            }
         },
         "LOGIN": {
             "HEADER": "Iniciar sesión",
@@ -138,7 +239,12 @@
             "USERS": "Usuarios",
             "BOOKS": "Libros",
             "CASHIER": "Cajero",
-            "WAREHOUSE": "Almacén",
+            "WAREHOUSE": {
+                "NAME": "Almac\u00e9n",
+                "TRANSACTIONS": "Entregar / Devolver",
+                "HISTORY": "Historial",
+                "RACKS": "Estantes y recursos"
+            },
             "REPORTS": "Informes",
             "SETTINGS": "Configuraciones"
         },
@@ -213,15 +319,88 @@
             }
         },
         "BOOK": {
-            "TITLE": "Título"
+            "TITLE": "T\u00edtulo",
+            "AUTHORS": "Autores"
         },
-        "LENDING": {
+        "BOOK_ITEM": {
+            "LACK": "No hay libros",
+            "BARCODE": "C\u00f3digo de barras",
+            "PURCHASE_DATE": "Fecha de compra",
+            "RACK": "Estanter\u00eda",
+            "SHELF": "Balda",
+            "STATUS": {
+                "NAME": "Estado",
+                "AVAILABLE": "Disponible",
+                "REQUESTED": "Reservado",
+                "LOANED": "Prestado",
+                "RETURNED": "Devuelto",
+                "LOST": "Perdido"
+            },
+            "FORMAT": {
+                "NAME": "Formato",
+                "HARDCOVER": "Tapa dura",
+                "PAPERBACK": "Tapa blanda",
+                "AUDIO_BOOK": "Audiolibro",
+                "EBOOK": "Libro electr\u00F3nico",
+                "NEWSPAPER": "Peri\u00F3dico",
+                "MAGAZINE": "Revista",
+                "JOURNAL": "Revista cient\u00EDfica"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Fecha de creación",
+            "LOCATION": "Ubicaci\u00F3n",
+            "STATUS": {
+                "NAME": "Estado",
+                "COMPLETED": "Completado",
+                "READY": "Listo para recoger",
+                "IN_PROGRESS": "En progreso",
+                "PENDING": "Preparación",
+                "RESERVED": "Reservado",
+                "CANCELED": "Cancelado"
+            }
+        },
+        "LOAN": {
             "CREATION_DATE": "Fecha de creación",
             "DUE_DATE": "Fecha de devolución",
             "STATUS": {
                 "NAME": "Estado",
                 "CURRENT": "Actual",
                 "COMPLETED": "Completado"
+            }
+        },
+        "RACK": {
+            "LACK": "Faltan estanter\u00EDas",
+            "NAME": "Nombre",
+            "SHELVES_COUNT": "Cantidad de estantes",
+            "CREATION_DATE": "Fecha de creaci\u00F3n",
+            "LAST_UPDATE_DATE": "Fecha de \u00FAltima actualizaci\u00F3n"
+        },
+        "SHELF": {
+            "LACK": "Faltan estantes",
+            "NAME": "Nombre",
+            "POSITION": "Posici\u00F3n",
+            "BOOK_ITEMS_COUNT": "Cantidad de libros",
+            "CREATION_DATE": "Fecha de creaci\u00F3n",
+            "LAST_UPDATE_DATE": "Fecha de \u00FAltima actualizaci\u00F3n"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nuevos pedidos",
+                "LACK": "No hay nuevos pedidos"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "En proceso",
+                "LACK": "No hay pedidos en proceso"
+            },
+            "RACKS": {
+                "HEADER": "Estanter\u00EDas"
+            },
+            "SHELVES": {
+                "HEADER": "Balda"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Libros"
             }
         },
         "STATS": {

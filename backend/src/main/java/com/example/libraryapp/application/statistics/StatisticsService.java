@@ -4,10 +4,13 @@ import com.example.libraryapp.application.bookitemloan.BookItemLoanFacade;
 import com.example.libraryapp.application.person.PersonFacade;
 import com.example.libraryapp.application.user.UserFacade;
 import com.example.libraryapp.domain.bookitemloan.dto.BookItemLoanDto;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanStatus;
+import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
+import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import com.example.libraryapp.domain.person.dto.PersonDto;
+import com.example.libraryapp.domain.person.model.PersonId;
 import com.example.libraryapp.domain.statistics.dto.UserTopBorrowersDto;
 import com.example.libraryapp.domain.user.dto.UserDto;
+import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -23,11 +26,11 @@ class StatisticsService {
     private final UserFacade userFacade;
     private final BookItemLoanFacade bookItemLoanFacade;
 
-    long countBookItemLoansByDay(LocalDateTime day) {
+    long countBookItemLoansByDay(LoanCreationDate day) {
         return bookItemLoanFacade.countByCreationDate(day);
     }
 
-    List<Object[]> countBookItemLoansByDay(LocalDate startDate, LocalDate endDate, BookItemLoanStatus status) {
+    List<Object[]> countBookItemLoansByDay(LocalDate startDate, LocalDate endDate, LoanStatus status) {
         return bookItemLoanFacade.countBookItemLoansDaily(startDate, endDate, status);
     }
 
@@ -61,7 +64,7 @@ class StatisticsService {
         List<UserDto> topBorrowers = userFacade.getAllByLoanCountDesc(limit);
         return topBorrowers.stream()
                 .map(user -> {
-                    PersonDto person = personFacade.getPersonById(user.getPersonId());
+                    PersonDto person = personFacade.getPersonById(new PersonId(user.getPersonId()));
                     return new UserTopBorrowersDto(
                             user.getId(),
                             topBorrowers.indexOf(user) + 1,
@@ -76,7 +79,7 @@ class StatisticsService {
         return personFacade.getCitiesByUserCountDesc(limit);
     }
 
-    Map<YearMonth, Long> getUserLoansPerMonth(Long userId) {
+    Map<YearMonth, Long> getUserLoansPerMonth(UserId userId) {
         List<BookItemLoanDto> loans = bookItemLoanFacade.getAllLoansByUserId(userId);
         Map<YearMonth, Long> loansCountMap = loans.stream()
                 .collect(Collectors.groupingBy(

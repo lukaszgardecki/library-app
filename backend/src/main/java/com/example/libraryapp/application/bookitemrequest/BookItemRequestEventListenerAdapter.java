@@ -1,5 +1,7 @@
 package com.example.libraryapp.application.bookitemrequest;
 
+import com.example.libraryapp.domain.book.model.Title;
+import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequest;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
 import com.example.libraryapp.domain.bookitemrequest.ports.BookItemRequestListenerPort;
@@ -40,7 +42,7 @@ class BookItemRequestEventListenerAdapter implements BookItemRequestListenerPort
         List<BookItemRequestStatus> statusesToFind = bookItemRequestService.getCurrentRequestStatuses();
         List<BookItemRequest> requests = bookItemRequestService.getAllByBookItemIdAndStatuses(event.getBookItemId(), statusesToFind);
         requests.stream()
-                .sorted(Comparator.comparing(BookItemRequest::getCreationDate))
+                .sorted(Comparator.comparing(request -> request.getCreationDate().value()))
                 .forEachOrdered(req -> {
                     if (requests.indexOf(req) == 0) {
                         publisher.publish(new BookItemAvailableToLoanEvent(req.getBookItemId(), req.getUserId(), event.getBookTitle()));
@@ -48,7 +50,7 @@ class BookItemRequestEventListenerAdapter implements BookItemRequestListenerPort
                 });
     }
 
-    private void cancelAllCurrentRequests(Long bookItemId, String bookTitle) {
+    private void cancelAllCurrentRequests(BookItemId bookItemId, Title bookTitle) {
         List<BookItemRequestStatus> statusesToFind = bookItemRequestService.getCurrentRequestStatuses();
         bookItemRequestService.getAllByBookItemIdAndStatuses(bookItemId, statusesToFind)
                 .forEach(request -> {

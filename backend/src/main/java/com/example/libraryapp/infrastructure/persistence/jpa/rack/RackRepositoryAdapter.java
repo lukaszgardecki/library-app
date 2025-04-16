@@ -1,11 +1,14 @@
 package com.example.libraryapp.infrastructure.persistence.jpa.rack;
 
-import com.example.libraryapp.domain.rack.model.Rack;
+import com.example.libraryapp.domain.rack.model.*;
 import com.example.libraryapp.domain.rack.ports.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,13 +18,18 @@ class RackRepositoryAdapter implements RackRepositoryPort {
 
 
     @Override
-    public Optional<Rack> findById(Long id) {
-        return repository.findById(id).map(this::toModel);
+    public Page<Rack> findAllByParams(String query, Pageable pageable) {
+        return repository.findAllByParams(query, pageable).map(this::toModel);
     }
 
     @Override
-    public Optional<Rack> findByLocation(String location) {
-        return repository.findByLocationIdentifier(location).map(this::toModel);
+    public List<Rack> findAllByParams(String query) {
+        return repository.findAllByParams(query).stream().map(this::toModel).toList();
+    }
+
+    @Override
+    public Optional<Rack> findById(RackId id) {
+        return repository.findById(id.value()).map(this::toModel);
     }
 
     @Override
@@ -32,21 +40,27 @@ class RackRepositoryAdapter implements RackRepositoryPort {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(RackId id) {
+        repository.deleteById(id.value());
     }
 
     private RackEntity toEntity(Rack model) {
         return new RackEntity(
-                model.getId(),
-                model.getLocationIdentifier()
+                model.getId() != null ? model.getId().value() : null,
+                model.getName().value(),
+                model.getCreatedDate().value(),
+                model.getUpdatedDate().value(),
+                model.getShelvesCount().value()
         );
     }
 
     private Rack toModel(RackEntity entity) {
         return new Rack(
-                entity.getId(),
-                entity.getLocationIdentifier()
+                new RackId(entity.getId()),
+                new RackName(entity.getName()),
+                new RackCreatedDate(entity.getCreatedDate()),
+                new RackUpdatedDate(entity.getUpdatedDate()),
+                new RackShelvesCount(entity.getShelvesCount())
         );
     }
 }
