@@ -24,6 +24,7 @@ public class WarehouseFacade {
     private final GetAllRacksUseCase getAllRacksUseCase;
     private final GetAllShelvesUseCase getAllShelvesUseCase;
     private final GetRackUseCase getRackUseCase;
+    private final GetShelfUseCase getShelfUseCase;
     private final AddRackUseCase addRackUseCase;
     private final AddShelfUseCase addShelfUseCase;
     private final UpdateRackUseCase updateRackUseCase;
@@ -69,6 +70,11 @@ public class WarehouseFacade {
     public RackDto getRack(RackId id) {
         Rack rack = getRackUseCase.execute(id);
         return RackMapper.toDto(rack);
+    }
+
+    public ShelfDto getShelf(ShelfId id) {
+        Shelf shelf = getShelfUseCase.execute(id);
+        return ShelfMapper.toDto(shelf);
     }
 
     public RackDto addRack(RackToSaveDto dto) {

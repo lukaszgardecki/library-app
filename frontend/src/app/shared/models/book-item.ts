@@ -1,7 +1,7 @@
 import { BookItemStatus } from "../enums/book-item-status";
 import { Book } from "./book";
 
-import { WarehouseItem } from "./rack";
+import { Rack, WarehouseItem } from "./rack";
 
 export class BookItem {
     id: number;
@@ -28,5 +28,7 @@ export class BookItemWithBook implements WarehouseItem {
     dateOfPurchase: Date;
     book: Book;
     rackId: number;
+    rackName: string;
     shelfId: number;
+    shelfName: string;
 }

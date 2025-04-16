@@ -25,5 +25,7 @@ public class BookItemWithBookDto {
     private LocalDate dateOfPurchase;
     private BookDto book;
     private Long rackId;
+    private String rackName;
     private Long shelfId;
+    private String shelfName;
 }

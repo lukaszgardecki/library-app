@@ -295,6 +295,7 @@ export class RacksComponent implements OnInit {
     this.warehouseService.editRack(this.selectedRack.id, rackToUpdate).subscribe({
       next: updatedRack => {
         this.selectedRack = updatedRack;
+        if (this.selectedBookItem) this.selectedBookItem.rackName = updatedRack.name; 
         this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.RACK.EDIT.SUCCESS');
       },
       error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.RACK.EDIT.FAILURE')
@@ -311,6 +312,7 @@ export class RacksComponent implements OnInit {
     this.warehouseService.editShelf(this.selectedShelf.id, shelfToUpdate).subscribe({
       next: updatedShelf => {
         this.selectedShelf = updatedShelf;
+        if (this.selectedBookItem) this.selectedBookItem.shelfName = updatedShelf.name;
         this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.SHELF.EDIT.SUCCESS');
       },
       error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.SHELF.EDIT.FAILURE')

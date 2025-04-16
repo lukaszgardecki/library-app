@@ -119,8 +119,8 @@
                             <strong>{{ 'CAT.BOOK_ITEM.BARCODE' | translate }}:</strong>{{selectedBookItem.barcode}}
                             <strong>{{ 'CAT.BOOK_ITEM.STATUS.NAME' | translate }}:</strong>{{selectedBookItem.status | enumName: 'book-item-status' | translate }}
                             <strong>{{ 'CAT.BOOK_ITEM.PURCHASE_DATE' | translate }}:</strong>{{selectedBookItem.dateOfPurchase | date: "dd.MM.yyyy" }}
-                            <strong>{{ 'CAT.BOOK_ITEM.RACK' | translate }}:</strong>Regał
-                            <strong>{{ 'CAT.BOOK_ITEM.SHELF' | translate }}:</strong>Półka
+                            <strong>{{ 'CAT.BOOK_ITEM.RACK' | translate }}:</strong>{{selectedBookItem.rackName}}
+                            <strong>{{ 'CAT.BOOK_ITEM.SHELF' | translate }}:</strong>{{selectedBookItem.shelfName}}
                         </div>
                     </div>
                 </div>

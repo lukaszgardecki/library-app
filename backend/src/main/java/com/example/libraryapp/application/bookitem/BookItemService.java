@@ -2,6 +2,7 @@ package com.example.libraryapp.application.bookitem;
 
 import com.example.libraryapp.application.book.BookFacade;
 import com.example.libraryapp.application.bookitemrequest.BookItemRequestFacade;
+import com.example.libraryapp.application.warehouse.WarehouseFacade;
 import com.example.libraryapp.domain.book.dto.BookDto;
 import com.example.libraryapp.domain.book.model.BookId;
 import com.example.libraryapp.domain.book.model.Title;
@@ -15,7 +16,9 @@ import com.example.libraryapp.domain.bookitem.ports.BookItemRepositoryPort;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanReturnDate;
+import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.dto.ShelfDto;
 import com.example.libraryapp.domain.shelf.model.ShelfId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,7 @@ class BookItemService {
     private final BookItemRequestFacade bookItemRequestFacade;
     private final BookItemBarcodeGenerator generator;
     private final BookFacade bookFacade;
+    private final WarehouseFacade warehouseFacade;
 
     Page<BookItemWithBookDto> getAllByParams(BookId bookId, RackId rackId, ShelfId shelfId, String query, Pageable pageable) {
         Page<BookItem> bookItems = bookItemRepository.findAllByParams(bookId, rackId, shelfId, query, pageable);
@@ -41,7 +45,9 @@ class BookItemService {
                 .collect(Collectors.toMap(BookDto::getId, Function.identity()));
         return bookItems.map(bookItem -> {
             BookDto bookDto = bookMap.get(bookItem.getBookId().value());
-            return BookItemMapper.toDto(bookItem, bookDto);
+            RackDto rack = warehouseFacade.getRack(bookItem.getRackId());
+            ShelfDto shelf = warehouseFacade.getShelf(bookItem.getShelfId());
+            return BookItemMapper.toDto(bookItem, bookDto, rack, shelf);
         });
     }
 

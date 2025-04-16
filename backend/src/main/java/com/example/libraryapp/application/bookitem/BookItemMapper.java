@@ -7,7 +7,9 @@ import com.example.libraryapp.domain.bookitem.dto.BookItemWithBookDto;
 import com.example.libraryapp.domain.bookitem.model.*;
 import com.example.libraryapp.domain.bookitemloan.model.LoanCreationDate;
 import com.example.libraryapp.domain.bookitemloan.model.LoanDueDate;
+import com.example.libraryapp.domain.rack.dto.RackDto;
 import com.example.libraryapp.domain.rack.model.RackId;
+import com.example.libraryapp.domain.shelf.dto.ShelfDto;
 import com.example.libraryapp.domain.shelf.model.ShelfId;
 
 class BookItemMapper {
@@ -28,7 +30,7 @@ class BookItemMapper {
         );
     }
 
-    static BookItemWithBookDto toDto(BookItem bookItem, BookDto book) {
+    static BookItemWithBookDto toDto(BookItem bookItem, BookDto book, RackDto rack, ShelfDto shelf) {
         return new BookItemWithBookDto(
                 bookItem.getId().value(),
                 bookItem.getBarcode().value(),
@@ -40,7 +42,9 @@ class BookItemMapper {
                 bookItem.getDateOfPurchase().value(),
                 book,
                 bookItem.getRackId().value(),
-                bookItem.getShelfId().value()
+                rack.getName(),
+                bookItem.getShelfId().value(),
+                shelf.getName()
         );
     }
 
