@@ -1,0 +1,26 @@
+.in-progress-card {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.in-progress-card:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.visible-part {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.card-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 10px;
+    font-size: 0.8rem;
+    flex-grow: 1;
+}

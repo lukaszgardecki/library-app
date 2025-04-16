@@ -16,6 +16,8 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="isbn" type="VARCHAR(20)"/>
             <column name="language" type="VARCHAR(50)"/>
             <column name="pages" type="INT"/>
+            <column name="format" type="VARCHAR(50)"/>
+            <column name="publication_date" type="DATE"/>
         </createTable>
         <modifySql dbms="mysql">
             <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>

@@ -1,0 +1,24 @@
+<div class="toast-container position-fixed bottom-0 end-0 p-3" #toastHost>
+
+    <ng-container *ngFor="let toast of toasts; let i = index">
+      <div class="custom-toast"
+           role="alert"
+           aria-live="assertive"
+           aria-atomic="true"
+           *ngIf="toast.isVisible"
+           [ngStyle]="{ backgroundColor: toast.type.color }"
+           #toastElement>
+  
+        <div class="toast-progress" [ngStyle]="{ width: toast.progressWidth + '%' }"></div>
+        
+        <div class="toast-body flex-grow-1 d-flex align-items-center">
+          <i class="bi me-3 text-white fs-4" [ngClass]="toast.type.icon"></i> 
+          {{ toast.message | translate }}
+        </div>
+        
+        <button type="button" class="btn-close btn-close-white ms-2" (click)="close(toast)" aria-label="Close"></button>
+      </div>
+    </ng-container>
+  
+  </div>
+  

@@ -1,0 +1,117 @@
+<div class="sidebar bg-body-secondary shadow" data-bs-theme="dark" [ngClass]="{'active': isActive}">
+    <div class="logo border-bottom user-select-none">
+        <span>Library</span><span>App</span>
+    </div>
+
+    <div class="flex-shrink-0 p-3">
+        <ul class="nav ps-0 flex-column">
+            <!-- <ng-container *ngFor="let group of menuItemGroups; let groupIndex = index">
+                <li class="btn-label"
+                *ngFor="let item of group.items"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    <a *ngIf="item.submenu; else noSubmenu"
+                        class="nav-link"
+                        role="button"
+                        [href]="'#' + item.name.toLowerCase() + '-collapse'"
+                        data-bs-toggle="collapse"
+                        aria-expanded="false"
+                        [attr.aria-controls]="item.name.toLowerCase() + '-collapse'"
+                    >
+                        <div>
+                            <i class="bi me-3" [ngClass]="item.icon"></i>
+                            {{ item.name | translate }}
+                        </div>
+                        <i class="arrow bi bi-chevron-right ms-auto"></i>
+                    </a>
+            
+                    <ng-template #noSubmenu>
+                        <a class="nav-link"
+                            [routerLink]="item.routerLink"
+                        >
+                            <div>
+                                <i class="bi me-3" [ngClass]="item.icon"></i>
+                                {{ item.name | translate }}
+                            </div>
+                        </a>
+                    </ng-template>
+            
+                    <div *ngIf="item.submenu"
+                        class="collapse"
+                        [id]="item.name.toLowerCase() + '-collapse'"
+                    >
+                        <ul class="nav flex-column fw-normal small">
+                            <li *ngFor="let subItem of item.submenu" class="nav-item">
+                                <a class="nav-link"
+                                    [routerLink]="item.routerLink + subItem.routerLink"
+                                >{{ subItem.name | translate }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            
+                <li *ngIf="groupIndex != menuItemGroups.length - 1" class="border-top"></li>
+            </ng-container> -->
+
+            <ng-container *ngFor="let group of menuItemGroups; let groupIndex = index">
+                <li class="btn-label"
+                    *ngFor="let item of group.items"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    <a *ngIf="item.submenu; else noSubmenu"
+                        class="nav-link"
+                        role="button"
+                        [href]="'#' + item.name.toLowerCase() + '-collapse'"
+                        data-bs-toggle="collapse"
+                        aria-expanded="false"
+                        [attr.aria-controls]="item.name.toLowerCase() + '-collapse'"
+                    >
+                        <div>
+                            <i class="bi me-3" [ngClass]="item.icon"></i>
+                            {{ item.name | translate }}
+                        </div>
+                        <i class="arrow bi bi-chevron-right ms-auto"></i>
+                    </a>
+            
+                    <ng-template #noSubmenu>
+                        <a class="nav-link"
+                            [routerLink]="item.routerLink"
+                        >
+                            <div>
+                                <i class="bi me-3" [ngClass]="item.icon"></i>
+                                {{ item.name | translate }}
+                            </div>
+                        </a>
+                    </ng-template>
+            
+                    <div *ngIf="item.submenu"
+                        class="collapse"
+                        [id]="item.name.toLowerCase() + '-collapse'"
+                    >
+                        <ul class="nav flex-column fw-normal small">
+                            <li *ngFor="let subItem of item.submenu" class="nav-item">
+                                <a class="nav-link"
+                                    [routerLink]="[item.routerLink, subItem.routerLink]"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: false }"
+                                >
+                                    {{ subItem.name | translate }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            
+                <li *ngIf="groupIndex != menuItemGroups.length - 1" class="border-top"></li>
+            </ng-container>
+            
+        </ul>
+    </div>
+
+    <div class="version mt-auto">
+        <span>{{appVersion}}</span>
+    </div>
+</div>
+

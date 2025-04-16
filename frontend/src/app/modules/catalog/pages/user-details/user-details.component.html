@@ -1,0 +1,451 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="btn-bar p-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" (click)="goBack()">
+                {{ 'CAT.BTN.BACK' | translate }}
+            </button>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+            <div class="small-box text-bg-primary">
+                <div class="inner">
+                    <h3>{{ user.loanedItemsIds.length }}</h3>
+                    <p>{{ 'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate }}</p>
+                </div>
+                <i class="bi bi-bookmark-check small-box-icon"></i>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+            <div class="small-box text-bg-success">
+                <div class="inner">
+                    <h3>{{ favGenre || '&ndash;' }}</h3>
+                    <p>{{ 'CAT.USER.ACCOUNT.FAV_GENRE' | translate }}</p>
+                </div>
+                <i class="bi bi-journal-richtext small-box-icon"></i>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+            <div class="small-box text-bg-warning">
+                <div class="inner">
+                    <h3>{{ user.totalBooksBorrowed }}</h3>
+                    <p>{{ 'CAT.USER.ACCOUNT.LENDINGS_ALL' | translate }}</p>
+                </div>
+                <i class="bi bi-card-checklist small-box-icon"></i>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12 p-2">
+            <div class="small-box text-bg-danger">
+                <div class="inner">
+                    <h3>{{ user.charge | number:'1.2-2' }} zł</h3>
+                    <p>{{ 'CAT.USER.ACCOUNT.LATE_FEES' | translate }}</p>
+                </div>
+                <i class="bi bi-cash-coin small-box-icon"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <app-basic-section class="col-md-6 col-sm-6 col-12 p-2" [name]="'CAT.USER.DETAILS.HEADER' | translate">
+            <div class="section-content">
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.LAST_NAME' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.lastName | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="text" id="lastName" name="lastName"
+                            class="w-100"
+                            [(ngModel)]="user.lastName"
+                            [attr.placeholder]="'CAT.USER.DETAILS.LAST_NAME' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.FIRST_NAME' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.firstName | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="text" id="firstName" name="firstName"
+                            class="w-100"
+                            [(ngModel)]="user.firstName"
+                            [attr.placeholder]="'CAT.USER.DETAILS.FIRST_NAME' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.BIRTH_DATE' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.dateOfBirth | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="date" id="dateOfBirth" name="dateOfBirth"
+                            class="w-100"
+                            [(ngModel)]="user.dateOfBirth" 
+                        >
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.GENDER.LABEL' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.gender | enumName: "gender" | nullPlaceholder | translate}}</div>
+                        <div *ngIf="isPersonalInfoEditing" class="btn-group w-100">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{user.gender | enumName: "gender" | nullPlaceholder | translate}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li *ngFor="let gender of genderList" (click)="changeGender(gender)">
+                                    <button class="dropdown-item" type="button">
+                                        {{gender | enumName: "gender" | nullPlaceholder | translate}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.NATIONALITY' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.nationality | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="text" id="nationality" name="nationality"
+                            class="w-100"
+                            [(ngModel)]="user.nationality"
+                            [attr.placeholder]="'CAT.USER.DETAILS.NATIONALITY' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="!isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.ADDRESS' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>
+                            {{user.streetAddress | nullPlaceholder}}, {{user.zipCode | nullPlaceholder}} {{user.city | nullPlaceholder}}, {{user.state | nullPlaceholder}}, {{user.country | nullPlaceholder}}
+                        </div>
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.STREET' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="streetAddress" name="streetAddress"
+                            class="w-100"
+                            [(ngModel)]="user.streetAddress"
+                            [attr.placeholder]="'CAT.USER.DETAILS.STREET' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.ZIPCODE' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="zipCode" name="zipCode"
+                            class="w-100"
+                            [(ngModel)]="user.zipCode"
+                            [attr.placeholder]="'CAT.USER.DETAILS.ZIPCODE' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.CITY' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="city" name="city"
+                            class="w-100"
+                            [(ngModel)]="user.city"
+                            [attr.placeholder]="'CAT.USER.DETAILS.CITY' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.STATE' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="state" name="state"
+                            class="w-100"
+                            [(ngModel)]="user.state"
+                            [attr.placeholder]="'CAT.USER.DETAILS.STATE' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.COUNTRY' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="country" name="country"
+                            class="w-100"
+                            [(ngModel)]="user.country"
+                            [attr.placeholder]="'CAT.USER.DETAILS.COUNTRY' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="!isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.PARENTS' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.mothersName | nullPlaceholder}}, {{user.fathersName | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.MOTHER' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="mothersName" name="mothersName"
+                            class="w-100"
+                            [(ngModel)]="user.mothersName"
+                            [attr.placeholder]="'CAT.USER.DETAILS.MOTHER' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div *ngIf="isPersonalInfoEditing" class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.FATHER' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <input type="text" id="fathersName" name="fathersName"
+                            class="w-100"
+                            [(ngModel)]="user.fathersName"
+                            [attr.placeholder]="'CAT.USER.DETAILS.FATHER' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.PESEL' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.pesel | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="text" id="pesel" name="pesel"
+                            class="w-100"
+                            [(ngModel)]="user.pesel"
+                            [attr.placeholder]="'CAT.USER.DETAILS.PESEL' | translate"
+                        >
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.DETAILS.PHONE' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isPersonalInfoEditing">{{user.phoneNumber | nullPlaceholder}}</div>
+                        <input *ngIf="isPersonalInfoEditing" type="text" id="phoneNumber" name="phoneNumber"
+                            class="w-100"
+                            [(ngModel)]="user.phoneNumber"
+                            [attr.placeholder]="'CAT.USER.DETAILS.PHONE' | translate"
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="section-btn-panel d-flex justify-content-end">
+                <div class="btn-group">
+                    <button type="button " class="btn btn-sm" [ngClass]="isPersonalInfoEditing ? 'btn-secondary' : 'btn-outline-secondary'" (click)="editPersonalInfo()">
+                        {{ isPersonalInfoEditing ? ('CAT.BTN.SAVE' | translate) : ('CAT.BTN.EDIT' | translate) }}
+                    </button>
+                </div>
+            </div>
+        </app-basic-section>
+
+        <app-basic-section class="col-md-6 col-sm-6 col-12 p-2" [name]="'CAT.USER.ACCOUNT.HEADER' | translate">
+            <div class="section-content">
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.ACCOUNT.ID' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.id | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.ACCOUNT.EMAIL' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.email | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.CARD.ID' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.card.id | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.CARD.NUM' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.card.barcode | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.CARD.ISSUE_DATE' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.card.issuedAt| date: 'dd/MM/yyyy hh:mm:ss' | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.CARD.STATUS.NAME' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isAccountInfoEditing">{{user.card.status | enumName: "card" | nullPlaceholder | translate}}</div>
+                        <div *ngIf="isAccountInfoEditing" class="btn-group w-100">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{user.card.status | enumName: "card" | nullPlaceholder | translate}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li *ngFor="let cardStatus of cardStatuses" (click)="changeCardStatus(cardStatus)">
+                                    <button class="dropdown-item" type="button">
+                                        {{cardStatus | enumName: "card" | nullPlaceholder | translate}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.ACCOUNT.DATE_OF_REGISTRATION' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div>{{user.dateOfMembership | date: 'dd/MM/yyyy' | nullPlaceholder}}</div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.ACCOUNT.STATUS.NAME' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isAccountInfoEditing">{{user.status | enumName: "account" | nullPlaceholder | translate}}</div>
+                        <div *ngIf="isAccountInfoEditing" class="btn-group w-100">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{user.status | enumName: "account" | nullPlaceholder | translate}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li *ngFor="let accountStatus of accountStatuses" (click)="changeAccountStatus(accountStatus)">
+                                    <button class="dropdown-item" type="button">
+                                        {{accountStatus | enumName: "account" | nullPlaceholder | translate}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="data-row">
+                    <div class="lab">
+                        <div><strong>{{ 'CAT.USER.ROLE.NAME' | translate }}:</strong></div>
+                    </div>
+                    <div class="val">
+                        <div *ngIf="!isAccountInfoEditing">{{user.role | enumName: "role" | nullPlaceholder | translate}}</div>
+                        <div *ngIf="isAccountInfoEditing" class="btn-group w-100">
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{user.role | enumName: "role" | nullPlaceholder | translate}}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li *ngFor="let role of roles" (click)="changeRole(role)">
+                                    <button class="dropdown-item" type="button">
+                                        {{role | enumName: "role" | nullPlaceholder | translate}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-btn-panel d-flex justify-content-end">
+                <div class="btn-bar">
+                    <button type="button" class="btn btn-sm" [ngClass]="isAccountInfoEditing ? 'btn-secondary' : 'btn-outline-secondary'" (click)="editAccountInfo()">
+                        {{ isAccountInfoEditing ? ('CAT.BTN.SAVE' | translate) : ('CAT.BTN.EDIT' | translate) }}
+                    </button>
+                </div>
+            </div>
+        </app-basic-section>
+    </div>
+
+    <div class="row">
+        <app-basic-section class="col-md-6 col-sm-6 col-12 p-2" [name]="'CAT.USER.ACCOUNT.LENDINGS_ANNUAL' | translate">
+            <app-annual-activity-chart
+                *ngIf="areAnnualLendingsDataAvailble(); else lack"
+                [data]="user.loansPerMonth"
+            ></app-annual-activity-chart>
+        </app-basic-section>
+    
+        <app-basic-section class="col-md-6 col-sm-6 col-12 p-2" [name]="'CAT.USER.ACCOUNT.FAV_GENRES' | translate">
+            <app-fav-genre-chart
+                *ngIf="user.genresStats && user.genresStats.size > 0; else lack"
+                [data]="user.genresStats"
+            ></app-fav-genre-chart>
+        </app-basic-section>
+    </div>
+
+
+    <div class="row">
+        <app-basic-section class="col-12 p-2" [name]="'CAT.USER.ACCOUNT.LENDINGS_CURRENT' | translate">
+            <app-table
+                *ngIf="loanPage && loanPage.content; else lack"
+                [tableName]="'user-loans'"
+                [columns]="[
+                    { key: 'id', label: 'ID' },
+                    { key: 'bookTitle', label: 'CAT.BOOK.TITLE' },
+                    { key: 'creationDate', label: 'CAT.LOAN.CREATION_DATE', type: 'date' },
+                    { key: 'dueDate', label: 'CAT.LOAN.DUE_DATE', type: 'date' },
+                    { key: 'status', label: 'CAT.LOAN.STATUS.NAME', type: 'book-item-loan-status' },
+                ]"
+                [data]="loanPage.content || []"
+                [page]="loanPage"
+                (onUpdate)="updateTable($event)"
+                (onRowClick)="showDetails($event)"
+            ></app-table>
+        </app-basic-section>
+    </div>
+</div>
+
+
+<ng-template #lack>
+    <div class="lack-message">
+        {{  'DATA.LACK' | translate }}
+    </div>
+</ng-template>

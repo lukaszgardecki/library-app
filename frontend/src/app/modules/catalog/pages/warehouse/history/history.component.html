@@ -1,0 +1,31 @@
+<div class="container-fluid h-100 d-flex flex-column">
+
+    <h1 class="h2">{{ 'CAT.SIDEBAR.WAREHOUSE.HISTORY' | translate }}</h1>
+
+    <app-basic-section class="flex-grow-1" style="height: 0;">
+        <ng-container *ngIf="allRequestsPage$ | async as requestPage; else lack">
+            <app-table
+                class="h-100"
+                *ngIf="requestPage && requestPage.content; else lack"
+                [tableName]="'warehouse-pending-requests'"
+                [columns]="[
+                    { key: 'id', label: 'ID' },
+                    { key: 'creationDate', label: 'CAT.REQUEST.CREATION_DATE', type: 'date' },
+                    { key: 'bookTitle', label: 'Tytuł' },
+                    { key: 'bookFormat', label: 'Format', type: 'book-format' },
+                    { key: 'status', label: 'Status', type: 'book-item-request-status' }
+                ]"
+                [data]="requestPage.content || []"
+                [page]="requestPage"
+                (onUpdate)="updateAllRequests($event)"
+                (onRowClick)="display($event)"
+            ></app-table>
+        </ng-container>
+    </app-basic-section>
+</div>
+
+<ng-template #lack>
+    <div class="lack-message">
+        {{  'DATA.LACK' | translate }}
+    </div>
+</ng-template>

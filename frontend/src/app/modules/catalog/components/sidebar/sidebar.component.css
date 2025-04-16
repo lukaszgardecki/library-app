@@ -1,0 +1,102 @@
+.sidebar {
+    --sidebar-width: 250px;
+    --light-color: #f7f7f7;
+    --sidebar-color: #c2c7d0;
+}
+
+.sidebar {
+    will-change: transform;
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    transition: 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* ### LOGO ### */
+.logo { height: 63px; min-width: fit-content; padding: 10px 0; color: var(--sidebar-color);; text-align: center;}
+.logo span:first-child {font-size: 0.9rem; font-weight: 100; text-transform: uppercase;}
+.logo span:last-child {font-size: 1.7rem; font-weight: 600;}
+
+.nav li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.nav-item,
+.nav-link {
+    border-radius: 5px;
+}
+
+.btn-label > a:hover,
+.btn-label .nav-item:hover,
+.btn-label.active > a,
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-label > a:hover i,
+.btn-label > a:hover div,
+.btn-label .nav-item:hover a,
+.btn-label.active > a i,
+.btn-label.active > a div,
+.btn-label.active .nav-item a {
+    color: #fff;
+}
+
+.btn-label > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-label > a div {
+    color: var(--sidebar-color);
+    display: flex;
+    align-items: center;
+}
+
+.btn-label > a .arrow {
+    width: 1.25em;
+    line-height: 0;
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+    color: var(--sidebar-color);
+}
+
+.btn-label > a[aria-expanded="true"] {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-label > a[aria-expanded="true"] div,
+.btn-label > a[aria-expanded="true"] i {
+    color: #fff;
+}
+
+.btn-label > a[aria-expanded="true"] .arrow {
+    transform: rotate(90deg);
+}
+
+.btn-label ul li a{
+    padding-left: 3rem;
+    color: var(--sidebar-color);
+}
+
+/* ### FOOTER - VERSION ### */
+.version {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 63px;
+    min-width: fit-content;
+    padding: 0px 0;
+    color: var(--sidebar-color);
+    text-align: center;
+}
+        

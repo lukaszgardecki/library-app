@@ -1,0 +1,18 @@
+<div class="in-progress-card" (click)="active(request)">
+    <div class="visible-part">
+        <div class="px-2">{{number}}.</div>
+        <div class="card-content">
+            <strong>ID:</strong>{{request.id}}
+            <strong>{{ 'CAT.REQUEST.LOCATION' | translate }}:</strong><strong>{{request.rackName}}-{{request.shelfName}}</strong>
+            <strong>{{ 'CAT.REQUEST.CREATION_DATE' | translate }}:</strong>{{request.creationDate | date: "dd.MM.yyyy HH:mm:ss"}}
+            <strong>{{ 'CAT.BOOK.TITLE' | translate }}:</strong>{{request.bookTitle}}
+            <strong>{{ 'CAT.BOOK_ITEM.BARCODE' | translate }}:</strong>{{request.barcode}}
+            <strong>{{ 'CAT.BOOK_ITEM.FORMAT.NAME' | translate }}:</strong>{{request.bookFormat | enumName: "book-format" | translate }}
+        </div>
+    </div>
+    
+    <div class="section-btn-panel justify-content-between p-2" [ngStyle]="{'display': request==selectedRequest ? 'flex' : 'none'}">
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="onBackToPending.emit(request)"> {{ "CAT.BTN.BACK_TO_PENDING" | translate }} </button>
+        <button  type="button" class="btn btn-outline-success btn-sm" (click)="onCompleteRequest.emit(); $event.stopPropagation()" > {{ "CAT.BTN.COMPLETE" | translate }} </button>
+    </div>
+</div>

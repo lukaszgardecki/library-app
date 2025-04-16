@@ -14,7 +14,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="token_type" type="VARCHAR(50)"/>
             <column name="expired" type="BOOLEAN"/>
             <column name="revoked" type="BOOLEAN"/>
-            <column name="member_id" type="BIGINT">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -27,7 +27,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="token_type" type="VARCHAR(50)"/>
             <column name="expired" type="BOOLEAN"/>
             <column name="revoked" type="BOOLEAN"/>
-            <column name="member_id" type="BIGINT">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>

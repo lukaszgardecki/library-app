@@ -1,0 +1,18 @@
+.book-item-card {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.book-item-card:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}

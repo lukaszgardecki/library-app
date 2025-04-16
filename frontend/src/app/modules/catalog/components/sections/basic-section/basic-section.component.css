@@ -1,0 +1,36 @@
+/* SECTION STYLES */
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius);
+    height: 100%;
+    padding: 15px;
+}
+
+.section-header {
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--light-color);
+}
+
+.section-content {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.section-content .lack-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.section-btn-panel {
+    padding: 15px;
+}

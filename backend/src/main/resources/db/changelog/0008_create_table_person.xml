@@ -12,11 +12,10 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             </column>
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
-            <column name="phone" type="VARCHAR(20)"/>
+            <column name="gender" type="VARCHAR(50)"/>
             <column name="pesel" type="VARCHAR(15)"/>
             <column name="date_of_birth" type="DATE"/>
-            <column name="gender" type="VARCHAR(50)"/>
-            <column name="nationality" type="VARCHAR(50)"/>
+            <column name="nationality" type="VARCHAR(100)"/>
             <column name="mothers_name" type="VARCHAR(100)"/>
             <column name="fathers_name" type="VARCHAR(100)"/>
 
@@ -26,6 +25,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="zip_code" type="VARCHAR(20)"/>
             <column name="country" type="VARCHAR(255)"/>
 
+            <column name="phone" type="VARCHAR(20)"/>
         </createTable>
         <modifySql dbms="mysql">
             <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>

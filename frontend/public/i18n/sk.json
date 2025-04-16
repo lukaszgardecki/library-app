@@ -1,0 +1,424 @@
+{
+    "DATA": {
+        "PAGINATION": {
+            "PAGE_SIZE": "Veľkosť stránky",
+            "SHOWING_ROWS": "Zobrazen\u00e9 {{start}}-{{end}} z {{total}} riadkov"
+        },
+        "SEARCH": "Hľadať...",
+        "LACK": "Žiadne údaje",
+        "SHARE": "Zdieľať",
+        "EXPORT": "Exportovať",
+        "TIME": {
+            "SECONDS_AGO": "pred {{time}} s",
+            "MINUTES_AGO": "pred {{time}} min",
+            "HOURS_AGO": "pred {{time}} hod"
+        },
+        "DAY": {
+            "MON": {
+                "NAME": "pondelok",
+                "SHORT": "po"
+            },
+            "TUE": {
+                "NAME": "utorok",
+                "SHORT": "ut"
+            },
+            "WED": {
+                "NAME": "streda",
+                "SHORT": "st"
+            },
+            "THU": {
+                "NAME": "štvrtok",
+                "SHORT": "štv"
+            },
+            "FRI": {
+                "NAME": "piatok",
+                "SHORT": "pi"
+            },
+            "SAT": {
+                "NAME": "sobota",
+                "SHORT": "so"
+            },
+            "SUN": {
+                "NAME": "nedeľa",
+                "SHORT": "ne"
+            }
+        },
+        "MONTH": {
+            "JAN": {
+                "NAME": "január",
+                "SHORT": "jan"
+            },
+            "FEB": {
+                "NAME": "február",
+                "SHORT": "feb"
+            },
+            "MAR": {
+                "NAME": "marec",
+                "SHORT": "mar"
+            },
+            "APR": {
+                "NAME": "apríl",
+                "SHORT": "apr"
+            },
+            "MAI": {
+                "NAME": "máj",
+                "SHORT": "máj"
+            },
+            "JUN": {
+                "NAME": "jún",
+                "SHORT": "jún"
+            },
+            "JUL": {
+                "NAME": "júl",
+                "SHORT": "júl"
+            },
+            "AUG": {
+                "NAME": "august",
+                "SHORT": "aug"
+            },
+            "SEP": {
+                "NAME": "september",
+                "SHORT": "sep"
+            },
+            "OCT": {
+                "NAME": "október",
+                "SHORT": "okt"
+            },
+            "NOV": {
+                "NAME": "november",
+                "SHORT": "nov"
+            },
+            "DEC": {
+                "NAME": "december",
+                "SHORT": "dec"
+            }
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Späť",
+            "BACK_TO_PENDING": "Presun\u00fa\u0165 do \u010dakaj\u00facich",
+            "CANCEL": "Zrušiť",
+            "ADD": "Prida\u0165",
+            "EDIT": "Upraviť",
+            "CONFIRM": "Potvrdi\u0165",
+            "COMPLETE": "Dokon\u010di\u0165",
+            "ACCEPT": "Prija\u0165",
+            "SAVE": "Uložiť",
+            "SAVE_TO_FILE": "Uložiť do súboru",
+            "DELETE": "Odstr\u00e1ni\u0165"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Potvrdenie dokon\u010denia objedn\u00e1vky",
+                    "BODY": "Naozaj chcete dokon\u010di\u0165 t\u00fato objedn\u00e1vku? T\u00fato akciu nie je mo\u017en\u00e9 vr\u00e1ti\u0165 sp\u00e4\u0165."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Prida\u0165 nov\u00FD reg\u00E1l",
+                    "RACK_NAME": "Zadajte n\u00E1zov..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Prida\u0165 nov\u00FA policu",
+                    "SHELF_NAME": "Zadajte n\u00E1zov..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Upravi\u0165 reg\u00E1l"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Upravi\u0165 policu"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Odstr\u00E1ni\u0165 reg\u00E1l",
+                    "BODY": "Naozaj chcete odstr\u00E1ni\u0165 {{item}}? Toto opatrenie nemo\u017Eno vr\u00E1ti\u0165."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Odstr\u00E1ni\u0165 policu",
+                    "BODY": "Naozaj chcete odstr\u00E1ni\u0165 {{item}}? Toto opatrenie nemo\u017Eno vr\u00E1ti\u0165."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Presun\u00fa\u0165 dokument",
+                    "BODY": "Vyberte nov\u00e9 umiestnenie pre dokument \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Vyberte reg\u00e1l...",
+                    "SELECT_SHELF": "Vyberte policku..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Neplatn\u00E9 \u00FAdaje formul\u00E1ra.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "Objedn\u00E1vka bola \u00FAspe\u0161ne dokon\u010Den\u00E1!",
+                        "FAILURE": "Objedn\u00E1vku sa nepodarilo dokon\u010Di\u0165."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne vytvoren\u00FD.",
+                        "FAILURE": "Reg\u00E1l sa nepodarilo vytvori\u0165."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne upraven\u00FD.",
+                        "FAILURE": "Reg\u00E1l sa ned\u00E1 upravi\u0165."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Reg\u00E1l bol \u00FAspe\u0161ne odstr\u00E1nen\u00FD.",
+                        "FAILURE": {
+                            "MAIN": "Reg\u00E1l sa nepodarilo odstr\u00E1ni\u0165.",
+                            "HAS_BOOKS": "Reg\u00E1l nemo\u017Eno odstr\u00E1ni\u0165, pokia\u013E obsahuje knihy na policiach."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne vytvoren\u00E1.",
+                        "FAILURE": "Policu sa nepodarilo vytvori\u0165."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne upraven\u00E1.",
+                        "FAILURE": "Policu nie je mo\u017En\u00E9 upravi\u0165."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "Polica bola \u00FAspe\u0161ne odstr\u00E1nen\u00E1.",
+                        "FAILURE": {
+                            "MAIN": "Policu sa nepodarilo odstr\u00E1ni\u0165.",
+                            "HAS_BOOKS": "Policu nie je mo\u017En\u00E9 odstr\u00E1ni\u0165, pokia\u013E nie s\u00FA v\u0161etky knihy premiestnen\u00E9."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "Dokument bol \u00faspe\u0161ne presunut\u00fd.",
+                        "FAILURE": "Dokument nie je mo\u017en\u00e9 presun\u00fa\u0165."
+                    }
+                }
+            }
+        },
+        "LOGIN": {
+            "HEADER": "Prihlásenie",
+            "USERNAME": {
+                "LABEL": "Používateľské meno",
+                "VALID_MSG": "Používateľské meno je povinné",
+                "PLACEHOLDER": "Zadajte používateľské meno"
+            },
+            "PASSWORD": {
+                "LABEL": "Heslo",
+                "VALID_MSG": "Heslo je povinné",
+                "PLACEHOLDER": "Zadajte heslo",
+                "FORGOT": "Zabudli ste heslo?"
+            },
+            "BTN": "Prihlásiť sa",
+            "NOT_HAVE_ACCOUNT": "Nemáte účet?",
+            "SIGN_UP": "Zaregistrujte sa",
+            "SIGN_UP_ALSO": "Môžete sa tiež pripojiť cez"
+        },
+        "REGISTER": {
+            "HEADER": "Registrácia",
+            "VALID_MSG": {
+                "REQUIRED": "Vyplňte pole.",
+                "PASS_LENGTH": "Heslo musí mať aspoň {{length}} znakov.",
+                "PASS_UPPER_LETTER": "Heslo musí obsahovať aspoň jedno veľké písmeno.",
+                "PASS_LOWER_LETTER": "Heslo musí obsahovať aspoň jedno malé písmeno.",
+                "PASS_DIGIT": "Heslo musí obsahovať aspoň jednu číslicu.",
+                "PASS_SPECIAL_CHAR": "Heslo musí obsahovať aspoň jeden špeciálny znak.",
+                "PASS_MISMATCH": "Heslá musia byť rovnaké."
+            },
+            "PASS_REPEAT": "Zopakujte heslo",
+            "BTN": "Registrovať"
+        },
+        "NAVBAR": {
+            "PROFILE": "Profil",
+            "LOGOUT": "Odhlásiť sa",
+            "MEMBER_FROM": "Člen od"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Hlavný panel",
+            "NOTIFICATIONS": "Oznámenia",
+            "MESSAGES": "Správy",
+            "USERS": "Používatelia",
+            "BOOKS": "Knihy",
+            "CASHIER": "Pokladník",
+            "WAREHOUSE": {
+                "NAME": "Sklad",
+                "TRANSACTIONS": "Vydanie / Vr\u00e1tenie",
+                "HISTORY": "Hist\u00f3ria",
+                "RACKS": "Reg\u00e1ly a zdroje"
+            },
+            "REPORTS": "Správy",
+            "SETTINGS": "Nastavenia"
+        },
+        "USER": {
+            "BORROWER": "Čitateľ",
+            "ROLE": {
+                "NAME": "Rola",
+                "USER": "Používateľ",
+                "ADMIN": "Administrátor",
+                "WAREHOUSE": "Sklad",
+                "CASHIER": "Pokladník"
+            },
+            "DETAILS": {
+                "HEADER": "Osobné údaje",
+                "FIRST_NAME": "Meno",
+                "LAST_NAME": "Priezvisko",
+                "GENDER": {
+                    "LABEL": "Pohlavie",
+                    "MALE": "Muž",
+                    "FEMALE": "Žena",
+                    "OTHER": "Iné"
+                },
+                "BIRTH_DATE": "Dátum narodenia",
+                "NATIONALITY": "Národnosť",
+                "ADDRESS": "Adresa bydliska",
+                "STREET": "Ulica",
+                "ZIPCODE": "PSČ",
+                "CITY": "Mesto",
+                "STATE": "Kraj",
+                "COUNTRY": "Krajina",
+                "PARENTS": "Mená rodičov",
+                "MOTHER": "Meno matky",
+                "FATHER": "Meno otca",
+                "PESEL": "Rodné číslo",
+                "PHONE": "Telefón"
+            },
+            "ACCOUNT": {
+                "HEADER": "Údaje o účte",
+                "ID": "ID",
+                "EMAIL": "Email",
+                "DATE_OF_REGISTRATION": "Dátum registrácie",
+                "AVAILABILITY_DATE": "Dátum platnosti",
+                "STATUS": {
+                    "NAME": "Stav účtu",
+                    "ACTIVE": "Aktívny",
+                    "INACTIVE": "Neaktívny",
+                    "CLOSED": "Zatvorený",
+                    "SUSPENDED": "Pozastavený",
+                    "PENDING": "Čakajúci"
+                },
+                "LENDINGS": "Požičania",
+                "LENDINGS_ALL": "Všetky výpožičky",
+                "LENDINGS_ANNUAL": "Ročná aktivita výpožičiek",
+                "LENDINGS_WEEKLY": "Aktivita za posledných 7 dní",
+                "LENDINGS_COUNT": "Počet výpožičiek",
+                "LENDINGS_CURRENT": "Aktuálne výpožičky",
+                "RETURNS": "Vrátenia",
+                "LATE_FEES": "Oneskorené poplatky",
+                "FAV_GENRE": "Obľúbený žáner",
+                "FAV_GENRES": "Obľúbené žánre"
+            },
+            "CARD": {
+                "ID": "Čitateľská karta",
+                "NUM": "Číslo karty",
+                "ISSUE_DATE": "Dátum vydania karty",
+                "STATUS": {
+                    "NAME": "Stav karty",
+                    "ACTIVE": "Aktívna",
+                    "INACTIVE": "Neaktívna",
+                    "LOST": "Stratená"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "N\u00e1zov",
+            "AUTHORS": "Autori"
+        },
+        "BOOK_ITEM": {
+            "LACK": "Ch\u00FDbaj\u00FA knihy",
+            "BARCODE": "\u010c\u00edarov\u00fd k\u00f3d",
+            "PURCHASE_DATE": "D\u00e1tum n\u00e1kupu",
+            "RACK": "Reg\u00e1l",
+            "SHELF": "Poli\u010dka",
+            "STATUS": {
+                "NAME": "Stav",
+                "AVAILABLE": "Dostupn\u00fd",
+                "REQUESTED": "Rezervovan\u00fd",
+                "LOANED": "Po\u017ei\u010dan\u00fd",
+                "RETURNED": "Vr\u00e1ten\u00fd",
+                "LOST": "Straten\u00fd"
+            },
+            "FORMAT": {
+                "NAME": "Form\u00e1t",
+                "HARDCOVER": "Tvrd\u00E1 v\u00E4zba",
+                "PAPERBACK": "M\u00E4kk\u00E1 v\u00E4zba",
+                "AUDIO_BOOK": "Audiokniha",
+                "EBOOK": "Elektronick\u00E1 kniha",
+                "NEWSPAPER": "Noviny",
+                "MAGAZINE": "\u010Casopis",
+                "JOURNAL": "Odborn\u00FD \u010Dasopis"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Dátum vytvorenia",
+            "LOCATION": "Lokalita",
+            "STATUS": {
+                "NAME": "Stav",
+                "COMPLETED": "Dokončené",
+                "READY": "Pripravené na vyzdvihnutie",
+                "IN_PROGRESS": "Prebieha",
+                "PENDING": "Príprava",
+                "RESERVED": "Rezervácia",
+                "CANCELED": "Zrušené"
+            }
+        },
+        "LOAN": {
+            "CREATION_DATE": "Dátum vytvorenia",
+            "DUE_DATE": "Dátum vrátenia",
+            "STATUS": {
+                "NAME": "Stav",
+                "CURRENT": "Aktuálne",
+                "COMPLETED": "Dokončené"
+            }
+        },
+        "RACK": {
+            "LACK": "Ch\u00FDbaj\u00FA reg\u00E1ly",
+            "NAME": "N\u00E1zov",
+            "SHELVES_COUNT": "Po\u010Det pol\u00EDc",
+            "CREATION_DATE": "D\u00E1tum vytvorenia",
+            "LAST_UPDATE_DATE": "D\u00E1tum poslednej aktualiz\u00E1cie"
+        },
+        "SHELF": {
+            "LACK": "Ch\u00FDbaj\u00FA police",
+            "NAME": "N\u00E1zov",
+            "POSITION": "Poz\u00EDcia",
+            "BOOK_ITEMS_COUNT": "Po\u010Det kn\u00EDh",
+            "CREATION_DATE": "D\u00E1tum vytvorenia",
+            "LAST_UPDATE_DATE": "D\u00E1tum poslednej aktualiz\u00E1cie"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nov\u00e9 objedn\u00e1vky",
+                "LACK": "Ch\u00fdbaj\u00fa nov\u00e9 objedn\u00e1vky"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "Prebiehaj\u00face objedn\u00e1vky",
+                "LACK": "Ch\u00fdbaj\u00fa prebiehaj\u00face objedn\u00e1vky"
+            },
+            "RACKS": {
+                "HEADER": "Reg\u00E1ly"
+            },
+            "SHELVES": {
+                "HEADER": "Poli\u010Dky"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Knihy"
+            }
+        },
+        "STATS": {
+            "AMOUNT": "Množstvo",
+            "RANK": "Miesto",
+            "LENDINGS_COUNT_TODAY": "Dnešné výpožičky",
+            "USERS_ACTIVE_THIS_MONTH": "Aktívni používatelia tento mesiac",
+            "USERS_NEW_THIS_MONTH": "Noví používatelia tento mesiac",
+            "USERS_TOTAL": "Všetci používatelia",
+            "USERS_TOP_BORROWERS": "Top 10 čitateľov",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Vekové Skupiny",
+                "LABEL": "Vek"
+            },
+            "USERS_TOP_CITIES": "Mesto - počet čitateľov"
+        }
+    },
+    "WEB": {
+
+    }
+}

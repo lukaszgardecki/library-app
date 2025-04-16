@@ -1,0 +1,424 @@
+{
+    "DATA": {
+        "PAGINATION": {
+            "PAGE_SIZE": "Tamaño de página",
+            "SHOWING_ROWS": "Mostrando {{start}}-{{end}} de {{total}} filas"
+        },
+        "SEARCH": "Buscar...",
+        "LACK": "Falta de datos",
+        "SHARE": "Compartir",
+        "EXPORT": "Exportar",
+        "TIME": {
+            "SECONDS_AGO": "hace {{time}} s",
+            "MINUTES_AGO": "hace {{time}} min",
+            "HOURS_AGO": "hace {{time}} h"
+        },
+        "DAY": {
+            "MON": {
+                "NAME": "lunes",
+                "SHORT": "lun"
+            },
+            "TUE": {
+                "NAME": "martes",
+                "SHORT": "mar"
+            },
+            "WED": {
+                "NAME": "miércoles",
+                "SHORT": "mié"
+            },
+            "THU": {
+                "NAME": "jueves",
+                "SHORT": "jue"
+            },
+            "FRI": {
+                "NAME": "viernes",
+                "SHORT": "vie"
+            },
+            "SAT": {
+                "NAME": "sábado",
+                "SHORT": "sáb"
+            },
+            "SUN": {
+                "NAME": "domingo",
+                "SHORT": "dom"
+            }
+        },
+        "MONTH": {
+            "JAN": {
+                "NAME": "enero",
+                "SHORT": "ene"
+            },
+            "FEB": {
+                "NAME": "febrero",
+                "SHORT": "feb"
+            },
+            "MAR": {
+                "NAME": "marzo",
+                "SHORT": "mar"
+            },
+            "APR": {
+                "NAME": "abril",
+                "SHORT": "abr"
+            },
+            "MAI": {
+                "NAME": "mayo",
+                "SHORT": "may"
+            },
+            "JUN": {
+                "NAME": "junio",
+                "SHORT": "jun"
+            },
+            "JUL": {
+                "NAME": "julio",
+                "SHORT": "jul"
+            },
+            "AUG": {
+                "NAME": "agosto",
+                "SHORT": "ago"
+            },
+            "SEP": {
+                "NAME": "septiembre",
+                "SHORT": "sep"
+            },
+            "OCT": {
+                "NAME": "octubre",
+                "SHORT": "oct"
+            },
+            "NOV": {
+                "NAME": "noviembre",
+                "SHORT": "nov"
+            },
+            "DEC": {
+                "NAME": "diciembre",
+                "SHORT": "dic"
+            }
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Volver",
+            "BACK_TO_PENDING": "Mover a pendientes",
+            "CANCEL": "Cancelar",
+            "ADD": "A\u00F1adir",
+            "EDIT": "Editar",
+            "CONFIRM": "Confirmar",
+            "COMPLETE": "Finalizar",
+            "ACCEPT": "Aceptar",
+            "SAVE": "Guardar",
+            "SAVE_TO_FILE": "Guardar en archivo",
+            "DELETE": "Eliminar"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Confirmaci\u00f3n de finalizaci\u00f3n del pedido",
+                    "BODY": "\u00bfEst\u00e1s seguro de que deseas finalizar este pedido? Esta acci\u00f3n no se puede deshacer."
+                },
+                "ADD_RACK": {
+                    "TITLE": "A\u00F1adir nuevo estante",
+                    "RACK_NAME": "Introduzca el nombre..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "A\u00F1adir nueva balda",
+                    "SHELF_NAME": "Introduzca el nombre..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Editar estante"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Editar balda"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Eliminar estante",
+                    "BODY": "\u00BFEsta seguro de que desea eliminar {{item}}? Esta acci\u00F3n no se puede deshacer."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Eliminar balda",
+                    "BODY": "\u00BFEsta seguro de que desea eliminar {{item}}? Esta acci\u00F3n no se puede deshacer."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Mover documento",
+                    "BODY": "Seleccione una nueva ubicaci\u00f3n para el documento \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Seleccione estanter\u00eda...",
+                    "SELECT_SHELF": "Seleccione balda..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Datos de formulario no v\u00E1lidos.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "¡El pedido se ha completado con \u00E9xito!",
+                        "FAILURE": "No se pudo completar el pedido."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": "No se pudo crear el estante."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante mientras tenga libros en sus estantes."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "El estante se ha creado con \u00E9xito.",
+                        "FAILURE": "No se pudo crear la estanter\u00eda."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "El estante se ha editado con \u00E9xito.",
+                        "FAILURE": "No se puede editar el estante."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "El estante se ha eliminado con \u00E9xito.",
+                        "FAILURE": {
+                            "MAIN": "No se pudo eliminar el estante.",
+                            "HAS_BOOKS": "No se puede eliminar el estante hasta que se trasladen todos los libros."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "El documento se movi\u00f3 correctamente.",
+                        "FAILURE": "No se pudo mover el documento."
+                    }
+                }
+            }
+        },
+        "LOGIN": {
+            "HEADER": "Iniciar sesión",
+            "USERNAME": {
+                "LABEL": "Nombre de usuario",
+                "VALID_MSG": "Nombre de usuario requerido",
+                "PLACEHOLDER": "Ingrese nombre de usuario"
+            },
+            "PASSWORD": {
+                "LABEL": "Contraseña",
+                "VALID_MSG": "Contraseña requerida",
+                "PLACEHOLDER": "Ingrese contraseña",
+                "FORGOT": "¿Olvidaste tu contraseña?"
+            },
+            "BTN": "Iniciar sesión",
+            "NOT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
+            "SIGN_UP": "Regístrate",
+            "SIGN_UP_ALSO": "También puedes unirte a través de"
+        },
+        "REGISTER": {
+            "HEADER": "Registro",
+            "VALID_MSG": {
+                "REQUIRED": "Complete el campo.",
+                "PASS_LENGTH": "La contraseña debe tener al menos {{length}} caracteres.",
+                "PASS_UPPER_LETTER": "La contraseña debe contener al menos una letra mayúscula.",
+                "PASS_LOWER_LETTER": "La contraseña debe contener al menos una letra minúscula.",
+                "PASS_DIGIT": "La contraseña debe contener al menos un dígito.",
+                "PASS_SPECIAL_CHAR": "La contraseña debe contener al menos un carácter especial.",
+                "PASS_MISMATCH": "Las contraseñas deben coincidir."
+            },
+            "PASS_REPEAT": "Repite la contraseña",
+            "BTN": "Registrar"
+        },
+        "NAVBAR": {
+            "PROFILE": "Perfil",
+            "LOGOUT": "Cerrar sesión",
+            "MEMBER_FROM": "Miembro desde"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Panel principal",
+            "NOTIFICATIONS": "Notificaciones",
+            "MESSAGES": "Mensajes",
+            "USERS": "Usuarios",
+            "BOOKS": "Libros",
+            "CASHIER": "Cajero",
+            "WAREHOUSE": {
+                "NAME": "Almac\u00e9n",
+                "TRANSACTIONS": "Entregar / Devolver",
+                "HISTORY": "Historial",
+                "RACKS": "Estantes y recursos"
+            },
+            "REPORTS": "Informes",
+            "SETTINGS": "Configuraciones"
+        },
+        "USER": {
+            "BORROWER": "Lector",
+            "ROLE": {
+                "NAME": "Rol",
+                "USER": "Usuario",
+                "ADMIN": "Administrador",
+                "WAREHOUSE": "Almacén",
+                "CASHIER": "Cajero"
+            },
+            "DETAILS": {
+                "HEADER": "Datos personales",
+                "FIRST_NAME": "Nombre",
+                "LAST_NAME": "Apellido",
+                "GENDER": {
+                    "LABEL": "Género",
+                    "MALE": "Hombre",
+                    "FEMALE": "Mujer",
+                    "OTHER": "Otro"
+                },
+                "BIRTH_DATE": "Fecha de nacimiento",
+                "NATIONALITY": "Nacionalidad",
+                "ADDRESS": "Dirección",
+                "STREET": "Calle",
+                "ZIPCODE": "Código postal",
+                "CITY": "Ciudad",
+                "STATE": "Estado",
+                "COUNTRY": "País",
+                "PARENTS": "Nombres de los padres",
+                "MOTHER": "Nombre de la madre",
+                "FATHER": "Nombre del padre",
+                "PESEL": "Pesel",
+                "PHONE": "Teléfono"
+            },
+            "ACCOUNT": {
+                "HEADER": "Detalles de la cuenta",
+                "ID": "ID",
+                "EMAIL": "Correo electrónico",
+                "DATE_OF_REGISTRATION": "Fecha de registro",
+                "AVAILABILITY_DATE": "Fecha de disponibilidad",
+                "STATUS": {
+                    "NAME": "Estado de la cuenta",
+                    "ACTIVE": "Activo",
+                    "INACTIVE": "Inactivo",
+                    "CLOSED": "Cerrado",
+                    "SUSPENDED": "Suspendido",
+                    "PENDING": "Pendiente"
+                },
+                "LENDINGS": "Préstamos",
+                "LENDINGS_ALL": "Todos los préstamos",
+                "LENDINGS_ANNUAL": "Actividad anual de préstamos",
+                "LENDINGS_WEEKLY": "Actividad en los últimos 7 días",
+                "LENDINGS_COUNT": "Número de préstamos",
+                "LENDINGS_CURRENT": "Préstamos actuales",
+                "RETURNS": "Devoluciones",
+                "LATE_FEES": "Cargos por retraso",
+                "FAV_GENRE": "Género favorito",
+                "FAV_GENRES": "Géneros favoritos"
+            },
+            "CARD": {
+                "ID": "Tarjeta de lector",
+                "NUM": "Número de tarjeta",
+                "ISSUE_DATE": "Fecha de emisión de la tarjeta",
+                "STATUS": {
+                    "NAME": "Estado de la tarjeta",
+                    "ACTIVE": "Activa",
+                    "INACTIVE": "Inactiva",
+                    "LOST": "Perdida"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "T\u00edtulo",
+            "AUTHORS": "Autores"
+        },
+        "BOOK_ITEM": {
+            "LACK": "No hay libros",
+            "BARCODE": "C\u00f3digo de barras",
+            "PURCHASE_DATE": "Fecha de compra",
+            "RACK": "Estanter\u00eda",
+            "SHELF": "Balda",
+            "STATUS": {
+                "NAME": "Estado",
+                "AVAILABLE": "Disponible",
+                "REQUESTED": "Reservado",
+                "LOANED": "Prestado",
+                "RETURNED": "Devuelto",
+                "LOST": "Perdido"
+            },
+            "FORMAT": {
+                "NAME": "Formato",
+                "HARDCOVER": "Tapa dura",
+                "PAPERBACK": "Tapa blanda",
+                "AUDIO_BOOK": "Audiolibro",
+                "EBOOK": "Libro electr\u00F3nico",
+                "NEWSPAPER": "Peri\u00F3dico",
+                "MAGAZINE": "Revista",
+                "JOURNAL": "Revista cient\u00EDfica"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Fecha de creación",
+            "LOCATION": "Ubicaci\u00F3n",
+            "STATUS": {
+                "NAME": "Estado",
+                "COMPLETED": "Completado",
+                "READY": "Listo para recoger",
+                "IN_PROGRESS": "En progreso",
+                "PENDING": "Preparación",
+                "RESERVED": "Reservado",
+                "CANCELED": "Cancelado"
+            }
+        },
+        "LOAN": {
+            "CREATION_DATE": "Fecha de creación",
+            "DUE_DATE": "Fecha de devolución",
+            "STATUS": {
+                "NAME": "Estado",
+                "CURRENT": "Actual",
+                "COMPLETED": "Completado"
+            }
+        },
+        "RACK": {
+            "LACK": "Faltan estanter\u00EDas",
+            "NAME": "Nombre",
+            "SHELVES_COUNT": "Cantidad de estantes",
+            "CREATION_DATE": "Fecha de creaci\u00F3n",
+            "LAST_UPDATE_DATE": "Fecha de \u00FAltima actualizaci\u00F3n"
+        },
+        "SHELF": {
+            "LACK": "Faltan estantes",
+            "NAME": "Nombre",
+            "POSITION": "Posici\u00F3n",
+            "BOOK_ITEMS_COUNT": "Cantidad de libros",
+            "CREATION_DATE": "Fecha de creaci\u00F3n",
+            "LAST_UPDATE_DATE": "Fecha de \u00FAltima actualizaci\u00F3n"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "Nuevos pedidos",
+                "LACK": "No hay nuevos pedidos"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "En proceso",
+                "LACK": "No hay pedidos en proceso"
+            },
+            "RACKS": {
+                "HEADER": "Estanter\u00EDas"
+            },
+            "SHELVES": {
+                "HEADER": "Balda"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Libros"
+            }
+        },
+        "STATS": {
+            "AMOUNT": "Cantidad",
+            "RANK": "Puesto",
+            "LENDINGS_COUNT_TODAY": "Préstamos de hoy",
+            "USERS_ACTIVE_THIS_MONTH": "Usuarios activos este mes",
+            "USERS_NEW_THIS_MONTH": "Nuevos usuarios este mes",
+            "USERS_TOTAL": "Todos los usuarios",
+            "USERS_TOP_BORROWERS": "Los 10 mejores lectores",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Grupos de Edad",
+                "LABEL": "Edad"
+            },
+            "USERS_TOP_CITIES": "Ciudad - número de lectores"
+        }
+    },
+    "WEB": {
+
+    }
+}

@@ -1,0 +1,424 @@
+{
+    "DATA": {
+        "PAGINATION": {
+            "PAGE_SIZE": "Page size",
+            "SHOWING_ROWS": "Showing {{start}}-{{end}} of {{total}} rows"
+        },
+        "SEARCH": "Search...",
+        "LACK": "No data",
+        "SHARE": "Share",
+        "EXPORT": "Export",
+        "TIME": {
+            "SECONDS_AGO": "{{time}} sec. ago",
+            "MINUTES_AGO": "{{time}} min. ago",
+            "HOURS_AGO": "{{time}} hr. ago"
+        },
+        "DAY": {
+            "MON": {
+                "NAME": "Monday",
+                "SHORT": "Mon"
+            },
+            "TUE": {
+                "NAME": "Tuesday",
+                "SHORT": "Tue"
+            },
+            "WED": {
+                "NAME": "Wednesday",
+                "SHORT": "Wed"
+            },
+            "THU": {
+                "NAME": "Thursday",
+                "SHORT": "Thu"
+            },
+            "FRI": {
+                "NAME": "Friday",
+                "SHORT": "Fri"
+            },
+            "SAT": {
+                "NAME": "Saturday",
+                "SHORT": "Sat"
+            },
+            "SUN": {
+                "NAME": "Sunday",
+                "SHORT": "Sun"
+            }
+        },
+        "MONTH": {
+            "JAN": {
+                "NAME": "January",
+                "SHORT": "Jan"
+            },
+            "FEB": {
+                "NAME": "February",
+                "SHORT": "Feb"
+            },
+            "MAR": {
+                "NAME": "March",
+                "SHORT": "Mar"
+            },
+            "APR": {
+                "NAME": "April",
+                "SHORT": "Apr"
+            },
+            "MAI": {
+                "NAME": "May",
+                "SHORT": "May"
+            },
+            "JUN": {
+                "NAME": "June",
+                "SHORT": "Jun"
+            },
+            "JUL": {
+                "NAME": "July",
+                "SHORT": "Jul"
+            },
+            "AUG": {
+                "NAME": "August",
+                "SHORT": "Aug"
+            },
+            "SEP": {
+                "NAME": "September",
+                "SHORT": "Sep"
+            },
+            "OCT": {
+                "NAME": "October",
+                "SHORT": "Oct"
+            },
+            "NOV": {
+                "NAME": "November",
+                "SHORT": "Nov"
+            },
+            "DEC": {
+                "NAME": "December",
+                "SHORT": "Dec"
+            }
+        }
+    },
+    "CAT": {
+        "BTN": {
+            "BACK": "Back",
+            "BACK_TO_PENDING": "Move to pending",
+            "CANCEL": "Cancel",
+            "ADD": "Add",
+            "EDIT": "Edit",
+            "CONFIRM": "Confirm",
+            "COMPLETE": "Complete",
+            "ACCEPT": "Accept",
+            "SAVE": "Save",
+            "SAVE_TO_FILE": "Save to file",
+            "DELETE": "Delete"
+        },
+        "DIALOG": {
+            "WAREHOUSE": {
+                "CONFIRM_REQUEST": {
+                    "TITLE": "Order Completion Confirmation",
+                    "BODY": "Are you sure you want to complete this order? This action cannot be undone."
+                },
+                "ADD_RACK": {
+                    "TITLE": "Add new rack",
+                    "RACK_NAME": "Enter name..."
+                },
+                "ADD_SHELF": {
+                    "TITLE": "Add new shelf",
+                    "SHELF_NAME": "Enter name..."
+                },
+                "EDIT_RACK": {
+                    "TITLE": "Edit rack"
+                },
+                "EDIT_SHELF": {
+                    "TITLE": "Edit shelf"
+                },
+                "DELETE_RACK": {
+                    "TITLE": "Delete rack",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "DELETE_SHELF": {
+                    "TITLE": "Delete shelf",
+                    "BODY": "Are you sure you want to delete {{item}}? This action cannot be undone."
+                },
+                "MOVE_BOOK_ITEM": {
+                    "TITLE": "Move Document",
+                    "BODY": "Select a new location for the document \"{{name}}\" [ID: {{id}}].",
+                    "SELECT_RACK": "Select rack...",
+                    "SELECT_SHELF": "Select shelf..."
+                }
+            }
+        },
+        "TOAST": {
+            "FORM_INVALID": "Invalid form data.",
+            "WAREHOUSE": {
+                "REQUEST": {
+                    "COMPLETE": {
+                        "SUCCESS": "The order has been successfully completed!",
+                        "FAILURE": "The order could not be completed."
+                    }
+                },
+                "RACK": {
+                    "CREATE": {
+                        "SUCCESS": "The rack has been successfully created.",
+                        "FAILURE": "Failed to create the rack."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The rack was successfully edited.",
+                        "FAILURE": "The rack cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The rack was successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "Failed to delete the rack.",
+                            "HAS_BOOKS": "The rack cannot be deleted while it has books on its shelves."
+                        }
+                    }
+                },
+                "SHELF": {
+                    "CREATE": {
+                        "SUCCESS": "The shelf has been successfully created.",
+                        "FAILURE": "The shelf could not be created."
+                    },
+                    "EDIT": {
+                        "SUCCESS": "The shelf was successfully edited.",
+                        "FAILURE": "The shelf cannot be edited."
+                    },
+                    "DELETE": {
+                        "SUCCESS": "The shelf was successfully deleted.",
+                        "FAILURE": {
+                            "MAIN": "Failed to delete the shelf.",
+                            "HAS_BOOKS": "The shelf cannot be deleted until all books are moved."
+                        }
+                    }
+                },
+                "BOOK_ITEM": {
+                    "MOVED": {
+                        "SUCCESS": "The document was successfully moved.",
+                        "FAILURE": "The document could not be moved."
+                    }
+                }
+            }
+        },
+        "LOGIN": {
+            "HEADER": "Login",
+            "USERNAME": {
+                "LABEL": "Username",
+                "VALID_MSG": "Username is required",
+                "PLACEHOLDER": "Enter username"
+            },
+            "PASSWORD": {
+                "LABEL": "Password",
+                "VALID_MSG": "Password is required",
+                "PLACEHOLDER": "Enter password",
+                "FORGOT": "Forgot password?"
+            },
+            "BTN": "Log in",
+            "NOT_HAVE_ACCOUNT": "Don't have an account?",
+            "SIGN_UP": "Sign up",
+            "SIGN_UP_ALSO": "You can also join through"
+        },
+        "REGISTER": {
+            "HEADER": "Registration",
+            "VALID_MSG": {
+                "REQUIRED": "Fill in the field.",
+                "PASS_LENGTH": "Password must be at least {{length}} characters long.",
+                "PASS_UPPER_LETTER": "Password must contain at least one uppercase letter.",
+                "PASS_LOWER_LETTER": "Password must contain at least one lowercase letter.",
+                "PASS_DIGIT": "Password must contain at least one digit.",
+                "PASS_SPECIAL_CHAR": "Password must contain at least one special character.",
+                "PASS_MISMATCH": "Passwords must match."
+            },
+            "PASS_REPEAT": "Repeat password",
+            "BTN": "Register"
+        },
+        "NAVBAR": {
+            "PROFILE": "Profile",
+            "LOGOUT": "Logout",
+            "MEMBER_FROM": "Member since"
+        },
+        "SIDEBAR": {
+            "DASHBOARD": "Dashboard",
+            "NOTIFICATIONS": "Notifications",
+            "MESSAGES": "Messages",
+            "USERS": "Users",
+            "BOOKS": "Books",
+            "CASHIER": "Cashier",
+            "WAREHOUSE": {
+                "NAME": "Warehouse",
+                "TRANSACTIONS": "Check Out / Return",
+                "HISTORY": "History",
+                "RACKS": "Shelves and resources"
+            },
+            "REPORTS": "Reports",
+            "SETTINGS": "Settings"
+        },
+        "USER": {
+            "BORROWER": "Reader",
+            "ROLE": {
+                "NAME": "Role",
+                "USER": "User",
+                "ADMIN": "Administrator",
+                "WAREHOUSE": "Warehouse",
+                "CASHIER": "Cashier"
+            },
+            "DETAILS": {
+                "HEADER": "Personal details",
+                "FIRST_NAME": "First name",
+                "LAST_NAME": "Last name",
+                "GENDER": {
+                    "LABEL": "Gender",
+                    "MALE": "Male",
+                    "FEMALE": "Female",
+                    "OTHER": "Other"
+                },
+                "BIRTH_DATE": "Date of birth",
+                "NATIONALITY": "Nationality",
+                "ADDRESS": "Address",
+                "STREET": "Street",
+                "ZIPCODE": "Zip code",
+                "CITY": "City",
+                "STATE": "State",
+                "COUNTRY": "Country",
+                "PARENTS": "Parents' names",
+                "MOTHER": "Mother's name",
+                "FATHER": "Father's name",
+                "PESEL": "Pesel",
+                "PHONE": "Phone"
+            },
+            "ACCOUNT": {
+                "HEADER": "Account details",
+                "ID": "ID",
+                "EMAIL": "Email",
+                "DATE_OF_REGISTRATION": "Registration date",
+                "AVAILABILITY_DATE": "Validity date",
+                "STATUS": {
+                    "NAME": "Account status",
+                    "ACTIVE": "Active",
+                    "INACTIVE": "Inactive",
+                    "CLOSED": "Closed",
+                    "SUSPENDED": "Suspended",
+                    "PENDING": "Pending"
+                },
+                "LENDINGS": "Lendings",
+                "LENDINGS_ALL": "All lendings",
+                "LENDINGS_ANNUAL": "Annual lending activity",
+                "LENDINGS_WEEKLY": "Activity over the past 7 days",
+                "LENDINGS_COUNT": "Lending count",
+                "LENDINGS_CURRENT": "Current lendings",
+                "RETURNS": "Returns",
+                "LATE_FEES": "Late fees",
+                "FAV_GENRE": "Favorite genre",
+                "FAV_GENRES": "Favorite genres"
+            },
+            "CARD": {
+                "ID": "Library card",
+                "NUM": "Card number",
+                "ISSUE_DATE": "Card issue date",
+                "STATUS": {
+                    "NAME": "Card status",
+                    "ACTIVE": "Active",
+                    "INACTIVE": "Inactive",
+                    "LOST": "Lost"
+                }
+            }
+        },
+        "BOOK": {
+            "TITLE": "Title",
+            "AUTHORS": "Authors"
+        },
+        "BOOK_ITEM": {
+            "LACK": "No books",
+            "BARCODE": "Barcode",
+            "PURCHASE_DATE": "Purchase date",
+            "RACK": "Rack",
+            "SHELF": "Shelf",
+            "STATUS": {
+                "NAME": "Status",
+                "AVAILABLE": "Available",
+                "REQUESTED": "Reserved",
+                "LOANED": "Loaned",
+                "RETURNED": "Returned",
+                "LOST": "Lost"
+            },
+            "FORMAT": {
+                "NAME": "Format",
+                "HARDCOVER": "Hardcover",
+                "PAPERBACK": "Paperback",
+                "AUDIO_BOOK": "Audiobook",
+                "EBOOK": "E-book",
+                "NEWSPAPER": "Newspaper",
+                "MAGAZINE": "Magazine",
+                "JOURNAL": "Journal"
+            }
+        },
+        "REQUEST": {
+            "CREATION_DATE": "Creation Date",
+            "LOCATION": "Location",
+            "STATUS": {
+                "NAME": "Status",
+                "COMPLETED": "Completed",
+                "READY": "Ready for Pickup",
+                "IN_PROGRESS": "In Progress",
+                "PENDING": "Preparation",
+                "RESERVED": "Reservation",
+                "CANCELED": "Canceled"
+            }
+        },
+        "LOAN": {
+            "CREATION_DATE": "Creation Date",
+            "DUE_DATE": "Return Date",
+            "STATUS": {
+                "NAME": "Status",
+                "CURRENT": "Current",
+                "COMPLETED": "Completed"
+            }
+        },
+        "RACK": {
+            "LACK": "No racks",
+            "NAME": "Name",
+            "SHELVES_COUNT": "Number of shelves",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
+        },
+        "SHELF": {
+            "LACK": "No shelves",
+            "NAME": "Name",
+            "POSITION": "Position",
+            "BOOK_ITEMS_COUNT": "Number of books",
+            "CREATION_DATE": "Creation date",
+            "LAST_UPDATE_DATE": "Last update date"
+        },
+        "WAREHOUSE": {
+            "PENDING_REQUESTS": {
+                "HEADER": "New Orders",
+                "LACK": "No new orders"
+            },
+            "IN_PROGRESS_REQUESTS": {
+                "HEADER": "In Progress",
+                "LACK": "No orders in progress"
+            },
+            "RACKS": {
+                "HEADER": "Racks"
+            },
+            "SHELVES": {
+                "HEADER": "Shelves"
+            },
+            "BOOK_ITEMS": {
+                "HEADER": "Books"
+            }
+        },
+        "STATS": {
+            "AMOUNT": "Amount",
+            "RANK": "Rank",
+            "LENDINGS_COUNT_TODAY": "Today's Lendings",
+            "USERS_ACTIVE_THIS_MONTH": "Active Users This Month",
+            "USERS_NEW_THIS_MONTH": "New Users This Month",
+            "USERS_TOTAL": "Total Users",
+            "USERS_TOP_BORROWERS": "Top 10 readers",
+            "USERS_AGE_GROUPS": {
+                "HEADER": "Age Groups",
+                "LABEL": "Age"
+            },
+            "USERS_TOP_CITIES": "City - number of readers"
+        }
+    },
+    "WEB": {
+
+    }
+}

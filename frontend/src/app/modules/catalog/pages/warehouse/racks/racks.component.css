@@ -1,0 +1,166 @@
+app-basic-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+app-card-rack,
+app-card-shelf,
+app-card-book-item {
+    display: block;
+}
+
+app-card-rack:nth-child(odd),
+app-card-shelf:nth-child(odd),
+app-card-book-item:nth-child(odd) {
+    background-color: rgba(241, 241, 241, 0.8);
+}
+
+app-card-rack:nth-child(even),
+app-card-shelf:nth-child(even),
+app-card-book-item:nth-child(even) {
+    background-color: white;
+}
+
+.form-control {
+    width: auto !important;
+}
+
+.rack-list {
+    height: 100%;
+    flex: 0 0 65%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+input {
+    margin: 5px;
+    padding: 5px;
+}
+
+.add-button {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+.disabled {
+    background-color: #d3d3d3;
+    color: #ffffff;
+    border: none;
+    opacity: 0.5;
+}
+
+.bi-plus-lg {
+    margin-right: 5px;
+}
+
+.rack-list .list {
+    padding: .25rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.rack-info {
+    flex: 1;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 20%;
+    transition: background-color 0.3s ease;
+}
+
+
+.edit-button {color: #0d6efd;}
+.edit-button:hover { background-color: rgba(13, 110, 253, 0.2);}
+
+.delete-button {color: #dc3545;}
+.delete-button:hover {background-color: rgba(220, 53, 69, 0.2);}
+
+.move-button {color: #fd7e14;}
+.move-button:hover {background-color: rgba(253, 126, 20, 0.2);}
+
+.grid,
+.grid-modal {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-size: 0.8rem;
+}
+
+.grid-modal {
+    grid-auto-rows: 3rem;
+}
+
+.grid-modal .dropdown button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.grid-modal .dropdown-menu {
+    --bs-dropdown-link-active-bg: #6c757d;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.grid-modal .dropdown-menu li {
+    cursor: pointer;
+}
+
+app-modal-dialog .grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.custom-focus {
+    font-weight: 600;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+  }
+
+.lack-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
