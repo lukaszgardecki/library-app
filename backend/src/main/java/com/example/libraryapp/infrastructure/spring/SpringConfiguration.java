@@ -5,6 +5,7 @@ import com.example.libraryapp.domain.user.ports.UserRepositoryPort;
 import com.example.libraryapp.infrastructure.spring.security.auth.CustomUserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -50,5 +51,16 @@ class SpringConfiguration {
         AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setDefaultLocale(Locale.ENGLISH);
         return resolver;
+    }
+
+    @Bean
+    public ResourceBundleMessageSource messageSource() {
+        var source = new ResourceBundleMessageSource();
+        source.setBasename("messages");
+        source.setDefaultEncoding("UTF-8");
+
+        source.setFallbackToSystemLocale(false);
+        source.setUseCodeAsDefaultMessage(true);
+        return source;
     }
 }

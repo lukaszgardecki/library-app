@@ -14,6 +14,11 @@ export const catalogRoutes: Routes = [
         path: 'users', loadComponent: () => import('./pages/users/users.component').then((c) => c.UsersComponent),
         data: { expectedRoles: ['ADMIN'] }
       },
+      {
+        path: 'users/new', 
+        loadComponent: () => import('./pages/register/register.component').then((c) => c.RegisterComponent),
+        data: { expectedRoles: ['ADMIN'] }
+      },
       { path: 'users/:id', loadComponent: () => import('./pages/user-details/user-details.component').then((c) => c.UserDetailsComponent) },
       { path: 'books', loadComponent: () => import('./pages/books/books.component').then((c) => c.BooksComponent) },
       {

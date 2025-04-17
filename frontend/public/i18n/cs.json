@@ -146,6 +146,9 @@
         },
         "TOAST": {
             "FORM_INVALID": "Neplatn\u00e1 data formul\u00e1\u0159e.",
+            "REGISTER": {
+                "SUCCESS": "U\u010Ditel byl \u00FAsp\u011B\u0161n\u011B vytvo\u0159en."
+            },
             "WAREHOUSE": {
                 "REQUEST": {
                     "COMPLETE": {
@@ -236,7 +239,10 @@
             "DASHBOARD": "Hlavní panel",
             "NOTIFICATIONS": "Oznámení",
             "MESSAGES": "Zprávy",
-            "USERS": "Uživatelé",
+            "USERS": {
+                "MAIN": "U\u017Eivatel\u00E9",
+                "NEW": "P\u0159idat nov\u00E9ho u\u017Eivatele"
+            },
             "BOOKS": "Knihy",
             "CASHIER": "Pokladní",
             "WAREHOUSE": {

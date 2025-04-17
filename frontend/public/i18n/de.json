@@ -146,6 +146,9 @@
         },
         "TOAST": {
             "FORM_INVALID": "Ung\u00fcltige Formulardaten.",
+            "REGISTER": {
+                "SUCCESS": "Der Leser wurde erfolgreich erstellt."
+            },
             "WAREHOUSE": {
                 "REQUEST": {
                     "COMPLETE": {
@@ -236,7 +239,10 @@
             "DASHBOARD": "Dashboard",
             "NOTIFICATIONS": "Benachrichtigungen",
             "MESSAGES": "Nachrichten",
-            "USERS": "Benutzer",
+            "USERS": {
+                "MAIN": "Benutzer",
+                "NEW": "Neuen Benutzer hinzuf\u00FCgen"
+            },
             "BOOKS": "Bücher",
             "CASHIER": "Kasse",
             "WAREHOUSE": {

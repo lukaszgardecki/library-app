@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BasicSectionComponent } from '../../../components/sections/basic-section/basic-section.component';
 import { Observable } from 'rxjs';
@@ -11,9 +11,8 @@ import { TableUpdateEvent } from '../../../shared/models/table-event.interface';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardInProgressComponent } from "./cards/card-in-progress/card-in-progress.component";
 import { CardPendingComponent } from "./cards/card-pending/card-pending.component";
-import { ToastContainerComponent } from '../../../components/toasts/toast-container/toast-container.component';
 import { ModalService } from '../../../core/services/modal.service';
-import { ModalHostComponent } from "../../../components/modal-dialog/modal-host/modal-host.component";
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-transactions',
@@ -23,9 +22,7 @@ import { ModalHostComponent } from "../../../components/modal-dialog/modal-host/
     BasicSectionComponent,
     ReactiveFormsModule,
     CardInProgressComponent,
-    CardPendingComponent,
-    ToastContainerComponent,
-    ModalHostComponent
+    CardPendingComponent
 ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
@@ -36,12 +33,12 @@ export class TransactionsComponent implements OnInit {
   selectedPendingEl: WarehouseBookItemRequestListView | undefined;
   selectedInProgressEl: WarehouseBookItemRequestListView | undefined;
   isLoading = false;
-  @ViewChild('toastContainer') toastContainer!: ToastContainerComponent;
 
 
   constructor(
     private warehouseService: WarehouseService,
     private modalService: ModalService,
+    private toastService: ToastService,
     private translate: TranslateService,
   ) {}
 
@@ -79,7 +76,7 @@ export class TransactionsComponent implements OnInit {
 
   openConfirmBookItemRequestModal() {
     if (!this.selectedInProgressEl) {
-      this.toastContainer.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE');
+      this.toastService.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE');
       return;
     }
     this.modalService.openModal({
@@ -93,8 +90,8 @@ export class TransactionsComponent implements OnInit {
     console.log("dupa")
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
-        next: () => this.toastContainer.showSuccess('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),
-        error: () => this.toastContainer.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE')
+        next: () => this.toastService.showSuccess('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),
+        error: () => this.toastService.showError('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.FAILURE')
       });
     }
   }
