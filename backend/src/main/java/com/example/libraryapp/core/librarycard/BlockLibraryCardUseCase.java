@@ -1,0 +1,14 @@
+package com.example.libraryapp.core.librarycard;
+
+import com.example.libraryapp.domain.librarycard.model.LibraryCardId;
+import com.example.libraryapp.domain.librarycard.model.LibraryCardStatus;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+class BlockLibraryCardUseCase {
+    private final LibraryCardService libraryCardService;
+
+    void execute(LibraryCardId cardId) {
+        libraryCardService.changeLibraryCardStatusTo(LibraryCardStatus.INACTIVE, cardId);
+    }
+}

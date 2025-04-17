@@ -1,6 +1,6 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.application.auth.AuthenticationFacade;
+import com.example.libraryapp.core.auth.AuthenticationFacade;
 import com.example.libraryapp.domain.auth.dto.LoginRequest;
 import com.example.libraryapp.domain.auth.dto.LoginResponse;
 import com.example.libraryapp.TestAuth;

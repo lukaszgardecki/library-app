@@ -1,6 +1,6 @@
 package com.example.libraryapp.infrastructure.spring.security.auth;
 
-import com.example.libraryapp.application.token.TokenFacade;
+import com.example.libraryapp.core.token.TokenFacade;
 import com.example.libraryapp.domain.MessageKey;
 import com.example.libraryapp.domain.message.ports.MessageProviderPort;
 import io.jsonwebtoken.JwtException;

@@ -1,8 +1,8 @@
 package com.example.libraryapp.infrastructure.spring.security.handlers;
 
-import com.example.libraryapp.application.person.PersonFacade;
-import com.example.libraryapp.application.token.TokenFacade;
-import com.example.libraryapp.application.user.UserFacade;
+import com.example.libraryapp.core.person.PersonFacade;
+import com.example.libraryapp.core.token.TokenFacade;
+import com.example.libraryapp.core.user.UserFacade;
 import com.example.libraryapp.domain.event.ports.EventPublisherPort;
 import com.example.libraryapp.domain.event.types.user.UserLogoutEvent;
 import com.example.libraryapp.domain.person.dto.PersonDto;
