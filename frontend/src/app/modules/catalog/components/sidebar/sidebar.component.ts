@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
       { name: 'CAT.SIDEBAR.MESSAGES', routerLink: '/library-app/messages', icon: 'bi-chat-text', selected: false }
     ]},
     { items: [
-      { name: 'CAT.SIDEBAR.USERS', routerLink: '/library-app/users', icon: 'bi-people-fill', selected: false },
+      { name: 'CAT.SIDEBAR.USERS.MAIN', routerLink: '/library-app/users', icon: 'bi-people-fill', selected: false },
       { name: 'CAT.SIDEBAR.BOOKS', routerLink: '/library-app/books', icon: 'bi-book', selected: false },
     ] },
     { items: [

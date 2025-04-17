@@ -146,6 +146,9 @@
         },
         "TOAST": {
             "FORM_INVALID": "Invalid form data.",
+            "REGISTER": {
+                "SUCCESS": "The reader has been successfully created."
+            },
             "WAREHOUSE": {
                 "REQUEST": {
                     "COMPLETE": {
@@ -236,7 +239,10 @@
             "DASHBOARD": "Dashboard",
             "NOTIFICATIONS": "Notifications",
             "MESSAGES": "Messages",
-            "USERS": "Users",
+            "USERS": {
+                "MAIN": "Users",
+                "NEW": "Add new user"
+            },
             "BOOKS": "Books",
             "CASHIER": "Cashier",
             "WAREHOUSE": {

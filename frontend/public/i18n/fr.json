@@ -146,6 +146,9 @@
         },
         "TOAST": {
             "FORM_INVALID": "Donn\u00E9es du formulaire invalides.",
+            "REGISTER": {
+                "SUCCESS": "Le lecteur a \u00e9t\u00e9 cr\u00e9\u00e9 avec succ\u00e8s."
+            },
             "WAREHOUSE": {
                 "REQUEST": {
                     "COMPLETE": {
@@ -236,7 +239,10 @@
             "DASHBOARD": "Tableau de bord",
             "NOTIFICATIONS": "Notifications",
             "MESSAGES": "Messages",
-            "USERS": "Utilisateurs",
+            "USERS": {
+                "MAIN": "Utilisateurs",
+                "NEW": "Ajouter un nouvel utilisateur"
+            },
             "BOOKS": "Livres",
             "CASHIER": "Caissier",
             "WAREHOUSE": {

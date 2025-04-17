@@ -146,6 +146,9 @@
         },
         "TOAST": {
             "FORM_INVALID": "Niepoprawne dane formularza.",
+            "REGISTER": {
+                "SUCCESS": "Czytelnik został pomyślnie utworzony."
+            },
             "WAREHOUSE": {
                 "REQUEST": {
                     "COMPLETE": {
@@ -236,7 +239,10 @@
             "DASHBOARD": "Panel główny",
             "NOTIFICATIONS": "Powiadomienia",
             "MESSAGES": "Wiadomości",
-            "USERS": "Użytkownicy",
+            "USERS": {
+                "MAIN": "Użytkownicy",
+                "NEW": "Dodaj nowego użytkownika"
+            },
             "BOOKS": "Książki",
             "CASHIER": "Kasa",
             "WAREHOUSE": {
