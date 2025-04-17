@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-toast-container',
@@ -13,8 +14,15 @@ export class ToastContainerComponent {
   private toastIdCounter = 0;
   @ViewChildren('toastElement') toastElements!: QueryList<ElementRef>;
 
+  constructor(private toastService: ToastService) {}
+
+  ngOnInit(): void {
+    this.toastService.register(this);
+  }
+
   showSuccess = (message: string) => this.show(new SuccessToast(message));
-  showError = (message: string) => this.show(new ErrorToast(message)); 
+  showError = (message: string) => this.show(new ErrorToast(message));
+  showInfo = (message: string) => this.show(new InfoToast(message));
 
   private show(type: ToastType) {
     const toast = new ActiveToast(++this.toastIdCounter, type.message, type);

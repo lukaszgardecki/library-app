@@ -5,11 +5,13 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ModalDialogComponent } from "./components/modal-dialog/modal-dialog.component";
+import { ToastContainerComponent } from "./components/toast/toast-container.component";
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, TranslateModule, FormsModule, RouterModule, SidebarComponent, NavbarComponent],
+  imports: [CommonModule, TranslateModule, FormsModule, RouterModule, SidebarComponent, NavbarComponent, ModalDialogComponent, ToastContainerComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.css'
 })

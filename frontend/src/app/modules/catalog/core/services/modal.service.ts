@@ -1,4 +1,4 @@
-import { ComponentRef, Injectable, Type, ViewContainerRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ModalDialogComponent } from '../../components/modal-dialog/modal-dialog.component';
 import { FormGroup } from '@angular/forms';
 
@@ -6,46 +6,24 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class ModalService {
-  private viewContainerRef?: ViewContainerRef;
+  private modalComponent?: ModalDialogComponent;
 
-  registerViewContainer(vc: ViewContainerRef) {
-    this.viewContainerRef = vc;
+  register(modalComponent: ModalDialogComponent) {
+    this.modalComponent = modalComponent;
   }
 
-  openModal(options: { title?: string, body?: any, form?: FormGroup, onConfirm?: () => void}) {
-    const modalRef = this.open(ModalDialogComponent, {
-      title: options?.title,
-      body: options?.body,
-      submitBtnDisabled: options?.form ? options?.form.invalid : false,
+  openModal(options: { title?: string; body?: any; form?: FormGroup; onConfirm?: () => void }) {
+    if (!this.modalComponent) return;
+
+    this.modalComponent.title = options.title || '';
+    this.modalComponent.body = options.body;
+    this.modalComponent.submitBtnDisabled = options.form ? options.form.invalid : false;
+
+    options.form?.statusChanges.subscribe(() => {
+      this.modalComponent!.submitBtnDisabled = options.form?.invalid || false;
     });
 
-    options?.form?.statusChanges.subscribe(() => {
-      modalRef.instance.submitBtnDisabled = options?.form ? options?.form.invalid : true;
-    });
-
-    modalRef.instance.onConfirm.subscribe(() => {
-      if (options?.onConfirm) {
-        options.onConfirm();
-      }
-    });
-    modalRef.instance.close = () => modalRef.destroy();
-  }
-
-  private open<T extends object>(component: Type<T>, inputs?: Partial<T>): ComponentRef<T> {
-    if (!this.viewContainerRef) {
-      throw new Error('Modal container not registered.');
-    }
-
-    const componentRef = this.viewContainerRef.createComponent(component);
-
-    if (inputs) {
-      Object.assign(componentRef.instance, inputs);
-    }
-
-    const cleanup = () => componentRef.destroy();
-    const instance = componentRef.instance as any;
-    instance.closeModal = cleanup;
-
-    return componentRef;
+    this.modalComponent.onConfirm = options.onConfirm;
+    this.modalComponent.show();
   }
 }

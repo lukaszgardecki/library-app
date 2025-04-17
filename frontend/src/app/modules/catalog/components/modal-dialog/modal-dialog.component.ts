@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { ModalService } from '../../core/services/modal.service';
 @Component({
   selector: 'app-modal-dialog',
   imports: [CommonModule, TranslateModule],
@@ -8,15 +9,31 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './modal-dialog.component.css'
 })
 export class ModalDialogComponent {
-  @Input() title: string = '';
+
+  @Input() title = '';
   @Input() body: any;
-  @Input() submitBtnDisabled: boolean = true;
-  @Output() onConfirm = new EventEmitter<void>();
-  public close!: () => void;
+  submitBtnDisabled = true;
+  onConfirm: (() => void) | undefined = undefined;
+
+  visible = false;
+
+  constructor(private modalService: ModalService) {}
+
+  ngOnInit() {
+    this.modalService.register(this);
+  }
+
+  show() {
+    this.visible = true;
+  }
+
+  close() {
+    this.visible = false;
+  }
 
   confirm() {
-    this.onConfirm.emit();
-    if (this.close) this.close();
+    if (this.onConfirm) this.onConfirm();
+    this.close();
   }
 
   isString(value: any): boolean {
