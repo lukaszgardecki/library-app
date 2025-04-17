@@ -60,8 +60,8 @@ export class UserService {
     return this.http.get<UserPreview>(`${this.baseURL}/${id}/preview`, { withCredentials: true });
   }
 
-  createNewUser(user: UserRegister) {
-    this.http.post(this.registerURL, user).subscribe();
+  createNewUser(user: UserRegister): Observable<void>{
+    return this.http.post<void>(this.registerURL, user);
   }
 
   generateFakeUsers(amount: number) {

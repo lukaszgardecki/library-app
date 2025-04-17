@@ -12,13 +12,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     : storageService.getAccessToken();
   const endpointIsAuthorized = AUTHORIZED_ENDPOINTS.some(endpoint => req.url.includes(endpoint));
   if (endpointIsAuthorized && token) {
-    req = req.clone({
-      setHeaders: {
-          Authorization: `Bearer ${token}`,
-          'Accept-Language': `${storageService.getUserLanguage()}`
-        }
-      });
+    req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
+
+  req = req.clone({ setHeaders: {'Accept-Language': `${storageService.getUserLanguage()}`} });
 
   return next(req).pipe(
     catchError(error => {
