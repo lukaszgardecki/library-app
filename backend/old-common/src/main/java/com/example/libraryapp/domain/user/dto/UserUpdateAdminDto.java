@@ -1,9 +1,6 @@
 package com.example.libraryapp.domain.user.dto;
 
-import com.example.userservice.common.librarycard.model.LibraryCardStatus;
-import com.example.userservice.common.person.model.Gender;
-import com.example.userservice.common.user.model.AccountStatus;
-import com.example.userservice.common.user.model.Role;
+
 import lombok.Getter;
 import lombok.Setter;
 

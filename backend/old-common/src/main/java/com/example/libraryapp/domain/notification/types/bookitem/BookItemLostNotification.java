@@ -9,8 +9,6 @@ import com.example.libraryapp.domain.notification.model.NotificationSubject;
 import com.example.libraryapp.domain.notification.model.NotificationType;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
 
-import java.math.BigDecimal;
-
 public class BookItemLostNotification extends BookItemNotification {
 
     public BookItemLostNotification(BookItemEvent event, MessageProviderPort msgProvider) {

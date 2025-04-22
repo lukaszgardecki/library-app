@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 class EventListenerAdapter {
@@ -18,7 +17,7 @@ class EventListenerAdapter {
     }
 
     @KafkaListener(topics = "book-item-loaned", groupId = "user-service-listeners")
-    void bookItemLoaned(BookItemRequestCanceledEvent event) {
+    void bookItemLoaned(BookItemLoanedEvent event) {
         eventListener.updateUserOnLoan(event.getUserId());
     }
 
@@ -33,12 +32,12 @@ class EventListenerAdapter {
     }
 
     @KafkaListener(topics = "book-item-request-canceled", groupId = "user-service-listeners")
-    void bookItemRequestCanceled(BookItemRenewedEvent event) {
+    void bookItemRequestCanceled(BookItemRequestCanceledEvent event) {
         eventListener.updateUserOnRequestCancellation(event.getUserId());
     }
 
     @KafkaListener(topics = "book-item-request-renewed", groupId = "user-service-listeners")
-    void bookItemRequestRenewed(BookItemLoanedEvent event) {
+    void bookItemRequestRenewed(BookItemRenewedEvent event) {
         eventListener.updateUserOnRenewal(event.getUserId());
     }
 

@@ -9,8 +9,6 @@ import com.example.libraryapp.domain.notification.model.NotificationSubject;
 import com.example.libraryapp.domain.notification.model.NotificationType;
 import com.example.libraryapp.domain.event.types.bookitem.BookItemEvent;
 
-import java.time.LocalDateTime;
-
 public class BookItemLoanRenewedNotification extends BookItemNotification {
 
     public BookItemLoanRenewedNotification(BookItemEvent event, MessageProviderPort msgProvider) {

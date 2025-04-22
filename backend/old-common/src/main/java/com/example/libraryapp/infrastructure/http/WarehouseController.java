@@ -82,6 +82,12 @@ class WarehouseController {
         return ResponseEntity.ok(rackDto);
     }
 
+    @GetMapping("/shelves/{id}")
+    public ResponseEntity<ShelfDto> getShelfById(@PathVariable Long id) {
+        ShelfDto shelfDto = warehouseFacade.getShelf(new ShelfId(id));
+        return ResponseEntity.ok(shelfDto);
+    }
+
     @PostMapping("/racks")
     public ResponseEntity<RackDto> addRack(@RequestBody RackToSaveDto rackToSave) {
         RackDto savedRack = warehouseFacade.addRack(rackToSave);

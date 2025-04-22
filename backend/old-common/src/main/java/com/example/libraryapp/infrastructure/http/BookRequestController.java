@@ -29,6 +29,12 @@ class BookRequestController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/{bookItemId}/isRequested")
+    public ResponseEntity<Boolean> isBookItemRequested(@PathVariable Long bookItemId) {
+        boolean isRequested = bookItemRequestFacade.isBookItemRequested(new BookItemId(bookItemId));
+        return ResponseEntity.ok(isRequested);
+    }
+
     @GetMapping("/current")
     public ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(
             @RequestParam("user_id") Long userId
