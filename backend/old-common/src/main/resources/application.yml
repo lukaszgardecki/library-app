@@ -1,0 +1,18 @@
+server:
+  port: 9080
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  jpa:
+    hibernate:
+      ddl-auto: update
+  profiles:
+    default: prod
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+
+
+app:
+  version: '@project.version@'

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0008" author="lukas">
+        <createTable tableName="person">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="gender" type="VARCHAR(50)"/>
+            <column name="pesel" type="VARCHAR(15)"/>
+            <column name="date_of_birth" type="DATE"/>
+            <column name="nationality" type="VARCHAR(100)"/>
+            <column name="mothers_name" type="VARCHAR(100)"/>
+            <column name="fathers_name" type="VARCHAR(100)"/>
+
+            <column name="street_address" type="VARCHAR(255)"/>
+            <column name="city" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(255)"/>
+            <column name="zip_code" type="VARCHAR(20)"/>
+            <column name="country" type="VARCHAR(255)"/>
+
+            <column name="phone" type="VARCHAR(20)"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
+        </modifySql>
+    </changeSet>
+
+</databaseChangeLog>

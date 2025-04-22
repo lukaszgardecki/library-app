@@ -1,0 +1,21 @@
+package com.example.userservice.user.infrastructure.integration.bookitemrequestservice;
+
+import com.example.userservice.user.domain.dto.BookItemRequestDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@FeignClient(name = "book-item-request", path = "/api/v1/book-requests")
+interface BookItemRequestServiceFeignClient {
+
+    @DeleteMapping("/users/{userId}/cancel-all")
+    ResponseEntity<Void> cancelAllItemRequestsByUserId(@PathVariable Long userId);
+
+    @GetMapping("/current")
+    ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(@RequestParam("userId") Long id);
+}

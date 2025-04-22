@@ -23,7 +23,7 @@ export class UserService {
     this.baseURL = `${baseURL}/users`;
     this.fakeUserURL = `${baseURL}/fu`;
     this.registerURL = `${baseURL}/register`;
-    this.baseAdminURL = `${baseURL}/admin/users`;
+    this.baseAdminURL = `${baseURL}/admin`;
   }
 
   getUsersPage(query: string = "", pageable: Pageable = new Pageable()): Observable<Page<UserListPreviewAdmin>> {
@@ -53,7 +53,7 @@ export class UserService {
   }
 
   getUserDetailsByIdAdmin(id: number): Observable<UserDetailsAdmin> {
-    return this.http.get<UserDetailsAdmin>(`${this.baseAdminURL}/${id}`, { withCredentials: true });
+    return this.http.get<UserDetailsAdmin>(`${this.baseAdminURL}/users/${id}`, { withCredentials: true });
   }
 
   getUserPreviewInfo(id: number): Observable<UserPreview> {
@@ -73,7 +73,7 @@ export class UserService {
   }
 
   updateUserByAdmin(userId: number, user: UserUpdateAdmin): Observable<UserDetails> {
-    return this.http.patch<UserDetails>(`${this.baseAdminURL}/${userId}`, user, { withCredentials: true });
+    return this.http.patch<UserDetails>(`${this.baseAdminURL}/users/${userId}`, user, { withCredentials: true });
   }
 
   private createParams(query: string | null, pageable: Pageable): HttpParams {

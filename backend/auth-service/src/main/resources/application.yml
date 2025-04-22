@@ -1,0 +1,34 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: auth-service
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+jwt:
+  expirationTime: 360000000 #100h
+  #  expirationTime: 900000 #15 min
+  secret: 694d057a02aec7b4de008225532c4aa7eadd6759d5f920749adb20a92dc158c1
+  refresh-token:
+    expiration: 604800000 #7 days
+#  kafka:
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#    consumer:
+#          bootstrap-servers: localhost:9092
+#          group-id: grupa1
+#          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#          value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#          properties:
+#            spring:
+#              json:
+#                trusted:
+#                  packages: com.example.userservice.user.domain.event
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

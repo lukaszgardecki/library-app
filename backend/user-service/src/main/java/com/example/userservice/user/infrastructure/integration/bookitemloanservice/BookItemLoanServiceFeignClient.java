@@ -1,0 +1,20 @@
+package com.example.userservice.user.infrastructure.integration.bookitemloanservice;
+
+import com.example.userservice.user.domain.dto.BookItemLoanDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@FeignClient(name = "book-item-loan", path = "/api/v1/loans")
+interface BookItemLoanServiceFeignClient {
+
+    @GetMapping("/all/list")
+    ResponseEntity<List<BookItemLoanDto>> getAllLoansByUserId(@RequestParam("user_id") Long userId);
+
+    @GetMapping("/current")
+    ResponseEntity<List<BookItemLoanDto>> getCurrentLoansByUserId(@RequestParam("user_id") Long userId);
+
+}
