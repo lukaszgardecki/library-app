@@ -24,6 +24,7 @@
         <module>user-service</module>
         <module>auth-service</module>
         <module>catalog-service</module>
+        <module>warehouse-service</module>
     </modules>
 
     <properties>

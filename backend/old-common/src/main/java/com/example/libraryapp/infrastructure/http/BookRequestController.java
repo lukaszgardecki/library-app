@@ -4,6 +4,7 @@ import com.example.libraryapp.core.bookitemrequest.BookItemRequestFacade;
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
 import com.example.libraryapp.domain.bookitemrequest.dto.BookItemRequestDto;
 import com.example.libraryapp.domain.bookitemrequest.model.BookItemRequestStatus;
+import com.example.libraryapp.domain.bookitemrequest.model.RequestId;
 import com.example.libraryapp.domain.user.model.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,15 @@ class BookRequestController {
     ) {
         List<BookItemRequestDto> list = bookItemRequestFacade.getUserCurrentBookItemRequests(new UserId(userId));
         return ResponseEntity.ok(list);
+    }
+
+    @PatchMapping("/{requestId}/{status}")
+    public ResponseEntity<Void> changeBookItemRequestStatus(
+            @PathVariable Long requestId,
+            @PathVariable BookItemRequestStatus status
+    ) {
+        bookItemRequestFacade.changeBookItemRequestStatus(new RequestId(requestId), status);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping

@@ -1,0 +1,17 @@
+package com.example.authservice.domain.exception;
+
+
+import com.example.authservice.domain.MessageKey;
+
+public abstract class LibraryAppException extends RuntimeException {
+    private final MessageKey messageKey;
+
+    protected LibraryAppException(MessageKey messageKey) {
+        super(messageKey.name());
+        this.messageKey = messageKey;
+    }
+
+    public MessageKey getMessageKey() {
+        return messageKey;
+    }
+}

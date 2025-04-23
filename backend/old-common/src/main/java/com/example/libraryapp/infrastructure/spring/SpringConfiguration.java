@@ -53,14 +53,5 @@ class SpringConfiguration {
         return resolver;
     }
 
-    @Bean
-    public ResourceBundleMessageSource messageSource() {
-        var source = new ResourceBundleMessageSource();
-        source.setBasename("messages");
-        source.setDefaultEncoding("UTF-8");
 
-        source.setFallbackToSystemLocale(false);
-        source.setUseCodeAsDefaultMessage(true);
-        return source;
-    }
 }
