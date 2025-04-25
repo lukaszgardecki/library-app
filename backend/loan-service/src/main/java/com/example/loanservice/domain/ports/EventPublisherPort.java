@@ -8,9 +8,9 @@ import com.example.loanservice.domain.model.UserId;
 
 public interface EventPublisherPort {
 
-    void publishBookItemLoanedEvent(BookItemLoanDto bookItemLoan, RequestId requestId);
-    void publishBookItemRenewalImpossibleEvent(BookItemId bookItemId, UserId userId);
-    void publishBookItemRenewedEvent(BookItemLoanDto bookItemLoan);
+    void publishLoanCreatedEvent(BookItemLoanDto bookItemLoan, RequestId requestId);
+    void publishLoanProlongationNotAllowedEvent(BookItemId bookItemId, UserId userId);
+    void publishLoanProlongedEvent(BookItemLoanDto bookItemLoan);
     void publishBookItemReturnedEvent(BookItemLoanDto bookItemLoan);
     void publishBookItemLostEvent(BookItemLoanDto bookItemLoan, Price charge);
 }

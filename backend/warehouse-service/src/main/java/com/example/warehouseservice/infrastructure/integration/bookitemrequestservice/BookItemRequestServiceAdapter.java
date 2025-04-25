@@ -25,6 +25,15 @@ class BookItemRequestServiceAdapter implements BookItemRequestServicePort {
     }
 
     @Override
+    public BookItemRequestDto getBookItemRequestById(RequestId requestId) {
+        ResponseEntity<BookItemRequestDto> response = client.getBookItemRequestById(requestId.value());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        return null;
+    }
+
+    @Override
     public void changeBookItemRequestStatus(RequestId requestId, BookItemRequestStatus status) {
         client.changeBookItemRequestStatus(requestId.value(), status);
     }

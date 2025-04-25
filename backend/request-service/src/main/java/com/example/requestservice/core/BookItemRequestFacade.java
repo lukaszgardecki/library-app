@@ -11,6 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class BookItemRequestFacade {
+    private final GetBookItemRequestUseCase getBookItemRequestUseCase;
     private final GetCurrentBookItemRequestUseCase getCurrentBookItemRequestUseCase;
     private final GetUserCurrentBookItemRequestsUseCase getUserCurrentBookItemRequestsUseCase;
     private final GetPageOfBookItemRequestsByStatusUseCase getPageOfBookItemRequestsByStatusUseCase;
@@ -21,6 +22,11 @@ public class BookItemRequestFacade {
     private final CheckIfBookItemRequestStatusIsReadyUseCase checkIfBookItemRequestStatusIsReadyUseCase;
     private final EnsureBookItemNotRequestedUseCase ensureBookItemNotRequestedUseCase;
     private final IsBookItemRequestedUseCase isBookItemRequestedUseCase;
+
+    public BookItemRequestDto getBookItemRequestById(RequestId requestId) {
+        BookItemRequest request = getBookItemRequestUseCase.execute(requestId);
+        return BookItemRequestMapper.toDto(request);
+    }
 
     public BookItemRequestDto getCurrentBookItemRequest(BookItemId bookItemId, UserId userId) {
         BookItemRequest bookItemRequest = getCurrentBookItemRequestUseCase.execute(bookItemId, userId);

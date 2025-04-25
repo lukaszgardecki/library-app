@@ -27,7 +27,12 @@ class BookItemRequestService implements EventListenerPort {
         return requests.map(this::getWarehouseBookItemRequest);
     }
 
-    WarehouseBookItemRequest getWarehouseBookItemRequest(BookItemRequestDto request) {
+    WarehouseBookItemRequest getWarehouseBookItemRequest(RequestId requestId) {
+        BookItemRequestDto request = bookItemRequestService.getBookItemRequestById(requestId);
+        return getWarehouseBookItemRequest(request);
+    }
+
+    private WarehouseBookItemRequest getWarehouseBookItemRequest(BookItemRequestDto request) {
         BookItemDto bookItem = catalogService.getBookItemById(new BookItemId(request.getBookItemId()));
         BookDto book = catalogService.getBookById(new BookId(bookItem.getBookId()));
         UserDto user = userService.getUserById(new UserId(request.getUserId()));

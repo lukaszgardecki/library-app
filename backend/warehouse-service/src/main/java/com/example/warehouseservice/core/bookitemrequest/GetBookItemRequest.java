@@ -1,6 +1,6 @@
 package com.example.warehouseservice.core.bookitemrequest;
 
-import com.example.warehouseservice.domain.dto.BookItemRequestDto;
+import com.example.warehouseservice.domain.model.RequestId;
 import com.example.warehouseservice.domain.model.WarehouseBookItemRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 class GetBookItemRequest {
     private final BookItemRequestService bookItemRequestService;
 
-    WarehouseBookItemRequest execute(BookItemRequestDto request) {
-        return bookItemRequestService.getWarehouseBookItemRequest(request);
+    WarehouseBookItemRequest execute(RequestId requestId) {
+        return bookItemRequestService.getWarehouseBookItemRequest(requestId);
     }
 }

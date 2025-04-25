@@ -1,16 +1,13 @@
 package com.example.fineservice.domain.event.outgoing;
 
-import com.example.fineservice.domain.event.CustomEvent;
 import com.example.fineservice.domain.model.FineAmount;
 import com.example.fineservice.domain.model.UserId;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-public class FinePaidEvent extends CustomEvent {
+@RequiredArgsConstructor
+public class FinePaidEvent {
+    private final UserId userId;
     private final FineAmount fineAmount;
-
-    public FinePaidEvent(UserId userId, FineAmount fineAmount) {
-        super(userId);
-        this.fineAmount = fineAmount;
-    }
 }

@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.events;
 
-import com.example.userservice.domain.model.event.incoming.*;
+import com.example.userservice.domain.event.incoming.*;
 import com.example.userservice.domain.ports.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,38 +11,46 @@ import org.springframework.stereotype.Component;
 class EventListenerAdapter {
     private final EventListenerPort eventListener;
 
-    @KafkaListener(topics = "book-item-requested", groupId = "user-service-listeners")
-    void bookItemRequested(BookItemRequestedEvent event) {
-        eventListener.updateUserOnRequest(event.getUserId());
+    private static final String REQUEST_CREATED_TOPIC = "request-service.request.created";
+    private static final String REQUEST_CANCELED_TOPIC = "request-service.request.canceled";
+    private static final String LOAN_CREATED_TOPIC = "loan-service.loan.created";
+    private static final String LOAN_PROLONGED_TOPIC = "loan-service.loan.prolonged";
+    private static final String BOOK_ITEM_RETURNED_TOPIC = "loan-service.book-item.returned";
+    private static final String BOOK_ITEM_LOST_TOPIC = "loan-service.book-item.lost";
+    private static final String FINE_PAID_TOPIC = "fine-service.fine.paid";
+
+    @KafkaListener(topics = REQUEST_CREATED_TOPIC, groupId = "user-service.request.created.consumers")
+    void requestCreated(RequestCreatedEvent event) {
+        eventListener.handleRequestCreatedEvent(event.getUserId());
     }
 
-    @KafkaListener(topics = "book-item-loaned", groupId = "user-service-listeners")
-    void bookItemLoaned(BookItemLoanedEvent event) {
-        eventListener.updateUserOnLoan(event.getUserId());
+    @KafkaListener(topics = REQUEST_CANCELED_TOPIC, groupId = "user-service.request.canceled.consumers")
+    void requestCanceled(RequestCanceledEvent event) {
+        eventListener.handleRequestCanceledEvent(event.getUserId());
     }
 
-    @KafkaListener(topics = "book-item-returned", groupId = "user-service-listeners")
+    @KafkaListener(topics = LOAN_CREATED_TOPIC, groupId = "user-service.loan.created.consumers")
+    void loanCreated(LoanCreatedEvent event) {
+        eventListener.handleLoanCreatedEvent(event.getUserId());
+    }
+
+    @KafkaListener(topics = LOAN_PROLONGED_TOPIC, groupId = "user-service.loan.prolonged.consumers")
+    void loanProlonged(LoanProlongedEvent event) {
+        eventListener.handleLoanProlongedEvent(event.getUserId());
+    }
+
+    @KafkaListener(topics = BOOK_ITEM_RETURNED_TOPIC, groupId = "user-service.book-item.returned.consumers")
     void bookItemReturned(BookItemReturnedEvent event) {
-        eventListener.updateUserOnReturn(event.getUserId());
+        eventListener.handleBookItemReturnedEvent(event.getUserId());
     }
 
-    @KafkaListener(topics = "book-item-lost", groupId = "user-service-listeners")
+    @KafkaListener(topics = BOOK_ITEM_LOST_TOPIC, groupId = "user-service.book-item.lost.consumers")
     void bookItemLost(BookItemLostEvent event) {
-        eventListener.updateUserOnLoss(event.getUserId());
+        eventListener.handleBookItemLostEvent(event.getUserId());
     }
 
-    @KafkaListener(topics = "book-item-request-canceled", groupId = "user-service-listeners")
-    void bookItemRequestCanceled(BookItemRequestCanceledEvent event) {
-        eventListener.updateUserOnRequestCancellation(event.getUserId());
-    }
-
-    @KafkaListener(topics = "book-item-request-renewed", groupId = "user-service-listeners")
-    void bookItemRequestRenewed(BookItemRenewedEvent event) {
-        eventListener.updateUserOnRenewal(event.getUserId());
-    }
-
-    @KafkaListener(topics = "fine-paid", groupId = "user-service-listeners")
+    @KafkaListener(topics = FINE_PAID_TOPIC, groupId = "user-service.fine.paid.consumers")
     void finePaid(FinePaidEvent event) {
-        eventListener.updateUserOnFinePaid(event.getUserId(), event.getFineAmount());
+        eventListener.handleFinePaidEvent(event.getUserId(), event.getFineAmount());
     }
 }

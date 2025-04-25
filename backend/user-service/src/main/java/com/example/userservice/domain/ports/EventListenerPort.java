@@ -5,11 +5,11 @@ import com.example.userservice.domain.model.user.UserId;
 
 public interface EventListenerPort {
 
-    void updateUserOnRequest(UserId userId);
-    void updateUserOnRequestCancellation(UserId userId);
-    void updateUserOnReturn(UserId userId);
-    void updateUserOnLoss(UserId userId);
-    void updateUserOnRenewal(UserId userId);
-    void updateUserOnLoan(UserId userId);
-    void updateUserOnFinePaid(UserId userId, FineAmount fineAmount);
+    void handleRequestCreatedEvent(UserId userId);
+    void handleRequestCanceledEvent(UserId userId);
+    void handleLoanCreatedEvent(UserId userId);
+    void handleLoanProlongedEvent(UserId userId);
+    void handleBookItemReturnedEvent(UserId userId);
+    void handleBookItemLostEvent(UserId userId);
+    void handleFinePaidEvent(UserId userId, FineAmount fineAmount);
 }

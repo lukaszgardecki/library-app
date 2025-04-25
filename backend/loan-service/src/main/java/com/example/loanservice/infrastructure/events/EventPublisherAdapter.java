@@ -1,11 +1,7 @@
 package com.example.loanservice.infrastructure.events;
 
 import com.example.loanservice.domain.dto.BookItemLoanDto;
-import com.example.loanservice.domain.event.outgoing.BookItemLoanedEvent;
-import com.example.loanservice.domain.event.incoming.BookItemLostEvent;
-import com.example.loanservice.domain.event.outgoing.BookItemRenewalImpossibleEvent;
-import com.example.loanservice.domain.event.outgoing.BookItemRenewedEvent;
-import com.example.loanservice.domain.event.outgoing.BookItemReturnedEvent;
+import com.example.loanservice.domain.event.outgoing.*;
 import com.example.loanservice.domain.model.BookItemId;
 import com.example.loanservice.domain.model.Price;
 import com.example.loanservice.domain.model.RequestId;
@@ -20,30 +16,30 @@ import org.springframework.stereotype.Component;
 class EventPublisherAdapter implements EventPublisherPort {
     private final KafkaTemplate<String, Object> template;
 
-    private static final String BOOK_ITEM_LOANED_SUCCESS_TOPIC = "book-item.loaned.success";
-    private static final String BOOK_ITEM_RENEWAL_IMPOSSIBLE_TOPIC = "book-item.renewal.impossible";
-    private static final String BOOK_ITEM_RENEWED_SUCCESS_TOPIC = "book-item.renewed.success";
-    private static final String BOOK_ITEM_RETURNED_SUCCESS_TOPIC = "book-item.returned.success";
-    private static final String BOOK_ITEM_LOST_TOPIC = "book-item.lost";
+    private static final String LOAN_CREATED_TOPIC = "loan-service.loan.created";
+    private static final String LOAN_PROLONGATION_NOT_ALLOWED_TOPIC = "loan-service.loan.prolongation.not-allowed";
+    private static final String LOAN_PROLONGED_TOPIC = "loan-service.loan.prolonged";
+    private static final String BOOK_ITEM_RETURNED_TOPIC = "loan-service.book-item.returned";
+    private static final String BOOK_ITEM_LOST_TOPIC = "loan-service.book-item.lost";
 
     @Override
-    public void publishBookItemLoanedEvent(BookItemLoanDto bookItemLoan, RequestId requestId) {
-        template.send(BOOK_ITEM_LOANED_SUCCESS_TOPIC, new BookItemLoanedEvent(bookItemLoan, requestId));
+    public void publishLoanCreatedEvent(BookItemLoanDto bookItemLoan, RequestId requestId) {
+        template.send(LOAN_CREATED_TOPIC, new LoanCreatedEvent(bookItemLoan, requestId));
     }
 
     @Override
-    public void publishBookItemRenewalImpossibleEvent(BookItemId bookItemId, UserId userId) {
-        template.send(BOOK_ITEM_RENEWAL_IMPOSSIBLE_TOPIC, new BookItemRenewalImpossibleEvent(bookItemId, userId));
+    public void publishLoanProlongationNotAllowedEvent(BookItemId bookItemId, UserId userId) {
+        template.send(LOAN_PROLONGATION_NOT_ALLOWED_TOPIC, new LoanProlongationNotAllowed(bookItemId, userId));
     }
 
     @Override
-    public void publishBookItemRenewedEvent(BookItemLoanDto bookItemLoan) {
-        template.send(BOOK_ITEM_RENEWED_SUCCESS_TOPIC, new BookItemRenewedEvent(bookItemLoan));
+    public void publishLoanProlongedEvent(BookItemLoanDto bookItemLoan) {
+        template.send(LOAN_PROLONGED_TOPIC, new LoanProlongedEvent(bookItemLoan));
     }
 
     @Override
     public void publishBookItemReturnedEvent(BookItemLoanDto bookItemLoan) {
-        template.send(BOOK_ITEM_RETURNED_SUCCESS_TOPIC, new BookItemReturnedEvent(bookItemLoan));
+        template.send(BOOK_ITEM_RETURNED_TOPIC, new BookItemReturnedEvent(bookItemLoan));
     }
 
     @Override

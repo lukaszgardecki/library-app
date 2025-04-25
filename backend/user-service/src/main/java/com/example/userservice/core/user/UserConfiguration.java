@@ -64,7 +64,7 @@ public class UserConfiguration {
             EventPublisherPort publisher
     ) {
         return new UserFacade(
-                new RegisterUserUseCase(userRepository, personFacade, libraryCardFacade, publisher),
+                new CreateUserUseCase(userRepository, personFacade, libraryCardFacade, publisher),
                 new GetAllUsersUseCase(userService),
                 new GetUserListUseCase(userService),
                 new GetUserUseCase(userService),
@@ -88,10 +88,10 @@ public class UserConfiguration {
             UserRepositoryPort userRepository,
             PersonFacade personFacade,
             AuthenticationServicePort authService,
-            @Lazy BookCatalogServicePort bookCatalogService,
-            @Lazy BookItemRequestServicePort bookItemRequestService,
-            @Lazy BookItemLoanServicePort bookItemLoanService,
-            @Lazy StatisticsServicePort statisticsService,
+            BookCatalogServicePort bookCatalogService,
+            BookItemRequestServicePort bookItemRequestService,
+            BookItemLoanServicePort bookItemLoanService,
+            StatisticsServicePort statisticsService,
             FineServicePort fineService,
             LibraryCardFacade libraryCardFacade
     ) {
@@ -101,10 +101,8 @@ public class UserConfiguration {
         );
     }
 
-//    @Bean
-//    UserEventListenerImpl userEventListener(
-//            UserRepository userRepository) {
-//        UserService userService = new UserService(userRepository, bookItemLoanFacade, fineFacade);
-//        return new UserEventListenerImpl(userService);
-//    }
+    @Bean
+    EventListenerPort eventListenerService(UserRepositoryPort userRepository) {
+        return new EventListenerService(userRepository);
+    }
 }

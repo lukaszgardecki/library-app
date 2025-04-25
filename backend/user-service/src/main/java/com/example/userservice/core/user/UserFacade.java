@@ -10,7 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class UserFacade {
-    private final RegisterUserUseCase registerUserUseCase;
+    private final CreateUserUseCase createUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final GetUserListUseCase getUserListUseCase;
     private final GetUserUseCase getUserUseCase;
@@ -69,8 +69,8 @@ public class UserFacade {
         return UserMapper.toDto(userPreview);
     }
 
-    public UserId registerNewUser(RegisterUserDto request) {
-        return registerUserUseCase.execute(request);
+    public UserId createNewUser(RegisterUserDto request) {
+        return createUserUseCase.execute(request);
     }
 
     public UserDto updateUser(UserId id, UserUpdateDto userData) {
@@ -109,7 +109,7 @@ public class UserFacade {
     public void generateFakeUsers(int limit) {
         for (int i = 0; i < limit; i++) {
             RegisterUserDto user = FakeUserGenerator.generate();
-            registerUserUseCase.execute(user);
+            createUserUseCase.execute(user);
         }
     }
 }

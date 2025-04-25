@@ -5,15 +5,14 @@ import com.example.userservice.core.person.PersonFacade;
 import com.example.userservice.domain.dto.librarycard.LibraryCardDto;
 import com.example.userservice.domain.dto.person.PersonDto;
 import com.example.userservice.domain.dto.user.*;
-import com.example.userservice.domain.model.person.PersonId;
-import com.example.userservice.domain.model.user.*;
-import com.example.userservice.domain.ports.*;
 import com.example.userservice.domain.exception.UserHasNotReturnedBooksException;
 import com.example.userservice.domain.exception.UserNotFoundException;
 import com.example.userservice.domain.model.auth.Role;
 import com.example.userservice.domain.model.book.BookId;
 import com.example.userservice.domain.model.bookitem.BookItemId;
-import com.example.userservice.domain.model.fine.FineAmount;
+import com.example.userservice.domain.model.person.PersonId;
+import com.example.userservice.domain.model.user.*;
+import com.example.userservice.domain.ports.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-class UserService implements EventListenerPort {
+class UserService {
     private final UserRepositoryPort userRepository;
     private final AuthenticationServicePort authenticationService;
     private final BookCatalogServicePort bookCatalogService;
@@ -143,42 +142,6 @@ class UserService implements EventListenerPort {
         personFacade.save(person);
         libraryCardFacade.save(card);
         return user;
-    }
-
-    @Override
-    public void updateUserOnRequest(UserId userId) {
-        userRepository.incrementTotalBooksRequested(userId);
-    }
-
-    @Override
-    public void updateUserOnRequestCancellation(UserId userId) {
-        userRepository.decrementTotalBooksRequested(userId);
-    }
-
-    @Override
-    public void updateUserOnReturn(UserId userId) {
-        userRepository.decrementTotalBooksBorrowed(userId);
-    }
-
-    @Override
-    public void updateUserOnLoss(UserId userId) {
-        userRepository.decrementTotalBooksBorrowed(userId);
-    }
-
-    @Override
-    public void updateUserOnRenewal(UserId userId) {
-        // nothing ?
-    }
-
-    @Override
-    public void updateUserOnLoan(UserId userId) {
-        userRepository.decrementTotalBooksRequested(userId);
-        userRepository.incrementTotalBooksBorrowed(userId);
-    }
-
-    @Override
-    public void updateUserOnFinePaid(UserId userId, FineAmount fineAmount) {
-        userRepository.reduceChargeByAmount(userId, fineAmount);
     }
 
     long countAll() {

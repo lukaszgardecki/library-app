@@ -15,6 +15,6 @@ class EventListenerService implements EventListenerPort {
     @Override
     public void handleBookItemReservedEvent(BookItemId bookItemId) {
         BookItemLoan currentLoan = bookItemLoanService.getBookItemLoan(bookItemId, LoanStatus.CURRENT);
-        publisher.publishBookItemRenewalImpossibleEvent(currentLoan.getBookItemId(), currentLoan.getUserId());
+        publisher.publishLoanProlongationNotAllowedEvent(currentLoan.getBookItemId(), currentLoan.getUserId());
     }
 }

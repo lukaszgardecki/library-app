@@ -28,7 +28,7 @@ class RenewBookItemLoanUseCase {
         bookItemLoanService.validateBookItemLoanForRenewal(loanToUpdate);
         loanToUpdate.setDueDate(new LoanDueDate(LocalDateTime.now().plusDays(Constants.MAX_LENDING_DAYS)));
         BookItemLoan savedLoan = bookItemLoanService.save(loanToUpdate);
-        publisher.publishBookItemRenewedEvent(BookItemLoanMapper.toDto(savedLoan));
+        publisher.publishLoanProlongedEvent(BookItemLoanMapper.toDto(savedLoan));
         return savedLoan;
     }
 }

@@ -1,6 +1,5 @@
 package com.example.warehouseservice.core.bookitemrequest;
 
-import com.example.warehouseservice.domain.dto.BookItemRequestDto;
 import com.example.warehouseservice.domain.dto.WarehouseBookItemRequestListViewDto;
 import com.example.warehouseservice.domain.model.BookItemRequestStatus;
 import com.example.warehouseservice.domain.model.RequestId;
@@ -20,8 +19,8 @@ public class BookItemRequestFacade {
                 .map(BookItemRequestMapper::toRequestListViewDto);
     }
 
-    public WarehouseBookItemRequestListViewDto getBookItemRequest(BookItemRequestDto request) {
-        WarehouseBookItemRequest warehouseBookItemRequest = getBookItemRequest.execute(request);
+    public WarehouseBookItemRequestListViewDto getBookItemRequestById(RequestId requestId) {
+        WarehouseBookItemRequest warehouseBookItemRequest = getBookItemRequest.execute(requestId);
         return BookItemRequestMapper.toRequestListViewDto(warehouseBookItemRequest);
     }
 

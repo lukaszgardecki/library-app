@@ -23,12 +23,12 @@ class CreateBookItemRequestUseCase {
         BookItemRequest request;
         if (bookItem.getStatus() == BookItemStatus.AVAILABLE) {
             request = bookItemRequestService.saveRequest(bookItemId, userId);
-            publisher.publishBookItemRequestedEvent(BookItemRequestMapper.toDto(request));
+            publisher.publishRequestCreatedEvent(BookItemRequestMapper.toDto(request));
         } else {
             request = bookItemRequestService.saveReservation(bookItemId, userId);
             int queuePosition = bookItemRequestService.getReservationQueuePosition(bookItemId, userId);
             LoanDueDate dueDate = new LoanDueDate(bookItem.getDueDate().atStartOfDay());
-            publisher.publishBookItemReservedEvent(bookItemId, userId, queuePosition, dueDate);
+            publisher.publishReservationCreatedEvent(bookItemId, userId, queuePosition, dueDate);
         }
         return request;
     }

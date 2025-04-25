@@ -1,6 +1,5 @@
 package com.example.catalogservice.core.bookitem;
 
-import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.exception.BookItemException;
 import com.example.catalogservice.domain.model.bookitem.BookItem;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
@@ -22,8 +21,7 @@ class DeleteBookItemUseCase {
             throw new BookItemException(MessageKey.BOOK_ITEM_DELETION_FAILED);
         } else {
             bookItemRepository.deleteById(id);
-            Title bookTitle = bookItemService.getBookTitleByBookId(bookItem.getBookId());
-            publisher.publishBookItemDeletedEvent(bookItem.getId(), bookTitle);
+            publisher.publishBookItemDeletedEvent(bookItem.getId());
         }
     }
 }

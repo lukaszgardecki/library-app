@@ -16,6 +16,6 @@ class CancelBookItemRequestUseCase {
 //        authFacade.validateOwnerOrAdminAccess(userId);
         BookItemRequest request = bookItemRequestService.getCurrentBookItemRequest(bookItemId, userId);
         bookItemRequestService.cancelRequest(request.getId());
-        publisher.publishBookItemRequestCanceledEvent(request.getBookItemId(), request.getUserId());
+        publisher.publishRequestCanceledEvent(request.getBookItemId(), request.getUserId());
     }
 }

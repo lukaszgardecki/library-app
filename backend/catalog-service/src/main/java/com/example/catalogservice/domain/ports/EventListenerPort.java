@@ -6,10 +6,10 @@ import com.example.catalogservice.domain.model.bookitem.LoanDueDate;
 import com.example.catalogservice.domain.model.LoanReturnDate;
 
 public interface EventListenerPort {
-        void updateBookItemOnRequest(BookItemId bookItemId);
-        void updateBookItemOnRequestCancellation(BookItemId bookItemId);
-        void updateBookItemOnReturn(BookItemId bookItemId, LoanReturnDate dueDate);
-        void updateBookItemOnLoss(BookItemId bookItemId);
-        void updateBookItemOnRenewal(BookItemId bookItemId, LoanDueDate dueDate);
-        void updateBookItemOnLoan(BookItemId bookItemId, LoanCreationDate creationDate, LoanDueDate dueDate);
+        void handleRequestCreatedEvent(BookItemId bookItemId);
+        void handleRequestCanceledEvent(BookItemId bookItemId);
+        void handleLoanCreatedEvent(BookItemId bookItemId, LoanCreationDate creationDate, LoanDueDate dueDate);
+        void handleLoanProlongedEvent(BookItemId bookItemId, LoanDueDate dueDate);
+        void handleBookItemReturnedEvent(BookItemId bookItemId, LoanReturnDate dueDate);
+        void handleBookItemLostEvent(BookItemId bookItemId);
 }

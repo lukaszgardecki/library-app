@@ -5,21 +5,20 @@ spring:
     name: warehouse-service
   liquibase:
     change-log: classpath:db/changelog/master.xml
-#  kafka:
-#    producer:
-#      bootstrap-servers: localhost:9092
-#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-#    consumer:
-#          bootstrap-servers: localhost:9092
-#          group-id: grupa1
-#          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#          value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-#          properties:
-#            spring:
-#              json:
-#                trusted:
-#                  packages: com.example.userservice.user.domain.event
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.warehouseservice.domain.event
 eureka:
   client:
     fetch-registry: true

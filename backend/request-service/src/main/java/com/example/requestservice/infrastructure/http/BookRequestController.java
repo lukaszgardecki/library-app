@@ -32,6 +32,12 @@ class BookRequestController {
         return ResponseEntity.ok(page);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BookItemRequestDto> getBookItemRequestById(@PathVariable Long id) {
+        BookItemRequestDto request = bookItemRequestFacade.getBookItemRequestById(new RequestId(id));
+        return ResponseEntity.ok(request);
+    }
+
     @GetMapping("/{bookItemId}/isRequested")
     public ResponseEntity<Boolean> isBookItemRequested(@PathVariable Long bookItemId) {
         boolean isRequested = bookItemRequestFacade.isBookItemRequested(new BookItemId(bookItemId));

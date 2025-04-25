@@ -2,17 +2,15 @@ package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.core.book.BookFacade;
 import com.example.catalogservice.domain.dto.BookDto;
-import com.example.catalogservice.domain.model.LoanReturnDate;
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.dto.BookItemWithBookDto;
 import com.example.catalogservice.domain.dto.RackDto;
 import com.example.catalogservice.domain.dto.ShelfDto;
 import com.example.catalogservice.domain.exception.BookItemNotFoundException;
+import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.model.bookitem.*;
 import com.example.catalogservice.domain.ports.BookItemRepositoryPort;
 import com.example.catalogservice.domain.ports.BookItemRequestServicePort;
-import com.example.catalogservice.domain.ports.EventListenerPort;
 import com.example.catalogservice.domain.ports.WarehouseServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,9 +22,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-class BookItemService implements EventListenerPort {
+class BookItemService {
     private final BookItemRepositoryPort bookItemRepository;
-    private final BookItemRequestServicePort bookItemRequestService;
     private final WarehouseServicePort warehouseService;
     private final BookItemBarcodeGenerator generator;
     private final BookFacade bookFacade;
@@ -64,62 +61,5 @@ class BookItemService implements EventListenerPort {
 
     void updateBookItemBarcode(BookItemId bookItemId, BookItemBarcode barcode) {
         bookItemRepository.updateBarcode(bookItemId, barcode);
-    }
-
-    @Override
-    public void updateBookItemOnRequest(BookItemId bookItemId) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        if (bookItem.getStatus() == BookItemStatus.AVAILABLE) {
-            bookItemRepository.updateStatus(bookItemId, BookItemStatus.REQUESTED);
-        }
-    }
-
-    @Override
-    public void updateBookItemOnRequestCancellation(BookItemId bookItemId) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        boolean bookIsRequested = bookItemRequestService.isBookItemRequested(bookItemId);
-        boolean hasStatusRequested = bookItem.getStatus() == BookItemStatus.REQUESTED;
-        if (!bookIsRequested && hasStatusRequested) {
-            bookItem.setStatus(BookItemStatus.AVAILABLE);
-        }
-    }
-
-    @Override
-    public void updateBookItemOnReturn(BookItemId bookItemId, LoanReturnDate dueDate) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        boolean bookIsReserved = bookItemRequestService.isBookItemRequested(bookItemId);
-
-        if (bookIsReserved) {
-            bookItem.setStatus(BookItemStatus.REQUESTED);
-        } else {
-            bookItem.setStatus(BookItemStatus.AVAILABLE);
-        }
-
-        bookItem.setDueDate(new LoanDueDate(dueDate.value()));
-        save(bookItem);
-    }
-
-    @Override
-    public void updateBookItemOnLoss(BookItemId bookItemId) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        bookItem.setStatus(BookItemStatus.LOST);
-        bookItem.setDueDate(null);
-        save(bookItem);
-    }
-
-    @Override
-    public void updateBookItemOnRenewal(BookItemId bookItemId, LoanDueDate dueDate) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        bookItem.setDueDate(dueDate);
-        save(bookItem);
-    }
-
-    @Override
-    public void updateBookItemOnLoan(BookItemId bookItemId, LoanCreationDate creationDate, LoanDueDate dueDate) {
-        BookItem bookItem = getBookItemById(bookItemId);
-        bookItem.setStatus(BookItemStatus.LOANED);
-        bookItem.setBorrowedDate(creationDate);
-        bookItem.setDueDate(dueDate);
-        save(bookItem);
     }
 }

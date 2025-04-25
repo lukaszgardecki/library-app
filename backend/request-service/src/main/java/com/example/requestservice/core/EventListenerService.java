@@ -18,9 +18,13 @@ class EventListenerService implements EventListenerPort {
     private final BookItemRequestRepositoryPort bookItemRequestRepository;
     private final EventPublisherPort publisher;
 
+    @Override
+    public void handleBookItemDeletedEvent(BookItemId bookItemId) {
+        cancelAllCurrentRequests(bookItemId);
+    }
 
     @Override
-    public void handleBookItemLoanedEvent(RequestId requestId) {
+    public void handleLoanCreatedEvent(RequestId requestId) {
         bookItemRequestRepository.setBookRequestStatus(requestId, BookItemRequestStatus.COMPLETED);
     }
 
@@ -32,7 +36,7 @@ class EventListenerService implements EventListenerPort {
                 .sorted(Comparator.comparing(request -> request.getCreationDate().value()))
                 .forEachOrdered(req -> {
                     if (requests.indexOf(req) == 0) {
-                        publisher.publishBookItemAvailableToLoan(req.getBookItemId(), req.getUserId());
+                        publisher.publishRequestAvailableToLoanEvent(req.getBookItemId(), req.getUserId());
                     }
                 });
     }
@@ -42,17 +46,12 @@ class EventListenerService implements EventListenerPort {
         cancelAllCurrentRequests(bookItemId);
     }
 
-    @Override
-    public void handleBookItemDeletedEvent(BookItemId bookItemId) {
-        cancelAllCurrentRequests(bookItemId);
-    }
-
     private void cancelAllCurrentRequests(BookItemId bookItemId) {
         List<BookItemRequestStatus> statusesToFind = bookItemRequestService.getCurrentRequestStatuses();
         bookItemRequestService.getAllByBookItemIdAndStatuses(bookItemId, statusesToFind)
                 .forEach(request -> {
                     bookItemRequestService.cancelRequest(request.getId());
-                    publisher.publishBookItemRequestCanceledEvent(request.getBookItemId(), request.getUserId());
+                    publisher.publishRequestCanceledEvent(request.getBookItemId(), request.getUserId());
                 });
     }
 }

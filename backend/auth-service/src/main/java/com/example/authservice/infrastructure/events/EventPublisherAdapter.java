@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 class EventPublisherAdapter implements EventPublisherPort {
     private final KafkaTemplate<String, Object> template;
 
-    private static final String LOGIN_SUCCESS_TOPIC = "auth.login.success";
-    private static final String LOGIN_FAILURE_TOPIC = "auth.login.failure";
-    private static final String LOGOUT_SUCCESS_TOPIC = "auth.logout.success";
+    private static final String LOGIN_SUCCESS_TOPIC = "auth-service.login.success";
+    private static final String LOGIN_FAILURE_TOPIC = "auth-service.login.failure";
+    private static final String LOGOUT_SUCCESS_TOPIC = "auth-service.logout.success";
 
     @Override
     public void publishLoginSuccessEvent(UserId userId) {

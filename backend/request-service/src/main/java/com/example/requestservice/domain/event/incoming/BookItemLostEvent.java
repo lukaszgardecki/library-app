@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BookItemLostEvent {
-    private LoanId id;
-    private LoanDueDate dueDate;
-    private LoanReturnDate returnDate;
+    private LoanId loanId;
+    private LoanDueDate loanDueDate;
+    private LoanReturnDate loanReturnDate;
     private UserId userId;
     private BookItemId bookItemId;
     private Price charge;

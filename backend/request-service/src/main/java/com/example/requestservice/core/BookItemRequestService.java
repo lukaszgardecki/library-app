@@ -16,7 +16,7 @@ import java.util.Optional;
 class BookItemRequestService {
     private final BookItemRequestRepositoryPort bookItemRequestRepository;
 
-    BookItemRequest getCurrentBookItemRequestById(RequestId id) {
+    BookItemRequest getBookItemRequestById(RequestId id) {
         return bookItemRequestRepository.findById(id)
                 .orElseThrow(() -> new BookItemRequestNotFoundException(id));
     }
@@ -48,7 +48,7 @@ class BookItemRequestService {
     }
 
     void cancelRequest(RequestId bookItemRequestId) {
-        BookItemRequest bookItemRequest = getCurrentBookItemRequestById(bookItemRequestId);
+        BookItemRequest bookItemRequest = getBookItemRequestById(bookItemRequestId);
         bookItemRequest.setStatus(BookItemRequestStatus.CANCELED);
         bookItemRequestRepository.save(bookItemRequest);
     }

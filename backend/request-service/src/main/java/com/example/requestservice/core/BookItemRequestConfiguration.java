@@ -46,6 +46,7 @@ public class BookItemRequestConfiguration {
             EventPublisherPort publisher
     ) {
         return new BookItemRequestFacade(
+                new GetBookItemRequestUseCase(bookItemRequestService),
                 new GetCurrentBookItemRequestUseCase(bookItemRequestService),
                 new GetUserCurrentBookItemRequestsUseCase(bookItemRequestService),
                 new GetPageOfBookItemRequestsByStatusUseCase(bookItemRequestRepository),

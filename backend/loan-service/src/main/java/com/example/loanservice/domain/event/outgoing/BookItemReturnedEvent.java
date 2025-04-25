@@ -6,16 +6,16 @@ import lombok.Getter;
 
 @Getter
 public class BookItemReturnedEvent {
-    private final LoanId id;
-    private final LoanDueDate dueDate;
-    private final LoanReturnDate returnDate;
+    private final LoanId loanId;
+    private final LoanDueDate loanDueDate;
+    private final LoanReturnDate loanReturnDate;
     private final UserId userId;
     private final BookItemId bookItemId;
 
     public BookItemReturnedEvent(BookItemLoanDto bookItemLoan) {
-        this.id = new LoanId(bookItemLoan.id());
-        this.dueDate = new LoanDueDate(bookItemLoan.dueDate());
-        this.returnDate = new LoanReturnDate(bookItemLoan.returnDate());
+        this.loanId = new LoanId(bookItemLoan.id());
+        this.loanDueDate = new LoanDueDate(bookItemLoan.dueDate());
+        this.loanReturnDate = new LoanReturnDate(bookItemLoan.returnDate());
         this.userId = new UserId(bookItemLoan.userId());
         this.bookItemId = new BookItemId(bookItemLoan.bookItemId());
     }

@@ -15,34 +15,34 @@ import org.springframework.stereotype.Component;
 class EventPublisherAdapter implements EventPublisherPort {
     private final KafkaTemplate<String, Object> template;
 
-    private static final String BOOK_ITEM_REQUEST_READY_TOPIC = "book-item-request.ready";
-    private static final String BOOK_ITEM_REQUEST_CANCELED_TOPIC = "book-item-request.canceled";
-    private static final String BOOK_ITEM_REQUESTED_TOPIC = "book-item.requested";
-    private static final String BOOK_ITEM_RESERVED_TOPIC = "book-item.reserved";
-    private static final String BOOK_ITEM_AVAILABLE_TO_LOAN_TOPIC = "book-item.available-to-loan";
+    private static final String REQUEST_READY_TOPIC = "request-service.request.ready";
+    private static final String REQUEST_CANCELED_TOPIC = "request-service.request.canceled";
+    private static final String REQUEST_CREATED_TOPIC = "request-service.request.created";
+    private static final String RESERVATION_CREATED_TOPIC = "request-service.reservation.created";
+    private static final String REQUEST_AVAILABLE_TO_LOAN_TOPIC = "request-service.request.available-to-loan";
 
     @Override
-    public void publishBookItemRequestReadyEvent(BookItemId bookItemId, UserId userId) {
-        template.send(BOOK_ITEM_REQUEST_READY_TOPIC, new BookItemRequestReadyEvent(bookItemId, userId));
+    public void publishRequestReadyEvent(BookItemId bookItemId, UserId userId) {
+        template.send(REQUEST_READY_TOPIC, new RequestReadyEvent(bookItemId, userId));
     }
 
     @Override
-    public void publishBookItemRequestCanceledEvent(BookItemId bookItemId, UserId userId) {
-        template.send(BOOK_ITEM_REQUEST_CANCELED_TOPIC, new BookItemRequestCanceledEvent(bookItemId, userId));
+    public void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId) {
+        template.send(REQUEST_CANCELED_TOPIC, new RequestCanceledEvent(bookItemId, userId));
     }
 
     @Override
-    public void publishBookItemRequestedEvent(BookItemRequestDto dto) {
-        template.send(BOOK_ITEM_REQUESTED_TOPIC, new BookItemRequestedEvent(dto));
+    public void publishRequestCreatedEvent(BookItemRequestDto dto) {
+        template.send(REQUEST_CREATED_TOPIC, new RequestCreatedEvent(dto));
     }
 
     @Override
-    public void publishBookItemReservedEvent(BookItemId bookItemId, UserId userId, int queuePosition, LoanDueDate dueDate) {
-        template.send(BOOK_ITEM_RESERVED_TOPIC, new BookItemReservedEvent(bookItemId, userId, queuePosition, dueDate));
+    public void publishReservationCreatedEvent(BookItemId bookItemId, UserId userId, int queuePosition, LoanDueDate dueDate) {
+        template.send(RESERVATION_CREATED_TOPIC, new ReservationCreatedEvent(bookItemId, userId, queuePosition, dueDate));
     }
 
     @Override
-    public void publishBookItemAvailableToLoan(BookItemId bookItemId, UserId userId) {
-        template.send(BOOK_ITEM_AVAILABLE_TO_LOAN_TOPIC, new BookItemAvailableToLoanEvent(bookItemId, userId));
+    public void publishRequestAvailableToLoanEvent(BookItemId bookItemId, UserId userId) {
+        template.send(REQUEST_AVAILABLE_TO_LOAN_TOPIC, new RequestAvailableToLoanEvent(bookItemId, userId));
     }
 }

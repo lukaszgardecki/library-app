@@ -1,11 +1,10 @@
 package com.example.fineservice.domain.ports;
 
-import com.example.fineservice.domain.dto.BookItemLoanDto;
-import com.example.fineservice.domain.model.Price;
+import com.example.fineservice.domain.model.*;
 
 public interface EventListenerPort {
 
-    void processFineForBookReturn(BookItemLoanDto bookItemLoan);
+    void handleBookItemReturnedEvent(LoanId loanId, UserId userId, LoanReturnDate returnDate, LoanDueDate dueDate);
 
-    void processFineForBookLost(BookItemLoanDto bookItemLoan, Price charge);
+    void handleBookItemLostEvent(LoanId loanId, UserId userId, LoanReturnDate returnDate, LoanDueDate dueDate, Price charge);
 }

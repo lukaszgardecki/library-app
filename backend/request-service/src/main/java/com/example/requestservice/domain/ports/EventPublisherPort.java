@@ -7,13 +7,13 @@ import com.example.requestservice.domain.model.UserId;
 
 public interface EventPublisherPort {
 
-    void publishBookItemRequestReadyEvent(BookItemId bookItemId, UserId userId);
+    void publishRequestReadyEvent(BookItemId bookItemId, UserId userId);
 
-    void publishBookItemRequestCanceledEvent(BookItemId bookItemId, UserId userId);
+    void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId);
 
-    void publishBookItemRequestedEvent(BookItemRequestDto dto);
+    void publishRequestCreatedEvent(BookItemRequestDto dto);
 
-    void publishBookItemReservedEvent(BookItemId bookItemId, UserId userId, int queuePosition, LoanDueDate dueDate);
+    void publishReservationCreatedEvent(BookItemId bookItemId, UserId userId, int queuePosition, LoanDueDate dueDate);
 
-    void publishBookItemAvailableToLoan(BookItemId bookItemId, UserId userId);
+    void publishRequestAvailableToLoanEvent(BookItemId bookItemId, UserId userId);
 }

@@ -6,6 +6,7 @@ import com.example.fineservice.domain.dto.PaymentProcessRequestDto;
 import com.example.fineservice.domain.exceptions.FineAlreadyPaidException;
 import com.example.fineservice.domain.exceptions.FineNotFoundException;
 import com.example.fineservice.domain.model.*;
+import com.example.fineservice.domain.ports.EventListenerPort;
 import com.example.fineservice.domain.ports.FineRepositoryPort;
 import com.example.fineservice.domain.ports.PaymentServicePort;
 import lombok.RequiredArgsConstructor;
@@ -25,29 +26,6 @@ class FineService {
     Fine getFineById(FineId id) {
         return fineRepository.findById(id)
                 .orElseThrow(() -> new FineNotFoundException(id));
-    }
-
-    void processFineForBookReturn(LoanReturnDate returnDate, LoanDueDate dueDate, UserId userId, LoanId loanId) {
-        BigDecimal amount = FineCalculator.calculateFine(returnDate.value(), dueDate.value());
-        if (amount.compareTo(BigDecimal.ZERO) > 0) {
-            Fine fineToSave = Fine.builder()
-                    .amount(new FineAmount(amount))
-                    .userId(userId)
-                    .loanId(loanId)
-                    .status(FineStatus.PENDING)
-                    .build();
-            fineRepository.save(fineToSave);
-        }
-    }
-
-    void processFineForBookLost(UserId userId, LoanId loanId, Price bookItemPrice) {
-        Fine fineToSave = Fine.builder()
-                .amount(new FineAmount(bookItemPrice.value()))
-                .userId(userId)
-                .loanId(loanId)
-                .status(FineStatus.PENDING)
-                .build();
-        fineRepository.save(fineToSave);
     }
 
     FinePaymentResult payFine(FineId fineId, PaymentCardDetailsDto cardDetails) {

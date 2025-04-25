@@ -20,6 +20,9 @@ public interface BookItemRequestServiceFeignClient {
             Pageable pageable
     );
 
+    @GetMapping("/{id}")
+    ResponseEntity<BookItemRequestDto> getBookItemRequestById(@PathVariable Long id);
+
     @PatchMapping("/{requestId}/{status}")
     ResponseEntity<Void> changeBookItemRequestStatus(
             @PathVariable Long requestId,

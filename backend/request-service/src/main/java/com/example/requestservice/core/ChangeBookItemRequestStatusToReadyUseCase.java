@@ -15,7 +15,7 @@ class ChangeBookItemRequestStatusToReadyUseCase {
 
     void execute(RequestId id) {
         bookItemRequestRepository.setBookRequestStatus(id, BookItemRequestStatus.READY);
-        BookItemRequest bookItemRequest = bookItemRequestService.getCurrentBookItemRequestById(id);
-        publisher.publishBookItemRequestReadyEvent(bookItemRequest.getBookItemId(), bookItemRequest.getUserId());
+        BookItemRequest bookItemRequest = bookItemRequestService.getBookItemRequestById(id);
+        publisher.publishRequestReadyEvent(bookItemRequest.getBookItemId(), bookItemRequest.getUserId());
     }
 }

@@ -1,6 +1,6 @@
 package com.example.loanservice.infrastructure.events;
 
-import com.example.loanservice.domain.event.incoming.BookItemReservedEvent;
+import com.example.loanservice.domain.event.incoming.ReservationCreatedEvent;
 import com.example.loanservice.domain.ports.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 class EventListenerAdapter {
     private final EventListenerPort eventListener;
 
-    private static final String BOOK_ITEM_LOANED_SUCCESS_TOPIC = "book-item.loaned.success";
+    private static final String RESERVATION_CREATED_TOPIC = "request-service.reservation.created";
 
-    @KafkaListener(topics = BOOK_ITEM_LOANED_SUCCESS_TOPIC, groupId = "request-service-listeners")
-    void bookItemLoaned(BookItemReservedEvent event) {
+    @KafkaListener(topics = RESERVATION_CREATED_TOPIC, groupId = "loan-service.reservation.created.consumers")
+    void reservationCreated(ReservationCreatedEvent event) {
         eventListener.handleBookItemReservedEvent(event.getBookItemId());
     }
 }

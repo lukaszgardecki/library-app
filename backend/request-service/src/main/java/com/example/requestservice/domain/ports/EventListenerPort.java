@@ -5,11 +5,11 @@ import com.example.requestservice.domain.model.RequestId;
 
 public interface EventListenerPort {
 
-    void handleBookItemLoanedEvent(RequestId requestId);
+    void handleBookItemDeletedEvent(BookItemId bookItemId);
+
+    void handleLoanCreatedEvent(RequestId requestId);
 
     void handleBookItemReturnedEvent(BookItemId bookItemId);
 
     void handleBookItemLostEvent(BookItemId bookItemId);
-
-    void handleBookItemDeletedEvent(BookItemId bookItemId);
 }
