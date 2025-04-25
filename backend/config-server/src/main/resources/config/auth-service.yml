@@ -1,0 +1,24 @@
+server:
+  port: 8081
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  kafka:
+    consumer:
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.authservice.domain.event
+jwt:
+  expirationTime: 360000000 #100h
+  #  expirationTime: 900000 #15 min
+  secret: 694d057a02aec7b4de008225532c4aa7eadd6759d5f920749adb20a92dc158c1
+  refresh-token:
+    expiration: 604800000 #7 days
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

@@ -15,13 +15,13 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="auth-service" />
+        <module name="config-server" />
         <module name="old-common" />
+        <module name="auth-service" />
         <module name="payment-service" />
         <module name="warehouse-service" />
-        <module name="catalog-service" />
         <module name="loan-service" />
-        <module name="api-gateway" />
+        <module name="catalog-service" />
         <module name="request-service" />
         <module name="user-service" />
         <module name="eureka-server" />
@@ -29,6 +29,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="api-gateway (1)" target="20" />
+      <module name="api-gateway (2)" target="20" />
       <module name="catalog-service (1)" target="20" />
       <module name="catalog-service (2)" target="20" />
       <module name="eureka-server (1)" target="20" />
@@ -40,10 +42,13 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="api-gateway (1)" options="-parameters" />
+      <module name="api-gateway (2)" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="catalog-service" options="-parameters" />
       <module name="catalog-service (1)" options="-parameters" />
       <module name="catalog-service (2)" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="eureka-server (1)" options="-parameters" />
       <module name="eureka-server (2)" options="-parameters" />
