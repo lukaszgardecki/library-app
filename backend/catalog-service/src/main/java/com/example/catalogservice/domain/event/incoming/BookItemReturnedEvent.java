@@ -3,8 +3,8 @@ package com.example.catalogservice.domain.event.incoming;
 import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.event.outgoing.BookItemEvent;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.model.bookitem.LoanReturnDate;
-import com.example.catalogservice.domain.model.bookitem.UserId;
+import com.example.catalogservice.domain.model.LoanReturnDate;
+import com.example.catalogservice.domain.model.UserId;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package com.example.catalogservice.domain.event;
 
-import com.example.catalogservice.domain.model.bookitem.UserId;
+import com.example.catalogservice.domain.model.UserId;
 import lombok.Getter;
 
 @Getter

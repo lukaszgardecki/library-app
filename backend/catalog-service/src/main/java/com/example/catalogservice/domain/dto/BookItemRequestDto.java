@@ -1,6 +1,6 @@
 package com.example.catalogservice.domain.dto;
 
-import com.example.catalogservice.domain.model.bookitem.BookItemRequestStatus;
+import com.example.catalogservice.domain.model.BookItemRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

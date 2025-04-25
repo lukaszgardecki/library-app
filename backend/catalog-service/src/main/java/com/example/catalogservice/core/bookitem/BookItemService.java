@@ -2,6 +2,7 @@ package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.core.book.BookFacade;
 import com.example.catalogservice.domain.dto.BookDto;
+import com.example.catalogservice.domain.model.LoanReturnDate;
 import com.example.catalogservice.domain.model.book.BookId;
 import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.dto.BookItemWithBookDto;

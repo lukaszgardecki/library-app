@@ -9,8 +9,6 @@ import com.example.libraryapp.domain.notification.model.NotificationContent;
 import com.example.libraryapp.domain.notification.model.NotificationSubject;
 import com.example.libraryapp.domain.notification.model.NotificationType;
 
-import java.time.LocalDate;
-
 public class BookItemReservedNotification extends BookItemNotification {
 
     public BookItemReservedNotification(BookItemEvent event, MessageProviderPort msgProvider) {

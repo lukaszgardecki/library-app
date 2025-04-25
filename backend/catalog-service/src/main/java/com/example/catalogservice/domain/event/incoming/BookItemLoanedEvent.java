@@ -1,6 +1,7 @@
 package com.example.catalogservice.domain.event.incoming;
 
 import com.example.catalogservice.domain.event.outgoing.BookItemEvent;
+import com.example.catalogservice.domain.model.UserId;
 import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.model.bookitem.*;
 import lombok.Getter;

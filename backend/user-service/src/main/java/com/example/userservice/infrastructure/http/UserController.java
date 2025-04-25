@@ -83,4 +83,22 @@ class UserController {
         userFacade.deleteUserById(new UserId(id));
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{userId}/verify/loan")
+    public ResponseEntity<Void> verifyUserForBookItemLoan(@PathVariable Long userId) {
+        userFacade.verifyUserForBookItemLoan(new UserId(userId));
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/verify/renewal")
+    public ResponseEntity<Void> verifyUserForBookItemRenewal(@PathVariable Long userId) {
+        userFacade.verifyUserForBookItemRenewal(new UserId(userId));
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{userId}/verify/request")
+    public ResponseEntity<Void> verifyUserForBookItemRequest(@PathVariable Long userId) {
+        userFacade.verifyUserForBookItemRequest(new UserId(userId));
+        return ResponseEntity.noContent().build();
+    }
 }

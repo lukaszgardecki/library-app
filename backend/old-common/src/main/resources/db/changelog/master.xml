@@ -5,14 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
 
-    <include file="0003_create_table_book_loan.xml" relativeToChangelogFile="true"/>
-    <include file="0010_create_table_payment.xml" relativeToChangelogFile="true"/>
+    <include file="../../../../../../payment-service/src/main/resources/db/changelog/0010_create_table_payment.xml" relativeToChangelogFile="true"/>
     <include file="0011_create_table_user_activity.xml" relativeToChangelogFile="true"/>
     <include file="0012_create_table_notification.xml" relativeToChangelogFile="true"/>
-    <include file="0015_create_table_book_request.xml" relativeToChangelogFile="true"/>
+    <include file="../../../../../../request-service/src/main/resources/db/changelog/0015_create_table_book_request.xml" relativeToChangelogFile="true"/>
     <include file="0017_create_table_notification_preferences.xml" relativeToChangelogFile="true"/>
-    <include file="0018_create_table_fine.xml" relativeToChangelogFile="true"/>
+    <include file="../../../../../../fine-service/src/main/resources/db/changelog/0018_create_table_fine.xml" relativeToChangelogFile="true"/>
 
-    <include file="../testdata/0005_book_item_request.sql" relativeToChangelogFile="true" context="dev, test"/>
-    <include file="../testdata/0004_book_item_loan.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../../../../../../request-service/src/main/resources/db/testdata/0001_book_item_request.sql" relativeToChangelogFile="true" context="dev, test"/>
 </databaseChangeLog>

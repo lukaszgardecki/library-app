@@ -3,7 +3,7 @@ package com.example.catalogservice.domain.ports;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.LoanCreationDate;
 import com.example.catalogservice.domain.model.bookitem.LoanDueDate;
-import com.example.catalogservice.domain.model.bookitem.LoanReturnDate;
+import com.example.catalogservice.domain.model.LoanReturnDate;
 
 public interface EventListenerPort {
         void updateBookItemOnRequest(BookItemId bookItemId);

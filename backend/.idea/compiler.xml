@@ -17,11 +17,15 @@
         </processorPath>
         <module name="auth-service" />
         <module name="old-common" />
+        <module name="payment-service" />
         <module name="warehouse-service" />
         <module name="catalog-service" />
+        <module name="loan-service" />
         <module name="api-gateway" />
+        <module name="request-service" />
         <module name="user-service" />
         <module name="eureka-server" />
+        <module name="fine-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -43,8 +47,12 @@
       <module name="eureka-server" options="-parameters" />
       <module name="eureka-server (1)" options="-parameters" />
       <module name="eureka-server (2)" options="-parameters" />
+      <module name="fine-service" options="-parameters" />
       <module name="library-app" options="-parameters" />
+      <module name="loan-service" options="-parameters" />
       <module name="old-common" options="-parameters" />
+      <module name="payment-service" options="-parameters" />
+      <module name="request-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
       <module name="user-service (1)" options="-parameters" />
       <module name="user-service (2)" options="-parameters" />

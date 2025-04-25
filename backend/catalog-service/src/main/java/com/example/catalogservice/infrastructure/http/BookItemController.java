@@ -9,6 +9,7 @@ import com.example.catalogservice.domain.dto.BookItemWithBookDto;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.RackId;
 import com.example.catalogservice.domain.model.bookitem.ShelfId;
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -80,5 +81,17 @@ class BookItemController {
     public ResponseEntity<Void> deleteBookItemById(@PathVariable Long id) {
         bookItemFacade.deleteBookItem(new BookItemId(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/verify/loan")
+    ResponseEntity<BookItemDto> verifyAndGetBookItemForLoan(@PathVariable Long id) {
+        BookItemDto bookItem = bookItemFacade.verifyAndGetBookItemForLoan(new BookItemId(id));
+        return ResponseEntity.ok(bookItem);
+    }
+
+    @GetMapping("/{id}/verify/request")
+    ResponseEntity<BookItemDto> verifyAndGetBookItemForRequest(@PathVariable Long id) {
+        BookItemDto bookItem = bookItemFacade.verifyAndGetBookItemForRequest(new BookItemId(id));
+        return ResponseEntity.ok(bookItem);
     }
 }
