@@ -27,7 +27,7 @@ class BookItemRequestConfiguration {
         return new BookItemRequestFacade(
                 new GetBookItemRequestList(requestService),
                 new GetBookItemRequest(requestService),
-                new ChangeBookItemRequestStatusToReadyUseCase(publisher)
+                new ChangeBookItemRequestStatusToReadyUseCase(bookItemRequestService, publisher)
         );
     }
 }
