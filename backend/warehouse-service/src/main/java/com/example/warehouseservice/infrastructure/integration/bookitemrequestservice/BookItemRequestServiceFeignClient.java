@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "book-item-request-service", path = "/api/v1/book-requests")
+@FeignClient(name = "request-service", path = "/book-requests")
 public interface BookItemRequestServiceFeignClient {
 
     @GetMapping

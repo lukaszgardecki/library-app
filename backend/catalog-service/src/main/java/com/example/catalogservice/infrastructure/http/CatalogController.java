@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/v1/catalog/book-items", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/catalog/book-items", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 class CatalogController {
     private final BookFacade bookFacade;

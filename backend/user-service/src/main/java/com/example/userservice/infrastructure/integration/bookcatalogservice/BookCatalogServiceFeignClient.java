@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "old-common", path = "/api/v1")
+@FeignClient(name = "catalog-service", path = "/catalog")
 interface BookCatalogServiceFeignClient {
 
     @GetMapping("/books/{id}")

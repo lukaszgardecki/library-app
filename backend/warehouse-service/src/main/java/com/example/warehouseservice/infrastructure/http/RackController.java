@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 //@PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-@RequestMapping("/api/v1/warehouse/racks")
+@RequestMapping("/warehouse/racks")
 class RackController {
     private final RackFacade rackFacade;
 

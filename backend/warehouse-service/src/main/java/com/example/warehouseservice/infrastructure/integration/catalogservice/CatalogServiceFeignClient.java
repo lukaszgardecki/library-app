@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "catalog-service", path = "/api/v1")
+@FeignClient(name = "catalog-service", path = "/catalog")
 public interface CatalogServiceFeignClient {
 
     @GetMapping("/book-items/{id}")
@@ -20,6 +20,6 @@ public interface CatalogServiceFeignClient {
             @RequestParam(value = "shelf_id", required = false) Long shelfId
     );
 
-    @GetMapping("/{id}")
+    @GetMapping("/books/{id}")
     ResponseEntity<BookDto> getBookById(@PathVariable Long id);
 }

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "auth-service", path = "/api/v1/auth")
+@FeignClient(name = "auth-service", path = "/auth")
 interface AuthServiceFeignClient {
 
     @GetMapping("/user/{userId}")

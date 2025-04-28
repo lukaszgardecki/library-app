@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/api/v1/payments")
+@RequestMapping(value = "/payments")
 @RequiredArgsConstructor
 class PaymentController {
     private final PaymentFacade paymentFacade;

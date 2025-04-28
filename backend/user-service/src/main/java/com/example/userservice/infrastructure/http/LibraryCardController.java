@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1/cards", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/cards", produces = MediaType.APPLICATION_JSON_VALUE)
 //@PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
 @RequiredArgsConstructor
 class LibraryCardController {

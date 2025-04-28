@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "book-item-loan", path = "/api/v1/loans")
+@FeignClient(name = "loan-service", path = "/loans")
 interface BookItemLoanServiceFeignClient {
 
     @GetMapping("/all/list")

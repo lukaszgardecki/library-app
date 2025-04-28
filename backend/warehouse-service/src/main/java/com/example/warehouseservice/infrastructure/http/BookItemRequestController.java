@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 //@PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-@RequestMapping("/api/v1/warehouse/book-requests")
+@RequestMapping("/warehouse/book-requests")
 class BookItemRequestController {
     private final BookItemRequestFacade bookItemRequestFacade;
 
-    @GetMapping("/book-requests/list")
+    @GetMapping("/list")
     public ResponseEntity<Page<WarehouseBookItemRequestListViewDto>> getBookItemRequestListView(
             @RequestParam(required = false) BookItemRequestStatus status, Pageable pageable
     ) {
@@ -26,7 +26,7 @@ class BookItemRequestController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
-    @PostMapping("/book-requests/{id}/ready")
+    @PostMapping("/{id}/ready")
     public ResponseEntity<Void> completeRequest(@PathVariable("id") Long requestId) {
         bookItemRequestFacade.changeBookRequestStatusToReady(new RequestId(requestId));
         return ResponseEntity.ok().build();

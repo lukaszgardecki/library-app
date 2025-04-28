@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/book-requests")
+@RequestMapping("/book-requests")
 class BookRequestController {
     private final BookItemRequestFacade bookItemRequestFacade;
 

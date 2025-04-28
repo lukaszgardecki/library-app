@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "warehouse", path = "/api/v1/warehouse")
+@FeignClient(name = "warehouse-service", path = "/warehouse")
 public interface WarehouseServiceFeignClient {
 
     @GetMapping("/racks/{id}")

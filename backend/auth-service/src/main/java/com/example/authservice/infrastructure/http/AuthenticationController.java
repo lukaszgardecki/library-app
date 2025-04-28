@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 class AuthenticationController {
     // TODO: 09.12.2024  wywalić te fasady stąc i zostawić tylko AuthenticationFacade, reszta do use casów!!!!
@@ -30,7 +30,7 @@ class AuthenticationController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(
             @RequestBody LoginRequest body,
             HttpServletResponse response

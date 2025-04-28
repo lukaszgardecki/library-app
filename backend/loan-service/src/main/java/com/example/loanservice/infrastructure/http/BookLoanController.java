@@ -19,7 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/loans")
+@RequestMapping("/loans")
 @RequiredArgsConstructor
 class BookLoanController {
     private final BookItemLoanFacade bookItemLoanFacade;

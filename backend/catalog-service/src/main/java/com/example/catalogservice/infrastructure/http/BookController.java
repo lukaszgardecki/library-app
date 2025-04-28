@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/api/v1/books", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/catalog/books", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 class BookController {
     private final BookFacade bookFacade;

@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "fine", path = "/api/v1/fines")
+@FeignClient(name = "fine-service", path = "/fines")
 interface FineServiceFeignClient {
 
     @GetMapping("/users/{userId}/validation")

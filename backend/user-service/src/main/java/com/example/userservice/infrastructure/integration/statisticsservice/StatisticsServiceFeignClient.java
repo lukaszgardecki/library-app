@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "statistics", path = "/api/v1/")
+@FeignClient(name = "statistics-service", path = "/stats")
 public interface StatisticsServiceFeignClient {
 
-    @GetMapping("/stats/users/{id}")
+    @GetMapping("/users/{id}")
     ResponseEntity<List<Integer>> countUserLoansPerMonth(@PathVariable Long id);
 }

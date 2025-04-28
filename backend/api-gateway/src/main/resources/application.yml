@@ -1,5 +1,58 @@
+server:
+  port: 8080
+
+api-prefix: /api/v1
+
 spring:
   application:
     name: api-gateway
-config:
-  import: optional:configserver:http://localhost:8079
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=${api-prefix}/auth/**
+        - id: catalog-service-route
+          uri: lb://catalog-service
+          predicates:
+            - Path=${api-prefix}/catalog/**
+        - id: fine-service-route
+          uri: lb://fine-service
+          predicates:
+            - Path=${api-prefix}/fines/**
+        - id: loan-service-route
+          uri: lb://loan-service
+          predicates:
+            - Path=${api-prefix}/loans/**
+        - id: notification-service-route
+          uri: lb://notification-service
+          predicates:
+            - Path=${api-prefix}/notifications/**
+        - id: payment-service-route
+          uri: lb://payment-service
+          predicates:
+            - Path=${api-prefix}/payments/**
+        - id: request-service-route
+          uri: lb://request-service
+          predicates:
+            - Path=${api-prefix}/book-requests/**
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=${api-prefix}/users/**,/cards/**
+        - id: warehouse-service-route
+          uri: lb://warehouse-service
+          predicates:
+            - Path=${api-prefix}/warehouse/**
+      default-filters:
+        - StripPrefix=2
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

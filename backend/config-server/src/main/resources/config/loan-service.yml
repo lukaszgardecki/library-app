@@ -11,6 +11,8 @@ spring:
             trusted:
               packages: com.example.loanservice.domain.event
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetch-registry: true
     register-with-eureka: true

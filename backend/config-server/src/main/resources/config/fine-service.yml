@@ -17,6 +17,8 @@ jwt:
   refresh-token:
     expiration: 604800000 #7 days
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetch-registry: true
     register-with-eureka: true

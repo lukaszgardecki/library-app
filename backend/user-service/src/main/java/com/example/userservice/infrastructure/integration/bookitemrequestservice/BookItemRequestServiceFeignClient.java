@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "book-item-request", path = "/api/v1/book-requests")
+@FeignClient(name = "request-service", path = "/book-requests")
 interface BookItemRequestServiceFeignClient {
 
     @DeleteMapping("/users/{userId}/cancel-all")
