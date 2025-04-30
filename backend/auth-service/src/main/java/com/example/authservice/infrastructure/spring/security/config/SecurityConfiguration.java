@@ -1,6 +1,6 @@
 package com.example.authservice.infrastructure.spring.security.config;
 
-import com.example.authservice.infrastructure.spring.security.auth.JwtAuthenticationFilter;
+//import com.example.authservice.infrastructure.spring.security.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,15 +29,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    private final JwtAuthenticationFilter jwtAuthFilter;
+//    private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final LogoutHandler logoutHandler;
+//    private final LogoutHandler logoutHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
@@ -45,14 +45,14 @@ public class SecurityConfiguration {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout(logout -> logout
-                        .logoutUrl("/api/v1/authenticate/logout")
-                        .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler(
-                                (request, response, authentication) -> SecurityContextHolder.clearContext()
-                        )
-                )
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+//                .logout(logout -> logout
+//                        .logoutUrl("/api/v1/authenticate/logout")
+//                        .addLogoutHandler(logoutHandler)
+//                        .logoutSuccessHandler(
+//                                (request, response, authentication) -> SecurityContextHolder.clearContext()
+//                        )
+//                )
                 .build();
     }
 

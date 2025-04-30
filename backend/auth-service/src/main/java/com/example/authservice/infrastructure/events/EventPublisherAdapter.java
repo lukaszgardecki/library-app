@@ -1,6 +1,6 @@
 package com.example.authservice.infrastructure.events;
 
-import com.example.authservice.domain.model.auth.UserId;
+import com.example.authservice.domain.model.authdetails.UserId;
 import com.example.authservice.domain.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;

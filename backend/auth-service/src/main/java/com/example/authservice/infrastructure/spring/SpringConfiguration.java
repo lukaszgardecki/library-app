@@ -1,8 +1,8 @@
 package com.example.authservice.infrastructure.spring;
 
-import com.example.authservice.domain.model.auth.Email;
-import com.example.authservice.domain.ports.UserAuthRepositoryPort;
-import com.example.authservice.infrastructure.spring.security.auth.CustomUserAuthDetails;
+import com.example.authservice.domain.model.authdetails.Email;
+import com.example.authservice.domain.ports.AuthDetailsRepositoryPort;
+import com.example.authservice.infrastructure.spring.security.auth.CustomAuthDetailsDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -32,7 +32,7 @@ class SpringConfiguration {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserAuthRepositoryPort authUserRepository) {
+    public AuthenticationProvider authenticationProvider(AuthDetailsRepositoryPort authUserRepository) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService(authUserRepository));
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -40,9 +40,9 @@ class SpringConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserAuthRepositoryPort userAuthRepository) {
+    public UserDetailsService userDetailsService(AuthDetailsRepositoryPort userAuthRepository) {
         return username -> userAuthRepository.findByEmail(new Email(username))
-                .map(CustomUserAuthDetails::new)
+                .map(CustomAuthDetailsDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User auth with email %s not found".formatted(username)));
     }
 

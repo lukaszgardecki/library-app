@@ -1,7 +1,7 @@
 package com.example.authservice.domain.ports;
 
-import com.example.authservice.domain.model.auth.Email;
-import com.example.authservice.domain.model.auth.Password;
+import com.example.authservice.domain.model.authdetails.Email;
+import com.example.authservice.domain.model.authdetails.Password;
 
 public interface AuthenticationManagerPort {
 

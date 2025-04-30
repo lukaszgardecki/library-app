@@ -1,15 +1,19 @@
 package com.example.authservice.infrastructure.http;
 
-import com.example.authservice.core.auth.AuthenticationFacade;
-import com.example.authservice.domain.model.auth.Email;
-import com.example.authservice.domain.model.auth.Password;
-import com.example.authservice.domain.model.auth.UserId;
-import com.example.authservice.core.token.TokenFacade;
-import com.example.authservice.domain.dto.auth.*;
-import com.example.authservice.domain.dto.token.TokenAuth;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.authservice.core.authdetails.AuthDetailsFacade;
+import com.example.authservice.core.authentication.AuthenticationFacade;
+import com.example.authservice.domain.Constants;
+import com.example.authservice.domain.dto.auth.LoginRequest;
+import com.example.authservice.domain.dto.auth.LoginResponse;
+import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
+import com.example.authservice.domain.dto.token.AuthDto;
+import com.example.authservice.domain.model.authdetails.Email;
+import com.example.authservice.domain.model.authdetails.Password;
+import com.example.authservice.domain.model.authdetails.UserId;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,56 +21,50 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 class AuthenticationController {
-    // TODO: 09.12.2024  wywalić te fasady stąc i zostawić tylko AuthenticationFacade, reszta do use casów!!!!
-    // TODO: 09.12.2024 ewentualnie zostawić ten extractor bo to wzwiązane z webem
+    private final AuthDetailsFacade authDetailsFacade;
     private final AuthenticationFacade authFacade;
-    private final TokenFacade tokenFacade;
-
-    @PostMapping("/register")
-    public ResponseEntity<Void> saveUserCredentials(
-            @RequestBody CredentialsToSaveDto body
-    ) {
-        authFacade.saveUserCredentials(body);
-        return ResponseEntity.noContent().build();
-    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(
             @RequestBody LoginRequest body,
             HttpServletResponse response
     ) {
-        TokenAuth auth = authFacade.authenticate(
-                new Email(body.getUsername()), new Password(body.getPassword())
-        );
-        response.addHeader(auth.cookie().getName(), auth.cookie().getValue());
+        AuthDto auth = authFacade.authenticate(new Email(body.getUsername()), new Password(body.getPassword()));
+        String cookie = createAuthCookie(auth.cookieName(), auth.cookieValue());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
         return ResponseEntity.ok(new LoginResponse(auth.accessToken(), auth.refreshToken()));
     }
 
-    @PostMapping("/refresh-token")
-    public ResponseEntity<LoginResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String token = tokenFacade.extractTokenFromHeader(request);
-        TokenAuth auth = tokenFacade.refreshUserTokens(token);
-        response.addHeader(auth.cookie().getName(), auth.cookie().getValue());
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> refreshToken(
+            @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
+            HttpServletResponse response
+    ) {
+        String refreshToken = authFacade.extractTokenFromHeader(authHeader);
+        AuthDto auth = authFacade.refreshUserTokens(refreshToken);
+        String cookie = createAuthCookie(auth.cookieName(), auth.cookieValue());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
         return ResponseEntity.ok(new LoginResponse(auth.accessToken(), auth.refreshToken()));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<UserAuthDto> getUserAuthByUserId(@PathVariable Long userId) {
-        UserAuthDto userAuth = authFacade.getUserAuthByUserId(new UserId(userId));
-        return ResponseEntity.ok(userAuth);
+    @PostMapping("/validate")
+    public ResponseEntity<AuthDetailsDto> validateToken(
+            @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
+            @CookieValue(name = Constants.AUTH_COOKIE_NAME, required = false) String cookie
+    ) {
+        String token = authFacade.extractTokenFromHeader(authHeader);
+        UserId userId = authFacade.validateTokenAndCookie(token, cookie);
+        AuthDetailsDto auth = authDetailsFacade.getAuthDetailsByUserId(userId);
+        return ResponseEntity.ok(auth);
     }
 
-    @PatchMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
-    public ResponseEntity<?> updateUserAuth(@PathVariable Long id, @RequestBody UserAuthUpdateDto fieldsToUpdate) {
-        authFacade.updateUserAuth(new UserId(id), fieldsToUpdate);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PatchMapping("/{id}/credentials")
-//    @PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and #id == authentication.principal.id)")
-    public ResponseEntity<?> updateUserCredentials(@PathVariable Long id, @RequestBody CredentialsUpdateDto fieldsToUpdate) {
-        authFacade.updateUserCredentials(new UserId(id), fieldsToUpdate);
-        return ResponseEntity.noContent().build();
+    private String createAuthCookie(String cookieName, String cookieValue) {
+        return ResponseCookie.from(cookieName, cookieValue)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .httpOnly(true)
+                .build()
+                .toString();
     }
 }
