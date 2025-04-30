@@ -43,7 +43,7 @@ spring:
         - id: user-service-route
           uri: lb://user-service
           predicates:
-            - Path=${api-prefix}/users/**,/cards/**
+            - Path=${api-prefix}/users/**,${api-prefix}/cards/**
         - id: warehouse-service-route
           uri: lb://warehouse-service
           predicates:
