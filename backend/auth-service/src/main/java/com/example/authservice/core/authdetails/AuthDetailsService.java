@@ -19,11 +19,11 @@ class AuthDetailsService {
     }
 
     AuthDetails getAuthDetailsByUserId(UserId userId) {
-        return userAuthRepository.findByUserId(userId).orElseThrow(UserAuthNotFoundException::new);
+        return userAuthRepository.findByUserId(userId).orElseThrow(() -> new UserAuthNotFoundException(userId));
     }
 
     AuthDetails getAuthDetailsByEmail(Email email) {
-        return userAuthRepository.findByEmail(email).orElseThrow(UserAuthNotFoundException::new);
+        return userAuthRepository.findByEmail(email).orElseThrow(() -> new UserAuthNotFoundException(email));
     }
 
     void updateAuthDetails(UserId userId, AuthDetailsUpdateDto fieldsToUpdate) {

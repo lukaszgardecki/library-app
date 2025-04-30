@@ -72,26 +72,26 @@ public enum MessageKey {
     NOTIFICATION_REQUEST_CREATED_SUBJECT("notification.request.created.subject"),
     NOTIFICATION_REQUEST_CREATED_CONTENT("notification.request.created.content"),
 
-    NOTIFICATION_REQUEST_COMPLETED_SUBJECT("notification.request.completed.subject"),
-    NOTIFICATION_REQUEST_COMPLETED_CONTENT("notification.request.completed.content"),
+    NOTIFICATION_REQUEST_COMPLETED_SUBJECT("notification.request.ready.subject"),
+    NOTIFICATION_REQUEST_COMPLETED_CONTENT("notification.request.ready.content"),
 
     NOTIFICATION_REQUEST_CANCELLED_SUBJECT("notification.request.cancelled.subject"),
     NOTIFICATION_REQUEST_CANCELLED_CONTENT("notification.request.cancelled.content"),
 
-    NOTIFICATION_BOOK_BORROWED_SUBJECT("notification.book.borrowed.subject"),
-    NOTIFICATION_BOOK_BORROWED_CONTENT("notification.book.borrowed.content"),
+    NOTIFICATION_BOOK_BORROWED_SUBJECT("notification.loan.created.subject"),
+    NOTIFICATION_BOOK_BORROWED_CONTENT("notification.loan.created.content"),
 
-    NOTIFICATION_BOOK_AVAILABLE_SUBJECT("notification.book.available.subject"),
-    NOTIFICATION_BOOK_AVAILABLE_CONTENT("notification.book.available.content"),
+    NOTIFICATION_BOOK_AVAILABLE_SUBJECT("notification.request.available.subject"),
+    NOTIFICATION_BOOK_AVAILABLE_CONTENT("notification.request.available.content"),
 
-    NOTIFICATION_BOOK_RESERVED_SUBJECT("notification.book.reserved.subject"),
-    NOTIFICATION_BOOK_RESERVED_CONTENT_FIRST_PERSON("notification.book.reserved.content"),
+    NOTIFICATION_BOOK_RESERVED_SUBJECT("notification.reservation.created.subject"),
+    NOTIFICATION_BOOK_RESERVED_CONTENT_FIRST_PERSON("notification.reservation.created.content"),
 
     NOTIFICATION_BOOK_RESERVED_QUEUE_UPDATE_SUBJECT("notification.book.reserved.queue-update.subject"),
     NOTIFICATION_BOOK_RESERVED_QUEUE_UPDATE_CONTENT("notification.book.reserved.queue-update.content"),
 
-    NOTIFICATION_BOOK_RENEWED_SUBJECT("notification.book.renewed.subject"),
-    NOTIFICATION_BOOK_RENEWED_CONTENT("notification.book.renewed.content"),
+    NOTIFICATION_BOOK_RENEWED_SUBJECT("notification.loan.prolonged.subject"),
+    NOTIFICATION_BOOK_RENEWED_CONTENT("notification.loan.prolonged.content"),
 
     NOTIFICATION_BOOK_RETURNED_SUBJECT("notification.book.returned.subject"),
     NOTIFICATION_BOOK_RETURNED_CONTENT("notification.book.returned.content"),
@@ -99,8 +99,8 @@ public enum MessageKey {
     NOTIFICATION_BOOK_LOST_SUBJECT("notification.book.lost.subject"),
     NOTIFICATION_BOOK_LOST_CONTENT("notification.book.lost.content"),
 
-    NOTIFICATION_RENEWAL_IMPOSSIBLE_SUBJECT("notification.book.renewal.impossible.subject"),
-    NOTIFICATION_RENEWAL_IMPOSSIBLE_CONTENT("notification.book.renewal.impossible.content"),
+    NOTIFICATION_RENEWAL_IMPOSSIBLE_SUBJECT("notification.loan.prolongation.not-allowed.subject"),
+    NOTIFICATION_RENEWAL_IMPOSSIBLE_CONTENT("notification.loan.prolongation.not-allowed.content"),
 
     // USER ACTIVITY
     ACTIVITY_NOT_FOUND_ID("activity.not-found.id"),
