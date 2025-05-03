@@ -13,14 +13,12 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 class RenewBookItemLoanUseCase {
     private final UserServicePort userService;
-//    private final AuthenticationFacade authFacade;
     private final BookItemRequestServicePort bookItemRequestService;
     private final BookItemLoanService bookItemLoanService;
     private final FineServicePort fineService;
     private final EventPublisherPort publisher;
 
     BookItemLoan execute(BookItemId bookItemId, UserId userId) {
-//        authFacade.validateOwnerOrAdminAccess(userId);
         userService.verifyUserForBookItemRenewal(userId);
         fineService.verifyUserForFines(userId);
         bookItemRequestService.ensureBookItemNotRequested(bookItemId);

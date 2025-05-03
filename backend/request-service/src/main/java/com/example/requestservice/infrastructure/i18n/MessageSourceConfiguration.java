@@ -12,14 +12,14 @@ import java.util.Locale;
 class MessageSourceConfiguration {
 
     @Bean
-    public LocaleResolver localeResolver() {
+    LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setDefaultLocale(Locale.ENGLISH);
         return resolver;
     }
 
     @Bean
-    public ResourceBundleMessageSource messageSource() {
+    ResourceBundleMessageSource messageSource() {
         var source = new ResourceBundleMessageSource();
         source.setBasename("messages");
         source.setDefaultEncoding("UTF-8");

@@ -10,8 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,13 +27,13 @@ class CustomExceptionHandler {
 
     @Getter
     @RequiredArgsConstructor
-    static class ErrorMessage {
+    private static class ErrorMessage {
         private final int statusCode;
         private final LocalDateTime dateTime;
         private final String message;
         private final String description;
 
-        public ErrorMessage(HttpStatus status, String message, WebRequest request) {
+        ErrorMessage(HttpStatus status, String message, WebRequest request) {
             this.statusCode = status.value();
             this.dateTime = LocalDateTime.now();
             this.message = message;
@@ -47,8 +46,8 @@ class CustomExceptionHandler {
             TokenNotFoundException.class
     })
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorMessage tokenException(RuntimeException ex, WebRequest request) {
-        System.out.println(Arrays.toString(ex.getStackTrace()));
+    ErrorMessage tokenException(RuntimeException ex, WebRequest request) {
+        System.err.println(Arrays.toString(ex.getStackTrace()));
         return new ErrorMessage(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
@@ -56,7 +55,7 @@ class CustomExceptionHandler {
             UserAuthNotFoundException.class
     })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage sourceDoesNotExist(LibraryAppNotFoundException ex, WebRequest request) {
+    ErrorMessage sourceDoesNotExist(LibraryAppNotFoundException ex, WebRequest request) {
         String message = msgProvider.getMessage(ex.getMessageKey(), ex.getSourceId());
         return new ErrorMessage(HttpStatus.NOT_FOUND, message, request);
     }
@@ -65,31 +64,27 @@ class CustomExceptionHandler {
             EmailAlreadyExistsException.class,
     })
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage activityMustBeInterrupted(LibraryAppException ex, WebRequest request) {
+    ErrorMessage activityMustBeInterrupted(LibraryAppException ex, WebRequest request) {
         String message = msgProvider.getMessage(ex.getMessageKey());
         return new ErrorMessage(HttpStatus.CONFLICT, message, request);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorMessage userNotAuthenticated(RuntimeException ex, WebRequest request) {
+    ErrorMessage userNotAuthenticated(RuntimeException ex, WebRequest request) {
         String message = msgProvider.getMessage(MessageKey.VALIDATION_BAD_CREDENTIALS);
         return new ErrorMessage(HttpStatus.UNAUTHORIZED, message, request);
     }
 
     @ExceptionHandler({
             AccessDeniedException.class,
-            ForbiddenAccessException.class,
-            LockedException.class,
-            DisabledException.class
+            AuthenticationException.class
     })
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorMessage userHasNoAccessToData(RuntimeException ex, WebRequest request) {
+    ErrorMessage userHasNoAccessToData(RuntimeException ex, WebRequest request) {
         String message;
         if (ex instanceof AccessDeniedException) {
             message = msgProvider.getMessage(MessageKey.FORBIDDEN);
-        } else if (ex instanceof ForbiddenAccessException e) {
-            message = msgProvider.getMessage(e.getMessageKey());
         } else {
             message = ex.getMessage();
         }
@@ -98,14 +93,14 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage requestBodyIsMissing(WebRequest request) {
+    ErrorMessage requestBodyIsMissing(WebRequest request) {
         String message = msgProvider.getMessage(MessageKey.BODY_MISSING);
         return new ErrorMessage(HttpStatus.BAD_REQUEST, message, request);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage mismatchExceptionHandler(RuntimeException ex, WebRequest request) {
+    ErrorMessage mismatchExceptionHandler(RuntimeException ex, WebRequest request) {
         return new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 }

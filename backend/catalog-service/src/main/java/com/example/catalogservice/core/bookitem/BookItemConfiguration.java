@@ -8,28 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BookItemConfiguration {
 
-//    public BookItemFacade bookItemFacade() {
-//        InMemoryBookItemRepositoryAdapter repository = new InMemoryBookItemRepositoryAdapter();
-//        InMemoryEventPublisherAdapter publisher = new InMemoryEventPublisherAdapter();
-//        BookFacade bookFacade = new BookConfiguration().bookFacade();
-//        BookItemRequestFacade bookItemRequestFacade = new BookItemRequestConfiguration().bookItemRequestFacade();
-//        BookItemBarcodeGenerator barcodeGenerator = new BookItemBarcodeGenerator();
-//        WarehouseFacade warehouseFacade = new WarehouseConfiguration().warehouseFacade();
-//        BookItemService bookItemService = new BookItemService(
-//                repository, bookItemRequestFacade, barcodeGenerator, bookFacade, warehouseFacade
-//        );
-//        return new BookItemFacade(
-//                new GetBookItemUseCase(repository),
-//                new GetPageOfBookItemsUseCase(bookItemService),
-//                new AddBookItemUseCase(bookItemService),
-//                new UpdateBookItemUseCase(bookItemService),
-//                new DeleteBookItemUseCase(repository, bookItemService, publisher),
-//                new CountByParamsUseCase(repository),
-//                new VerifyAndGetBookItemForRequestUseCase(bookItemService),
-//                new VerifyAndGetBookItemForLoanUseCase(bookItemService)
-//        );
-//    }
-
     @Bean
     BookItemFacade bookItemFacade(
             BookItemRepositoryPort repository,

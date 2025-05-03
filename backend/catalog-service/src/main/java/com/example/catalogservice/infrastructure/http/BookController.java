@@ -7,6 +7,7 @@ import com.example.catalogservice.domain.model.book.BookId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,14 +20,14 @@ class BookController {
     private final BookFacade bookFacade;
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
+    ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
         BookDto book = bookFacade.getBook(new BookId(id));
         return ResponseEntity.ok(book);
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
         BookDto savedBook = bookFacade.addBook(book);
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -36,14 +37,14 @@ class BookController {
     }
 
     @PatchMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookToSaveDto book) {
         BookDto updatedBook = bookFacade.updateBook(new BookId(id), book);
         return ResponseEntity.ok(updatedBook);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookFacade.deleteBook(new BookId(id));
         return ResponseEntity.noContent().build();

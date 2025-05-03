@@ -2,7 +2,7 @@ package com.example.authservice.core.authentication;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.exception.TokenNotFoundException;
+import com.example.authservice.domain.dto.token.TokenInfoDto;
 import com.example.authservice.domain.model.authdetails.UserId;
 import com.example.authservice.domain.model.token.Auth;
 import com.example.authservice.domain.model.token.CookieValues;
@@ -21,18 +21,11 @@ class TokenService {
     private final AuthDetailsFacade authDetailsFacade;
     private final TokenGenerator generator;
 
-    Token getTokenByHash(String hash) {
-        return accessTokenRepository.findByToken(hash)
-                .or(() -> refreshTokenRepository.findByToken(hash))
-                .orElseThrow(() -> new TokenNotFoundException(hash));
-    }
-
-    Optional<Token> findAccessTokenByHash(String hash) {
-        return accessTokenRepository.findByToken(hash);
-    }
-
-    Optional<Token> findRefreshTokenByHash(String hash) {
-        return refreshTokenRepository.findByToken(hash);
+    Optional<Token> findTokenByHash(TokenInfoDto tokenInfo) {
+        return switch (tokenInfo.type()) {
+            case ACCESS -> accessTokenRepository.findByToken(tokenInfo.hash());
+            case REFRESH -> refreshTokenRepository.findByToken(tokenInfo.hash());
+        };
     }
 
     Auth generateNewAuth(UserId userId) {
@@ -40,12 +33,12 @@ class TokenService {
         AuthDetailsDto authDetails = authDetailsFacade.getAuthDetailsByUserId(userId);
         Token accessToken = generator.generateAccessToken(authDetails, cookieValues);
         Token refreshToken = generator.generateRefreshToken(authDetails, cookieValues);
-        revokeUserTokens(authDetails.userId());
+        revokeUserTokens(new UserId(authDetails.userId()));
         saveTokens(accessToken, refreshToken);
         return new Auth(accessToken, refreshToken, cookieValues);
     }
 
-    void revokeUserTokens(Long userId) {
+    void revokeUserTokens(UserId userId) {
         List<Token> validUserAccessTokens = accessTokenRepository.findAllValidTokensByUserId(userId);
         List<Token> validUserRefreshTokens = refreshTokenRepository.findAllValidTokensByUserId(userId);
 

@@ -15,7 +15,7 @@ class AuthDetailsService {
     private final PasswordEncoderPort passwordEncoder;
 
     AuthDetails getAuthDetailsById(AuthDetailsId authId) {
-        return userAuthRepository.findById(authId).orElseThrow(UserAuthNotFoundException::new);
+        return userAuthRepository.findById(authId).orElseThrow(() -> new UserAuthNotFoundException(authId));
     }
 
     AuthDetails getAuthDetailsByUserId(UserId userId) {

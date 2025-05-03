@@ -9,11 +9,12 @@ class NotificationConfiguration {
 
     @Bean
     NotificationFacade notificationFacade(
-            NotificationRepositoryPort notificationRepositoryPort
+            NotificationRepositoryPort notificationRepositoryPort,
+            SourceValidator sourceValidator
     ) {
-        NotificationService notificationService = new NotificationService(notificationRepositoryPort);
+        NotificationService notificationService = new NotificationService(notificationRepositoryPort, sourceValidator);
         NotificationAccessControlService notificationAccessControlService =
-                new NotificationAccessControlService(notificationService);
+                new NotificationAccessControlService(notificationService, sourceValidator);
         return new NotificationFacade(
                 new GetPageOfNotificationsByUserIdUseCase(notificationAccessControlService, notificationRepositoryPort),
                 new GetNotificationUseCase(notificationAccessControlService, notificationService),

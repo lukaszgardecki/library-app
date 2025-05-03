@@ -17,7 +17,7 @@ class WarehouseWebSocketController {
 
     @MessageMapping("/warehouse/move_to_in_progress")
     @SendTo("/queue/warehouse/remove_from_pending")
-    public WarehouseBookItemRequestListViewDto addToInProgress(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
+    WarehouseBookItemRequestListViewDto addToInProgress(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.IN_PROGRESS;
         bookItemRequestService.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;
@@ -25,7 +25,7 @@ class WarehouseWebSocketController {
 
     @MessageMapping("/warehouse/move_to_pending")
     @SendTo("/queue/warehouse/remove_from_in-progress")
-    public WarehouseBookItemRequestListViewDto addToPending(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
+    WarehouseBookItemRequestListViewDto addToPending(@Payload WarehouseBookItemRequestListViewDto bookItemRequest) {
         BookItemRequestStatus status = BookItemRequestStatus.PENDING;
         bookItemRequestService.changeBookItemRequestStatus(new RequestId(bookItemRequest.getId()), status);
         return bookItemRequest;

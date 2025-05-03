@@ -2,6 +2,11 @@ package com.example.warehouseservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // RACK
     RACK_NOT_FOUND_ID("rack.not-found.id"),
     RACK_DELETION_FAILED("rack.deletion-failed"),

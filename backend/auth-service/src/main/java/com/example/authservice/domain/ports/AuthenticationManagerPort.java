@@ -5,7 +5,7 @@ import com.example.authservice.domain.model.authdetails.Password;
 
 public interface AuthenticationManagerPort {
 
-    boolean authenticate(Email username, Password password);
+    boolean authenticate(Email username, Password password) throws Exception;
 
     Email getCurrentUsername();
 }

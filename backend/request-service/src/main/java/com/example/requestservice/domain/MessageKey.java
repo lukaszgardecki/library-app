@@ -2,6 +2,11 @@ package com.example.requestservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // BOOK ITEM
     BOOK_ITEM_ALREADY_REQUESTED("book-item.already-requested"),
 

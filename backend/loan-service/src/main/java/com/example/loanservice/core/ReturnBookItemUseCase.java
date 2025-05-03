@@ -8,12 +8,10 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class ReturnBookItemUseCase {
-//    private final AuthenticationFacade authFacade;
     private final BookItemLoanService bookItemLoanService;
     private final EventPublisherPort publisher;
 
     void execute(BookItemId bookItemId, UserId userId) {
-//        authFacade.validateOwnerOrAdminAccess(userId);
         BookItemLoan bookItemLoan = bookItemLoanService.getBookItemLoan(bookItemId, userId, LoanStatus.CURRENT);
         bookItemLoan.setReturnDate(new LoanReturnDate(LocalDateTime.now()));
         bookItemLoan.setStatus(LoanStatus.COMPLETED);

@@ -4,40 +4,41 @@ import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.model.authdetails.Role;
 import com.example.authservice.domain.model.token.CookieValues;
 import com.example.authservice.domain.model.token.Token;
+import com.example.authservice.domain.model.token.TokenType;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.authservice.domain.model.token.TokenType.ACCESS;
+import static com.example.authservice.domain.model.token.TokenType.REFRESH;
+
 @RequiredArgsConstructor
 class TokenGenerator {
     private final Key signingKey;
-    @Value("${jwt.expirationTime}")
-    private long accessTokenExpTime;
-    @Value("${jwt.refresh-token.expiration}")
-    private long refreshTokenExpTime;
+    private final long accessTokenExpTime;
+    private final long refreshTokenExpTime;
 
     Token generateAccessToken(AuthDetailsDto authDetails, CookieValues cookieValues) {
-        return generate(authDetails, cookieValues, accessTokenExpTime);
+        return generate(authDetails, cookieValues, accessTokenExpTime, ACCESS);
     }
 
     Token generateRefreshToken(AuthDetailsDto authDetails, CookieValues cookieValues) {
-        return generate(authDetails, cookieValues, refreshTokenExpTime);
+        return generate(authDetails, cookieValues, refreshTokenExpTime, REFRESH);
     }
 
-    private Token generate(AuthDetailsDto authDetails, CookieValues cookieValues, long expTime) {
+    private Token generate(AuthDetailsDto authDetails, CookieValues cookieValues, long expTime, TokenType tokenType) {
         Map<String, Object> claims = new TokenClaimsBuilder()
                 .addFingerprint(cookieValues.hash())
                 .addUserDetails(authDetails.userId(), authDetails.role())
                 .build();
         String token = buildToken(claims, authDetails.username(), expTime);
-        return new Token(authDetails.userId(), token);
+        return new Token(authDetails.userId(), token, tokenType);
     }
 
     private String buildToken(

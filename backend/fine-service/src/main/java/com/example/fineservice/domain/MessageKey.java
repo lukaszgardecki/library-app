@@ -2,6 +2,11 @@ package com.example.fineservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // USER
     USER_UNSETTLED_CHARGES("user.unsettled-charges"),
 

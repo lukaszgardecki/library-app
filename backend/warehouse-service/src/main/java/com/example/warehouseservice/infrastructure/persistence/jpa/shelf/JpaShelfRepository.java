@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface JpaShelfRepository extends JpaRepository<ShelfEntity, Long> {
+interface JpaShelfRepository extends JpaRepository<ShelfEntity, Long> {
 
     @Query("""
         SELECT s

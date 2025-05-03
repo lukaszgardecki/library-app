@@ -13,29 +13,6 @@ import java.security.Key;
 @Configuration
 public class AuthenticationConfiguration {
 
-//    public AuthenticationFacade authenticationFacade() {
-//        InMemoryUserRepositoryAdapter userRepository = new InMemoryUserRepositoryAdapter();
-//        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortAdapter(userRepository);
-//        UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
-//        TokenFacade tokenFacade = new TokenConfiguration().tokenFacade();
-//        PersonFacade personFacade = new PersonConfiguration().personFacade();
-//        return new AuthenticationFacade(
-//                new AuthenticateUserUseCase(userFacade, personFacade, tokenFacade, authenticationManager, null),
-//                new GetCurrentLoggedInUserUseCase(userFacade,authenticationManager)
-//        );
-//    }
-
-//    public AuthenticationFacade authenticationFacade(UserRepositoryPort userRepository) {
-//        AuthenticationManagerPort authenticationManager = new InMemoryAuthenticationManagerPortAdapter(userRepository);
-//        UserFacade userFacade = new UserConfiguration().userFacade(userRepository);
-//        TokenFacade tokenFacade = new TokenConfiguration().tokenFacade();
-//        PersonFacade personFacade = new PersonConfiguration().personFacade();
-//        return new AuthenticationFacade(
-//                new AuthenticateUserUseCase(userFacade, personFacade, tokenFacade, authenticationManager, null),
-//                new GetCurrentLoggedInUserUseCase(userFacade,authenticationManager)
-//        );
-//    }
-
     @Bean
     AuthenticationFacade authenticationFacade(
             AuthenticationManagerPort authenticationManager,
@@ -45,29 +22,34 @@ public class AuthenticationConfiguration {
             EventPublisherPort publisher,
             AuthDetailsFacade authDetailsFacade,
             TokenGenerator tokenGenerator,
-            AuthValidator validator
+            Key key
     ) {
+        TokenParser tokenParser = new TokenParser(key);
         AuthenticationService authenticationService = new AuthenticationService(authDetailsFacade);
         TokenService tokenService = new TokenService(
                 accessTokenRepository, refreshTokenRepository, authDetailsFacade, tokenGenerator
         );
 
         return new AuthenticationFacade(
-                new AuthenticateUserUseCase(authenticationService, tokenService, authenticationManager, publisher),
+                new AuthenticateUserUseCase(
+                        authenticationManager, authenticationService, msgProvider, publisher, tokenService
+                ),
                 new RefreshUserTokensUseCase(msgProvider, tokenService),
-                new ValidateTokenAndCookieUseCase(msgProvider, tokenService, validator),
-                new ExtractTokenFromHeaderUseCase(new HttpRequestExtractor(msgProvider))
+                new ValidateTokenAndCookieUseCase(
+                        msgProvider, tokenService, new TokenValidator(tokenParser), new CookieValidator(tokenParser)
+                ),
+                new ExtractUsernameFromTokenUseCase(tokenParser),
+                new RevokeUserTokensUseCase(tokenService)
         );
     }
 
     @Bean
-    TokenGenerator tokenGenerator(Key key) {
-        return new TokenGenerator(key);
-    }
-
-    @Bean
-    AuthValidator authValidator(Key key) {
-        return new AuthValidator(key);
+    TokenGenerator tokenGenerator(
+            @Value("${jwt.expirationTime}") long accessTokenExpTime,
+            @Value("${jwt.refresh-token.expiration}") long refreshTokenExpTime,
+            Key key
+    ) {
+        return new TokenGenerator(key, accessTokenExpTime, refreshTokenExpTime);
     }
 
     @Bean

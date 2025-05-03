@@ -1,6 +1,7 @@
 package com.example.userservice.infrastructure.integration.bookitemrequestservice;
 
 import com.example.userservice.domain.dto.user.BookItemRequestDto;
+import com.example.userservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "request-service", path = "/book-requests")
+@FeignClient(name = "request-service", path = "/book-requests", configuration = FeignClientCustomConfiguration.class)
 interface BookItemRequestServiceFeignClient {
 
     @DeleteMapping("/users/{userId}/cancel-all")

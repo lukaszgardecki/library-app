@@ -21,7 +21,7 @@ class UserActivityController {
     private final AuthenticationFacade authFacade;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
     public ResponseEntity<Page<UserActivityDto>> getAllActions(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) String type,

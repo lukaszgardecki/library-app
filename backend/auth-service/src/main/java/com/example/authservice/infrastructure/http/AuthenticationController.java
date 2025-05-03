@@ -3,29 +3,44 @@ package com.example.authservice.infrastructure.http;
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.core.authentication.AuthenticationFacade;
 import com.example.authservice.domain.Constants;
+import com.example.authservice.domain.dto.auth.CredentialsToSaveDto;
 import com.example.authservice.domain.dto.auth.LoginRequest;
 import com.example.authservice.domain.dto.auth.LoginResponse;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.dto.token.AuthDto;
+import com.example.authservice.domain.dto.token.TokenInfoDto;
 import com.example.authservice.domain.model.authdetails.Email;
 import com.example.authservice.domain.model.authdetails.Password;
 import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.infrastructure.security.HttpRequestExtractor;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.authservice.domain.model.token.TokenType.*;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 class AuthenticationController {
+    private final HttpRequestExtractor extractor;
     private final AuthDetailsFacade authDetailsFacade;
     private final AuthenticationFacade authFacade;
 
+    @PostMapping("/register")
+    ResponseEntity<Void> saveUserCredentials(
+            @RequestBody CredentialsToSaveDto body
+    ) {
+        authDetailsFacade.createAuthDetails(body);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(
+    ResponseEntity<LoginResponse> authenticate(
             @RequestBody LoginRequest body,
             HttpServletResponse response
     ) {
@@ -36,26 +51,32 @@ class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse> refreshToken(
+    ResponseEntity<LoginResponse> refreshToken(
             @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
             HttpServletResponse response
     ) {
-        String refreshToken = authFacade.extractTokenFromHeader(authHeader);
-        AuthDto auth = authFacade.refreshUserTokens(refreshToken);
+        String token = extractor.extractToken(authHeader);
+        AuthDto auth = authFacade.refreshUserTokens(new TokenInfoDto(token, REFRESH));
         String cookie = createAuthCookie(auth.cookieName(), auth.cookieValue());
         response.addHeader(HttpHeaders.SET_COOKIE, cookie);
         return ResponseEntity.ok(new LoginResponse(auth.accessToken(), auth.refreshToken()));
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<AuthDetailsDto> validateToken(
+    ResponseEntity<AuthDetailsDto> validateToken(
             @RequestHeader(name = HttpHeaders.AUTHORIZATION, required = false) String authHeader,
             @CookieValue(name = Constants.AUTH_COOKIE_NAME, required = false) String cookie
     ) {
-        String token = authFacade.extractTokenFromHeader(authHeader);
-        UserId userId = authFacade.validateTokenAndCookie(token, cookie);
+        String token = extractor.extractToken(authHeader);
+        UserId userId = authFacade.validateTokenAndCookie(new TokenInfoDto(token, ACCESS), cookie);
         AuthDetailsDto auth = authDetailsFacade.getAuthDetailsByUserId(userId);
         return ResponseEntity.ok(auth);
+    }
+
+    @PostMapping("/logout/{userId}")
+    ResponseEntity<Void> logout(@PathVariable Long userId) {
+        authFacade.revokeTokensByUserId(new UserId(userId));
+        return ResponseEntity.noContent().build();
     }
 
     private String createAuthCookie(String cookieName, String cookieValue) {

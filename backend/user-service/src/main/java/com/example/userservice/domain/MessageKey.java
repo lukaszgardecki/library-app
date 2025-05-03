@@ -2,6 +2,11 @@ package com.example.userservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // PERSON
     PERSON_NOT_FOUND_ID("person.not-found.id"),
 

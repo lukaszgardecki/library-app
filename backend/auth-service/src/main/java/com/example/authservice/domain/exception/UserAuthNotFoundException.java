@@ -1,13 +1,14 @@
 package com.example.authservice.domain.exception;
 
 import com.example.authservice.domain.MessageKey;
+import com.example.authservice.domain.model.authdetails.AuthDetailsId;
 import com.example.authservice.domain.model.authdetails.Email;
 import com.example.authservice.domain.model.authdetails.UserId;
 
 public class UserAuthNotFoundException extends LibraryAppNotFoundException {
 
-    public UserAuthNotFoundException() {
-        super(MessageKey.AUTH_DETAILS_NOT_FOUND_ID, "");
+    public UserAuthNotFoundException(AuthDetailsId authId) {
+        super(MessageKey.AUTH_DETAILS_NOT_FOUND_ID, authId.value().toString());
     }
 
     public UserAuthNotFoundException(UserId userId) {

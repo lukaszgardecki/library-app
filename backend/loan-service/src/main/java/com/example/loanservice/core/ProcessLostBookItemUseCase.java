@@ -10,13 +10,11 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 class ProcessLostBookItemUseCase {
-//    private final AuthenticationFacade authFacade;
     private final CatalogServicePort catalogService;
     private final BookItemLoanService bookItemLoanService;
     private final EventPublisherPort publisher;
 
     void execute(BookItemId bookItemId, UserId userId) {
-//        authFacade.validateAdminAccess();
         BookItemLoan bookItemLoan = bookItemLoanService.getBookItemLoan(bookItemId, userId, LoanStatus.CURRENT);
         bookItemLoan.setReturnDate(new LoanReturnDate(LocalDateTime.now()));
         bookItemLoan.setStatus(LoanStatus.COMPLETED);

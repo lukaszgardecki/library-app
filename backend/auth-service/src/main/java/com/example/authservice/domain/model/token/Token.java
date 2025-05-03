@@ -17,10 +17,10 @@ public class Token {
     private boolean revoked;
     private Long userId;
 
-    public Token(Long userId, String token) {
+    public Token(Long userId, String token, TokenType type) {
         this.userId = userId;
         this.token = token;
-        this.tokenType = TokenType.BEARER;
+        this.tokenType = type;
         this.expired = false;
         this.revoked = false;
     }

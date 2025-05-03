@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEntity, Long> {
+interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEntity, Long> {
 
     List<BookItemLoanEntity> findAllByUserId(Long userId);
 

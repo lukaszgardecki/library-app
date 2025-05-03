@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,12 +20,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/book-requests")
+@PreAuthorize("isAuthenticated()")
 class BookRequestController {
     private final BookItemRequestFacade bookItemRequestFacade;
 
     @GetMapping
-//    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-    public ResponseEntity<Page<BookItemRequestDto>> getAllRequests(
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+    ResponseEntity<Page<BookItemRequestDto>> getAllRequests(
             @RequestParam(required = false) BookItemRequestStatus status,
             Pageable pageable
     ) {
@@ -33,19 +35,20 @@ class BookRequestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookItemRequestDto> getBookItemRequestById(@PathVariable Long id) {
+    ResponseEntity<BookItemRequestDto> getBookItemRequestById(@PathVariable Long id) {
         BookItemRequestDto request = bookItemRequestFacade.getBookItemRequestById(new RequestId(id));
         return ResponseEntity.ok(request);
     }
 
     @GetMapping("/{bookItemId}/isRequested")
-    public ResponseEntity<Boolean> isBookItemRequested(@PathVariable Long bookItemId) {
+    ResponseEntity<Boolean> isBookItemRequested(@PathVariable Long bookItemId) {
         boolean isRequested = bookItemRequestFacade.isBookItemRequested(new BookItemId(bookItemId));
         return ResponseEntity.ok(isRequested);
     }
 
     @GetMapping("/current")
-    public ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE') or #userId == principal")
+    ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(
             @RequestParam("user_id") Long userId
     ) {
         List<BookItemRequestDto> list = bookItemRequestFacade.getUserCurrentBookItemRequests(new UserId(userId));
@@ -53,7 +56,8 @@ class BookRequestController {
     }
 
     @PatchMapping("/{requestId}/{status}")
-    public ResponseEntity<Void> changeBookItemRequestStatus(
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+    ResponseEntity<Void> changeBookItemRequestStatus(
             @PathVariable Long requestId,
             @PathVariable BookItemRequestStatus status
     ) {
@@ -62,8 +66,8 @@ class BookRequestController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id.value")
-    public ResponseEntity<BookItemRequestDto> requestBookItem(
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
+    ResponseEntity<BookItemRequestDto> requestBookItem(
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
@@ -76,14 +80,14 @@ class BookRequestController {
     }
 
     @DeleteMapping("/users/{userId}/cancel-all")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-    public ResponseEntity<Void> cancelAllBookItemRequests(@PathVariable String userId) {
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+    ResponseEntity<Void> cancelAllBookItemRequests(@PathVariable String userId) {
         bookItemRequestFacade.cancelAllItemRequestsByUserId(new UserId(Long.parseLong(userId)));
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/book-item/{bookItemId}/user/{userId}/ready")
-    public ResponseEntity<Long> checkIfBookItemRequestStatusIsReady(
+    ResponseEntity<Long> checkIfBookItemRequestStatusIsReady(
             @PathVariable Long bookItemId,
             @PathVariable Long userId
     ) {
@@ -94,7 +98,7 @@ class BookRequestController {
     }
 
     @GetMapping("/book-item/{bookItemId}/check-not-requested")
-    public ResponseEntity<Void> ensureBookItemNotRequested(@PathVariable Long bookItemId) {
+    ResponseEntity<Void> ensureBookItemNotRequested(@PathVariable Long bookItemId) {
         bookItemRequestFacade.ensureBookItemNotRequested(new BookItemId(bookItemId));
         return ResponseEntity.noContent().build();
     }

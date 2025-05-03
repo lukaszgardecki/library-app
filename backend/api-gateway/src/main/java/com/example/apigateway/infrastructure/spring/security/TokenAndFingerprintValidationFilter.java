@@ -1,0 +1,103 @@
+package com.example.apigateway.infrastructure.spring.security;
+
+import com.example.apigateway.domain.dto.UserAuthDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyExtractors;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenAndFingerprintValidationFilter.Config> {
+    private final WebClient.Builder webClientBuilder;
+    private static final String AUTH_COOKIE_NAME = "auth";
+
+    @Override
+    public GatewayFilter apply(Config config) {
+        return (exchange, chain) -> {
+
+            String token = Optional.of(exchange.getRequest().getHeaders())
+                    .map(headers -> headers.getFirst(HttpHeaders.AUTHORIZATION))
+                    .filter(authHeader -> !authHeader.isBlank())
+                    .map(authHeader -> "Bearer " + authHeader.substring(7))
+                    .orElseGet(() -> "");
+
+            WebClient.RequestBodySpec requestBodySpec = webClientBuilder.build()
+                    .post()
+                    .uri("http://auth-service/auth/validate")
+                    .header(HttpHeaders.AUTHORIZATION, token);
+
+            Optional.of(exchange.getRequest().getCookies())
+                    .map(cookies -> cookies.getFirst(AUTH_COOKIE_NAME))
+                    .map(HttpCookie::getValue)
+                    .filter(value -> !value.isEmpty())
+                    .ifPresent(value -> requestBodySpec.cookie(AUTH_COOKIE_NAME, value));
+
+            return requestBodySpec.exchangeToMono(clientResponse -> {
+                        if (clientResponse.statusCode().is2xxSuccessful()) {
+                            return clientResponse.bodyToMono(UserAuthDto.class)
+                                    .flatMap(authResponse -> {
+                                        ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                                                .header("X-User-Id-Encoded", encode(authResponse.userId().toString()))
+                                                .header("X-User-Role-Encoded", encode(authResponse.role().toString()))
+                                                .build();
+                                        return chain.filter(exchange.mutate().request(modifiedRequest).build());
+                                    });
+                        } else {
+                            exchange.getResponse().setStatusCode(clientResponse.statusCode());
+                            clientResponse.headers().asHttpHeaders().forEach((name, values) -> {
+                                exchange.getResponse().getHeaders().addAll(name, values);
+                            });
+
+                            return clientResponse.body(BodyExtractors.toDataBuffers())
+                                    .flatMap(buffer -> exchange.getResponse().writeWith(Mono.just(buffer)))
+                                    .then(chain.filter(exchange));
+                        }
+                    })
+                    .onErrorResume(e -> {
+                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                        return exchange.getResponse().setComplete();
+                    });
+        };
+    }
+
+    @Override
+    public Class<Config> getConfigClass() {
+        return Config.class;
+    }
+
+    static class Config { }
+
+    @Override
+    public List<String> shortcutFieldOrder() {
+        return Collections.emptyList();
+    }
+
+    private String encode(String value) {
+        return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
+    // TODO: 03.05.2025 usunąć to
+//    private boolean shouldNotFilter(ServerWebExchange exchange) {
+//        String path = exchange.getRequest().getPath().value();
+//        HttpMethod method = exchange.getRequest().getMethod();
+//        return path.startsWith("/ws")
+//                || path.startsWith("/favicon.ico")
+//                || path.startsWith("/version")
+//                || path.startsWith("/auth")
+//                || (path.startsWith("/catalog/books") && HttpMethod.GET.equals(method))
+//                || path.startsWith("/fu");
+//    }
+}

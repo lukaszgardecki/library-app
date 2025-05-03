@@ -8,21 +8,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/notifications")
-//@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 class NotificationController {
     private final NotificationFacade notificationFacade;
 
     @GetMapping
-//    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
     public ResponseEntity<Page<NotificationDto>> getAllNotifications(
-            @RequestParam(required = false) Long userId,
+            @RequestParam(name = "user_id", required = false) Long userId,
             Pageable pageable
     ) {
         Page<NotificationDto> page = notificationFacade.getPageOfNotificationsByUserId(new UserId(userId), pageable);

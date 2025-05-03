@@ -2,6 +2,11 @@ package com.example.notificationservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // NOTIFICATION
     NOTIFICATION_NOT_FOUND_ID("notification.not-found.id"),
 

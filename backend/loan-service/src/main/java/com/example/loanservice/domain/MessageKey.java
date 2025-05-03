@@ -2,6 +2,11 @@ package com.example.loanservice.domain;
 
 public enum MessageKey {
 
+    // MAIN
+    ACCESS_DENIED("access-denied"),
+    FORBIDDEN("forbidden"),
+    BODY_MISSING("body-missing"),
+
     // BOOK ITEM LOAN
     LOAN_NOT_FOUND("loan.not-found"),
     LOAN_NOT_FOUND_ID("loan.not-found.id"),

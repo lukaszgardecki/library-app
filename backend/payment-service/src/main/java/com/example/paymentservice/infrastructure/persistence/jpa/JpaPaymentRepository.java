@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface JpaPaymentRepository extends JpaRepository<PaymentEntity, Long> {
+interface JpaPaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     @Query(value = """
         SELECT p

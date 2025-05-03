@@ -8,12 +8,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class CancelBookItemRequestUseCase {
-//    private final AuthenticationFacade authFacade;
     private final BookItemRequestService bookItemRequestService;
     private final EventPublisherPort publisher;
 
     void execute(BookItemId bookItemId, UserId userId) {
-//        authFacade.validateOwnerOrAdminAccess(userId);
         BookItemRequest request = bookItemRequestService.getCurrentBookItemRequest(bookItemId, userId);
         bookItemRequestService.cancelRequest(request.getId());
         publisher.publishRequestCanceledEvent(request.getBookItemId(), request.getUserId());

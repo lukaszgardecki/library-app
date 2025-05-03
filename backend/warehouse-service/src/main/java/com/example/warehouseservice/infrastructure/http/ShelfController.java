@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,16 +18,16 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-//@PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+@PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
 @RequestMapping("/warehouse/shelves")
 class ShelfController {
     private final ShelfFacade shelfFacade;
 
     @GetMapping
     public ResponseEntity<?> getAllShelves(
-            @RequestParam(value = "q", required = false) String query,
-            @RequestParam(value = "rack_id", required = false) Long rackId,
-            @RequestParam(value = "paged", required = false, defaultValue = "true") boolean paged,
+            @RequestParam(name = "q", required = false) String query,
+            @RequestParam(name = "rack_id", required = false) Long rackId,
+            @RequestParam(name = "paged", required = false, defaultValue = "true") boolean paged,
             Pageable pageable
     ) {
         if (paged) {

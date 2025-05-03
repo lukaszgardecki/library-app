@@ -1,5 +1,6 @@
 package com.example.authservice.infrastructure.persistence.jpa.token.refreshtoken;
 
+import com.example.authservice.domain.model.authdetails.UserId;
 import com.example.authservice.domain.model.token.Token;
 import com.example.authservice.domain.ports.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -34,15 +35,10 @@ class RefreshTokenRepositoryAdapter implements RefreshTokenRepositoryPort {
     }
 
     @Override
-    public List<Token> findAllValidTokensByUserId(Long userId) {
-        return repository.findAllValidTokensByUserId(userId).stream()
+    public List<Token> findAllValidTokensByUserId(UserId userId) {
+        return repository.findAllValidTokensByUserId(userId.value()).stream()
                 .map(this::toModel)
                 .toList();
-    }
-
-    @Override
-    public boolean existsValidToken(String token) {
-        return repository.existsValidToken(token);
     }
 
     private RefreshTokenEntity toEntity(Token model) {

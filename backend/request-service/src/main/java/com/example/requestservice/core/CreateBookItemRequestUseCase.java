@@ -10,13 +10,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class CreateBookItemRequestUseCase {
     private final UserServicePort userService;
-//    private final AuthenticationFacade authFacade;
     private final CatalogServicePort catalogService;
     private final BookItemRequestService bookItemRequestService;
     private final EventPublisherPort publisher;
 
     BookItemRequest execute(BookItemId bookItemId, UserId userId) {
-//        authFacade.validateOwnerOrAdminAccess(userId);
         userService.verifyUserForBookItemRequest(userId);
         bookItemRequestService.verifyIfCurrentRequestExists(bookItemId, userId);
         BookItemDto bookItem = catalogService.verifyAndGetBookItemForRequest(bookItemId);

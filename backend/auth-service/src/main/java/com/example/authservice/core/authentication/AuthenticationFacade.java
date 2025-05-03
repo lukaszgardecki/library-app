@@ -1,6 +1,7 @@
 package com.example.authservice.core.authentication;
 
 import com.example.authservice.domain.dto.token.AuthDto;
+import com.example.authservice.domain.dto.token.TokenInfoDto;
 import com.example.authservice.domain.model.authdetails.Email;
 import com.example.authservice.domain.model.authdetails.Password;
 import com.example.authservice.domain.model.authdetails.UserId;
@@ -13,24 +14,28 @@ public class AuthenticationFacade {
     private final AuthenticateUserUseCase authenticateUserUseCase;
     private final RefreshUserTokensUseCase refreshUserTokensUseCase;
     private final ValidateTokenAndCookieUseCase validateTokenAndCookieUseCase;
-    private final ExtractTokenFromHeaderUseCase extractTokenFromHeaderUseCase;
+    private final ExtractUsernameFromTokenUseCase extractUsernameFromTokenUseCase;
+    private final RevokeUserTokensUseCase revokeUserTokensUseCase;
 
     public AuthDto authenticate(Email username, Password password) {
         Auth auth = authenticateUserUseCase.execute(username, password);
         return AuthMapper.toDto(auth);
     }
 
-    public AuthDto refreshUserTokens(String token) {
-        Auth auth = refreshUserTokensUseCase.execute(token);
+    public AuthDto refreshUserTokens(TokenInfoDto tokenInfo) {
+        Auth auth = refreshUserTokensUseCase.execute(tokenInfo);
         return AuthMapper.toDto(auth);
     }
 
-    public UserId validateTokenAndCookie(
-            @Nullable String token, @Nullable String cookie) {
-        return validateTokenAndCookieUseCase.execute(token, cookie);
+    public UserId validateTokenAndCookie(TokenInfoDto tokenInfo, @Nullable String cookie) {
+        return validateTokenAndCookieUseCase.execute(tokenInfo, cookie);
     }
 
-    public String extractTokenFromHeader(String authHeader) {
-        return extractTokenFromHeaderUseCase.execute(authHeader);
+    public String extractUsernameFromToken(String authHeader) {
+        return extractUsernameFromTokenUseCase.execute(authHeader);
+    }
+
+    public void revokeTokensByUserId(UserId userId) {
+        revokeUserTokensUseCase.execute(userId);
     }
 }
