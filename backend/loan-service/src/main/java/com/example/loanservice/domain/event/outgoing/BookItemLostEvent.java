@@ -11,14 +11,16 @@ public class BookItemLostEvent {
     private final LoanReturnDate loanReturnDate;
     private final UserId userId;
     private final BookItemId bookItemId;
+    private final BookId bookId;
     private final Price charge;
 
-    public BookItemLostEvent(BookItemLoanDto bookItemLoan, Price charge) {
+    public BookItemLostEvent(BookItemLoanDto bookItemLoan, BookId bookId, Price charge) {
         this.loanId = new LoanId(bookItemLoan.id());
         this.loanDueDate = new LoanDueDate(bookItemLoan.dueDate());
         this.loanReturnDate = new LoanReturnDate(bookItemLoan.returnDate());
         this.userId = new UserId(bookItemLoan.userId());
         this.bookItemId = new BookItemId(bookItemLoan.bookItemId());
+        this.bookId = bookId;
         this.charge = charge;
     }
 }

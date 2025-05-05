@@ -2,6 +2,7 @@ package com.example.requestservice.infrastructure.integration.catalogservice;
 
 
 import com.example.requestservice.domain.dto.BookItemDto;
+import com.example.requestservice.domain.model.BookId;
 import com.example.requestservice.domain.model.BookItemId;
 import com.example.requestservice.domain.ports.CatalogServicePort;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class CatalogServiceAdapter implements CatalogServicePort {
     private final CatalogServiceFeignClient client;
+
+    @Override
+    public BookId getBookIdByBookItemId(BookItemId bookItemId) {
+        ResponseEntity<Long> reponse = client.getBookIdByBookItemId(bookItemId.value());
+        if (reponse.getStatusCode().is2xxSuccessful()) {
+            return new BookId(reponse.getBody());
+        }
+        return null;
+    }
 
     @Override
     public BookItemDto verifyAndGetBookItemForRequest(BookItemId bookItemId) {

@@ -8,6 +8,11 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring:
+        json:
+          type:
+            mapping: 'requestReadyEvent:com.example.warehouseservice.domain.event.outgoing.RequestReadyEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -16,6 +21,8 @@ spring:
           json:
             trusted:
               packages: com.example.requestservice.domain.event.outgoing
+            type:
+              mapping: 'requestCreatedEvent:com.example.warehouseservice.domain.event.incoming.RequestCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

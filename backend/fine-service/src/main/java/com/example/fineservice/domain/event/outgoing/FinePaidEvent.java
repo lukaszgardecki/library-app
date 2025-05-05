@@ -2,12 +2,14 @@ package com.example.fineservice.domain.event.outgoing;
 
 import com.example.fineservice.domain.model.FineAmount;
 import com.example.fineservice.domain.model.UserId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class FinePaidEvent {
-    private final UserId userId;
-    private final FineAmount fineAmount;
+    private UserId userId;
+    private FineAmount fineAmount;
 }

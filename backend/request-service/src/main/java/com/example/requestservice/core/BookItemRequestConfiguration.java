@@ -24,8 +24,8 @@ public class BookItemRequestConfiguration {
                 new CreateBookItemRequestUseCase(
                         userService, catalogService, bookItemRequestService, publisher
                 ),
-                new CancelBookItemRequestUseCase(
-                        bookItemRequestService, publisher
+                new CancelAllBookItemRequestsUseCase(
+                        bookItemRequestService, catalogService, publisher
                 ),
                 new ChangeBookItemRequestStatusUseCase(bookItemRequestRepository),
                 new ChangeBookItemRequestStatusToReadyUseCase(

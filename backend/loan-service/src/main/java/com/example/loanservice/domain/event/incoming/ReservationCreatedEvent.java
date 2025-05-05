@@ -1,13 +1,15 @@
 package com.example.loanservice.domain.event.incoming;
 
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemId;
+import com.example.loanservice.domain.model.LoanDueDate;
+import com.example.loanservice.domain.model.UserId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ReservationCreatedEvent {
     private BookItemId bookItemId;
     private UserId userId;

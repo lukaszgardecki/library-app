@@ -13,6 +13,9 @@ interface CatalogServiceFeignClient {
     @GetMapping("/book-items/{id}")
     ResponseEntity<BookItemDto> getBookItemById(@PathVariable Long id);
 
+    @GetMapping("/{bookItemId}/book/id")
+    ResponseEntity<Long> getBookIdByBookItemId(@PathVariable Long bookItemId);
+
     @GetMapping("/{id}/verify/loan")
     ResponseEntity<BookItemDto> verifyAndGetBookItemForLoan(@PathVariable Long id);
 }

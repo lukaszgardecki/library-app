@@ -1,6 +1,7 @@
 package com.example.notificationservice.infrastructure.integration.catalogservice;
 
 import com.example.notificationservice.domain.dto.BookDto;
+import com.example.notificationservice.domain.model.BookId;
 import com.example.notificationservice.domain.model.BookItemId;
 import com.example.notificationservice.domain.ports.CatalogServicePort;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,15 @@ import org.springframework.stereotype.Component;
 class CatalogServiceAdapter implements CatalogServicePort {
     private final CatalogServiceFeignClient client;
 
+
+    @Override
+    public BookDto getBookById(BookId bookId) {
+        ResponseEntity<BookDto> response = client.getBookById(bookId.value());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        return null;
+    }
 
     @Override
     public BookDto getBookByBookItemId(BookItemId bookItemId) {

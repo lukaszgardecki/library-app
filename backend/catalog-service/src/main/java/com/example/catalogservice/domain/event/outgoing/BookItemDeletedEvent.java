@@ -1,11 +1,15 @@
 package com.example.catalogservice.domain.event.outgoing;
 
+import com.example.catalogservice.domain.model.book.BookId;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookItemDeletedEvent {
-    private final BookItemId bookItemId;
+    private BookItemId bookItemId;
+    private BookId bookId;
 }

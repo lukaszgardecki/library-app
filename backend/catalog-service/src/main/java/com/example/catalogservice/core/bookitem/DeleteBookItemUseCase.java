@@ -21,7 +21,7 @@ class DeleteBookItemUseCase {
             throw new BookItemException(MessageKey.BOOK_ITEM_DELETION_FAILED);
         } else {
             bookItemRepository.deleteById(id);
-            publisher.publishBookItemDeletedEvent(bookItem.getId());
+            publisher.publishBookItemDeletedEvent(bookItem.getId(), bookItem.getBookId());
         }
     }
 }

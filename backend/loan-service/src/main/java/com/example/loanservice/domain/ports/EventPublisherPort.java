@@ -1,10 +1,7 @@
 package com.example.loanservice.domain.ports;
 
 import com.example.loanservice.domain.dto.BookItemLoanDto;
-import com.example.loanservice.domain.model.BookItemId;
-import com.example.loanservice.domain.model.Price;
-import com.example.loanservice.domain.model.RequestId;
-import com.example.loanservice.domain.model.UserId;
+import com.example.loanservice.domain.model.*;
 
 public interface EventPublisherPort {
 
@@ -12,5 +9,5 @@ public interface EventPublisherPort {
     void publishLoanProlongationNotAllowedEvent(BookItemId bookItemId, UserId userId);
     void publishLoanProlongedEvent(BookItemLoanDto bookItemLoan);
     void publishBookItemReturnedEvent(BookItemLoanDto bookItemLoan);
-    void publishBookItemLostEvent(BookItemLoanDto bookItemLoan, Price charge);
+    void publishBookItemLostEvent(BookItemLoanDto bookItemLoan, BookId bookId, Price charge);
 }

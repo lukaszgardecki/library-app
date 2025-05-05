@@ -1,15 +1,13 @@
 package com.example.requestservice.domain.ports;
 
 import com.example.requestservice.domain.dto.BookItemRequestDto;
-import com.example.requestservice.domain.model.BookItemId;
-import com.example.requestservice.domain.model.LoanDueDate;
-import com.example.requestservice.domain.model.UserId;
+import com.example.requestservice.domain.model.*;
 
 public interface EventPublisherPort {
 
     void publishRequestReadyEvent(BookItemId bookItemId, UserId userId);
 
-    void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId);
+    void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId, BookId bookId);
 
     void publishRequestCreatedEvent(BookItemRequestDto dto);
 

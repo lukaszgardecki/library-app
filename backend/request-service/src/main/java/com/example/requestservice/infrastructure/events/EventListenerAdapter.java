@@ -1,9 +1,9 @@
 package com.example.requestservice.infrastructure.events;
 
 import com.example.requestservice.domain.event.incoming.BookItemDeletedEvent;
-import com.example.requestservice.domain.event.incoming.LoanCreatedEvent;
 import com.example.requestservice.domain.event.incoming.BookItemLostEvent;
 import com.example.requestservice.domain.event.incoming.BookItemReturnedEvent;
+import com.example.requestservice.domain.event.incoming.LoanCreatedEvent;
 import com.example.requestservice.domain.ports.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -21,7 +21,7 @@ class EventListenerAdapter {
 
     @KafkaListener(topics = BOOK_ITEM_DELETED_TOPIC, groupId = "request-service.book-item.deleted.consumers")
     void bookItemDeleted(BookItemDeletedEvent event) {
-        eventListener.handleBookItemDeletedEvent(event.getBookItemId());
+        eventListener.handleBookItemDeletedEvent(event.getBookItemId(), event.getBookId());
     }
 
     @KafkaListener(topics = LOAN_CREATED_TOPIC, groupId = "request-service.loan.created.consumers")
@@ -36,6 +36,6 @@ class EventListenerAdapter {
 
     @KafkaListener(topics = BOOK_ITEM_LOST_TOPIC, groupId = "request-service.book-item.lost.consumers")
     void bookItemLost(BookItemLostEvent event) {
-        eventListener.handleBookItemLostEvent(event.getBookItemId());
+        eventListener.handleBookItemLostEvent(event.getBookItemId(), event.getBookId());
     }
 }

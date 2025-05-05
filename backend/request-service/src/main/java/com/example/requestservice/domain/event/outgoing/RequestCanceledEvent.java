@@ -1,13 +1,17 @@
 package com.example.requestservice.domain.event.outgoing;
 
+import com.example.requestservice.domain.model.BookId;
 import com.example.requestservice.domain.model.BookItemId;
 import com.example.requestservice.domain.model.UserId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestCanceledEvent {
-    private final BookItemId bookItemId;
-    private final UserId userId;
+    private BookItemId bookItemId;
+    private UserId userId;
+    private BookId bookId;
 }

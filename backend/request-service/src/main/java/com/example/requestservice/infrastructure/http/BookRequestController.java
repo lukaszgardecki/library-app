@@ -81,8 +81,8 @@ class BookRequestController {
 
     @DeleteMapping("/users/{userId}/cancel-all")
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
-    ResponseEntity<Void> cancelAllBookItemRequests(@PathVariable String userId) {
-        bookItemRequestFacade.cancelAllItemRequestsByUserId(new UserId(Long.parseLong(userId)));
+    ResponseEntity<Void> cancelAllBookItemRequests(@PathVariable Long userId) {
+        bookItemRequestFacade.cancelAllBookItemRequestsByUserId(new UserId(userId));
         return ResponseEntity.noContent().build();
     }
 

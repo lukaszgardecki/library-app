@@ -27,4 +27,11 @@ class CatalogController {
         BookDto book = bookFacade.getBook(new BookId(bookItem.getBookId()));
         return ResponseEntity.ok(book);
     }
+
+    @GetMapping("/{bookItemId}/book/id")
+    ResponseEntity<Long> getBookIdByBookItemId(@PathVariable Long bookItemId) {
+        BookItemDto bookItem = bookItemFacade.getBookItem(new BookItemId(bookItemId));
+        BookDto book = bookFacade.getBook(new BookId(bookItem.getBookId()));
+        return ResponseEntity.ok(book.getId());
+    }
 }

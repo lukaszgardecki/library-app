@@ -1,13 +1,13 @@
 package com.example.fineservice.domain.event.incoming;
 
 import com.example.fineservice.domain.model.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class BookItemReturnedEvent {
     private LoanId loanId;
     private LoanDueDate loanDueDate;

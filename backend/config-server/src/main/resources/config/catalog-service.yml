@@ -8,6 +8,11 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: 'bookItemDeletedEvent:com.example.catalogservice.domain.event.outgoing.BookItemDeletedEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -16,6 +21,13 @@ spring:
           json:
             trusted:
               packages: com.example.loanservice.domain.event.outgoing,com.example.requestservice.domain.event.outgoing
+            type:
+              mapping: 'bookItemLostEvent:com.example.catalogservice.domain.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.catalogservice.domain.event.incoming.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.catalogservice.domain.event.incoming.LoanCreatedEvent,
+                        loanProlongedEvent:com.example.catalogservice.domain.event.incoming.LoanProlongedEvent,
+                        requestCanceledEvent:com.example.catalogservice.domain.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.catalogservice.domain.event.incoming.RequestCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

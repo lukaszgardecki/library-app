@@ -8,6 +8,13 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring:
+        json:
+          type:
+            mapping: 'emailNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.EmailNotificationSentEvent,
+                      smsNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.SmsNotificationSentEvent,
+                      systemNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.SystemNotificationSentEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -16,6 +23,18 @@ spring:
           json:
             trusted:
               packages: com.example.loanservice.domain.event.outgoing,com.example.requestservice.domain.event.outgoing,com.example.userservice.domain.event.outgoing
+            type:
+              mapping: 'bookItemLostEvent:com.example.notificationservice.domain.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.notificationservice.domain.event.incoming.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.notificationservice.domain.event.incoming.LoanCreatedEvent,
+                        loanProlongationNotAllowed:com.example.notificationservice.domain.event.incoming.LoanProlongationNotAllowed,
+                        loanProlongedEvent:com.example.notificationservice.domain.event.incoming.LoanProlongedEvent,
+                        requestAvailableToLoanEvent:com.example.notificationservice.domain.event.incoming.RequestAvailableToLoanEvent,
+                        requestCanceledEvent:com.example.notificationservice.domain.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.notificationservice.domain.event.incoming.RequestCreatedEvent,
+                        requestReadyEvent:com.example.notificationservice.domain.event.incoming.RequestReadyEvent,
+                        reservationCreatedEvent:com.example.notificationservice.domain.event.incoming.ReservationCreatedEvent,
+                        userCreatedEvent:com.example.notificationservice.domain.event.incoming.UserCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

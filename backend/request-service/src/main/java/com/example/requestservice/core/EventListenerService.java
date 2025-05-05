@@ -1,9 +1,6 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.model.BookItemId;
-import com.example.requestservice.domain.model.BookItemRequest;
-import com.example.requestservice.domain.model.BookItemRequestStatus;
-import com.example.requestservice.domain.model.RequestId;
+import com.example.requestservice.domain.model.*;
 import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
 import com.example.requestservice.domain.ports.EventListenerPort;
 import com.example.requestservice.domain.ports.EventPublisherPort;
@@ -19,8 +16,8 @@ class EventListenerService implements EventListenerPort {
     private final EventPublisherPort publisher;
 
     @Override
-    public void handleBookItemDeletedEvent(BookItemId bookItemId) {
-        cancelAllCurrentRequests(bookItemId);
+    public void handleBookItemDeletedEvent(BookItemId bookItemId, BookId bookId) {
+        cancelAllCurrentRequests(bookItemId, bookId);
     }
 
     @Override
@@ -42,16 +39,16 @@ class EventListenerService implements EventListenerPort {
     }
 
     @Override
-    public void handleBookItemLostEvent(BookItemId bookItemId) {
-        cancelAllCurrentRequests(bookItemId);
+    public void handleBookItemLostEvent(BookItemId bookItemId, BookId bookId) {
+        cancelAllCurrentRequests(bookItemId, bookId);
     }
 
-    private void cancelAllCurrentRequests(BookItemId bookItemId) {
+    private void cancelAllCurrentRequests(BookItemId bookItemId, BookId bookId) {
         List<BookItemRequestStatus> statusesToFind = bookItemRequestService.getCurrentRequestStatuses();
         bookItemRequestService.getAllByBookItemIdAndStatuses(bookItemId, statusesToFind)
                 .forEach(request -> {
                     bookItemRequestService.cancelRequest(request.getId());
-                    publisher.publishRequestCanceledEvent(request.getBookItemId(), request.getUserId());
+                    publisher.publishRequestCanceledEvent(request.getBookItemId(), request.getUserId(), bookId);
                 });
     }
 }

@@ -5,13 +5,13 @@ import com.example.userservice.domain.model.bookitemloan.LoanDueDate;
 import com.example.userservice.domain.model.bookitemloan.LoanId;
 import com.example.userservice.domain.model.bookitemloan.LoanReturnDate;
 import com.example.userservice.domain.model.user.UserId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class LoanProlongedEvent {
     private LoanId loanId;
     private LoanDueDate loanDueDate;

@@ -2,6 +2,7 @@ package com.example.requestservice.infrastructure.events;
 
 import com.example.requestservice.domain.dto.BookItemRequestDto;
 import com.example.requestservice.domain.event.outgoing.*;
+import com.example.requestservice.domain.model.BookId;
 import com.example.requestservice.domain.model.BookItemId;
 import com.example.requestservice.domain.model.LoanDueDate;
 import com.example.requestservice.domain.model.UserId;
@@ -27,8 +28,8 @@ class EventPublisherAdapter implements EventPublisherPort {
     }
 
     @Override
-    public void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId) {
-        template.send(REQUEST_CANCELED_TOPIC, new RequestCanceledEvent(bookItemId, userId));
+    public void publishRequestCanceledEvent(BookItemId bookItemId, UserId userId, BookId bookId) {
+        template.send(REQUEST_CANCELED_TOPIC, new RequestCanceledEvent(bookItemId, userId, bookId));
     }
 
     @Override

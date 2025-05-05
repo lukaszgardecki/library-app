@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,10 @@ class BookItemService {
     BookItem getBookItemById(BookItemId id) {
         return bookItemRepository.findById(id)
                 .orElseThrow(() -> new BookItemNotFoundException(id));
+    }
+
+    Optional<BookItem> findBookItemById(BookItemId id) {
+        return bookItemRepository.findById(id);
     }
 
     Title getBookTitleByBookId(BookId bookId) {

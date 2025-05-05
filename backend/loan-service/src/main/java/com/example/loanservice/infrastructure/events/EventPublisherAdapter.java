@@ -2,10 +2,7 @@ package com.example.loanservice.infrastructure.events;
 
 import com.example.loanservice.domain.dto.BookItemLoanDto;
 import com.example.loanservice.domain.event.outgoing.*;
-import com.example.loanservice.domain.model.BookItemId;
-import com.example.loanservice.domain.model.Price;
-import com.example.loanservice.domain.model.RequestId;
-import com.example.loanservice.domain.model.UserId;
+import com.example.loanservice.domain.model.*;
 import com.example.loanservice.domain.ports.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -43,7 +40,7 @@ class EventPublisherAdapter implements EventPublisherPort {
     }
 
     @Override
-    public void publishBookItemLostEvent(BookItemLoanDto bookItemLoan, Price charge) {
-        template.send(BOOK_ITEM_LOST_TOPIC, new BookItemLostEvent(bookItemLoan, charge));
+    public void publishBookItemLostEvent(BookItemLoanDto bookItemLoan, BookId bookId, Price charge) {
+        template.send(BOOK_ITEM_LOST_TOPIC, new BookItemLostEvent(bookItemLoan, bookId, charge));
     }
 }

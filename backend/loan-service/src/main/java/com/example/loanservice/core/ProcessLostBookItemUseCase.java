@@ -21,6 +21,7 @@ class ProcessLostBookItemUseCase {
         bookItemLoanService.save(bookItemLoan);
         BookItemDto bookItem = catalogService.getBookItemById(bookItemId);
         Price bookItemPrice = new Price(bookItem.getPrice());
-        publisher.publishBookItemLostEvent(BookItemLoanMapper.toDto(bookItemLoan), bookItemPrice);
+        BookId bookId = catalogService.getBookIdByBookItemId(bookItemId);
+        publisher.publishBookItemLostEvent(BookItemLoanMapper.toDto(bookItemLoan), bookId, bookItemPrice);
     }
 }

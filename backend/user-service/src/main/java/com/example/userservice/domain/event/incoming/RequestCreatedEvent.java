@@ -5,13 +5,13 @@ import com.example.userservice.domain.model.bookitem.BookItemId;
 import com.example.userservice.domain.model.bookitemrequest.BookItemRequestCreationDate;
 import com.example.userservice.domain.model.bookitemrequest.BookItemRequestStatus;
 import com.example.userservice.domain.model.user.UserId;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RequestCreatedEvent {
     private RequestId requestId;
     private BookItemRequestCreationDate requestCreationDate;

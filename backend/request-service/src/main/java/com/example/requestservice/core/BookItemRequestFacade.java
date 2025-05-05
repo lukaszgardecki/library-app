@@ -16,7 +16,7 @@ public class BookItemRequestFacade {
     private final GetUserCurrentBookItemRequestsUseCase getUserCurrentBookItemRequestsUseCase;
     private final GetPageOfBookItemRequestsByStatusUseCase getPageOfBookItemRequestsByStatusUseCase;
     private final CreateBookItemRequestUseCase createBookItemRequestUseCase;
-    private final CancelBookItemRequestUseCase cancelBookItemRequestUseCase;
+    private final CancelAllBookItemRequestsUseCase cancelAllBookItemRequestsUseCase;
     private final ChangeBookItemRequestStatusUseCase changeBookItemRequestStatusUseCase;
     private final ChangeBookItemRequestStatusToReadyUseCase changeBookItemRequestStatusToReadyUseCase;
     private final CheckIfBookItemRequestStatusIsReadyUseCase checkIfBookItemRequestStatusIsReadyUseCase;
@@ -50,13 +50,8 @@ public class BookItemRequestFacade {
         return BookItemRequestMapper.toDto(bookItemRequest);
     }
 
-    public void cancelBookItemRequest(BookItemId bookItemId, UserId userId) {
-        cancelBookItemRequestUseCase.execute(bookItemId, userId);
-    }
-
-    public void cancelAllItemRequestsByUserId(UserId userId) {
-        getUserCurrentBookItemRequests(userId)
-                .forEach(req -> cancelBookItemRequest(new BookItemId(req.getBookItemId()), userId));
+    public void cancelAllBookItemRequestsByUserId(UserId userId) {
+        cancelAllBookItemRequestsUseCase.execute(userId);
     }
 
     public void changeBookItemRequestStatus(RequestId bookRequestId, BookItemRequestStatus newStatus) {
