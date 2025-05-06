@@ -34,6 +34,10 @@ class GatewayAuthenticationFilter extends OncePerRequestFilter {
     ) {
         try {
             validateGatewayHeader(request);
+            if (isPublic(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
             Long userId = extractUserIdHeader(request);
             String role = extractUserRoleHeader(request);
 
@@ -56,6 +60,11 @@ class GatewayAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
         return path.startsWith("/h2-console");
+    }
+
+    private boolean isPublic(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/users/register");
     }
 
     private void validateGatewayHeader(HttpServletRequest request) {

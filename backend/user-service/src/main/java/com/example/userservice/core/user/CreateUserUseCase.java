@@ -6,11 +6,8 @@ import com.example.userservice.domain.dto.person.AddressDto;
 import com.example.userservice.domain.dto.person.PersonDto;
 import com.example.userservice.domain.dto.user.RegisterUserDto;
 import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.person.PersonFirstName;
 import com.example.userservice.domain.model.person.PersonId;
-import com.example.userservice.domain.model.person.PersonLastName;
 import com.example.userservice.domain.model.user.*;
-import com.example.userservice.domain.ports.EventPublisherPort;
 import com.example.userservice.domain.ports.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -22,31 +19,25 @@ class CreateUserUseCase {
     private final UserRepositoryPort userRepository;
     private final PersonFacade personFacade;
     private final LibraryCardFacade libraryCardFacade;
-    private final EventPublisherPort publisher;
 
     public UserId execute(RegisterUserDto dto) {
         PersonDto personToSave = createPersonToSave(dto);
         PersonDto savedPerson = personFacade.save(personToSave);
-        User userToSave = createUserToSave(dto);
-        userToSave.setPersonId(new PersonId(savedPerson.getId()));
+        User userToSave = createUserToSave(savedPerson.getId());
         User savedUser = userRepository.save(userToSave);
         LibraryCardId cardId = libraryCardFacade.createNewLibraryCard(savedUser.getId());
         savedUser.setCardId(cardId);
         userRepository.save(savedUser);
-        publisher.publishUserCreatedEvent(
-                savedUser.getId(),
-                new PersonFirstName(savedPerson.getFirstName()),
-                new PersonLastName(savedPerson.getLastName())
-        );
         return savedUser.getId();
     }
 
-    private User createUserToSave(RegisterUserDto dto) {
+    private User createUserToSave(Long personId) {
         return User.builder()
                 .registrationDate(new RegistrationDate(LocalDate.now()))
                 .totalBooksBorrowed(new TotalBooksBorrowed(0))
                 .totalBooksRequested(new TotalBooksRequested(0))
                 .charge(new UserCharge(BigDecimal.ZERO))
+                .personId(new PersonId(personId))
                 .build();
     }
 

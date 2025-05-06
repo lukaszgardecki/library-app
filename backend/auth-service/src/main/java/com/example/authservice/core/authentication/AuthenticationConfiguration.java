@@ -39,7 +39,7 @@ public class AuthenticationConfiguration {
                         msgProvider, tokenService, new TokenValidator(tokenParser), new CookieValidator(tokenParser)
                 ),
                 new ExtractUsernameFromTokenUseCase(tokenParser),
-                new RevokeUserTokensUseCase(tokenService)
+                new RevokeUserTokensUseCase(tokenService, publisher)
         );
     }
 

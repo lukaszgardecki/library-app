@@ -105,11 +105,4 @@ public class UserFacade {
     public long countNewRegisteredUsersByMonth(int month, int year) {
         return countNewRegisteredUsersByMonthUseCase.execute(month, year);
     }
-
-    public void generateFakeUsers(int limit) {
-        for (int i = 0; i < limit; i++) {
-            RegisterUserDto user = FakeUserGenerator.generate();
-            createUserUseCase.execute(user);
-        }
-    }
 }

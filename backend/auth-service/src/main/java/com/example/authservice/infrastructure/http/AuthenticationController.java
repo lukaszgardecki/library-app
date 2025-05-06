@@ -3,7 +3,6 @@ package com.example.authservice.infrastructure.http;
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.core.authentication.AuthenticationFacade;
 import com.example.authservice.domain.Constants;
-import com.example.authservice.domain.dto.auth.CredentialsToSaveDto;
 import com.example.authservice.domain.dto.auth.LoginRequest;
 import com.example.authservice.domain.dto.auth.LoginResponse;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
@@ -18,10 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.authservice.domain.model.token.TokenType.*;
+import static com.example.authservice.domain.model.token.TokenType.ACCESS;
+import static com.example.authservice.domain.model.token.TokenType.REFRESH;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,14 +29,6 @@ class AuthenticationController {
     private final HttpRequestExtractor extractor;
     private final AuthDetailsFacade authDetailsFacade;
     private final AuthenticationFacade authFacade;
-
-    @PostMapping("/register")
-    ResponseEntity<Void> saveUserCredentials(
-            @RequestBody CredentialsToSaveDto body
-    ) {
-        authDetailsFacade.createAuthDetails(body);
-        return ResponseEntity.noContent().build();
-    }
 
     @PostMapping("/login")
     ResponseEntity<LoginResponse> authenticate(

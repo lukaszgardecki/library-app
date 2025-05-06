@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 class EventListenerAdapter {
     private final EventListenerPort eventListener;
 
-    @KafkaListener(topics = "user-service.user.created", groupId = "notification-service.user.created.consumers")
+    @KafkaListener(topics = "auth-service.user.created", groupId = "notification-service.user.created.consumers")
     void userCreated(UserCreatedEvent event) {
         eventListener.handleUserCreatedEvent(event);
     }

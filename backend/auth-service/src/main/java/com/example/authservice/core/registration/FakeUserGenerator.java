@@ -1,14 +1,13 @@
-package com.example.userservice.core.user;
+package com.example.authservice.core.registration;
 
-import com.example.userservice.domain.model.person.Gender;
-import com.example.userservice.domain.dto.user.RegisterUserDto;
+import com.example.authservice.domain.dto.auth.RegisterToSaveDto;
+import com.example.authservice.domain.model.authdetails.Gender;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Random;
-
 
 class FakeUserGenerator {
     private static final Faker faker = new Faker(Locale.getDefault());
@@ -17,24 +16,26 @@ class FakeUserGenerator {
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL_CHARACTERS = "@#$%^&*()-_=+<>?";
 
-    static RegisterUserDto generate() {
+    static RegisterToSaveDto generate() {
         LocalDate dateOfBirth = faker.date().birthday(12, 80).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        RegisterUserDto registerRequest = new RegisterUserDto();
-        registerRequest.setFirstName(faker.name().firstName());
-        registerRequest.setLastName(faker.name().lastName());
-        registerRequest.setDateOfBirth(dateOfBirth);
-        registerRequest.setPesel(generatePesel(dateOfBirth));
-        registerRequest.setGender(Gender.values()[faker.random().nextInt(Gender.values().length)]);
-        registerRequest.setNationality(faker.country().name());
-        registerRequest.setMothersName(faker.name().firstName());
-        registerRequest.setFathersName(faker.name().firstName());
-        registerRequest.setStreetAddress(faker.address().streetAddress());
-        registerRequest.setZipCode(faker.address().zipCode());
-        registerRequest.setCity(faker.address().city());
-        registerRequest.setState(faker.address().state());
-        registerRequest.setCountry(faker.address().country());
-        registerRequest.setPhone(faker.phoneNumber().cellPhone());
-
+        RegisterToSaveDto registerRequest = new RegisterToSaveDto(
+                faker.internet().emailAddress(),
+                generateStrongPassword(),
+                faker.name().firstName(),
+                faker.name().lastName(),
+                generatePesel(dateOfBirth),
+                dateOfBirth,
+                Gender.values()[faker.random().nextInt(Gender.values().length)].name(),
+                faker.country().name(),
+                faker.name().firstName(),
+                faker.name().firstName(),
+                faker.address().streetAddress(),
+                faker.address().zipCode(),
+                faker.address().city(),
+                faker.address().state(),
+                faker.address().country(),
+                faker.phoneNumber().cellPhone()
+        );
         return registerRequest;
     }
 
@@ -84,7 +85,6 @@ class FakeUserGenerator {
         return shuffleString(password.toString());
     }
 
-
     private static String getRandomCharacters(String characterSet, int length) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder(length);
@@ -93,7 +93,6 @@ class FakeUserGenerator {
         }
         return sb.toString();
     }
-
 
     private static String shuffleString(String str) {
         Random random = new Random();

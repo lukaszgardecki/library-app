@@ -15,9 +15,10 @@ public class AuthDetailsConfiguration {
     ) {
         AuthDetailsService authDetailsService = new AuthDetailsService(authDetailsRepository, passwordEncoder);
         return new AuthDetailsFacade(
+                new CreateNewAuthDetailsUseCase(authDetailsService),
                 new GetAuthDetailsUseCase(authDetailsService),
-                new CreateAuthDetailsUseCase(authDetailsService),
-                new UpdateAuthDetailsUseCase(authDetailsService)
+                new UpdateAuthDetailsUseCase(authDetailsService),
+                new ValidateEmailUseCase(authDetailsService)
         );
     }
 }

@@ -37,7 +37,8 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
             WebClient.RequestBodySpec requestBodySpec = webClientBuilder.build()
                     .post()
                     .uri("http://auth-service/auth/validate")
-                    .header(HttpHeaders.AUTHORIZATION, token);
+                    .header(HttpHeaders.AUTHORIZATION, token)
+                    .header("X-Source", "API-Gateway");
 
             Optional.of(exchange.getRequest().getCookies())
                     .map(cookies -> cookies.getFirst(AUTH_COOKIE_NAME))

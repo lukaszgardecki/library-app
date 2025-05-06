@@ -15,11 +15,10 @@ public class UserConfiguration {
             PersonFacade personFacade,
             BookItemRequestServicePort bookItemRequestService,
             LibraryCardFacade libraryCardFacade,
-            UserService userService,
-            EventPublisherPort publisher
+            UserService userService
     ) {
         return new UserFacade(
-                new CreateUserUseCase(userRepository, personFacade, libraryCardFacade, publisher),
+                new CreateUserUseCase(userRepository, personFacade, libraryCardFacade),
                 new GetAllUsersUseCase(userService),
                 new GetUserListUseCase(userService),
                 new GetUserUseCase(userService),

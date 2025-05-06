@@ -4,7 +4,6 @@ import com.example.authservice.core.authentication.AuthenticationFacade;
 import com.example.authservice.domain.MessageKey;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
 import com.example.authservice.domain.ports.MessageProviderPort;
-import com.example.authservice.infrastructure.security.HttpRequestExtractor;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,12 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static com.example.authservice.domain.model.token.TokenType.ACCESS;
 import static com.example.authservice.domain.model.token.TokenType.REFRESH;
@@ -35,14 +30,6 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
     private final HttpRequestExtractor requestExtractor;
     private final MessageProviderPort msgProvider;
-    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
-    private final List<String> excludedPathPatterns = Arrays.asList(
-            "/auth/register",
-            "/auth/login",
-            "/auth/validate",
-            "/auth/logout/*",
-            "/h2-console"
-    );
 
     @Override
     protected void doFilterInternal(
@@ -72,11 +59,12 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String servletPath = request.getServletPath();
-        return excludedPathPatterns.stream().anyMatch(pattern -> {
-            if (pattern.contains("*")) return antPathMatcher.match(pattern, servletPath);
-            else return pattern.equals(servletPath);
-        });
+        String path = request.getServletPath();
+        return path.startsWith("/h2-console")
+            || path.startsWith("/auth/register")
+            || path.startsWith("/auth/login")
+            || path.startsWith("/auth/logout")
+            || path.startsWith("/auth/validate");
     }
 
     private void setAuthentication(HttpServletRequest request, String token) {
