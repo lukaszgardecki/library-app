@@ -1,9 +1,9 @@
 package com.example.warehouseservice.infrastructure.integration.userservice;
 
-import com.example.warehouseservice.domain.dto.PersonDto;
-import com.example.warehouseservice.domain.dto.UserDto;
-import com.example.warehouseservice.domain.model.UserId;
-import com.example.warehouseservice.domain.ports.UserServicePort;
+import com.example.warehouseservice.domain.integration.user.dto.PersonDto;
+import com.example.warehouseservice.domain.integration.user.dto.UserDto;
+import com.example.warehouseservice.domain.integration.user.UserId;
+import com.example.warehouseservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

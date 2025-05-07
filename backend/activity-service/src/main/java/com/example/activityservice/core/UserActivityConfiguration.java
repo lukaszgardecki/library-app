@@ -1,9 +1,9 @@
 package com.example.activityservice.core;
 
-import com.example.activityservice.domain.ports.ActivityCreationStrategy;
-import com.example.activityservice.domain.ports.ActivityRepositoryPort;
-import com.example.activityservice.domain.ports.EventListenerPort;
-import com.example.activityservice.domain.ports.SourceValidator;
+import com.example.activityservice.domain.ports.in.ActivityCreationStrategyPort;
+import com.example.activityservice.domain.ports.out.ActivityRepositoryPort;
+import com.example.activityservice.domain.ports.in.EventListenerPort;
+import com.example.activityservice.domain.ports.out.SourceValidatorPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +15,7 @@ class UserActivityConfiguration {
     @Bean
     UserActivityFacade activityFacade(
             ActivityRepositoryPort userActivityRepository,
-            SourceValidator sourceValidator
+            SourceValidatorPort sourceValidator
     ) {
         return new UserActivityFacade(
                 new GetPageOfActivitiesByParamsUseCase(userActivityRepository),
@@ -27,7 +27,7 @@ class UserActivityConfiguration {
     @Bean
     EventListenerPort eventListenerService(
             ActivityRepositoryPort userActivityRepository,
-            List<ActivityCreationStrategy<?>> strategies
+            List<ActivityCreationStrategyPort<?>> strategies
     ) {
         return new EventListenerService(userActivityRepository, new ActivityFactory(strategies));
     }

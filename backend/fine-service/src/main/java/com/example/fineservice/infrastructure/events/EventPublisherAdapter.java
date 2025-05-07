@@ -1,9 +1,9 @@
 package com.example.fineservice.infrastructure.events;
 
 import com.example.fineservice.domain.event.outgoing.FinePaidEvent;
-import com.example.fineservice.domain.model.FineAmount;
-import com.example.fineservice.domain.model.UserId;
-import com.example.fineservice.domain.ports.EventPublisherPort;
+import com.example.fineservice.domain.model.values.FineAmount;
+import com.example.fineservice.domain.model.values.UserId;
+import com.example.fineservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

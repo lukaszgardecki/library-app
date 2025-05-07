@@ -1,8 +1,8 @@
 package com.example.userservice.infrastructure.integration.authservice;
 
 import com.example.userservice.domain.dto.user.UserAuthDto;
-import com.example.userservice.domain.model.user.UserId;
-import com.example.userservice.domain.ports.AuthenticationServicePort;
+import com.example.userservice.domain.model.user.values.UserId;
+import com.example.userservice.domain.ports.out.AuthenticationServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

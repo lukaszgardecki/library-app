@@ -1,7 +1,8 @@
 package com.example.notificationservice.infrastructure.persistence.jpa.notification;
 
 import com.example.notificationservice.domain.model.*;
-import com.example.notificationservice.domain.ports.NotificationRepositoryPort;
+import com.example.notificationservice.domain.model.values.*;
+import com.example.notificationservice.domain.ports.out.NotificationRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,11 +1,15 @@
 package com.example.requestservice.infrastructure.events;
 
-import com.example.requestservice.domain.dto.BookDto;
+import com.example.requestservice.domain.integration.catalog.dto.BookDto;
 import com.example.requestservice.domain.dto.BookItemRequestDto;
 import com.example.requestservice.domain.event.outgoing.*;
-import com.example.requestservice.domain.model.*;
-import com.example.requestservice.domain.ports.CatalogServicePort;
-import com.example.requestservice.domain.ports.EventPublisherPort;
+import com.example.requestservice.domain.integration.catalog.BookId;
+import com.example.requestservice.domain.integration.catalog.Title;
+import com.example.requestservice.domain.integration.loan.LoanDueDate;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.domain.ports.out.CatalogServicePort;
+import com.example.requestservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

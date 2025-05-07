@@ -2,7 +2,7 @@ package com.example.userservice.infrastructure.http;
 
 import com.example.userservice.core.librarycard.LibraryCardFacade;
 import com.example.userservice.domain.dto.librarycard.LibraryCardDto;
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

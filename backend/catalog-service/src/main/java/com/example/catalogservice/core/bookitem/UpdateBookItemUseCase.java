@@ -1,8 +1,9 @@
 package com.example.catalogservice.core.bookitem;
 
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import com.example.catalogservice.domain.dto.BookItemToUpdateDto;
 import com.example.catalogservice.domain.model.bookitem.*;
+import com.example.catalogservice.domain.model.bookitem.values.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

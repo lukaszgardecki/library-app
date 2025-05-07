@@ -1,5 +1,6 @@
 package com.example.requestservice.domain.model;
 
+import com.example.requestservice.domain.model.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.example.notificationservice.domain.dto;
 
-import com.example.notificationservice.domain.model.NotificationType;
+import com.example.notificationservice.domain.model.values.NotificationType;
 import lombok.*;
 
 import java.time.LocalDateTime;

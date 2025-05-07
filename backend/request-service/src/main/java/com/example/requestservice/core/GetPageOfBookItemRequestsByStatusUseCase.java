@@ -1,8 +1,8 @@
 package com.example.requestservice.core;
 
 import com.example.requestservice.domain.model.BookItemRequest;
-import com.example.requestservice.domain.model.BookItemRequestStatus;
-import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

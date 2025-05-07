@@ -1,7 +1,7 @@
 package com.example.notificationservice.infrastructure.events;
 
 import com.example.notificationservice.domain.event.incoming.*;
-import com.example.notificationservice.domain.ports.EventListenerPort;
+import com.example.notificationservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

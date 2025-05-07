@@ -2,15 +2,15 @@ package com.example.authservice.infrastructure.http;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.core.authentication.AuthenticationFacade;
-import com.example.authservice.domain.Constants;
+import com.example.authservice.domain.constants.Constants;
 import com.example.authservice.domain.dto.auth.LoginRequest;
 import com.example.authservice.domain.dto.auth.LoginResponse;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.dto.token.AuthDto;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.Password;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.infrastructure.security.HttpRequestExtractor;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.authservice.domain.model.token.TokenType.ACCESS;
-import static com.example.authservice.domain.model.token.TokenType.REFRESH;
+import static com.example.authservice.domain.model.token.values.TokenType.ACCESS;
+import static com.example.authservice.domain.model.token.values.TokenType.REFRESH;
 
 @RestController
 @RequestMapping("/auth")

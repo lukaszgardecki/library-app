@@ -1,7 +1,7 @@
 package com.example.authservice.infrastructure.persistence.jpa.authdetails;
 
-import com.example.authservice.domain.model.authdetails.AccountStatus;
-import com.example.authservice.domain.model.authdetails.Role;
+import com.example.authservice.domain.model.authdetails.values.AccountStatus;
+import com.example.authservice.domain.model.authdetails.values.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,8 @@
 package com.example.userservice.domain.model.user;
 
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.person.PersonId;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.model.person.values.PersonId;
+import com.example.userservice.domain.model.user.values.*;
 import lombok.*;
 
 @Getter

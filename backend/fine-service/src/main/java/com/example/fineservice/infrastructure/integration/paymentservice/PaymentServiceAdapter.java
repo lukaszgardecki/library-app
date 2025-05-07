@@ -1,8 +1,8 @@
 package com.example.fineservice.infrastructure.integration.paymentservice;
 
-import com.example.fineservice.domain.dto.PaymentDto;
-import com.example.fineservice.domain.dto.PaymentProcessRequestDto;
-import com.example.fineservice.domain.ports.PaymentServicePort;
+import com.example.fineservice.domain.integration.payment.dto.PaymentDto;
+import com.example.fineservice.domain.integration.payment.dto.PaymentProcessRequestDto;
+import com.example.fineservice.domain.ports.out.PaymentServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

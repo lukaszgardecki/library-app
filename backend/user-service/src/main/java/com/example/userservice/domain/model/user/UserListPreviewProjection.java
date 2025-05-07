@@ -1,6 +1,6 @@
 package com.example.userservice.domain.model.user;
 
-import com.example.userservice.domain.model.auth.AccountStatus;
+import com.example.userservice.domain.integration.auth.AccountStatus;
 
 import java.time.LocalDate;
 

@@ -1,18 +1,18 @@
 package com.example.activityservice.infrastructure.activities.auth;
 
-import com.example.activityservice.domain.MessageKey;
+import com.example.activityservice.domain.i18n.MessageKey;
 import com.example.activityservice.domain.event.incoming.UserCreatedEvent;
 import com.example.activityservice.domain.model.Activity;
-import com.example.activityservice.domain.model.ActivityMessage;
-import com.example.activityservice.domain.model.ActivityType;
-import com.example.activityservice.domain.ports.MessageProviderPort;
-import com.example.activityservice.domain.ports.ActivityCreationStrategy;
+import com.example.activityservice.domain.model.values.ActivityMessage;
+import com.example.activityservice.domain.model.values.ActivityType;
+import com.example.activityservice.domain.ports.out.MessageProviderPort;
+import com.example.activityservice.domain.ports.in.ActivityCreationStrategyPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserCreatedActivityStrategyAdapter implements ActivityCreationStrategy<UserCreatedEvent> {
+public class UserCreatedActivityStrategyAdapter implements ActivityCreationStrategyPort<UserCreatedEvent> {
     private final MessageProviderPort msgProvider;
 
     @Override

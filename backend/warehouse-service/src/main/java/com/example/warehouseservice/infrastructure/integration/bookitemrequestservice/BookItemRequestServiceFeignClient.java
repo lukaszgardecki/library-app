@@ -1,7 +1,7 @@
 package com.example.warehouseservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.warehouseservice.domain.dto.BookItemRequestDto;
-import com.example.warehouseservice.domain.model.BookItemRequestStatus;
+import com.example.warehouseservice.domain.integration.request.dto.BookItemRequestDto;
+import com.example.warehouseservice.domain.integration.request.BookItemRequestStatus;
 import com.example.warehouseservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;

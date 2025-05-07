@@ -1,5 +1,6 @@
 package com.example.activityservice.domain.model;
 
+import com.example.activityservice.domain.model.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

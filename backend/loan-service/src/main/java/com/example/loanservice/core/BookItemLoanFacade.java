@@ -3,6 +3,7 @@ package com.example.loanservice.core;
 import com.example.loanservice.domain.dto.BookItemLoanDto;
 import com.example.loanservice.domain.dto.BookItemLoanListPreviewDto;
 import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.values.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

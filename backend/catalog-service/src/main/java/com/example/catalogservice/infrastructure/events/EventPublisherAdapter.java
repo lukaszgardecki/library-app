@@ -1,9 +1,9 @@
 package com.example.catalogservice.infrastructure.events;
 
 import com.example.catalogservice.domain.event.outgoing.BookItemDeletedEvent;
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.ports.EventPublisherPort;
+import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

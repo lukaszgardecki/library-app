@@ -1,7 +1,6 @@
 package com.example.catalogservice.domain.exception;
 
-import com.example.catalogservice.domain.MessageKey;
-import com.example.catalogservice.domain.exception.LibraryAppException;
+import com.example.catalogservice.domain.i18n.MessageKey;
 
 public class BookItemException extends LibraryAppException {
 

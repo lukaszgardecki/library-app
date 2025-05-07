@@ -1,6 +1,7 @@
 package com.example.notificationservice.core;
 
-import com.example.notificationservice.domain.ports.*;
+import com.example.notificationservice.domain.ports.in.EventListenerPort;
+import com.example.notificationservice.domain.ports.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +11,7 @@ class NotificationConfiguration {
     @Bean
     NotificationFacade notificationFacade(
             NotificationRepositoryPort notificationRepositoryPort,
-            SourceValidator sourceValidator
+            SourceValidatorPort sourceValidator
     ) {
         NotificationService notificationService = new NotificationService(notificationRepositoryPort);
         NotificationAccessControlService notificationAccessControlService =

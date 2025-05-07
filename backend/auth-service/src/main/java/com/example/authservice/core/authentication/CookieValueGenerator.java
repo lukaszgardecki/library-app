@@ -1,6 +1,6 @@
 package com.example.authservice.core.authentication;
 
-import com.example.authservice.domain.Constants;
+import com.example.authservice.domain.constants.Constants;
 import com.example.authservice.domain.model.token.CookieValues;
 
 import java.security.SecureRandom;

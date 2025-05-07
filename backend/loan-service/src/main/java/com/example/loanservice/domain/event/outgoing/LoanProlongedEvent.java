@@ -1,7 +1,8 @@
 package com.example.loanservice.domain.event.outgoing;
 
 import com.example.loanservice.domain.dto.BookItemLoanDto;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.integration.catalog.Title;
+import com.example.loanservice.domain.model.values.*;
 import lombok.Getter;
 
 @Getter

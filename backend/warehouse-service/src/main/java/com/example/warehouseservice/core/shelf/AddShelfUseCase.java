@@ -1,6 +1,10 @@
 package com.example.warehouseservice.core.shelf;
 
 import com.example.warehouseservice.domain.model.shelf.*;
+import com.example.warehouseservice.domain.model.shelf.values.BookItemsCount;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfCreatedDate;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfPosition;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfUpdatedDate;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

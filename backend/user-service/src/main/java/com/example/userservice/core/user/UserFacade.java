@@ -1,7 +1,9 @@
 package com.example.userservice.core.user;
 
 import com.example.userservice.domain.dto.user.*;
+import com.example.userservice.domain.model.user.User;
 import com.example.userservice.domain.model.user.*;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

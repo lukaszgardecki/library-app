@@ -1,8 +1,8 @@
 package com.example.userservice.infrastructure.integration.bookcatalogservice;
 
-import com.example.userservice.domain.dto.user.BookDto;
-import com.example.userservice.domain.model.bookitem.BookItemId;
-import com.example.userservice.domain.ports.CatalogServicePort;
+import com.example.userservice.domain.integration.catalog.dto.BookDto;
+import com.example.userservice.domain.integration.catalog.BookItemId;
+import com.example.userservice.domain.ports.out.CatalogServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

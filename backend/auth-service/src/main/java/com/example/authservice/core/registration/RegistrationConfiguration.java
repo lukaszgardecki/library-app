@@ -1,8 +1,8 @@
 package com.example.authservice.core.registration;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
-import com.example.authservice.domain.ports.EventPublisherPort;
-import com.example.authservice.domain.ports.UserServicePort;
+import com.example.authservice.domain.ports.out.EventPublisherPort;
+import com.example.authservice.domain.ports.out.UserServicePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

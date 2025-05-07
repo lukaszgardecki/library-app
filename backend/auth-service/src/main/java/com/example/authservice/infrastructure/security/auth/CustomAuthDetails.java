@@ -1,6 +1,7 @@
 package com.example.authservice.infrastructure.security.auth;
 
 import com.example.authservice.domain.model.authdetails.*;
+import com.example.authservice.domain.model.authdetails.values.AccountStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.CredentialsContainer;

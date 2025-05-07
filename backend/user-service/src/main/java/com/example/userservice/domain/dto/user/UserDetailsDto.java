@@ -1,8 +1,8 @@
 package com.example.userservice.domain.dto.user;
 
 import com.example.userservice.domain.dto.librarycard.LibraryCardDto;
-import com.example.userservice.domain.model.person.Gender;
-import com.example.userservice.domain.model.auth.AccountStatus;
+import com.example.userservice.domain.model.person.values.Gender;
+import com.example.userservice.domain.integration.auth.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

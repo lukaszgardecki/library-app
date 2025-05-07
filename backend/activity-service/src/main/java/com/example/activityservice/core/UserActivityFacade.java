@@ -1,8 +1,8 @@
 package com.example.activityservice.core;
 
 import com.example.activityservice.domain.dto.UserActivityDto;
-import com.example.activityservice.domain.model.ActivityId;
-import com.example.activityservice.domain.model.UserId;
+import com.example.activityservice.domain.model.values.ActivityId;
+import com.example.activityservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

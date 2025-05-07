@@ -1,6 +1,6 @@
 package com.example.activityservice.infrastructure.persistence.jpa;
 
-import com.example.activityservice.domain.model.ActivityType;
+import com.example.activityservice.domain.model.values.ActivityType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;

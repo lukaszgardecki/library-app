@@ -1,10 +1,10 @@
 package com.example.authservice.core.authentication;
 
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.model.authdetails.Role;
+import com.example.authservice.domain.model.authdetails.values.Role;
 import com.example.authservice.domain.model.token.CookieValues;
 import com.example.authservice.domain.model.token.Token;
-import com.example.authservice.domain.model.token.TokenType;
+import com.example.authservice.domain.model.token.values.TokenType;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,8 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.authservice.domain.model.token.TokenType.ACCESS;
-import static com.example.authservice.domain.model.token.TokenType.REFRESH;
+import static com.example.authservice.domain.model.token.values.TokenType.ACCESS;
+import static com.example.authservice.domain.model.token.values.TokenType.REFRESH;
 
 @RequiredArgsConstructor
 class TokenGenerator {

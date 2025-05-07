@@ -1,14 +1,14 @@
 package com.example.userservice.core.librarycard;
 
 import com.example.userservice.domain.model.librarycard.LibraryCard;
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.ports.SourceValidator;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.ports.out.SourceValidatorPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class GetLibraryCardUseCase {
     private final LibraryCardService libraryCardService;
-    private final SourceValidator sourceValidator;
+    private final SourceValidatorPort sourceValidator;
 
     LibraryCard execute(LibraryCardId id) {
         LibraryCard card = libraryCardService.getLibraryCardById(id);

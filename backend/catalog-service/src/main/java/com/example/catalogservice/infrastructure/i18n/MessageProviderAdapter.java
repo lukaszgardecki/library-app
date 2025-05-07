@@ -1,7 +1,7 @@
 package com.example.catalogservice.infrastructure.i18n;
 
-import com.example.catalogservice.domain.MessageKey;
-import com.example.catalogservice.domain.ports.MessageProviderPort;
+import com.example.catalogservice.domain.i18n.MessageKey;
+import com.example.catalogservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

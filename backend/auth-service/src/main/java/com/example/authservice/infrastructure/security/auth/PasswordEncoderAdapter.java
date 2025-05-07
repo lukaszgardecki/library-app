@@ -1,6 +1,6 @@
 package com.example.authservice.infrastructure.security.auth;
 
-import com.example.authservice.domain.ports.PasswordEncoderPort;
+import com.example.authservice.domain.ports.out.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

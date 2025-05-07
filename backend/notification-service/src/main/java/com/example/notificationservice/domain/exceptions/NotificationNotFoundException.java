@@ -1,7 +1,7 @@
 package com.example.notificationservice.domain.exceptions;
 
-import com.example.notificationservice.domain.MessageKey;
-import com.example.notificationservice.domain.model.NotificationId;
+import com.example.notificationservice.domain.i18n.MessageKey;
+import com.example.notificationservice.domain.model.values.NotificationId;
 
 public class NotificationNotFoundException extends LibraryAppNotFoundException {
 

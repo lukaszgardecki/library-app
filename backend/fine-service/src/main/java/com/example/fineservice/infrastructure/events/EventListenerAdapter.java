@@ -2,7 +2,7 @@ package com.example.fineservice.infrastructure.events;
 
 import com.example.fineservice.domain.event.incoming.BookItemLostEvent;
 import com.example.fineservice.domain.event.incoming.BookItemReturnedEvent;
-import com.example.fineservice.domain.ports.EventListenerPort;
+import com.example.fineservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

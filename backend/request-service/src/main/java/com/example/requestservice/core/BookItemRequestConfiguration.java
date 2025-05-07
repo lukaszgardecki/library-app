@@ -1,6 +1,7 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.ports.*;
+import com.example.requestservice.domain.ports.in.EventListenerPort;
+import com.example.requestservice.domain.ports.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +15,7 @@ public class BookItemRequestConfiguration {
             UserServicePort userService,
             CatalogServicePort catalogService,
             EventPublisherPort publisher,
-            SourceValidator sourceValidator
+            SourceValidatorPort sourceValidator
     ) {
         return new BookItemRequestFacade(
                 new GetBookItemRequestUseCase(bookItemRequestService, sourceValidator),

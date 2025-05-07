@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.integration.catalogservice;
 
-import com.example.loanservice.domain.dto.BookDto;
-import com.example.loanservice.domain.dto.BookItemDto;
+import com.example.loanservice.domain.integration.catalog.dto.BookDto;
+import com.example.loanservice.domain.integration.catalog.dto.BookItemDto;
 import com.example.loanservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

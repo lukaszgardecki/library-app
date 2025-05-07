@@ -1,8 +1,12 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.dto.BookItemDto;
+import com.example.loanservice.domain.integration.catalog.BookId;
+import com.example.loanservice.domain.integration.catalog.dto.BookItemDto;
+import com.example.loanservice.domain.integration.request.RequestId;
 import com.example.loanservice.domain.model.*;
-import com.example.loanservice.domain.ports.*;
+import com.example.loanservice.domain.model.values.BookItemId;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

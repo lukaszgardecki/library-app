@@ -1,6 +1,6 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.model.LoanStatus;
+import com.example.loanservice.domain.model.values.LoanStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;

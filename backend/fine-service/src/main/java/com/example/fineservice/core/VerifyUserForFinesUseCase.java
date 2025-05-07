@@ -1,8 +1,8 @@
 package com.example.fineservice.core;
 
 import com.example.fineservice.domain.exceptions.UnsettledFineException;
-import com.example.fineservice.domain.model.FineStatus;
-import com.example.fineservice.domain.model.UserId;
+import com.example.fineservice.domain.model.values.FineStatus;
+import com.example.fineservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

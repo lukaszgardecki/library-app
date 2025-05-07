@@ -2,6 +2,10 @@ package com.example.activityservice.core;
 
 import com.example.activityservice.domain.dto.UserActivityDto;
 import com.example.activityservice.domain.model.*;
+import com.example.activityservice.domain.model.values.ActivityCreationDate;
+import com.example.activityservice.domain.model.values.ActivityId;
+import com.example.activityservice.domain.model.values.ActivityMessage;
+import com.example.activityservice.domain.model.values.UserId;
 
 class UserActivityMapper {
 

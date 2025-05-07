@@ -1,6 +1,6 @@
 package com.example.notificationservice.domain.exceptions;
 
-import com.example.notificationservice.domain.MessageKey;
+import com.example.notificationservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

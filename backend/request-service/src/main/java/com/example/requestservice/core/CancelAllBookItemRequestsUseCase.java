@@ -1,9 +1,9 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.model.BookId;
-import com.example.requestservice.domain.model.UserId;
-import com.example.requestservice.domain.ports.CatalogServicePort;
-import com.example.requestservice.domain.ports.EventPublisherPort;
+import com.example.requestservice.domain.integration.catalog.BookId;
+import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.domain.ports.out.CatalogServicePort;
+import com.example.requestservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

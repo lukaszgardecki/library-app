@@ -1,11 +1,15 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.Constants;
+import com.example.loanservice.domain.constants.Constants;
 import com.example.loanservice.domain.model.*;
-import com.example.loanservice.domain.ports.BookItemRequestServicePort;
-import com.example.loanservice.domain.ports.EventPublisherPort;
-import com.example.loanservice.domain.ports.FineServicePort;
-import com.example.loanservice.domain.ports.UserServicePort;
+import com.example.loanservice.domain.model.values.BookItemId;
+import com.example.loanservice.domain.model.values.LoanDueDate;
+import com.example.loanservice.domain.model.values.LoanStatus;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.BookItemRequestServicePort;
+import com.example.loanservice.domain.ports.out.EventPublisherPort;
+import com.example.loanservice.domain.ports.out.FineServicePort;
+import com.example.loanservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

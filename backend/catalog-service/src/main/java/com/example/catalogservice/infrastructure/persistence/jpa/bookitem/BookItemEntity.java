@@ -1,6 +1,6 @@
 package com.example.catalogservice.infrastructure.persistence.jpa.bookitem;
 
-import com.example.catalogservice.domain.model.bookitem.BookItemStatus;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

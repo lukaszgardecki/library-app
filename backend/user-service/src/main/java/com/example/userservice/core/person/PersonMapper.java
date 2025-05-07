@@ -4,6 +4,7 @@ package com.example.userservice.core.person;
 import com.example.userservice.domain.dto.person.AddressDto;
 import com.example.userservice.domain.dto.person.PersonDto;
 import com.example.userservice.domain.model.person.*;
+import com.example.userservice.domain.model.person.values.*;
 
 class PersonMapper {
 

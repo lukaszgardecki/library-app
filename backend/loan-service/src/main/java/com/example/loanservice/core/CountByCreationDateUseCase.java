@@ -1,6 +1,6 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.model.LoanCreationDate;
+import com.example.loanservice.domain.model.values.LoanCreationDate;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

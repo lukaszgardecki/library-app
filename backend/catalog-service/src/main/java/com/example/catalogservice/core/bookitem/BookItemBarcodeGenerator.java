@@ -1,8 +1,8 @@
 package com.example.catalogservice.core.bookitem;
 
-import com.example.catalogservice.domain.model.bookitem.BookItemBarcode;
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.Constants;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemBarcode;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.constants.Constants;
 
 class BookItemBarcodeGenerator {
 

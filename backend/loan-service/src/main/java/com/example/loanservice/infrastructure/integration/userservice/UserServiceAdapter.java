@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.integration.userservice;
 
-import com.example.loanservice.domain.model.UserId;
-import com.example.loanservice.domain.ports.UserServicePort;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

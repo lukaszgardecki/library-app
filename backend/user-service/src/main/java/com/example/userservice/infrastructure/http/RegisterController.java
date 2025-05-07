@@ -2,7 +2,7 @@ package com.example.userservice.infrastructure.http;
 
 import com.example.userservice.core.user.UserFacade;
 import com.example.userservice.domain.dto.user.RegisterUserDto;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

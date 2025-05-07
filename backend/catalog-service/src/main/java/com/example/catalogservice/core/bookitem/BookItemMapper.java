@@ -1,12 +1,13 @@
 package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.domain.dto.BookDto;
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import com.example.catalogservice.domain.dto.BookItemDto;
 import com.example.catalogservice.domain.dto.BookItemWithBookDto;
-import com.example.catalogservice.domain.dto.RackDto;
-import com.example.catalogservice.domain.dto.ShelfDto;
+import com.example.catalogservice.domain.integration.warehouse.dto.RackDto;
+import com.example.catalogservice.domain.integration.warehouse.dto.ShelfDto;
 import com.example.catalogservice.domain.model.bookitem.*;
+import com.example.catalogservice.domain.model.bookitem.values.*;
 
 class BookItemMapper {
 

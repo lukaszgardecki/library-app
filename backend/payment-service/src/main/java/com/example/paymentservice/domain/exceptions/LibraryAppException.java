@@ -1,6 +1,6 @@
 package com.example.paymentservice.domain.exceptions;
 
-import com.example.paymentservice.domain.MessageKey;
+import com.example.paymentservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

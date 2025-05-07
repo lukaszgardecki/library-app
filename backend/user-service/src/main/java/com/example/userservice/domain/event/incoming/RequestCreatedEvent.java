@@ -1,11 +1,11 @@
 package com.example.userservice.domain.event.incoming;
 
-import com.example.userservice.domain.model.RequestId;
-import com.example.userservice.domain.model.book.Title;
-import com.example.userservice.domain.model.bookitem.BookItemId;
-import com.example.userservice.domain.model.bookitemrequest.BookItemRequestCreationDate;
-import com.example.userservice.domain.model.bookitemrequest.BookItemRequestStatus;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.integration.request.RequestId;
+import com.example.userservice.domain.integration.catalog.Title;
+import com.example.userservice.domain.integration.catalog.BookItemId;
+import com.example.userservice.domain.integration.request.BookItemRequestCreationDate;
+import com.example.userservice.domain.integration.request.BookItemRequestStatus;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

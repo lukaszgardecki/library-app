@@ -1,7 +1,7 @@
 package com.example.fineservice.domain.exceptions;
 
-import com.example.fineservice.domain.MessageKey;
-import com.example.fineservice.domain.model.FineId;
+import com.example.fineservice.domain.i18n.MessageKey;
+import com.example.fineservice.domain.model.values.FineId;
 
 public class FineNotFoundException extends LibraryAppNotFoundException {
 

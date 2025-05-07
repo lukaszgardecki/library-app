@@ -1,8 +1,8 @@
 package com.example.authservice.infrastructure.security.auth;
 
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.Password;
-import com.example.authservice.domain.ports.AuthenticationManagerPort;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.ports.out.AuthenticationManagerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;

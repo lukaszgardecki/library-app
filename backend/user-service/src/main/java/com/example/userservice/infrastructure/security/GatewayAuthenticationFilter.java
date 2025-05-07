@@ -1,7 +1,7 @@
 package com.example.userservice.infrastructure.security;
 
-import com.example.userservice.domain.MessageKey;
-import com.example.userservice.domain.ports.MessageProviderPort;
+import com.example.userservice.domain.i18n.MessageKey;
+import com.example.userservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

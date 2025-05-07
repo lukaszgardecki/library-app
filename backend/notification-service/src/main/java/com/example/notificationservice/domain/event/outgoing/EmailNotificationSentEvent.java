@@ -1,7 +1,7 @@
 package com.example.notificationservice.domain.event.outgoing;
 
-import com.example.notificationservice.domain.model.NotificationSubject;
-import com.example.notificationservice.domain.model.UserId;
+import com.example.notificationservice.domain.model.values.NotificationSubject;
+import com.example.notificationservice.domain.model.values.UserId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

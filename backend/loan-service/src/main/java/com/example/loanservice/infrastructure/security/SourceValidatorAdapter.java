@@ -1,9 +1,9 @@
 package com.example.loanservice.infrastructure.security;
 
-import com.example.loanservice.domain.MessageKey;
-import com.example.loanservice.domain.model.UserId;
-import com.example.loanservice.domain.ports.MessageProviderPort;
-import com.example.loanservice.domain.ports.SourceValidator;
+import com.example.loanservice.domain.i18n.MessageKey;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.MessageProviderPort;
+import com.example.loanservice.domain.ports.out.SourceValidatorPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class SourceValidatorAdapter implements SourceValidator {
+class SourceValidatorAdapter implements SourceValidatorPort {
     private final MessageProviderPort msgProvider;
 
     @Override

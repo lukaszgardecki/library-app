@@ -1,7 +1,8 @@
 package com.example.fineservice.infrastructure.persistence.jpa;
 
 import com.example.fineservice.domain.model.*;
-import com.example.fineservice.domain.ports.FineRepositoryPort;
+import com.example.fineservice.domain.model.values.*;
+import com.example.fineservice.domain.ports.out.FineRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

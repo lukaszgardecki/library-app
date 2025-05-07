@@ -2,8 +2,9 @@ package com.example.warehouseservice.core.shelf;
 
 import com.example.warehouseservice.domain.dto.ShelfDto;
 import com.example.warehouseservice.domain.dto.ShelfToSaveDto;
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.model.shelf.*;
+import com.example.warehouseservice.domain.model.shelf.values.*;
 
 class ShelfMapper {
 

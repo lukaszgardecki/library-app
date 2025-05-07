@@ -1,8 +1,8 @@
 package com.example.warehouseservice.core.rack;
 
 import com.example.warehouseservice.domain.model.rack.Rack;
-import com.example.warehouseservice.domain.model.rack.RackId;
-import com.example.warehouseservice.domain.model.rack.RackUpdatedDate;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackUpdatedDate;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

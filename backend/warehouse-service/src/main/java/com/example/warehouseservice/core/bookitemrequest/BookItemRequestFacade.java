@@ -1,8 +1,8 @@
 package com.example.warehouseservice.core.bookitemrequest;
 
 import com.example.warehouseservice.domain.dto.WarehouseBookItemRequestListViewDto;
-import com.example.warehouseservice.domain.model.BookItemRequestStatus;
-import com.example.warehouseservice.domain.model.RequestId;
+import com.example.warehouseservice.domain.integration.request.BookItemRequestStatus;
+import com.example.warehouseservice.domain.integration.request.RequestId;
 import com.example.warehouseservice.domain.model.WarehouseBookItemRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,8 +1,8 @@
 package com.example.authservice.infrastructure.persistence.jpa.token.refreshtoken;
 
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.domain.model.token.Token;
-import com.example.authservice.domain.ports.RefreshTokenRepositoryPort;
+import com.example.authservice.domain.ports.out.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

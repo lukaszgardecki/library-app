@@ -4,9 +4,9 @@ import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
 import com.example.authservice.domain.model.authdetails.AuthDetails;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.Password;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

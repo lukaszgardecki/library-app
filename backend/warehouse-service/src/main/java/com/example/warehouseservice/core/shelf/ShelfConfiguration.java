@@ -1,7 +1,7 @@
 package com.example.warehouseservice.core.shelf;
 
-import com.example.warehouseservice.domain.ports.CatalogServicePort;
-import com.example.warehouseservice.domain.ports.ShelfRepositoryPort;
+import com.example.warehouseservice.domain.ports.out.CatalogServicePort;
+import com.example.warehouseservice.domain.ports.out.ShelfRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

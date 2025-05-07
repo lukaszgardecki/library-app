@@ -1,10 +1,10 @@
 package com.example.loanservice.infrastructure.integration.catalogservice;
 
-import com.example.loanservice.domain.dto.BookDto;
-import com.example.loanservice.domain.dto.BookItemDto;
-import com.example.loanservice.domain.model.BookId;
-import com.example.loanservice.domain.model.BookItemId;
-import com.example.loanservice.domain.ports.CatalogServicePort;
+import com.example.loanservice.domain.integration.catalog.dto.BookDto;
+import com.example.loanservice.domain.integration.catalog.dto.BookItemDto;
+import com.example.loanservice.domain.integration.catalog.BookId;
+import com.example.loanservice.domain.model.values.BookItemId;
+import com.example.loanservice.domain.ports.out.CatalogServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

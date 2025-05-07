@@ -1,14 +1,14 @@
 package com.example.loanservice.core;
 
 import com.example.loanservice.domain.model.BookItemLoan;
-import com.example.loanservice.domain.model.LoanId;
-import com.example.loanservice.domain.ports.SourceValidator;
+import com.example.loanservice.domain.model.values.LoanId;
+import com.example.loanservice.domain.ports.out.SourceValidatorPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class GetBookItemLoanUseCase {
     private final BookItemLoanService bookItemLoanService;
-    private final SourceValidator sourceValidator;
+    private final SourceValidatorPort sourceValidator;
 
     BookItemLoan execute(LoanId id) {
         BookItemLoan loan = bookItemLoanService.getBookItemLoanById(id);

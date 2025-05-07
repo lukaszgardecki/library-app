@@ -1,10 +1,10 @@
 package com.example.warehouseservice.infrastructure.http;
 
 import com.example.warehouseservice.core.shelf.ShelfFacade;
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.dto.ShelfDto;
 import com.example.warehouseservice.domain.dto.ShelfToSaveDto;
-import com.example.warehouseservice.domain.model.shelf.ShelfId;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

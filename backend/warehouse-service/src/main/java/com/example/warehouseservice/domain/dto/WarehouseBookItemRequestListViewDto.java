@@ -1,7 +1,7 @@
 package com.example.warehouseservice.domain.dto;
 
-import com.example.warehouseservice.domain.model.BookFormat;
-import com.example.warehouseservice.domain.model.BookItemRequestStatus;
+import com.example.warehouseservice.domain.integration.catalog.BookFormat;
+import com.example.warehouseservice.domain.integration.request.BookItemRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

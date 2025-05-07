@@ -1,6 +1,6 @@
 package com.example.loanservice.domain.dto;
 
-import com.example.loanservice.domain.model.LoanStatus;
+import com.example.loanservice.domain.model.values.LoanStatus;
 
 import java.time.LocalDateTime;
 

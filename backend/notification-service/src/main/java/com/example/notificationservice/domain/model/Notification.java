@@ -1,5 +1,6 @@
 package com.example.notificationservice.domain.model;
 
+import com.example.notificationservice.domain.model.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

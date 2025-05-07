@@ -1,10 +1,11 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.MessageKey;
+import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.exceptions.BookItemRequestException;
 import com.example.requestservice.domain.exceptions.BookItemRequestNotFoundException;
 import com.example.requestservice.domain.model.*;
-import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
+import com.example.requestservice.domain.model.values.*;
+import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

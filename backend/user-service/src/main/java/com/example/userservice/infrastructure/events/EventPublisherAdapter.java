@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.events;
 
-import com.example.userservice.domain.ports.EventPublisherPort;
+import com.example.userservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

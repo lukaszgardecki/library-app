@@ -1,6 +1,6 @@
 package com.example.authservice.infrastructure.persistence.jpa.token.accesstoken;
 
-import com.example.authservice.domain.model.token.TokenType;
+import com.example.authservice.domain.model.token.values.TokenType;
 import jakarta.persistence.*;
 import lombok.*;
 

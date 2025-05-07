@@ -1,9 +1,9 @@
 package com.example.authservice.core.authentication;
 
-import com.example.authservice.domain.MessageKey;
+import com.example.authservice.domain.i18n.MessageKey;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
-import com.example.authservice.domain.model.authdetails.UserId;
-import com.example.authservice.domain.ports.MessageProviderPort;
+import com.example.authservice.domain.model.authdetails.values.UserId;
+import com.example.authservice.domain.ports.out.MessageProviderPort;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 

@@ -1,5 +1,7 @@
 package com.example.loanservice.domain.model;
 
+import com.example.loanservice.domain.model.values.LoanStatus;
+
 import java.time.LocalDate;
 
 public interface BookItemLoanListPreviewProjection {

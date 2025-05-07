@@ -1,7 +1,8 @@
 package com.example.requestservice.infrastructure.persistence.jpa;
 
 import com.example.requestservice.domain.model.*;
-import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
+import com.example.requestservice.domain.model.values.*;
+import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

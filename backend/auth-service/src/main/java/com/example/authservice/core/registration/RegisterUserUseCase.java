@@ -2,9 +2,11 @@ package com.example.authservice.core.registration;
 
 import com.example.authservice.domain.dto.auth.RegisterToSaveDto;
 import com.example.authservice.domain.dto.auth.RegisterUserDto;
-import com.example.authservice.domain.model.authdetails.*;
-import com.example.authservice.domain.ports.EventPublisherPort;
-import com.example.authservice.domain.ports.UserServicePort;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
+import com.example.authservice.domain.ports.out.EventPublisherPort;
+import com.example.authservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

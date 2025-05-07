@@ -1,9 +1,13 @@
 package com.example.notificationservice.core;
 
-import com.example.notificationservice.domain.MessageKey;
+import com.example.notificationservice.domain.i18n.MessageKey;
 import com.example.notificationservice.domain.event.incoming.*;
 import com.example.notificationservice.domain.model.*;
-import com.example.notificationservice.domain.ports.MessageProviderPort;
+import com.example.notificationservice.domain.model.values.NotificationContent;
+import com.example.notificationservice.domain.model.values.NotificationSubject;
+import com.example.notificationservice.domain.model.values.NotificationType;
+import com.example.notificationservice.domain.model.values.UserId;
+import com.example.notificationservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

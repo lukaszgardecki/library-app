@@ -1,6 +1,6 @@
 package com.example.loanservice.domain.exception;
 
-import com.example.loanservice.domain.MessageKey;
+import com.example.loanservice.domain.i18n.MessageKey;
 import lombok.Getter;
 
 @Getter

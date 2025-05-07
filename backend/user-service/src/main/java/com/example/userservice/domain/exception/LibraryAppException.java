@@ -1,7 +1,7 @@
 package com.example.userservice.domain.exception;
 
 
-import com.example.userservice.domain.MessageKey;
+import com.example.userservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

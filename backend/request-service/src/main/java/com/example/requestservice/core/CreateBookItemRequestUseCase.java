@@ -1,10 +1,14 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.dto.BookItemDto;
+import com.example.requestservice.domain.integration.catalog.dto.BookItemDto;
+import com.example.requestservice.domain.integration.catalog.BookItemStatus;
+import com.example.requestservice.domain.integration.loan.LoanDueDate;
 import com.example.requestservice.domain.model.*;
-import com.example.requestservice.domain.ports.CatalogServicePort;
-import com.example.requestservice.domain.ports.EventPublisherPort;
-import com.example.requestservice.domain.ports.UserServicePort;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.domain.ports.out.CatalogServicePort;
+import com.example.requestservice.domain.ports.out.EventPublisherPort;
+import com.example.requestservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

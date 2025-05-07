@@ -3,7 +3,7 @@ package com.example.warehouseservice.core.rack;
 import com.example.warehouseservice.domain.dto.RackDto;
 import com.example.warehouseservice.domain.dto.RackToSaveDto;
 import com.example.warehouseservice.domain.model.rack.Rack;
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

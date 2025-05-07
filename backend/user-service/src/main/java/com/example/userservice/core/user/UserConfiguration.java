@@ -2,7 +2,8 @@ package com.example.userservice.core.user;
 
 import com.example.userservice.core.librarycard.LibraryCardFacade;
 import com.example.userservice.core.person.PersonFacade;
-import com.example.userservice.domain.ports.*;
+import com.example.userservice.domain.ports.in.EventListenerPort;
+import com.example.userservice.domain.ports.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

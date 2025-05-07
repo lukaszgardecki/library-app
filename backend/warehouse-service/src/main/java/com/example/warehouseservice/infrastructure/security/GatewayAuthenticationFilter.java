@@ -1,7 +1,7 @@
 package com.example.warehouseservice.infrastructure.security;
 
-import com.example.warehouseservice.domain.MessageKey;
-import com.example.warehouseservice.domain.ports.MessageProviderPort;
+import com.example.warehouseservice.domain.i18n.MessageKey;
+import com.example.warehouseservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

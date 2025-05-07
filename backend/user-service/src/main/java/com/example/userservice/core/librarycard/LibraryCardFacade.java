@@ -2,8 +2,8 @@ package com.example.userservice.core.librarycard;
 
 import com.example.userservice.domain.dto.librarycard.LibraryCardDto;
 import com.example.userservice.domain.model.librarycard.LibraryCard;
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

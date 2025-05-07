@@ -4,7 +4,7 @@ import com.example.requestservice.domain.event.incoming.BookItemDeletedEvent;
 import com.example.requestservice.domain.event.incoming.BookItemLostEvent;
 import com.example.requestservice.domain.event.incoming.BookItemReturnedEvent;
 import com.example.requestservice.domain.event.incoming.LoanCreatedEvent;
-import com.example.requestservice.domain.ports.EventListenerPort;
+import com.example.requestservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

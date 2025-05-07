@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.i18n;
 
-import com.example.loanservice.domain.MessageKey;
-import com.example.loanservice.domain.ports.MessageProviderPort;
+import com.example.loanservice.domain.i18n.MessageKey;
+import com.example.loanservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

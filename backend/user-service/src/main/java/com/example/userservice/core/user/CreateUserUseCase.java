@@ -5,10 +5,11 @@ import com.example.userservice.core.person.PersonFacade;
 import com.example.userservice.domain.dto.person.AddressDto;
 import com.example.userservice.domain.dto.person.PersonDto;
 import com.example.userservice.domain.dto.user.RegisterUserDto;
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.person.PersonId;
-import com.example.userservice.domain.model.user.*;
-import com.example.userservice.domain.ports.UserRepositoryPort;
+import com.example.userservice.domain.model.user.User;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.model.person.values.PersonId;
+import com.example.userservice.domain.model.user.values.*;
+import com.example.userservice.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;

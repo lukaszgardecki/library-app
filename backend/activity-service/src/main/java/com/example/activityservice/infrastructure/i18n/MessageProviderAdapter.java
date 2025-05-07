@@ -1,7 +1,7 @@
 package com.example.activityservice.infrastructure.i18n;
 
-import com.example.activityservice.domain.MessageKey;
-import com.example.activityservice.domain.ports.MessageProviderPort;
+import com.example.activityservice.domain.i18n.MessageKey;
+import com.example.activityservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

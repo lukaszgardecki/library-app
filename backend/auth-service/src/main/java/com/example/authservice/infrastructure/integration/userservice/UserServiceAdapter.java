@@ -2,8 +2,8 @@ package com.example.authservice.infrastructure.integration.userservice;
 
 import com.example.authservice.domain.dto.PersonDto;
 import com.example.authservice.domain.dto.auth.RegisterUserDto;
-import com.example.authservice.domain.model.authdetails.UserId;
-import com.example.authservice.domain.ports.UserServicePort;
+import com.example.authservice.domain.model.authdetails.values.UserId;
+import com.example.authservice.domain.ports.out.UserServicePort;
 import com.example.authservice.infrastructure.integration.FeignClientCustomConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

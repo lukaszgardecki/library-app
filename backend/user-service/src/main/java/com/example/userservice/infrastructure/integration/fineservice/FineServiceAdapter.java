@@ -1,7 +1,7 @@
 package com.example.userservice.infrastructure.integration.fineservice;
 
-import com.example.userservice.domain.model.user.UserId;
-import com.example.userservice.domain.ports.FineServicePort;
+import com.example.userservice.domain.model.user.values.UserId;
+import com.example.userservice.domain.ports.out.FineServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

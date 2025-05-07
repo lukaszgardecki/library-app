@@ -1,7 +1,7 @@
 package com.example.paymentservice.infrastructure.persistence.jpa;
 
-import com.example.paymentservice.domain.model.PaymentMethod;
-import com.example.paymentservice.domain.model.PaymentStatus;
+import com.example.paymentservice.domain.model.values.PaymentMethod;
+import com.example.paymentservice.domain.model.values.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

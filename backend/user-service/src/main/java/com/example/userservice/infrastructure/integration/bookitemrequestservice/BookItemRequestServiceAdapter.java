@@ -1,8 +1,8 @@
 package com.example.userservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.userservice.domain.dto.user.BookItemRequestDto;
-import com.example.userservice.domain.model.user.UserId;
-import com.example.userservice.domain.ports.BookItemRequestServicePort;
+import com.example.userservice.domain.integration.request.dto.BookItemRequestDto;
+import com.example.userservice.domain.model.user.values.UserId;
+import com.example.userservice.domain.ports.out.BookItemRequestServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

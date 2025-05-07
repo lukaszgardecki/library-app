@@ -1,7 +1,7 @@
 package com.example.catalogservice.domain.exception;
 
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.MessageKey;
+import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.i18n.MessageKey;
 
 public class BookNotFoundException extends LibraryAppNotFoundException {
 

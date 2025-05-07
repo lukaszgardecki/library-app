@@ -2,10 +2,10 @@ package com.example.requestservice.infrastructure.http;
 
 import com.example.requestservice.core.BookItemRequestFacade;
 import com.example.requestservice.domain.dto.BookItemRequestDto;
-import com.example.requestservice.domain.model.BookItemId;
-import com.example.requestservice.domain.model.BookItemRequestStatus;
-import com.example.requestservice.domain.model.RequestId;
-import com.example.requestservice.domain.model.UserId;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.RequestId;
+import com.example.requestservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

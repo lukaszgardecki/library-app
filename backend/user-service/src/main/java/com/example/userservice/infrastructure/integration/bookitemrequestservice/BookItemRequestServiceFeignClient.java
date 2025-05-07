@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.userservice.domain.dto.user.BookItemRequestDto;
+import com.example.userservice.domain.integration.request.dto.BookItemRequestDto;
 import com.example.userservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

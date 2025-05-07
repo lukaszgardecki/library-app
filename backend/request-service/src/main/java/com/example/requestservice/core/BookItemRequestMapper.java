@@ -2,6 +2,10 @@ package com.example.requestservice.core;
 
 import com.example.requestservice.domain.dto.BookItemRequestDto;
 import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestCreationDate;
+import com.example.requestservice.domain.model.values.RequestId;
+import com.example.requestservice.domain.model.values.UserId;
 
 class BookItemRequestMapper {
 

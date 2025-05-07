@@ -1,13 +1,14 @@
 package com.example.catalogservice.core.bookitem;
 
-import com.example.catalogservice.domain.model.LoanReturnDate;
-import com.example.catalogservice.domain.model.bookitem.*;
-import com.example.catalogservice.domain.ports.BookItemRepositoryPort;
-import com.example.catalogservice.domain.ports.BookItemRequestServicePort;
-import com.example.catalogservice.domain.ports.EventListenerPort;
+import com.example.catalogservice.domain.integration.loan.LoanReturnDate;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
+import com.example.catalogservice.domain.model.bookitem.values.LoanCreationDate;
+import com.example.catalogservice.domain.model.bookitem.values.LoanDueDate;
+import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
+import com.example.catalogservice.domain.ports.out.BookItemRequestServicePort;
+import com.example.catalogservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 class EventListenerService implements EventListenerPort {

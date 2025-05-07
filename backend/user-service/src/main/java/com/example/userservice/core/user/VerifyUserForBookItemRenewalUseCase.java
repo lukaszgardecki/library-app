@@ -2,7 +2,7 @@ package com.example.userservice.core.user;
 
 import com.example.userservice.domain.exception.UnsettledFineException;
 import com.example.userservice.domain.model.user.User;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;

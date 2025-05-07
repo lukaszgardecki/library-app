@@ -1,7 +1,8 @@
 package com.example.loanservice.infrastructure.persistence.jpa;
 
 import com.example.loanservice.domain.model.*;
-import com.example.loanservice.domain.ports.BookItemLoanRepositoryPort;
+import com.example.loanservice.domain.model.values.*;
+import com.example.loanservice.domain.ports.out.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

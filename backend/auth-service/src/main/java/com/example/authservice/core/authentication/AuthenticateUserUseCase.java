@@ -1,14 +1,14 @@
 package com.example.authservice.core.authentication;
 
-import com.example.authservice.domain.MessageKey;
+import com.example.authservice.domain.i18n.MessageKey;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.Password;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.domain.model.token.Auth;
-import com.example.authservice.domain.ports.AuthenticationManagerPort;
-import com.example.authservice.domain.ports.EventPublisherPort;
-import com.example.authservice.domain.ports.MessageProviderPort;
+import com.example.authservice.domain.ports.out.AuthenticationManagerPort;
+import com.example.authservice.domain.ports.out.EventPublisherPort;
+import com.example.authservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 

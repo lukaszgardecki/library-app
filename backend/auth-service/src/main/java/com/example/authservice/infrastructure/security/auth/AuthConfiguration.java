@@ -1,7 +1,7 @@
 package com.example.authservice.infrastructure.security.auth;
 
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.ports.AuthDetailsRepositoryPort;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.ports.out.AuthDetailsRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

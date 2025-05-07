@@ -2,7 +2,7 @@ package com.example.authservice.core.authdetails;
 
 import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

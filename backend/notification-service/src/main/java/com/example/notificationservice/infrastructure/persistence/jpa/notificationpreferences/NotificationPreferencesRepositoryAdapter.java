@@ -1,8 +1,8 @@
 package com.example.notificationservice.infrastructure.persistence.jpa.notificationpreferences;
 
 import com.example.notificationservice.domain.model.NotificationPreferences;
-import com.example.notificationservice.domain.model.UserId;
-import com.example.notificationservice.domain.ports.NotificationPreferencesRepositoryPort;
+import com.example.notificationservice.domain.model.values.UserId;
+import com.example.notificationservice.domain.ports.out.NotificationPreferencesRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

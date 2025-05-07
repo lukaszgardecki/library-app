@@ -1,7 +1,7 @@
 package com.example.catalogservice.infrastructure.security;
 
-import com.example.catalogservice.domain.MessageKey;
-import com.example.catalogservice.domain.ports.MessageProviderPort;
+import com.example.catalogservice.domain.i18n.MessageKey;
+import com.example.catalogservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

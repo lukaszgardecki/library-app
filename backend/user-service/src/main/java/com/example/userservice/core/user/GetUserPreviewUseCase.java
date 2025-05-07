@@ -1,6 +1,6 @@
 package com.example.userservice.core.user;
 
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.model.user.values.UserId;
 import com.example.userservice.domain.model.user.UserPreview;
 import lombok.RequiredArgsConstructor;
 

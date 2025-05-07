@@ -1,8 +1,15 @@
 package com.example.fineservice.core;
 
+import com.example.fineservice.domain.integration.loan.LoanDueDate;
+import com.example.fineservice.domain.integration.loan.LoanReturnDate;
+import com.example.fineservice.domain.integration.catalog.Price;
 import com.example.fineservice.domain.model.*;
-import com.example.fineservice.domain.ports.EventListenerPort;
-import com.example.fineservice.domain.ports.FineRepositoryPort;
+import com.example.fineservice.domain.model.values.FineAmount;
+import com.example.fineservice.domain.model.values.FineStatus;
+import com.example.fineservice.domain.model.values.LoanId;
+import com.example.fineservice.domain.model.values.UserId;
+import com.example.fineservice.domain.ports.in.EventListenerPort;
+import com.example.fineservice.domain.ports.out.FineRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;

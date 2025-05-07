@@ -1,9 +1,13 @@
 package com.example.requestservice.core;
 
+import com.example.requestservice.domain.integration.catalog.BookId;
 import com.example.requestservice.domain.model.*;
-import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
-import com.example.requestservice.domain.ports.EventListenerPort;
-import com.example.requestservice.domain.ports.EventPublisherPort;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.RequestId;
+import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
+import com.example.requestservice.domain.ports.in.EventListenerPort;
+import com.example.requestservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;

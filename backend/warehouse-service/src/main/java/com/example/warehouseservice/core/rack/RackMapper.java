@@ -3,6 +3,7 @@ package com.example.warehouseservice.core.rack;
 import com.example.warehouseservice.domain.dto.RackDto;
 import com.example.warehouseservice.domain.dto.RackToSaveDto;
 import com.example.warehouseservice.domain.model.rack.*;
+import com.example.warehouseservice.domain.model.rack.values.*;
 
 class RackMapper {
 

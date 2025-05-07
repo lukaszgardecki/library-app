@@ -1,5 +1,6 @@
 package com.example.authservice.domain.model.authdetails;
 
+import com.example.authservice.domain.model.authdetails.values.*;
 import lombok.*;
 
 @Getter

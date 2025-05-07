@@ -1,10 +1,10 @@
 package com.example.catalogservice.infrastructure.integration.warehouseservice;
 
-import com.example.catalogservice.domain.dto.RackDto;
-import com.example.catalogservice.domain.dto.ShelfDto;
-import com.example.catalogservice.domain.model.bookitem.RackId;
-import com.example.catalogservice.domain.model.bookitem.ShelfId;
-import com.example.catalogservice.domain.ports.WarehouseServicePort;
+import com.example.catalogservice.domain.integration.warehouse.dto.RackDto;
+import com.example.catalogservice.domain.integration.warehouse.dto.ShelfDto;
+import com.example.catalogservice.domain.model.bookitem.values.RackId;
+import com.example.catalogservice.domain.model.bookitem.values.ShelfId;
+import com.example.catalogservice.domain.ports.out.WarehouseServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

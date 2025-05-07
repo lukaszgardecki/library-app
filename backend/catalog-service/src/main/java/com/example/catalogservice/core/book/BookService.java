@@ -1,8 +1,8 @@
 package com.example.catalogservice.core.book;
 
 import com.example.catalogservice.domain.model.book.Book;
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.ports.BookRepositoryPort;
+import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.ports.out.BookRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

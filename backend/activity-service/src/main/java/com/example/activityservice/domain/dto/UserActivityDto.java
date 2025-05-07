@@ -1,6 +1,6 @@
 package com.example.activityservice.domain.dto;
 
-import com.example.activityservice.domain.model.ActivityType;
+import com.example.activityservice.domain.model.values.ActivityType;
 import lombok.*;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
 package com.example.requestservice.domain.dto;
 
-import com.example.requestservice.domain.model.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

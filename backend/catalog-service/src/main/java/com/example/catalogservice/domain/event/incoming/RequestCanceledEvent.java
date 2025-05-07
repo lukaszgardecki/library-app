@@ -1,9 +1,9 @@
 package com.example.catalogservice.domain.event.incoming;
 
-import com.example.catalogservice.domain.model.UserId;
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.model.book.Title;
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
+import com.example.catalogservice.domain.integration.UserId;
+import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.model.book.values.Title;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

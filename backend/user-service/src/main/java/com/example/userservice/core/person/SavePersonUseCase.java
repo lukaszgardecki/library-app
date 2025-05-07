@@ -1,7 +1,7 @@
 package com.example.userservice.core.person;
 
 import com.example.userservice.domain.model.person.Person;
-import com.example.userservice.domain.ports.PersonRepositoryPort;
+import com.example.userservice.domain.ports.out.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

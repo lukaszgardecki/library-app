@@ -1,5 +1,6 @@
 package com.example.catalogservice.domain.model.book;
 
+import com.example.catalogservice.domain.model.book.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.requestservice.infrastructure.i18n;
 
-import com.example.requestservice.domain.MessageKey;
-import com.example.requestservice.domain.ports.MessageProviderPort;
+import com.example.requestservice.domain.i18n.MessageKey;
+import com.example.requestservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

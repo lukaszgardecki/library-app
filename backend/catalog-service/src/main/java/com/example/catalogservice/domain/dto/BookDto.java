@@ -1,6 +1,6 @@
 package com.example.catalogservice.domain.dto;
 
-import com.example.catalogservice.domain.model.book.BookFormat;
+import com.example.catalogservice.domain.model.book.values.BookFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

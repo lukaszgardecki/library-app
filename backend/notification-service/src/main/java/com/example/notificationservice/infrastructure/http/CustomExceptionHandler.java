@@ -1,9 +1,9 @@
 package com.example.notificationservice.infrastructure.http;
 
-import com.example.notificationservice.domain.MessageKey;
+import com.example.notificationservice.domain.i18n.MessageKey;
 import com.example.notificationservice.domain.exceptions.LibraryAppNotFoundException;
 import com.example.notificationservice.domain.exceptions.NotificationNotFoundException;
-import com.example.notificationservice.domain.ports.MessageProviderPort;
+import com.example.notificationservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

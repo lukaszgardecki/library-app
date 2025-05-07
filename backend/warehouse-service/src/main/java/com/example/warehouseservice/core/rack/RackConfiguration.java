@@ -1,7 +1,7 @@
 package com.example.warehouseservice.core.rack;
 
-import com.example.warehouseservice.domain.ports.CatalogServicePort;
-import com.example.warehouseservice.domain.ports.RackRepositoryPort;
+import com.example.warehouseservice.domain.ports.out.CatalogServicePort;
+import com.example.warehouseservice.domain.ports.out.RackRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

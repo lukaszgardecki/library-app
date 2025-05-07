@@ -2,11 +2,11 @@ package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.domain.exception.BookItemException;
 import com.example.catalogservice.domain.model.bookitem.BookItem;
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.model.bookitem.BookItemStatus;
-import com.example.catalogservice.domain.ports.BookItemRepositoryPort;
-import com.example.catalogservice.domain.ports.EventPublisherPort;
-import com.example.catalogservice.domain.MessageKey;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
+import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
+import com.example.catalogservice.domain.ports.out.EventPublisherPort;
+import com.example.catalogservice.domain.i18n.MessageKey;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

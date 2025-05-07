@@ -1,6 +1,6 @@
 package com.example.warehouseservice.core.shelf;
 
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.model.shelf.Shelf;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

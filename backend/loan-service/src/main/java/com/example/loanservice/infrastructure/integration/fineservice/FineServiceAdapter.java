@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.integration.fineservice;
 
-import com.example.loanservice.domain.model.UserId;
-import com.example.loanservice.domain.ports.FineServicePort;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.FineServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

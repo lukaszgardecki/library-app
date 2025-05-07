@@ -1,9 +1,9 @@
 package com.example.authservice.infrastructure.security;
 
 import com.example.authservice.core.authentication.AuthenticationFacade;
-import com.example.authservice.domain.MessageKey;
+import com.example.authservice.domain.i18n.MessageKey;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
-import com.example.authservice.domain.ports.MessageProviderPort;
+import com.example.authservice.domain.ports.out.MessageProviderPort;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import static com.example.authservice.domain.model.token.TokenType.ACCESS;
-import static com.example.authservice.domain.model.token.TokenType.REFRESH;
+import static com.example.authservice.domain.model.token.values.TokenType.ACCESS;
+import static com.example.authservice.domain.model.token.values.TokenType.REFRESH;
 
 @Component
 @RequiredArgsConstructor

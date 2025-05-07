@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.persistence.jpa.librarycard;
 
-import com.example.userservice.domain.model.librarycard.LibraryCardStatus;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

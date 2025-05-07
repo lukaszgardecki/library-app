@@ -1,10 +1,10 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.model.BookItemId;
+import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.BookItemLoan;
-import com.example.loanservice.domain.model.LoanStatus;
-import com.example.loanservice.domain.ports.EventListenerPort;
-import com.example.loanservice.domain.ports.EventPublisherPort;
+import com.example.loanservice.domain.model.values.LoanStatus;
+import com.example.loanservice.domain.ports.in.EventListenerPort;
+import com.example.loanservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

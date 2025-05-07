@@ -1,8 +1,8 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.model.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemId;
 import com.example.requestservice.domain.model.BookItemRequest;
-import com.example.requestservice.domain.model.UserId;
+import com.example.requestservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

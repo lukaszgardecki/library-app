@@ -1,7 +1,8 @@
 package com.example.catalogservice.domain.dto;
 
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import com.example.catalogservice.domain.model.bookitem.*;
+import com.example.catalogservice.domain.model.bookitem.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

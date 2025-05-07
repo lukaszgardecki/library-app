@@ -4,7 +4,7 @@ import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

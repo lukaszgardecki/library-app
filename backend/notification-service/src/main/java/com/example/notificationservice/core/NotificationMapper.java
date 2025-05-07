@@ -2,6 +2,7 @@ package com.example.notificationservice.core;
 
 import com.example.notificationservice.domain.dto.NotificationDto;
 import com.example.notificationservice.domain.model.*;
+import com.example.notificationservice.domain.model.values.*;
 
 class NotificationMapper {
 

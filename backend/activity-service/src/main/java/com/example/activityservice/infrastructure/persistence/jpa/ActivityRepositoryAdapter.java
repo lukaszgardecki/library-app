@@ -1,7 +1,11 @@
 package com.example.activityservice.infrastructure.persistence.jpa;
 
 import com.example.activityservice.domain.model.*;
-import com.example.activityservice.domain.ports.ActivityRepositoryPort;
+import com.example.activityservice.domain.model.values.ActivityCreationDate;
+import com.example.activityservice.domain.model.values.ActivityId;
+import com.example.activityservice.domain.model.values.ActivityMessage;
+import com.example.activityservice.domain.model.values.UserId;
+import com.example.activityservice.domain.ports.out.ActivityRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

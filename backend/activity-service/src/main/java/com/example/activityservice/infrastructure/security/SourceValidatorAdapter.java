@@ -1,9 +1,9 @@
 package com.example.activityservice.infrastructure.security;
 
-import com.example.activityservice.domain.MessageKey;
-import com.example.activityservice.domain.model.UserId;
-import com.example.activityservice.domain.ports.MessageProviderPort;
-import com.example.activityservice.domain.ports.SourceValidator;
+import com.example.activityservice.domain.i18n.MessageKey;
+import com.example.activityservice.domain.model.values.UserId;
+import com.example.activityservice.domain.ports.out.MessageProviderPort;
+import com.example.activityservice.domain.ports.out.SourceValidatorPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class SourceValidatorAdapter implements SourceValidator {
+class SourceValidatorAdapter implements SourceValidatorPort {
     private final MessageProviderPort msgProvider;
 
     @Override

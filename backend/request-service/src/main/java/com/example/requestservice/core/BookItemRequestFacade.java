@@ -2,6 +2,10 @@ package com.example.requestservice.core;
 
 import com.example.requestservice.domain.dto.BookItemRequestDto;
 import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.RequestId;
+import com.example.requestservice.domain.model.values.UserId;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

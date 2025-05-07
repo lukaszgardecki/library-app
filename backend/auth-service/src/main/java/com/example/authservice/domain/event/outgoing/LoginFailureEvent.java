@@ -1,8 +1,8 @@
 package com.example.authservice.domain.event.outgoing;
 
-import com.example.authservice.domain.model.authdetails.PersonFirstName;
-import com.example.authservice.domain.model.authdetails.PersonLastName;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.integration.user.PersonFirstName;
+import com.example.authservice.domain.integration.user.PersonLastName;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

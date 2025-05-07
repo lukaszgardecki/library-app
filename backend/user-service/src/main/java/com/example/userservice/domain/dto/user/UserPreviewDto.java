@@ -1,6 +1,6 @@
 package com.example.userservice.domain.dto.user;
 
-import com.example.userservice.domain.model.auth.Role;
+import com.example.userservice.domain.integration.auth.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

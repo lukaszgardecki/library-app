@@ -1,9 +1,9 @@
 package com.example.warehouseservice.core.rack;
 
 import com.example.warehouseservice.domain.model.rack.Rack;
-import com.example.warehouseservice.domain.model.rack.RackCreatedDate;
-import com.example.warehouseservice.domain.model.rack.RackShelvesCount;
-import com.example.warehouseservice.domain.model.rack.RackUpdatedDate;
+import com.example.warehouseservice.domain.model.rack.values.RackCreatedDate;
+import com.example.warehouseservice.domain.model.rack.values.RackShelvesCount;
+import com.example.warehouseservice.domain.model.rack.values.RackUpdatedDate;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

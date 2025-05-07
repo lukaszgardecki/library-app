@@ -1,6 +1,7 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.ports.*;
+import com.example.loanservice.domain.ports.in.EventListenerPort;
+import com.example.loanservice.domain.ports.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +16,7 @@ public class BookItemLoanConfiguration {
             BookItemRequestServicePort bookItemRequestService,
             FineServicePort fineService,
             EventPublisherPort publisher,
-            SourceValidator sourceValidator
+            SourceValidatorPort sourceValidator
     ) {
         BookItemLoanService loanService = new BookItemLoanService(loanRepository);
         return new BookItemLoanFacade(
@@ -39,7 +40,7 @@ public class BookItemLoanConfiguration {
     }
 
     @Bean
-    EventListenerPort eventListenerService(BookItemLoanRepositoryPort loanRepository,EventPublisherPort publisher) {
+    EventListenerPort eventListenerService(BookItemLoanRepositoryPort loanRepository, EventPublisherPort publisher) {
         BookItemLoanService loanService = new BookItemLoanService(loanRepository);
         return new EventListenerService(loanService, publisher);
     }

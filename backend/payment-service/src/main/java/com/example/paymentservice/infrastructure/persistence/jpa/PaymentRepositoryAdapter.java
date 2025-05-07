@@ -1,7 +1,8 @@
 package com.example.paymentservice.infrastructure.persistence.jpa;
 
 import com.example.paymentservice.domain.model.*;
-import com.example.paymentservice.domain.ports.PaymentRepositoryPort;
+import com.example.paymentservice.domain.model.values.*;
+import com.example.paymentservice.domain.ports.out.PaymentRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

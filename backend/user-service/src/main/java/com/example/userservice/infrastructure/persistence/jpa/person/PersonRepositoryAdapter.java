@@ -1,7 +1,8 @@
 package com.example.userservice.infrastructure.persistence.jpa.person;
 
 import com.example.userservice.domain.model.person.*;
-import com.example.userservice.domain.ports.PersonRepositoryPort;
+import com.example.userservice.domain.model.person.values.*;
+import com.example.userservice.domain.ports.out.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

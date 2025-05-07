@@ -1,10 +1,12 @@
 package com.example.userservice.infrastructure.persistence.jpa.user;
 
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.person.PersonId;
-import com.example.userservice.domain.model.fine.FineAmount;
+import com.example.userservice.domain.model.user.User;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.model.person.values.PersonId;
+import com.example.userservice.domain.integration.fine.FineAmount;
 import com.example.userservice.domain.model.user.*;
-import com.example.userservice.domain.ports.UserRepositoryPort;
+import com.example.userservice.domain.model.user.values.*;
+import com.example.userservice.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

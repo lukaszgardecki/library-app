@@ -1,13 +1,13 @@
 package com.example.catalogservice.domain.event.incoming;
 
-import com.example.catalogservice.domain.model.LoanId;
-import com.example.catalogservice.domain.model.LoanReturnDate;
-import com.example.catalogservice.domain.model.RequestId;
-import com.example.catalogservice.domain.model.UserId;
-import com.example.catalogservice.domain.model.book.Title;
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.model.bookitem.LoanCreationDate;
-import com.example.catalogservice.domain.model.bookitem.LoanDueDate;
+import com.example.catalogservice.domain.integration.loan.LoanId;
+import com.example.catalogservice.domain.integration.loan.LoanReturnDate;
+import com.example.catalogservice.domain.integration.request.RequestId;
+import com.example.catalogservice.domain.integration.UserId;
+import com.example.catalogservice.domain.model.book.values.Title;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.model.bookitem.values.LoanCreationDate;
+import com.example.catalogservice.domain.model.bookitem.values.LoanDueDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package com.example.catalogservice.core.book;
 import com.example.catalogservice.domain.dto.BookDto;
 import com.example.catalogservice.domain.dto.BookToSaveDto;
 import com.example.catalogservice.domain.model.book.Book;
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,17 +1,20 @@
 package com.example.fineservice.core;
 
 import com.example.fineservice.domain.dto.FinePaymentResult;
-import com.example.fineservice.domain.dto.PaymentCardDetailsDto;
-import com.example.fineservice.domain.dto.PaymentProcessRequestDto;
+import com.example.fineservice.domain.integration.payment.PaymentMethod;
+import com.example.fineservice.domain.integration.payment.PaymentStatus;
+import com.example.fineservice.domain.integration.payment.dto.PaymentCardDetailsDto;
+import com.example.fineservice.domain.integration.payment.dto.PaymentProcessRequestDto;
 import com.example.fineservice.domain.exceptions.FineAlreadyPaidException;
 import com.example.fineservice.domain.exceptions.FineNotFoundException;
 import com.example.fineservice.domain.model.*;
-import com.example.fineservice.domain.ports.EventListenerPort;
-import com.example.fineservice.domain.ports.FineRepositoryPort;
-import com.example.fineservice.domain.ports.PaymentServicePort;
+import com.example.fineservice.domain.model.values.FineId;
+import com.example.fineservice.domain.model.values.FineStatus;
+import com.example.fineservice.domain.model.values.UserId;
+import com.example.fineservice.domain.ports.out.FineRepositoryPort;
+import com.example.fineservice.domain.ports.out.PaymentServicePort;
 import lombok.RequiredArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
 
  @RequiredArgsConstructor

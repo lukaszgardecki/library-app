@@ -1,10 +1,10 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.MessageKey;
+import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.exceptions.BookItemRequestException;
-import com.example.requestservice.domain.model.BookItemId;
-import com.example.requestservice.domain.model.BookItemRequestStatus;
-import com.example.requestservice.domain.ports.BookItemRequestRepositoryPort;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

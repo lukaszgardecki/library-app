@@ -1,6 +1,6 @@
 package com.example.warehouseservice.domain.exception;
 
-import com.example.warehouseservice.domain.MessageKey;
+import com.example.warehouseservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

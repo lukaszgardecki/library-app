@@ -1,6 +1,6 @@
 package com.example.userservice.core.person;
 
-import com.example.userservice.domain.ports.PersonRepositoryPort;
+import com.example.userservice.domain.ports.out.PersonRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

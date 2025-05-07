@@ -3,6 +3,7 @@ package com.example.loanservice.core;
 import com.example.loanservice.domain.dto.BookItemLoanDto;
 import com.example.loanservice.domain.dto.BookItemLoanListPreviewDto;
 import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.values.*;
 
 class BookItemLoanMapper {
 

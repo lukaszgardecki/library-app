@@ -1,7 +1,7 @@
 package com.example.fineservice.domain.dto;
 
-import com.example.fineservice.domain.model.FineAmount;
-import com.example.fineservice.domain.model.UserId;
+import com.example.fineservice.domain.model.values.FineAmount;
+import com.example.fineservice.domain.model.values.UserId;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

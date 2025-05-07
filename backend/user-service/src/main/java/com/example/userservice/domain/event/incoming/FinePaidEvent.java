@@ -1,7 +1,7 @@
 package com.example.userservice.domain.event.incoming;
 
-import com.example.userservice.domain.model.fine.FineAmount;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.integration.fine.FineAmount;
+import com.example.userservice.domain.model.user.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

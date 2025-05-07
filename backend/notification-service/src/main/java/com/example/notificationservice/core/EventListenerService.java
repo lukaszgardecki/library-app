@@ -2,8 +2,8 @@ package com.example.notificationservice.core;
 
 import com.example.notificationservice.domain.event.incoming.*;
 import com.example.notificationservice.domain.model.Notification;
-import com.example.notificationservice.domain.ports.EventListenerPort;
-import com.example.notificationservice.domain.ports.NotificationRepositoryPort;
+import com.example.notificationservice.domain.ports.in.EventListenerPort;
+import com.example.notificationservice.domain.ports.out.NotificationRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

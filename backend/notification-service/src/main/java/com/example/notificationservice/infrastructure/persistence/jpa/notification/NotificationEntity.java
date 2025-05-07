@@ -1,6 +1,6 @@
 package com.example.notificationservice.infrastructure.persistence.jpa.notification;
 
-import com.example.notificationservice.domain.model.NotificationType;
+import com.example.notificationservice.domain.model.values.NotificationType;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.example.authservice.core.registration;
 
 import com.example.authservice.domain.dto.auth.RegisterToSaveDto;
-import com.example.authservice.domain.model.authdetails.Gender;
+import com.example.authservice.domain.integration.user.Gender;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;

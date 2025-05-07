@@ -1,7 +1,7 @@
 package com.example.requestservice.infrastructure.integration.catalogservice;
 
-import com.example.requestservice.domain.dto.BookDto;
-import com.example.requestservice.domain.dto.BookItemDto;
+import com.example.requestservice.domain.integration.catalog.dto.BookDto;
+import com.example.requestservice.domain.integration.catalog.dto.BookItemDto;
 import com.example.requestservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
 package com.example.userservice.domain.model.person;
 
+import com.example.userservice.domain.model.person.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.example.userservice.infrastructure.integration.bookitemloanservice;
 
-import com.example.userservice.domain.dto.user.BookItemLoanDto;
-import com.example.userservice.domain.model.user.UserId;
-import com.example.userservice.domain.ports.BookItemLoanServicePort;
+import com.example.userservice.domain.integration.loan.dto.BookItemLoanDto;
+import com.example.userservice.domain.model.user.values.UserId;
+import com.example.userservice.domain.ports.out.BookItemLoanServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.example.userservice.domain.dto.user;
 
-import com.example.userservice.domain.model.auth.AccountStatus;
-import com.example.userservice.domain.model.auth.Role;
+import com.example.userservice.domain.integration.auth.AccountStatus;
+import com.example.userservice.domain.integration.auth.Role;
 
 public record UserAuthDto(
         String username,

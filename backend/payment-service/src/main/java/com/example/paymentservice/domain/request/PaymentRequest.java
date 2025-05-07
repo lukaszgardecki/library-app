@@ -1,9 +1,9 @@
 package com.example.paymentservice.domain.request;
 
-import com.example.paymentservice.domain.model.PaymentAmount;
-import com.example.paymentservice.domain.model.PaymentDescription;
-import com.example.paymentservice.domain.model.PaymentMethod;
-import com.example.paymentservice.domain.model.UserId;
+import com.example.paymentservice.domain.model.values.PaymentAmount;
+import com.example.paymentservice.domain.model.values.PaymentDescription;
+import com.example.paymentservice.domain.model.values.PaymentMethod;
+import com.example.paymentservice.domain.model.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

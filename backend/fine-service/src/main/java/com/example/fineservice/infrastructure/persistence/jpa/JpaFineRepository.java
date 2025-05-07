@@ -1,6 +1,6 @@
 package com.example.fineservice.infrastructure.persistence.jpa;
 
-import com.example.fineservice.domain.model.FineStatus;
+import com.example.fineservice.domain.model.values.FineStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -3,7 +3,7 @@ package com.example.warehouseservice.infrastructure.http;
 import com.example.warehouseservice.core.rack.RackFacade;
 import com.example.warehouseservice.domain.dto.RackDto;
 import com.example.warehouseservice.domain.dto.RackToSaveDto;
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

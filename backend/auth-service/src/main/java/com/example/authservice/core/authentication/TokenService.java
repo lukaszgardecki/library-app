@@ -3,12 +3,12 @@ package com.example.authservice.core.authentication;
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.domain.model.token.Auth;
 import com.example.authservice.domain.model.token.CookieValues;
 import com.example.authservice.domain.model.token.Token;
-import com.example.authservice.domain.ports.AccessTokenRepositoryPort;
-import com.example.authservice.domain.ports.RefreshTokenRepositoryPort;
+import com.example.authservice.domain.ports.out.AccessTokenRepositoryPort;
+import com.example.authservice.domain.ports.out.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.example.requestservice.infrastructure.integration.userservice;
 
-import com.example.requestservice.domain.model.UserId;
-import com.example.requestservice.domain.ports.UserServicePort;
+import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

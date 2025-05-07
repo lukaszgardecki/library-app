@@ -1,7 +1,7 @@
 package com.example.requestservice.domain.exceptions;
 
-import com.example.requestservice.domain.MessageKey;
-import com.example.requestservice.domain.model.RequestId;
+import com.example.requestservice.domain.i18n.MessageKey;
+import com.example.requestservice.domain.model.values.RequestId;
 
 public class BookItemRequestNotFoundException extends LibraryAppNotFoundException {
 

@@ -1,7 +1,8 @@
 package com.example.fineservice.core;
 
-import com.example.fineservice.domain.dto.PaymentCardDetailsDto;
-import com.example.fineservice.domain.model.*;
+import com.example.fineservice.domain.integration.payment.dto.PaymentCardDetailsDto;
+import com.example.fineservice.domain.model.values.FineId;
+import com.example.fineservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

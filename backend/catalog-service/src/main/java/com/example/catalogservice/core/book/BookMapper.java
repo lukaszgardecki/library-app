@@ -3,6 +3,7 @@ package com.example.catalogservice.core.book;
 import com.example.catalogservice.domain.dto.BookDto;
 import com.example.catalogservice.domain.dto.BookToSaveDto;
 import com.example.catalogservice.domain.model.book.*;
+import com.example.catalogservice.domain.model.book.values.*;
 
 class BookMapper {
 

@@ -1,6 +1,6 @@
 package com.example.catalogservice.core.book;
 
-import com.example.catalogservice.domain.ports.BookRepositoryPort;
+import com.example.catalogservice.domain.ports.out.BookRepositoryPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

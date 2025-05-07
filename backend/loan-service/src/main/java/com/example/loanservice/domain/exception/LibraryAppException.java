@@ -1,6 +1,6 @@
 package com.example.loanservice.domain.exception;
 
-import com.example.loanservice.domain.MessageKey;
+import com.example.loanservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

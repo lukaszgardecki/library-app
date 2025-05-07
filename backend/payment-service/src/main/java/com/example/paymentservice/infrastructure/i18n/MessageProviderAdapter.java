@@ -1,7 +1,7 @@
 package com.example.paymentservice.infrastructure.i18n;
 
-import com.example.paymentservice.domain.MessageKey;
-import com.example.paymentservice.domain.ports.MessageProviderPort;
+import com.example.paymentservice.domain.i18n.MessageKey;
+import com.example.paymentservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

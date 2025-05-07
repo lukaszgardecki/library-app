@@ -4,8 +4,9 @@ import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
 import com.example.authservice.domain.exception.UserAuthNotFoundException;
 import com.example.authservice.domain.exception.EmailAlreadyExistsException;
-import com.example.authservice.domain.ports.PasswordEncoderPort;
-import com.example.authservice.domain.ports.AuthDetailsRepositoryPort;
+import com.example.authservice.domain.model.authdetails.values.*;
+import com.example.authservice.domain.ports.out.PasswordEncoderPort;
+import com.example.authservice.domain.ports.out.AuthDetailsRepositoryPort;
 import com.example.authservice.domain.model.authdetails.*;
 import lombok.RequiredArgsConstructor;
 

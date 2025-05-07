@@ -1,6 +1,6 @@
 package com.example.userservice.domain.dto.librarycard;
 
-import com.example.userservice.domain.model.librarycard.LibraryCardStatus;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

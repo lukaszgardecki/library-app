@@ -2,7 +2,7 @@ package com.example.authservice.infrastructure.integration;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
 import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.Base64;
-import java.util.Objects;
 import java.util.Optional;
 
 @Configuration

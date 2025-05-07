@@ -1,9 +1,9 @@
 package com.example.requestservice.infrastructure.security;
 
-import com.example.requestservice.domain.MessageKey;
-import com.example.requestservice.domain.model.UserId;
-import com.example.requestservice.domain.ports.MessageProviderPort;
-import com.example.requestservice.domain.ports.SourceValidator;
+import com.example.requestservice.domain.i18n.MessageKey;
+import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.domain.ports.out.MessageProviderPort;
+import com.example.requestservice.domain.ports.out.SourceValidatorPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class SourceValidatorAdapter implements SourceValidator {
+class SourceValidatorAdapter implements SourceValidatorPort {
     private final MessageProviderPort msgProvider;
 
     @Override

@@ -1,8 +1,8 @@
 package com.example.fineservice.infrastructure.http;
 
-import com.example.fineservice.domain.MessageKey;
+import com.example.fineservice.domain.i18n.MessageKey;
 import com.example.fineservice.domain.exceptions.*;
-import com.example.fineservice.domain.ports.MessageProviderPort;
+import com.example.fineservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

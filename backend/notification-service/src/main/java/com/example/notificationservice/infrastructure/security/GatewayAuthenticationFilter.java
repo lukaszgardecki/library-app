@@ -1,7 +1,7 @@
 package com.example.notificationservice.infrastructure.security;
 
-import com.example.notificationservice.domain.MessageKey;
-import com.example.notificationservice.domain.ports.MessageProviderPort;
+import com.example.notificationservice.domain.i18n.MessageKey;
+import com.example.notificationservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

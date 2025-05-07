@@ -1,7 +1,7 @@
 package com.example.warehouseservice.infrastructure.i18n;
 
-import com.example.warehouseservice.domain.MessageKey;
-import com.example.warehouseservice.domain.ports.MessageProviderPort;
+import com.example.warehouseservice.domain.i18n.MessageKey;
+import com.example.warehouseservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

@@ -1,6 +1,6 @@
 package com.example.authservice.domain.dto;
 
-import com.example.authservice.domain.model.authdetails.Gender;
+import com.example.authservice.domain.integration.user.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

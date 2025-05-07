@@ -4,6 +4,7 @@ import com.example.paymentservice.domain.dto.PaymentCardDetailsDto;
 import com.example.paymentservice.domain.dto.PaymentDto;
 import com.example.paymentservice.domain.dto.PaymentProcessRequestDto;
 import com.example.paymentservice.domain.model.*;
+import com.example.paymentservice.domain.model.values.*;
 
 class PaymentMapper {
 

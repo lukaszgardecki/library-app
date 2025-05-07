@@ -1,11 +1,16 @@
 package com.example.loanservice.infrastructure.events;
 
-import com.example.loanservice.domain.dto.BookDto;
+import com.example.loanservice.domain.integration.catalog.BookId;
+import com.example.loanservice.domain.integration.catalog.Price;
+import com.example.loanservice.domain.integration.catalog.Title;
+import com.example.loanservice.domain.integration.catalog.dto.BookDto;
 import com.example.loanservice.domain.dto.BookItemLoanDto;
 import com.example.loanservice.domain.event.outgoing.*;
-import com.example.loanservice.domain.model.*;
-import com.example.loanservice.domain.ports.CatalogServicePort;
-import com.example.loanservice.domain.ports.EventPublisherPort;
+import com.example.loanservice.domain.integration.request.RequestId;
+import com.example.loanservice.domain.model.values.BookItemId;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.CatalogServicePort;
+import com.example.loanservice.domain.ports.out.EventPublisherPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

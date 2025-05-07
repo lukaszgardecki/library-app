@@ -1,7 +1,7 @@
 package com.example.notificationservice.infrastructure.i18n;
 
-import com.example.notificationservice.domain.MessageKey;
-import com.example.notificationservice.domain.ports.MessageProviderPort;
+import com.example.notificationservice.domain.i18n.MessageKey;
+import com.example.notificationservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

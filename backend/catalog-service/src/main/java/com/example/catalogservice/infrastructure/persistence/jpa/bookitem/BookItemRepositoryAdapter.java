@@ -1,7 +1,8 @@
 package com.example.catalogservice.infrastructure.persistence.jpa.bookitem;
 
-import com.example.catalogservice.domain.model.book.BookId;
-import com.example.catalogservice.domain.ports.BookItemRepositoryPort;
+import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.model.bookitem.values.*;
+import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
 import com.example.catalogservice.domain.model.bookitem.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package com.example.userservice.domain.exception;
 
-import com.example.userservice.domain.MessageKey;
-import com.example.userservice.domain.model.user.UserId;
+import com.example.userservice.domain.i18n.MessageKey;
+import com.example.userservice.domain.model.user.values.UserId;
 
 public class UserNotFoundException extends LibraryAppNotFoundException {
 

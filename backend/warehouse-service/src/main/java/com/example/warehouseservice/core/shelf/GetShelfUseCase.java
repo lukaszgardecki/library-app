@@ -1,7 +1,7 @@
 package com.example.warehouseservice.core.shelf;
 
 import com.example.warehouseservice.domain.model.shelf.Shelf;
-import com.example.warehouseservice.domain.model.shelf.ShelfId;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

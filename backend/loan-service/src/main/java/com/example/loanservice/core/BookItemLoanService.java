@@ -1,11 +1,13 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.Constants;
-import com.example.loanservice.domain.MessageKey;
+import com.example.loanservice.domain.constants.Constants;
+import com.example.loanservice.domain.i18n.MessageKey;
 import com.example.loanservice.domain.exception.BookItemLoanException;
 import com.example.loanservice.domain.exception.BookItemLoanNotFoundException;
+import com.example.loanservice.domain.integration.catalog.BookId;
 import com.example.loanservice.domain.model.*;
-import com.example.loanservice.domain.ports.BookItemLoanRepositoryPort;
+import com.example.loanservice.domain.model.values.*;
+import com.example.loanservice.domain.ports.out.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;

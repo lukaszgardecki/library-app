@@ -1,7 +1,7 @@
 package com.example.paymentservice.domain.dto;
 
 
-import com.example.paymentservice.domain.model.PaymentMethod;
+import com.example.paymentservice.domain.model.values.PaymentMethod;
 import lombok.*;
 
 import java.math.BigDecimal;

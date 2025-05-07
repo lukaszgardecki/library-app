@@ -1,8 +1,8 @@
 package com.example.authservice.core.authdetails;
 
 import com.example.authservice.domain.model.authdetails.AuthDetails;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

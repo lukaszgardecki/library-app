@@ -1,6 +1,6 @@
 package com.example.activityservice.domain.exception;
 
-import com.example.activityservice.domain.MessageKey;
+import com.example.activityservice.domain.i18n.MessageKey;
 
 public abstract class LibraryAppException extends RuntimeException {
     private final MessageKey messageKey;

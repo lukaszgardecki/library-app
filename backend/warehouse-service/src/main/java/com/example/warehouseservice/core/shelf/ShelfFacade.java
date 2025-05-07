@@ -1,10 +1,10 @@
 package com.example.warehouseservice.core.shelf;
 
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.dto.ShelfDto;
 import com.example.warehouseservice.domain.dto.ShelfToSaveDto;
 import com.example.warehouseservice.domain.model.shelf.Shelf;
-import com.example.warehouseservice.domain.model.shelf.ShelfId;
+import com.example.warehouseservice.domain.model.shelf.values.ShelfId;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

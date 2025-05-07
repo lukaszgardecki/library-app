@@ -1,6 +1,6 @@
 package com.example.loanservice.infrastructure.persistence.jpa;
 
-import com.example.loanservice.domain.model.LoanStatus;
+import com.example.loanservice.domain.model.values.LoanStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

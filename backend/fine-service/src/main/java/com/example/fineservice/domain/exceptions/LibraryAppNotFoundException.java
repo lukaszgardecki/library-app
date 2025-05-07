@@ -1,6 +1,6 @@
 package com.example.fineservice.domain.exceptions;
 
-import com.example.fineservice.domain.MessageKey;
+import com.example.fineservice.domain.i18n.MessageKey;
 import lombok.Getter;
 
 @Getter

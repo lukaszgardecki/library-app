@@ -1,9 +1,9 @@
 package com.example.loanservice.domain.event.incoming;
 
-import com.example.loanservice.domain.model.BookItemId;
-import com.example.loanservice.domain.model.LoanDueDate;
-import com.example.loanservice.domain.model.Title;
-import com.example.loanservice.domain.model.UserId;
+import com.example.loanservice.domain.model.values.BookItemId;
+import com.example.loanservice.domain.model.values.LoanDueDate;
+import com.example.loanservice.domain.integration.catalog.Title;
+import com.example.loanservice.domain.model.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.persistence.jpa.person;
 
-import com.example.userservice.domain.model.person.Gender;
+import com.example.userservice.domain.model.person.values.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 

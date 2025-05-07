@@ -1,7 +1,6 @@
 package com.example.authservice.domain.exception;
 
-import com.example.authservice.domain.MessageKey;
-import com.example.authservice.domain.exception.LibraryAppNotFoundException;
+import com.example.authservice.domain.i18n.MessageKey;
 
 public class TokenNotFoundException extends LibraryAppNotFoundException {
 

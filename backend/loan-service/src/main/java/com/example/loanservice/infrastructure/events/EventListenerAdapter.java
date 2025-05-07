@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.events;
 
 import com.example.loanservice.domain.event.incoming.ReservationCreatedEvent;
-import com.example.loanservice.domain.ports.EventListenerPort;
+import com.example.loanservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

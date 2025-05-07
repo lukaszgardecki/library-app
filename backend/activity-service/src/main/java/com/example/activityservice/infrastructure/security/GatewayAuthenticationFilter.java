@@ -1,7 +1,7 @@
 package com.example.activityservice.infrastructure.security;
 
-import com.example.activityservice.domain.MessageKey;
-import com.example.activityservice.domain.ports.MessageProviderPort;
+import com.example.activityservice.domain.i18n.MessageKey;
+import com.example.activityservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

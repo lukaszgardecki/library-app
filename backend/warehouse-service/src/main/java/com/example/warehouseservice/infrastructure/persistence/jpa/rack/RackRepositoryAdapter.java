@@ -1,7 +1,8 @@
 package com.example.warehouseservice.infrastructure.persistence.jpa.rack;
 
 import com.example.warehouseservice.domain.model.rack.*;
-import com.example.warehouseservice.domain.ports.RackRepositoryPort;
+import com.example.warehouseservice.domain.model.rack.values.*;
+import com.example.warehouseservice.domain.ports.out.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

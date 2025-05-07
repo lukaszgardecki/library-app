@@ -1,9 +1,11 @@
 package com.example.userservice.core.user;
 
 import com.example.userservice.domain.dto.user.*;
-import com.example.userservice.domain.model.librarycard.LibraryCardId;
-import com.example.userservice.domain.model.person.PersonId;
+import com.example.userservice.domain.model.user.User;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
+import com.example.userservice.domain.model.person.values.PersonId;
 import com.example.userservice.domain.model.user.*;
+import com.example.userservice.domain.model.user.values.*;
 
 class UserMapper {
 

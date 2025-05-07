@@ -1,6 +1,7 @@
 package com.example.warehouseservice.domain.model.shelf;
 
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
+import com.example.warehouseservice.domain.model.shelf.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

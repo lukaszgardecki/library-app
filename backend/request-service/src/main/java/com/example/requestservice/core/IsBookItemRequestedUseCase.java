@@ -1,7 +1,7 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.model.BookItemId;
-import com.example.requestservice.domain.model.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

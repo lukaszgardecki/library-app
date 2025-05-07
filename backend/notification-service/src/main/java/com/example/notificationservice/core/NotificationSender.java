@@ -1,8 +1,8 @@
 package com.example.notificationservice.core;
 
 import com.example.notificationservice.domain.model.Notification;
-import com.example.notificationservice.domain.model.UserId;
-import com.example.notificationservice.domain.ports.*;
+import com.example.notificationservice.domain.model.values.UserId;
+import com.example.notificationservice.domain.ports.out.*;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,11 +1,11 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.model.BookItemId;
+import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.BookItemLoanListPreviewProjection;
-import com.example.loanservice.domain.model.LoanStatus;
-import com.example.loanservice.domain.model.UserId;
-import com.example.loanservice.domain.ports.BookItemLoanRepositoryPort;
-import com.example.loanservice.domain.ports.BookItemRequestServicePort;
+import com.example.loanservice.domain.model.values.LoanStatus;
+import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.domain.ports.out.BookItemLoanRepositoryPort;
+import com.example.loanservice.domain.ports.out.BookItemRequestServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

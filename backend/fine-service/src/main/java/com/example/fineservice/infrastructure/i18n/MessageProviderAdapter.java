@@ -1,7 +1,7 @@
 package com.example.fineservice.infrastructure.i18n;
 
-import com.example.fineservice.domain.MessageKey;
-import com.example.fineservice.domain.ports.MessageProviderPort;
+import com.example.fineservice.domain.i18n.MessageKey;
+import com.example.fineservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

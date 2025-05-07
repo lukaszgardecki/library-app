@@ -1,9 +1,9 @@
 package com.example.catalogservice.domain.dto;
 
 import com.example.catalogservice.domain.model.bookitem.BookItem;
-import com.example.catalogservice.domain.model.bookitem.IsReferenceOnly;
-import com.example.catalogservice.domain.model.bookitem.Price;
-import com.example.catalogservice.domain.model.bookitem.PurchaseDate;
+import com.example.catalogservice.domain.model.bookitem.values.IsReferenceOnly;
+import com.example.catalogservice.domain.model.bookitem.values.Price;
+import com.example.catalogservice.domain.model.bookitem.values.PurchaseDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

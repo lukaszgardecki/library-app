@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.persistence.jpa.librarycard;
 
-import com.example.userservice.domain.model.librarycard.LibraryCardStatus;
+import com.example.userservice.domain.model.librarycard.values.LibraryCardStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

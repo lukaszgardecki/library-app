@@ -1,9 +1,9 @@
 package com.example.paymentservice.infrastructure.http;
 
-import com.example.paymentservice.domain.MessageKey;
+import com.example.paymentservice.domain.i18n.MessageKey;
 import com.example.paymentservice.domain.exceptions.LibraryAppNotFoundException;
 import com.example.paymentservice.domain.exceptions.PaymentNotFoundException;
-import com.example.paymentservice.domain.ports.MessageProviderPort;
+import com.example.paymentservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

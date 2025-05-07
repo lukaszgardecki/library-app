@@ -1,7 +1,7 @@
 package com.example.authservice.core.authdetails;
 
-import com.example.authservice.domain.ports.AuthDetailsRepositoryPort;
-import com.example.authservice.domain.ports.PasswordEncoderPort;
+import com.example.authservice.domain.ports.out.AuthDetailsRepositoryPort;
+import com.example.authservice.domain.ports.out.PasswordEncoderPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

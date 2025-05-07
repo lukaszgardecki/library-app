@@ -1,9 +1,9 @@
 package com.example.notificationservice.domain.event.incoming;
 
-import com.example.notificationservice.domain.model.BookItemId;
-import com.example.notificationservice.domain.model.RequestId;
-import com.example.notificationservice.domain.model.Title;
-import com.example.notificationservice.domain.model.UserId;
+import com.example.notificationservice.domain.integration.catalog.BookItemId;
+import com.example.notificationservice.domain.integration.request.RequestId;
+import com.example.notificationservice.domain.integration.catalog.Title;
+import com.example.notificationservice.domain.model.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

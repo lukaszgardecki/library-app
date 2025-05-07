@@ -1,7 +1,7 @@
 package com.example.authservice.infrastructure.i18n;
 
-import com.example.authservice.domain.MessageKey;
-import com.example.authservice.domain.ports.MessageProviderPort;
+import com.example.authservice.domain.i18n.MessageKey;
+import com.example.authservice.domain.ports.out.MessageProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

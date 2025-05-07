@@ -1,12 +1,12 @@
 package com.example.catalogservice.core.bookitem;
 
 
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import com.example.catalogservice.domain.dto.BookItemToSaveDto;
 import com.example.catalogservice.domain.model.bookitem.BookItem;
-import com.example.catalogservice.domain.model.bookitem.BookItemBarcode;
-import com.example.catalogservice.domain.model.bookitem.BookItemStatus;
-import com.example.catalogservice.domain.model.bookitem.RackId;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemBarcode;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
+import com.example.catalogservice.domain.model.bookitem.values.RackId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

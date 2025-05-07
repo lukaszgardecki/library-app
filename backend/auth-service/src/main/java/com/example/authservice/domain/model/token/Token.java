@@ -1,5 +1,6 @@
 package com.example.authservice.domain.model.token;
 
+import com.example.authservice.domain.model.token.values.TokenType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

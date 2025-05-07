@@ -1,9 +1,9 @@
 package com.example.authservice.domain.exception;
 
-import com.example.authservice.domain.MessageKey;
-import com.example.authservice.domain.model.authdetails.AuthDetailsId;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.i18n.MessageKey;
+import com.example.authservice.domain.model.authdetails.values.AuthDetailsId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 
 public class UserAuthNotFoundException extends LibraryAppNotFoundException {
 

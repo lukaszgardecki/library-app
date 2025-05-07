@@ -1,8 +1,8 @@
 package com.example.activityservice.core;
 
 import com.example.activityservice.domain.model.Activity;
-import com.example.activityservice.domain.ports.ActivityRepositoryPort;
-import com.example.activityservice.domain.ports.EventListenerPort;
+import com.example.activityservice.domain.ports.out.ActivityRepositoryPort;
+import com.example.activityservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

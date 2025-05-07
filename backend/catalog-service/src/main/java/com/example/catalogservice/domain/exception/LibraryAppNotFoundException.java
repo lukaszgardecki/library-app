@@ -1,6 +1,6 @@
 package com.example.catalogservice.domain.exception;
 
-import com.example.catalogservice.domain.MessageKey;
+import com.example.catalogservice.domain.i18n.MessageKey;
 import lombok.Getter;
 
 @Getter

@@ -1,6 +1,6 @@
 package com.example.requestservice.infrastructure.persistence.jpa;
 
-import com.example.requestservice.domain.model.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,11 @@
 package com.example.authservice.infrastructure.persistence.jpa.authdetails;
 
 import com.example.authservice.domain.model.authdetails.*;
-import com.example.authservice.domain.ports.AuthDetailsRepositoryPort;
+import com.example.authservice.domain.model.authdetails.values.AuthDetailsId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
+import com.example.authservice.domain.ports.out.AuthDetailsRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

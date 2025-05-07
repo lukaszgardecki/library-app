@@ -1,7 +1,7 @@
 package com.example.fineservice.infrastructure.security;
 
-import com.example.fineservice.domain.MessageKey;
-import com.example.fineservice.domain.ports.MessageProviderPort;
+import com.example.fineservice.domain.i18n.MessageKey;
+import com.example.fineservice.domain.ports.out.MessageProviderPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

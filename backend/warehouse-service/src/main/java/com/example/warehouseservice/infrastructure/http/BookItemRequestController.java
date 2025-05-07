@@ -2,8 +2,8 @@ package com.example.warehouseservice.infrastructure.http;
 
 import com.example.warehouseservice.core.bookitemrequest.BookItemRequestFacade;
 import com.example.warehouseservice.domain.dto.WarehouseBookItemRequestListViewDto;
-import com.example.warehouseservice.domain.model.BookItemRequestStatus;
-import com.example.warehouseservice.domain.model.RequestId;
+import com.example.warehouseservice.domain.integration.request.BookItemRequestStatus;
+import com.example.warehouseservice.domain.integration.request.RequestId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
 package com.example.fineservice.domain.dto;
 
-import com.example.fineservice.domain.model.FineStatus;
+import com.example.fineservice.domain.model.values.FineStatus;
 import lombok.*;
 
 import java.math.BigDecimal;

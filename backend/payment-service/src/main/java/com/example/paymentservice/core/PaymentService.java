@@ -2,9 +2,9 @@ package com.example.paymentservice.core;
 
 import com.example.paymentservice.domain.exceptions.PaymentNotFoundException;
 import com.example.paymentservice.domain.model.Payment;
-import com.example.paymentservice.domain.model.PaymentId;
-import com.example.paymentservice.domain.model.UserId;
-import com.example.paymentservice.domain.ports.PaymentRepositoryPort;
+import com.example.paymentservice.domain.model.values.PaymentId;
+import com.example.paymentservice.domain.model.values.UserId;
+import com.example.paymentservice.domain.ports.out.PaymentRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

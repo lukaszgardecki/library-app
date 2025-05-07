@@ -1,8 +1,7 @@
 package com.example.warehouseservice.domain.exception;
 
-import com.example.warehouseservice.domain.MessageKey;
-import com.example.warehouseservice.domain.exception.LibraryAppNotFoundException;
-import com.example.warehouseservice.domain.model.rack.RackId;
+import com.example.warehouseservice.domain.i18n.MessageKey;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 
 public class RackNotFoundException extends LibraryAppNotFoundException {
 

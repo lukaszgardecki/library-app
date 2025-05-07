@@ -1,7 +1,7 @@
 package com.example.fineservice.infrastructure.http;
 
 import com.example.fineservice.core.FineFacade;
-import com.example.fineservice.domain.model.UserId;
+import com.example.fineservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

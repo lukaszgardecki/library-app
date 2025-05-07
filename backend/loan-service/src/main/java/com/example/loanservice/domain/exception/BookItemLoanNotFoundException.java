@@ -1,7 +1,7 @@
 package com.example.loanservice.domain.exception;
 
-import com.example.loanservice.domain.MessageKey;
-import com.example.loanservice.domain.model.LoanId;
+import com.example.loanservice.domain.i18n.MessageKey;
+import com.example.loanservice.domain.model.values.LoanId;
 
 public class BookItemLoanNotFoundException extends LibraryAppNotFoundException {
 

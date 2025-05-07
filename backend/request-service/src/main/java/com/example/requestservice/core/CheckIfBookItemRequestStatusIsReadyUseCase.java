@@ -1,8 +1,12 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.MessageKey;
+import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.exceptions.BookItemRequestException;
 import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.values.BookItemId;
+import com.example.requestservice.domain.model.values.BookItemRequestStatus;
+import com.example.requestservice.domain.model.values.RequestId;
+import com.example.requestservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

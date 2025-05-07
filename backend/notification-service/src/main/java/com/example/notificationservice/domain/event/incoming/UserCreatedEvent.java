@@ -1,8 +1,8 @@
 package com.example.notificationservice.domain.event.incoming;
 
-import com.example.notificationservice.domain.model.PersonFirstName;
-import com.example.notificationservice.domain.model.PersonLastName;
-import com.example.notificationservice.domain.model.UserId;
+import com.example.notificationservice.domain.integration.user.PersonFirstName;
+import com.example.notificationservice.domain.integration.user.PersonLastName;
+import com.example.notificationservice.domain.model.values.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

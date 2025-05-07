@@ -1,8 +1,8 @@
 package com.example.authservice.infrastructure.security;
 
-import com.example.authservice.domain.Constants;
-import com.example.authservice.domain.MessageKey;
-import com.example.authservice.domain.ports.MessageProviderPort;
+import com.example.authservice.domain.constants.Constants;
+import com.example.authservice.domain.i18n.MessageKey;
+import com.example.authservice.domain.ports.out.MessageProviderPort;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

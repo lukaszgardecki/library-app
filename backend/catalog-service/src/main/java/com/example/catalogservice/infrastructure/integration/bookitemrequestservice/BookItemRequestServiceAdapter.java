@@ -1,7 +1,7 @@
 package com.example.catalogservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.catalogservice.domain.model.bookitem.BookItemId;
-import com.example.catalogservice.domain.ports.BookItemRequestServicePort;
+import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
+import com.example.catalogservice.domain.ports.out.BookItemRequestServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

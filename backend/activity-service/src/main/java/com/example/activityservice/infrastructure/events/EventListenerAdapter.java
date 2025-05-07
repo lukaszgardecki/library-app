@@ -1,7 +1,7 @@
 package com.example.activityservice.infrastructure.events;
 
 import com.example.activityservice.domain.event.incoming.*;
-import com.example.activityservice.domain.ports.EventListenerPort;
+import com.example.activityservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

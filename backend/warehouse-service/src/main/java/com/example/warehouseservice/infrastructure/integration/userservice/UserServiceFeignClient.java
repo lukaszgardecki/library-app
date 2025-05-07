@@ -1,7 +1,7 @@
 package com.example.warehouseservice.infrastructure.integration.userservice;
 
-import com.example.warehouseservice.domain.dto.PersonDto;
-import com.example.warehouseservice.domain.dto.UserDto;
+import com.example.warehouseservice.domain.integration.user.dto.PersonDto;
+import com.example.warehouseservice.domain.integration.user.dto.UserDto;
 import com.example.warehouseservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

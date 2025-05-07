@@ -1,6 +1,6 @@
 package com.example.catalogservice.infrastructure.events;
 
-import com.example.catalogservice.domain.ports.EventListenerPort;
+import com.example.catalogservice.domain.ports.in.EventListenerPort;
 import com.example.catalogservice.domain.event.incoming.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;

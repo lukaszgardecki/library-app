@@ -1,6 +1,6 @@
 package com.example.fineservice.infrastructure.persistence.jpa;
 
-import com.example.fineservice.domain.model.FineStatus;
+import com.example.fineservice.domain.model.values.FineStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

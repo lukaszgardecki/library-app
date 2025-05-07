@@ -1,9 +1,9 @@
 package com.example.warehouseservice.infrastructure.websockets;
 
 import com.example.warehouseservice.domain.dto.WarehouseBookItemRequestListViewDto;
-import com.example.warehouseservice.domain.model.BookItemRequestStatus;
-import com.example.warehouseservice.domain.model.RequestId;
-import com.example.warehouseservice.domain.ports.BookItemRequestServicePort;
+import com.example.warehouseservice.domain.integration.request.BookItemRequestStatus;
+import com.example.warehouseservice.domain.integration.request.RequestId;
+import com.example.warehouseservice.domain.ports.out.BookItemRequestServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

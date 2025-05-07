@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.persistence.jpa;
 
 import com.example.loanservice.domain.model.BookItemLoanListPreviewProjection;
-import com.example.loanservice.domain.model.LoanStatus;
+import com.example.loanservice.domain.model.values.LoanStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

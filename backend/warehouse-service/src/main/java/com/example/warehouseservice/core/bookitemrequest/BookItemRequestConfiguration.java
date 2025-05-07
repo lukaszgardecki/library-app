@@ -2,10 +2,9 @@ package com.example.warehouseservice.core.bookitemrequest;
 
 import com.example.warehouseservice.core.rack.RackFacade;
 import com.example.warehouseservice.core.shelf.ShelfFacade;
-import com.example.warehouseservice.domain.ports.BookItemRequestServicePort;
-import com.example.warehouseservice.domain.ports.CatalogServicePort;
-import com.example.warehouseservice.domain.ports.EventPublisherPort;
-import com.example.warehouseservice.domain.ports.UserServicePort;
+import com.example.warehouseservice.domain.ports.out.BookItemRequestServicePort;
+import com.example.warehouseservice.domain.ports.out.CatalogServicePort;
+import com.example.warehouseservice.domain.ports.out.UserServicePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

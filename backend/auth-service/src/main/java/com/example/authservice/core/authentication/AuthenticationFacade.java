@@ -2,9 +2,9 @@ package com.example.authservice.core.authentication;
 
 import com.example.authservice.domain.dto.token.AuthDto;
 import com.example.authservice.domain.dto.token.TokenInfoDto;
-import com.example.authservice.domain.model.authdetails.Email;
-import com.example.authservice.domain.model.authdetails.Password;
-import com.example.authservice.domain.model.authdetails.UserId;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.domain.model.token.Auth;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;

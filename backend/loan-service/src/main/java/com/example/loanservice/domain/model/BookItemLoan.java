@@ -1,5 +1,6 @@
 package com.example.loanservice.domain.model;
 
+import com.example.loanservice.domain.model.values.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

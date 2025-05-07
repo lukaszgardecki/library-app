@@ -1,9 +1,9 @@
 package com.example.fineservice.core;
 
-import com.example.fineservice.domain.ports.EventListenerPort;
-import com.example.fineservice.domain.ports.EventPublisherPort;
-import com.example.fineservice.domain.ports.FineRepositoryPort;
-import com.example.fineservice.domain.ports.PaymentServicePort;
+import com.example.fineservice.domain.ports.in.EventListenerPort;
+import com.example.fineservice.domain.ports.out.EventPublisherPort;
+import com.example.fineservice.domain.ports.out.FineRepositoryPort;
+import com.example.fineservice.domain.ports.out.PaymentServicePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

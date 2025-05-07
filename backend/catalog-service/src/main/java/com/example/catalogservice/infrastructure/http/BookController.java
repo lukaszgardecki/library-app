@@ -3,7 +3,7 @@ package com.example.catalogservice.infrastructure.http;
 import com.example.catalogservice.core.book.BookFacade;
 import com.example.catalogservice.domain.dto.BookDto;
 import com.example.catalogservice.domain.dto.BookToSaveDto;
-import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.values.BookId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
