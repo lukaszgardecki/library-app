@@ -29,6 +29,7 @@ class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable)
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authenticationProvider(authenticationProvider)

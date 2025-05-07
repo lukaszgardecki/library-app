@@ -16,5 +16,7 @@ public class LoanCreatedEvent {
     private UserId userId;
     private BookItemId bookItemId;
     private RequestId requestId;
+    private Boolean isReferenceOnly;
+    private Title bookTitle;
 }
 

@@ -8,7 +8,6 @@ import com.example.userservice.domain.dto.user.*;
 import com.example.userservice.domain.exception.UserHasNotReturnedBooksException;
 import com.example.userservice.domain.exception.UserNotFoundException;
 import com.example.userservice.domain.model.auth.Role;
-import com.example.userservice.domain.model.book.BookId;
 import com.example.userservice.domain.model.bookitem.BookItemId;
 import com.example.userservice.domain.model.person.PersonId;
 import com.example.userservice.domain.model.user.*;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 class UserService {
     private final UserRepositoryPort userRepository;
     private final AuthenticationServicePort authenticationService;
-    private final BookCatalogServicePort bookCatalogService;
+    private final CatalogServicePort catalogService;
     private final BookItemLoanServicePort bookItemLoanService;
     private final BookItemRequestServicePort bookItemRequestService;
     private final StatisticsServicePort statisticsService;
@@ -187,13 +186,8 @@ class UserService {
         LibraryCardDto card = libraryCardFacade.getLibraryCard(user.getCardId());
         UserAuthDto userAuth = authenticationService.getUserAuthByUserId(user.getId());
         Map<String, Integer> topGenres = bookItemLoanService.getAllLoansByUserId(user.getId()).stream()
-                .collect(Collectors.groupingBy(
-                        loan -> {
-                            // TODO: 19.04.2025 tu powinna być jedna metoda.
-                            // TODO: 19.04.2025 najpeirw zrobić catalog-service
-                            BookItemDto bookItem = bookCatalogService.getBookItem(new BookItemId(loan.bookItemId()));
-                            return bookCatalogService.getBook(new BookId(bookItem.getBookId())).getSubject();
-                        },
+                .collect(Collectors.groupingBy(loan ->
+                        catalogService.getBookByBookItemId(new BookItemId(loan.bookItemId())).getSubject(),
                         Collectors.summingInt(lending -> 1)
                 ))
                 .entrySet()

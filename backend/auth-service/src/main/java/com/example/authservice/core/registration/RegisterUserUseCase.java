@@ -19,11 +19,7 @@ class RegisterUserUseCase {
         RegisterUserDto userDataToSave = toRegisterUserDto(request);
         UserId userId = userService.register(userDataToSave);
         registrationService.save(email, new Password(request.password()), userId);
-        publisher.publishUserCreatedEvent(
-                userId,
-                new PersonFirstName(request.firstName()),
-                new PersonLastName(request.lastName())
-        );
+        publisher.publishUserCreatedEvent(userId);
     }
 
     private RegisterUserDto toRegisterUserDto(RegisterToSaveDto register) {

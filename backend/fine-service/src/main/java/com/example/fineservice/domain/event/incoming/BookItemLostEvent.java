@@ -16,4 +16,5 @@ public class BookItemLostEvent {
     private BookItemId bookItemId;
     private BookId bookId;
     private Price charge;
+    private Title bookTitle;
 }

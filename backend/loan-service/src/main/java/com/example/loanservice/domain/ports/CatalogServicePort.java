@@ -1,5 +1,6 @@
 package com.example.loanservice.domain.ports;
 
+import com.example.loanservice.domain.dto.BookDto;
 import com.example.loanservice.domain.dto.BookItemDto;
 import com.example.loanservice.domain.model.BookId;
 import com.example.loanservice.domain.model.BookItemId;
@@ -7,6 +8,8 @@ import com.example.loanservice.domain.model.BookItemId;
 public interface CatalogServicePort {
 
     BookItemDto getBookItemById(BookItemId bookItemId);
+
+    BookDto getBookByBookItemId(BookItemId bookItemId);
 
     BookId getBookIdByBookItemId(BookItemId bookItemId);
 

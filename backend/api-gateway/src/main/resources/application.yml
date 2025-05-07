@@ -15,6 +15,13 @@ spring:
         - StripPrefix=2
         - AddRequestHeader=X-Source, API-Gateway
       routes:
+        - id: activity-service-route
+          uri: lb://activity-service
+          predicates:
+            - Path=${api-prefix}/activities/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
         - id: auth-service-route
           uri: lb://auth-service
           predicates:

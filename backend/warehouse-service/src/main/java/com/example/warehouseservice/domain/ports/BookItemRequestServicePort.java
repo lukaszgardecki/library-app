@@ -13,4 +13,6 @@ public interface BookItemRequestServicePort {
     BookItemRequestDto getBookItemRequestById(RequestId requestId);
 
     void changeBookItemRequestStatus(RequestId requestId, BookItemRequestStatus status);
+
+    void changeBookRequestStatusToReady(RequestId requestId);
 }

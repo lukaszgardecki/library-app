@@ -29,4 +29,7 @@ interface BookItemRequestServiceFeignClient {
             @PathVariable Long requestId,
             @PathVariable BookItemRequestStatus status
     );
+
+    @PatchMapping("/{requestId}")
+    ResponseEntity<Void> changeBookRequestStatusToReady(@PathVariable Long requestId);
 }

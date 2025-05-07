@@ -11,13 +11,15 @@ public class RequestCreatedEvent {
     private final BookItemRequestStatus requestStatus;
     private final BookItemId bookItemId;
     private final UserId userId;
+    private final Title bookTitle;
 
-    public RequestCreatedEvent(BookItemRequestDto bookItemRequest) {
+    public RequestCreatedEvent(BookItemRequestDto bookItemRequest, Title bookTitle) {
         this.requestId = new RequestId(bookItemRequest.getId());
         this.requestCreationDate = new BookItemRequestCreationDate(bookItemRequest.getCreationDate());
         this.requestStatus = bookItemRequest.getStatus();
         this.bookItemId = new BookItemId(bookItemRequest.getBookItemId());
         this.userId = new UserId(bookItemRequest.getUserId());
+        this.bookTitle = bookTitle;
     }
 }
 

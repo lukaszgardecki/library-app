@@ -13,8 +13,9 @@ public class BookItemLostEvent {
     private final BookItemId bookItemId;
     private final BookId bookId;
     private final Price charge;
+    private final Title bookTitle;
 
-    public BookItemLostEvent(BookItemLoanDto bookItemLoan, BookId bookId, Price charge) {
+    public BookItemLostEvent(BookItemLoanDto bookItemLoan, BookId bookId, Price charge, Title bookTitle) {
         this.loanId = new LoanId(bookItemLoan.id());
         this.loanDueDate = new LoanDueDate(bookItemLoan.dueDate());
         this.loanReturnDate = new LoanReturnDate(bookItemLoan.returnDate());
@@ -22,5 +23,6 @@ public class BookItemLostEvent {
         this.bookItemId = new BookItemId(bookItemLoan.bookItemId());
         this.bookId = bookId;
         this.charge = charge;
+        this.bookTitle = bookTitle;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.loanservice.infrastructure.integration.catalogservice;
 
+import com.example.loanservice.domain.dto.BookDto;
 import com.example.loanservice.domain.dto.BookItemDto;
 import com.example.loanservice.domain.model.BookId;
 import com.example.loanservice.domain.model.BookItemId;
@@ -16,6 +17,15 @@ class CatalogServiceAdapter implements CatalogServicePort {
     @Override
     public BookItemDto getBookItemById(BookItemId bookItemId) {
         ResponseEntity<BookItemDto> response = client.getBookItemById(bookItemId.value());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }
+        return null;
+    }
+
+    @Override
+    public BookDto getBookByBookItemId(BookItemId bookItemId) {
+        ResponseEntity<BookDto> response = client.getBookByBookItemId(bookItemId.value());
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }

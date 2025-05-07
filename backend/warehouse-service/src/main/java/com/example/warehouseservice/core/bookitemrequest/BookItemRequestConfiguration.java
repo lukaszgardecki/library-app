@@ -18,8 +18,7 @@ class BookItemRequestConfiguration {
             UserServicePort userService,
             BookItemRequestServicePort bookItemRequestService,
             RackFacade rackFacade,
-            ShelfFacade shelfFacade,
-            EventPublisherPort publisher
+            ShelfFacade shelfFacade
     ) {
         BookItemRequestService requestService = new BookItemRequestService(
                 catalogService, userService, bookItemRequestService, rackFacade, shelfFacade
@@ -27,7 +26,7 @@ class BookItemRequestConfiguration {
         return new BookItemRequestFacade(
                 new GetBookItemRequestList(requestService),
                 new GetBookItemRequest(requestService),
-                new ChangeBookItemRequestStatusToReadyUseCase(bookItemRequestService, publisher)
+                new ChangeBookItemRequestStatusToReadyUseCase(bookItemRequestService)
         );
     }
 }

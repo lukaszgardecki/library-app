@@ -4,6 +4,7 @@ import com.example.catalogservice.domain.model.BookItemRequestCreationDate;
 import com.example.catalogservice.domain.model.BookItemRequestStatus;
 import com.example.catalogservice.domain.model.RequestId;
 import com.example.catalogservice.domain.model.UserId;
+import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,4 +19,5 @@ public class RequestCreatedEvent {
     private BookItemRequestStatus requestStatus;
     private BookItemId bookItemId;
     private UserId userId;
+    private Title bookTitle;
 }

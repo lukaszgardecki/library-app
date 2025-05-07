@@ -1,10 +1,15 @@
 package com.example.authservice.infrastructure.events;
 
+import com.example.authservice.domain.dto.PersonDto;
+import com.example.authservice.domain.event.outgoing.LoginFailureEvent;
+import com.example.authservice.domain.event.outgoing.LoginSuccessEvent;
+import com.example.authservice.domain.event.outgoing.LogoutSuccessEvent;
 import com.example.authservice.domain.event.outgoing.UserCreatedEvent;
 import com.example.authservice.domain.model.authdetails.PersonFirstName;
 import com.example.authservice.domain.model.authdetails.PersonLastName;
 import com.example.authservice.domain.model.authdetails.UserId;
 import com.example.authservice.domain.ports.EventPublisherPort;
+import com.example.authservice.domain.ports.UserServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 class EventPublisherAdapter implements EventPublisherPort {
+    private final UserServicePort userService;
     private final KafkaTemplate<String, Object> template;
 
     private static final String USER_CREATED_TOPIC = "auth-service.user.created";
@@ -20,22 +26,34 @@ class EventPublisherAdapter implements EventPublisherPort {
     private static final String LOGOUT_SUCCESS_TOPIC = "auth-service.logout.success";
 
     @Override
-    public void publishUserCreatedEvent(UserId userId, PersonFirstName firstName, PersonLastName lastName) {
-        template.send(USER_CREATED_TOPIC, new UserCreatedEvent(userId, firstName, lastName));
+    public void publishUserCreatedEvent(UserId userId) {
+        PersonDto person = userService.getPersonByUser(userId.value());
+        template.send(USER_CREATED_TOPIC, new UserCreatedEvent(
+                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName())
+        ));
     }
 
     @Override
     public void publishLoginSuccessEvent(UserId userId) {
-        template.send(LOGIN_SUCCESS_TOPIC, userId);
+        PersonDto person = userService.getPersonByUser(userId.value());
+        template.send(LOGIN_SUCCESS_TOPIC, new LoginSuccessEvent(
+                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName())
+        ));
     }
 
     @Override
     public void publishLoginFailureEvent(UserId userId) {
-        template.send(LOGIN_FAILURE_TOPIC, userId);
+        PersonDto person = userService.getPersonByUser(userId.value());
+        template.send(LOGIN_FAILURE_TOPIC, new LoginFailureEvent(
+                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName())
+        ));
     }
 
     @Override
     public void publishLogoutSuccessEvent(UserId userId) {
-        template.send(LOGOUT_SUCCESS_TOPIC, userId);
+        PersonDto person = userService.getPersonByUser(userId.value());
+        template.send(LOGOUT_SUCCESS_TOPIC, new LogoutSuccessEvent(
+                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName())
+        ));
     }
 }

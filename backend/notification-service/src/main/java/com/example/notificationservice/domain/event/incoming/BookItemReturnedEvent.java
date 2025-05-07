@@ -14,4 +14,5 @@ public class BookItemReturnedEvent {
     private LoanReturnDate loanReturnDate;
     private UserId userId;
     private BookItemId bookItemId;
+    private Title bookTitle;
 }

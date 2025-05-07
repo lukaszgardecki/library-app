@@ -1,5 +1,6 @@
 package com.example.loanservice.infrastructure.integration.catalogservice;
 
+import com.example.loanservice.domain.dto.BookDto;
 import com.example.loanservice.domain.dto.BookItemDto;
 import com.example.loanservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,6 +13,9 @@ interface CatalogServiceFeignClient {
 
     @GetMapping("/book-items/{id}")
     ResponseEntity<BookItemDto> getBookItemById(@PathVariable Long id);
+
+    @GetMapping("/book-items/{bookItemId}/book")
+    ResponseEntity<BookDto> getBookByBookItemId(@PathVariable Long bookItemId);
 
     @GetMapping("/{bookItemId}/book/id")
     ResponseEntity<Long> getBookIdByBookItemId(@PathVariable Long bookItemId);

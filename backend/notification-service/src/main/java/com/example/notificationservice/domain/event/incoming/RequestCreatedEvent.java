@@ -14,6 +14,7 @@ public class RequestCreatedEvent {
     private BookItemRequestStatus requestStatus;
     private BookItemId bookItemId;
     private UserId userId;
+    private Title bookTitle;
 }
 
 

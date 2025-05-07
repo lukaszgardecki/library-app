@@ -65,6 +65,13 @@ class BookRequestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{requestId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
+    ResponseEntity<Void> changeBookRequestStatusToReady(@PathVariable Long requestId) {
+        bookItemRequestFacade.changeBookRequestStatusToReady(new RequestId(requestId));
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or #userId == principal")
     ResponseEntity<BookItemRequestDto> requestBookItem(

@@ -1,5 +1,6 @@
 package com.example.userservice.domain.event.incoming;
 
+import com.example.userservice.domain.model.book.Title;
 import com.example.userservice.domain.model.bookitem.BookItemId;
 import com.example.userservice.domain.model.bookitemloan.LoanDueDate;
 import com.example.userservice.domain.model.bookitemloan.LoanId;
@@ -18,4 +19,5 @@ public class BookItemReturnedEvent {
     private LoanReturnDate loanReturnDate;
     private UserId userId;
     private BookItemId bookItemId;
+    private Title bookTitle;
 }

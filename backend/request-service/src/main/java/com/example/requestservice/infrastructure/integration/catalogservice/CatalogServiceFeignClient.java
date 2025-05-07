@@ -1,5 +1,6 @@
 package com.example.requestservice.infrastructure.integration.catalogservice;
 
+import com.example.requestservice.domain.dto.BookDto;
 import com.example.requestservice.domain.dto.BookItemDto;
 import com.example.requestservice.infrastructure.integration.FeignClientCustomConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "catalog-service", path = "/catalog", configuration = FeignClientCustomConfiguration.class)
 interface CatalogServiceFeignClient {
+
+    @GetMapping("/book-items/{bookItemId}/book")
+    ResponseEntity<BookDto> getBookByBookItemId(@PathVariable Long bookItemId);
 
     @GetMapping("/{bookItemId}/book/id")
     ResponseEntity<Long> getBookIdByBookItemId(@PathVariable Long bookItemId);

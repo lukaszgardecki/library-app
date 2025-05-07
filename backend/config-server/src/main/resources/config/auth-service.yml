@@ -12,7 +12,10 @@ spring:
         spring:
           json:
             type:
-              mapping: 'userCreatedEvent:com.example.authservice.domain.event.outgoing.UserCreatedEvent'
+              mapping: 'userCreatedEvent:com.example.authservice.domain.event.outgoing.UserCreatedEvent,
+                        loginFailureEvent:com.example.authservice.domain.event.outgoing.LoginFailureEvent,
+                        loginSuccessEvent:com.example.authservice.domain.event.outgoing.LoginSuccessEvent,
+                        logoutSuccessEvent:com.example.authservice.domain.event.outgoing.LogoutSuccessEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

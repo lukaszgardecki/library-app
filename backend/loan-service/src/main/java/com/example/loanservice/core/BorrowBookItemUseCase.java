@@ -20,7 +20,7 @@ class BorrowBookItemUseCase {
         BookItemDto bookItem = catalogService.verifyAndGetBookItemForLoan(bookItemId);
         RequestId requestId = bookItemRequestService.checkIfBookItemRequestStatusIsReady(bookItemId, userId);
         BookItemLoan bookItemLoan = bookItemLoanService.saveLoan(bookItemId, userId, new BookId(bookItem.getBookId()));
-        publisher.publishLoanCreatedEvent(BookItemLoanMapper.toDto(bookItemLoan), requestId);
+        publisher.publishLoanCreatedEvent(BookItemLoanMapper.toDto(bookItemLoan), requestId, bookItem.getIsReferenceOnly());
         return bookItemLoan;
     }
 }

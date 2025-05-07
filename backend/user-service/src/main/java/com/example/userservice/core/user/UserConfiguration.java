@@ -42,7 +42,7 @@ public class UserConfiguration {
             UserRepositoryPort userRepository,
             PersonFacade personFacade,
             AuthenticationServicePort authService,
-            BookCatalogServicePort bookCatalogService,
+            CatalogServicePort bookCatalogService,
             BookItemRequestServicePort bookItemRequestService,
             BookItemLoanServicePort bookItemLoanService,
             StatisticsServicePort statisticsService,

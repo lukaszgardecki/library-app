@@ -2,6 +2,7 @@ package com.example.notificationservice.domain.event.incoming;
 
 import com.example.notificationservice.domain.model.BookItemId;
 import com.example.notificationservice.domain.model.RequestId;
+import com.example.notificationservice.domain.model.Title;
 import com.example.notificationservice.domain.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,4 +15,5 @@ public class RequestReadyEvent {
     private UserId userId;
     private BookItemId bookItemId;
     private RequestId requestId;
+    private Title bookTitle;
 }

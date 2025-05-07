@@ -1,6 +1,7 @@
 package com.example.userservice.domain.event.incoming;
 
 import com.example.userservice.domain.model.book.BookId;
+import com.example.userservice.domain.model.book.Title;
 import com.example.userservice.domain.model.bookitem.BookItemId;
 import com.example.userservice.domain.model.bookitem.Price;
 import com.example.userservice.domain.model.bookitemloan.LoanDueDate;
@@ -22,4 +23,5 @@ public class BookItemLostEvent {
     private BookItemId bookItemId;
     private BookId bookId;
     private Price charge;
+    private Title bookTitle;
 }

@@ -13,8 +13,12 @@ public class LoanCreatedEvent {
     private final UserId userId;
     private final BookItemId bookItemId;
     private final RequestId requestId;
+    private final Boolean isReferenceOnly;
+    private final Title bookTitle;
     
-    public LoanCreatedEvent(BookItemLoanDto bookItemLoan, RequestId requestId) {
+    public LoanCreatedEvent(
+            BookItemLoanDto bookItemLoan, RequestId requestId, Boolean isReferenceOnly, Title bookTitle
+    ) {
         this.loanId = new LoanId(bookItemLoan.id());
         this.loanCreationDate = new LoanCreationDate(bookItemLoan.creationDate());
         this.loanDueDate = new LoanDueDate(bookItemLoan.dueDate());
@@ -22,6 +26,8 @@ public class LoanCreatedEvent {
         this.userId = new UserId(bookItemLoan.userId());
         this.bookItemId = new BookItemId(bookItemLoan.bookItemId());
         this.requestId = requestId;
+        this.isReferenceOnly = isReferenceOnly;
+        this.bookTitle = bookTitle;
     }
 }
 

@@ -3,6 +3,7 @@ package com.example.catalogservice.domain.event.incoming;
 import com.example.catalogservice.domain.model.LoanId;
 import com.example.catalogservice.domain.model.LoanReturnDate;
 import com.example.catalogservice.domain.model.UserId;
+import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.LoanDueDate;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,5 @@ public class LoanProlongedEvent {
     private LoanReturnDate loanReturnDate;
     private UserId userId;
     private BookItemId bookItemId;
+    private Title bookTitle;
 }

@@ -12,7 +12,7 @@ class NotificationConfiguration {
             NotificationRepositoryPort notificationRepositoryPort,
             SourceValidator sourceValidator
     ) {
-        NotificationService notificationService = new NotificationService(notificationRepositoryPort, sourceValidator);
+        NotificationService notificationService = new NotificationService(notificationRepositoryPort);
         NotificationAccessControlService notificationAccessControlService =
                 new NotificationAccessControlService(notificationService, sourceValidator);
         return new NotificationFacade(
@@ -26,7 +26,6 @@ class NotificationConfiguration {
     @Bean
     EventListenerPort eventListenerService(
             NotificationRepositoryPort notificationRepositoryPort,
-            CatalogServicePort catalogService,
             SmsNotificationPort smsNotificationPort,
             EmailNotificationPort emailNotificationPort,
             SystemNotificationPort systemNotificationPort,
@@ -36,7 +35,7 @@ class NotificationConfiguration {
     ) {
         return new EventListenerService(
                 notificationRepositoryPort,
-                new NotificationFactory(messageProviderPort, catalogService),
+                new NotificationFactory(messageProviderPort),
                 new NotificationSender(
                         smsNotificationPort,
                         emailNotificationPort,

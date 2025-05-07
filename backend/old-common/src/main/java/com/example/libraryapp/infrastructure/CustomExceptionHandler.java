@@ -26,7 +26,6 @@ import com.example.libraryapp.domain.user.exceptions.UnsettledFineException;
 import com.example.libraryapp.domain.user.exceptions.UserHasNotReturnedBooksException;
 import com.example.libraryapp.domain.user.exceptions.UserNotFoundException;
 import com.example.libraryapp.domain.useractivity.exceptions.UserActivityNotFoundException;
-import io.jsonwebtoken.JwtException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @RestControllerAdvice
 @RequiredArgsConstructor

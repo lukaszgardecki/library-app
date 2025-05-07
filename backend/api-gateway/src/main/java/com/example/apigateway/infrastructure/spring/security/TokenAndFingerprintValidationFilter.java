@@ -89,16 +89,4 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
     private String encode(String value) {
         return Base64.getEncoder().encodeToString(value.getBytes());
     }
-
-    // TODO: 03.05.2025 usunąć to
-//    private boolean shouldNotFilter(ServerWebExchange exchange) {
-//        String path = exchange.getRequest().getPath().value();
-//        HttpMethod method = exchange.getRequest().getMethod();
-//        return path.startsWith("/ws")
-//                || path.startsWith("/favicon.ico")
-//                || path.startsWith("/version")
-//                || path.startsWith("/auth")
-//                || (path.startsWith("/catalog/books") && HttpMethod.GET.equals(method))
-//                || path.startsWith("/fu");
-//    }
 }

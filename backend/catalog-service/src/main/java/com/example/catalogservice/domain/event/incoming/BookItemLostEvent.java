@@ -4,6 +4,7 @@ import com.example.catalogservice.domain.model.LoanId;
 import com.example.catalogservice.domain.model.LoanReturnDate;
 import com.example.catalogservice.domain.model.UserId;
 import com.example.catalogservice.domain.model.book.BookId;
+import com.example.catalogservice.domain.model.book.Title;
 import com.example.catalogservice.domain.model.bookitem.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.LoanDueDate;
 import com.example.catalogservice.domain.model.bookitem.Price;
@@ -22,4 +23,5 @@ public class BookItemLostEvent {
     private BookItemId bookItemId;
     private BookId bookId;
     private Price charge;
+    private Title bookTitle;
 }

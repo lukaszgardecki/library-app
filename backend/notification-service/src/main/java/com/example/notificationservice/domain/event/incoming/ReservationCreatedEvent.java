@@ -2,6 +2,7 @@ package com.example.notificationservice.domain.event.incoming;
 
 import com.example.notificationservice.domain.model.BookItemId;
 import com.example.notificationservice.domain.model.LoanDueDate;
+import com.example.notificationservice.domain.model.Title;
 import com.example.notificationservice.domain.model.UserId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,4 +16,5 @@ public class ReservationCreatedEvent {
     private UserId userId;
     private int queue;
     private LoanDueDate loanDueDate;
+    private Title bookTitle;
 }
