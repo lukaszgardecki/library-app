@@ -89,7 +89,12 @@ spring:
           filters:
             - name: TokenAndFingerprintValidationFilter
 
-
+        - id: statistics-service-route
+          uri: lb://statistics-service
+          predicates:
+            - Path=${api-prefix}/stats/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
 eureka:
   client:
     fetch-registry: true

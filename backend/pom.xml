@@ -32,6 +32,7 @@
         <module>payment-service</module>
         <module>notification-service</module>
         <module>activity-service</module>
+        <module>statistics-service</module>
     </modules>
 
     <properties>

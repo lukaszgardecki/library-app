@@ -8,7 +8,7 @@ public enum MessageKey {
     BODY_MISSING("body-missing"),
 
 //    // USER ACTIVITY
-//    ACTIVITY_NOT_FOUND_ID("activity.not-found.id"),
+    ACTIVITY_NOT_FOUND_ID("activity.not-found.id"),
     ACTIVITY_REGISTER("activity.register"),
     ACTIVITY_LOGIN_SUCCEEDED("activity.login.succeeded"),
     ACTIVITY_LOGIN_FAILED("activity.login.failed"),

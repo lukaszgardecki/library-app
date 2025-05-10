@@ -1,5 +1,6 @@
 package com.example.userservice.domain.event.incoming;
 
+import com.example.userservice.domain.integration.catalog.Subject;
 import com.example.userservice.domain.integration.request.RequestId;
 import com.example.userservice.domain.integration.catalog.Title;
 import com.example.userservice.domain.integration.catalog.BookItemId;
@@ -25,5 +26,6 @@ public class LoanCreatedEvent {
     private RequestId requestId;
     private Boolean isReferenceOnly;
     private Title bookTitle;
+    private Subject bookSubject;
 }
 

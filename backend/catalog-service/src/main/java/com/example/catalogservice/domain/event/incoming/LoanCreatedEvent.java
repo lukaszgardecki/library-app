@@ -4,6 +4,7 @@ import com.example.catalogservice.domain.integration.loan.LoanId;
 import com.example.catalogservice.domain.integration.loan.LoanReturnDate;
 import com.example.catalogservice.domain.integration.request.RequestId;
 import com.example.catalogservice.domain.integration.UserId;
+import com.example.catalogservice.domain.model.book.values.Subject;
 import com.example.catalogservice.domain.model.book.values.Title;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.values.LoanCreationDate;
@@ -25,5 +26,6 @@ public class LoanCreatedEvent {
     private RequestId requestId;
     private Boolean isReferenceOnly;
     private Title bookTitle;
+    private Subject bookSubject;
 }
 

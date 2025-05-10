@@ -1,5 +1,6 @@
 package com.example.requestservice.domain.event.incoming;
 
+import com.example.requestservice.domain.integration.catalog.Subject;
 import com.example.requestservice.domain.integration.catalog.Title;
 import com.example.requestservice.domain.integration.loan.LoanCreationDate;
 import com.example.requestservice.domain.integration.loan.LoanDueDate;
@@ -25,5 +26,6 @@ public class LoanCreatedEvent {
     private RequestId requestId;
     private Boolean isReferenceOnly;
     private Title bookTitle;
+    private Subject bookSubject;
 }
 

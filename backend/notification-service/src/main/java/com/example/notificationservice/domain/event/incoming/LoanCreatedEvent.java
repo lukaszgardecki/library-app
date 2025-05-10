@@ -1,6 +1,7 @@
 package com.example.notificationservice.domain.event.incoming;
 
 import com.example.notificationservice.domain.integration.catalog.BookItemId;
+import com.example.notificationservice.domain.integration.catalog.Subject;
 import com.example.notificationservice.domain.integration.catalog.Title;
 import com.example.notificationservice.domain.integration.loan.LoanCreationDate;
 import com.example.notificationservice.domain.integration.loan.LoanDueDate;
@@ -25,5 +26,6 @@ public class LoanCreatedEvent {
     private RequestId requestId;
     private Boolean isReferenceOnly;
     private Title bookTitle;
+    private Subject bookSubject;
 }
 

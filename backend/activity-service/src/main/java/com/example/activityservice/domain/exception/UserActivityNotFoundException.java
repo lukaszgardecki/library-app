@@ -5,6 +5,6 @@ import com.example.activityservice.domain.model.values.ActivityId;
 
 public class UserActivityNotFoundException extends LibraryAppNotFoundException {
     public UserActivityNotFoundException(ActivityId activityId) {
-        super(MessageKey.ACTIVITY_LOGIN_SUCCEEDED, activityId.value().toString());
+        super(MessageKey.ACTIVITY_NOT_FOUND_ID, activityId.value().toString());
     }
 }

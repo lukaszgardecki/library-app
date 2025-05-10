@@ -2,6 +2,7 @@ package com.example.loanservice.infrastructure.events;
 
 import com.example.loanservice.domain.integration.catalog.BookId;
 import com.example.loanservice.domain.integration.catalog.Price;
+import com.example.loanservice.domain.integration.catalog.Subject;
 import com.example.loanservice.domain.integration.catalog.Title;
 import com.example.loanservice.domain.integration.catalog.dto.BookDto;
 import com.example.loanservice.domain.dto.BookItemLoanDto;
@@ -31,7 +32,7 @@ class EventPublisherAdapter implements EventPublisherPort {
     public void publishLoanCreatedEvent(BookItemLoanDto bookItemLoan, RequestId requestId, Boolean isReferenceOnly) {
         BookDto book = catalogService.getBookByBookItemId(new BookItemId(bookItemLoan.bookItemId()));
         template.send(LOAN_CREATED_TOPIC, new LoanCreatedEvent(
-                bookItemLoan, requestId, isReferenceOnly, new Title(book.getTitle())
+                bookItemLoan, requestId, isReferenceOnly, new Title(book.getTitle()), new Subject(book.getSubject())
         ));
     }
 

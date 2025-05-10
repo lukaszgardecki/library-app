@@ -29,7 +29,8 @@ class EventPublisherAdapter implements EventPublisherPort {
     public void publishUserCreatedEvent(UserId userId) {
         PersonDto person = userService.getPersonByUser(userId.value());
         template.send(USER_CREATED_TOPIC, new UserCreatedEvent(
-                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName())
+                userId, new PersonFirstName(person.getFirstName()), new PersonLastName(person.getLastName()),
+                person.getDateOfBirth(), person.getAddress().getCity()
         ));
     }
 
