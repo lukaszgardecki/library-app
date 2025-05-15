@@ -1,7 +1,7 @@
 package com.example.catalogservice.infrastructure.http;
 
-import com.example.catalogservice.domain.i18n.MessageKey;
 import com.example.catalogservice.domain.exception.*;
+import com.example.catalogservice.domain.i18n.MessageKey;
 import com.example.catalogservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

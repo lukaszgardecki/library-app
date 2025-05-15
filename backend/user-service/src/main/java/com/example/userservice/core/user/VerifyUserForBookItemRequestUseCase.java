@@ -1,8 +1,8 @@
 package com.example.userservice.core.user;
 
 import com.example.userservice.domain.constants.Constants;
-import com.example.userservice.domain.i18n.MessageKey;
 import com.example.userservice.domain.exception.UserException;
+import com.example.userservice.domain.i18n.MessageKey;
 import com.example.userservice.domain.model.user.User;
 import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;

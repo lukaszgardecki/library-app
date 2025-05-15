@@ -1,7 +1,7 @@
 package com.example.authservice.infrastructure.http;
 
-import com.example.authservice.domain.i18n.MessageKey;
 import com.example.authservice.domain.exception.*;
+import com.example.authservice.domain.i18n.MessageKey;
 import com.example.authservice.domain.ports.out.MessageProviderPort;
 import io.jsonwebtoken.JwtException;
 import lombok.Getter;

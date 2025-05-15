@@ -25,7 +25,7 @@ class GetPageOfBookItemLoansByParamsUseCase {
             return resultPage;
         }
         Predicate<BookItemLoan> byRenewable = (loan) ->
-                !loan.getDueDate().value().isBefore(LocalDate.now().atStartOfDay())
+                !loan.getDueDate().value().isBefore(LocalDate.now())
                 && !bookItemRequestService.isBookItemRequested(loan.getBookItemId());
         List<BookItemLoan> filteredLoans = resultPage.getContent().stream()
                 .filter(byRenewable)

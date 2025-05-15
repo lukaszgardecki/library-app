@@ -1,6 +1,7 @@
 package com.example.statisticsservice.infrastructure.persistence.jpa.cities;
 
-import com.example.statisticsservice.domain.model.city.City;
+import com.example.statisticsservice.domain.integration.City;
+import com.example.statisticsservice.domain.model.city.CityStats;
 import com.example.statisticsservice.domain.ports.out.CityRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,43 +17,43 @@ class CityRepositoryAdapter implements CityRepositoryPort {
     private final JpaCityRepository repository;
 
     @Override
-    public List<City> findAllOrderByUsersDesc(int limit) {
+    public List<CityStats> findAllOrderByUsersDesc(int limit) {
         return repository.findAllOrderByUsersDesc(limit).stream().map(this::toModel).toList();
     }
 
     @Override
     @Transactional
-    public void incrementUsersCount(String city) {
+    public void incrementUsersCount(City city) {
         tryUpdateOrInsert(city, repository::incrementUsersCount);
     }
 
     @Override
     @Transactional
-    public void decrementUsersCount(String city) {
+    public void decrementUsersCount(City city) {
         tryUpdateOrInsert(city, repository::decrementUsersCount);
     }
 
-    private void tryUpdateOrInsert(String city, Function<String, Integer> updateFn) {
-        int updated = updateFn.apply(city);
+    private void tryUpdateOrInsert(City city, Function<String, Integer> updateFn) {
+        int updated = updateFn.apply(city.value());
         if (updated == 0) {
             try {
-                repository.save(new CityEntity(city, 0));
-                updateFn.apply(city);
+                repository.save(new CityEntity(city.value(), 0));
+                updateFn.apply(city.value());
             } catch (DataIntegrityViolationException e) {
-                updateFn.apply(city);
+                updateFn.apply(city.value());
             }
         }
     }
 
-    private CityEntity toEntity(City model) {
+    private CityEntity toEntity(CityStats model) {
         return new CityEntity(
                 model.getName(),
                 model.getUsers()
         );
     }
 
-    private City toModel(CityEntity entity) {
-        return new City(
+    private CityStats toModel(CityEntity entity) {
+        return new CityStats(
                 entity.getName(),
                 entity.getUsers()
         );

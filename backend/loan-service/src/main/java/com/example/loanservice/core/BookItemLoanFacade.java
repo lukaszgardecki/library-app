@@ -1,8 +1,6 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.dto.BookItemLoanDto;
-import com.example.loanservice.domain.dto.BookItemLoanListPreviewDto;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,7 +14,6 @@ import java.util.Map;
 public class BookItemLoanFacade {
     private final GetBookItemLoanUseCase getBookItemLoanUseCase;
     private final GetPageOfBookItemLoansByParamsUseCase getPageOfBookItemLoansByParamsUseCase;
-    private final GetPageOfBookItemLoanListPreviewsUseCase getPageOfBookItemLoanListPreviewsUseCase;
     private final GetAllUserLoansUseCase getAllUserLoansUseCase;
     private final GetUserCurrentLoansUseCase getUserCurrentLoansUseCase;
     private final GetTopSubjectsWithLoansCountUseCase getTopSubjectsWithLoansCountUseCase;
@@ -29,47 +26,32 @@ public class BookItemLoanFacade {
     private final CountBookItemLoansMonthlyUseCase countBookItemLoansMonthlyUseCase;
     private final CountBookItemLoansDailyUseCase countBookItemLoansDailyUseCase;
 
-    public BookItemLoanDto getBookLoan(LoanId id) {
-        BookItemLoan bookItemLoan = getBookItemLoanUseCase.execute(id);
-        return BookItemLoanMapper.toDto(bookItemLoan);
+    public BookItemLoan getBookLoan(LoanId id) {
+        return getBookItemLoanUseCase.execute(id);
     }
 
-    public Page<BookItemLoanDto> getPageOfBookLoansByParams(UserId userId, LoanStatus status, Boolean renewable, Pageable pageable) {
-        return getPageOfBookItemLoansByParamsUseCase.execute(userId, status, renewable, pageable)
-                .map(BookItemLoanMapper::toDto);
+    public Page<BookItemLoan> getPageOfBookLoansByParams(UserId userId, LoanStatus status, Boolean renewable, Pageable pageable) {
+        return getPageOfBookItemLoansByParamsUseCase.execute(userId, status, renewable, pageable);
     }
 
-    public Page<BookItemLoanListPreviewDto> getPageOfBookLoanListPreviewsByParams(UserId userId, String query, LoanStatus status, Boolean renewable, Pageable pageable) {
-        return getPageOfBookItemLoanListPreviewsUseCase.execute(userId, query, status, renewable, pageable)
-                .map(BookItemLoanMapper::toDto);
+    public List<BookItemLoan> getAllLoansByUserId(UserId userId) {
+        return getAllUserLoansUseCase.execute(userId);
     }
 
-    public List<BookItemLoanDto> getAllLoansByUserId(UserId userId) {
-        return getAllUserLoansUseCase.execute(userId)
-                .stream()
-                .map(BookItemLoanMapper::toDto)
-                .toList();
-    }
-
-    public List<BookItemLoanDto> getCurrentLoansByUserId(UserId userId) {
-        return getUserCurrentLoansUseCase.execute(userId)
-                .stream()
-                .map(BookItemLoanMapper::toDto)
-                .toList();
+    public List<BookItemLoan> getCurrentLoansByUserId(UserId userId) {
+        return getUserCurrentLoansUseCase.execute(userId);
     }
 
     public Map<String, Long> getTopSubjectsWithLoansCountUseCase(int limit) {
         return getTopSubjectsWithLoansCountUseCase.execute(limit);
     }
 
-    public BookItemLoanDto borrowBookItem(BookItemId bookItemId, UserId userId) {
-        BookItemLoan bookItemLoan = borrowBookItemUseCase.execute(bookItemId, userId);
-        return BookItemLoanMapper.toDto(bookItemLoan);
+    public BookItemLoan borrowBookItem(BookItemId bookItemId, UserId userId) {
+        return borrowBookItemUseCase.execute(bookItemId, userId);
     }
 
-    public BookItemLoanDto renewBookItemLoan(BookItemId bookItemId, UserId userId) {
-        BookItemLoan bookItemLoan = renewBookItemLoanUseCase.execute(bookItemId, userId);
-        return BookItemLoanMapper.toDto(bookItemLoan);
+    public BookItemLoan renewBookItemLoan(BookItemId bookItemId, UserId userId) {
+        return renewBookItemLoanUseCase.execute(bookItemId, userId);
     }
 
     public void returnBookItem(BookItemId bookItemId, UserId userId) {

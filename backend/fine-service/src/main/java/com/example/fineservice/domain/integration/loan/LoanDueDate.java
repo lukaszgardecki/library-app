@@ -1,6 +1,6 @@
 package com.example.fineservice.domain.integration.loan;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record LoanDueDate(LocalDateTime value) {
+public record LoanDueDate(LocalDate value) {
 }

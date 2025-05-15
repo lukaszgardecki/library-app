@@ -1,10 +1,9 @@
 package com.example.userservice.infrastructure.persistence.jpa.user;
 
-import com.example.userservice.domain.model.user.User;
+import com.example.userservice.domain.integration.fine.FineAmount;
 import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
 import com.example.userservice.domain.model.person.values.PersonId;
-import com.example.userservice.domain.integration.fine.FineAmount;
-import com.example.userservice.domain.model.user.*;
+import com.example.userservice.domain.model.user.User;
 import com.example.userservice.domain.model.user.values.*;
 import com.example.userservice.domain.ports.out.UserRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +34,8 @@ class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public Page<UserListPreviewProjection> findAllListPreviews(String query, Pageable pageable) {
-        return repository.findAllByQuery(query, pageable);
+    public Page<User> findAllByQuery(String query, Pageable pageable) {
+        return repository.findAllByQuery(query, pageable).map(this::toModel);
     }
 
     @Override

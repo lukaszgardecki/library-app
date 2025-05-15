@@ -1,6 +1,6 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.LoanReturnDate;
 import com.example.loanservice.domain.model.values.LoanStatus;
@@ -20,6 +20,6 @@ class ReturnBookItemUseCase {
         bookItemLoan.setReturnDate(new LoanReturnDate(LocalDateTime.now()));
         bookItemLoan.setStatus(LoanStatus.COMPLETED);
         bookItemLoanService.save(bookItemLoan);
-        publisher.publishBookItemReturnedEvent(BookItemLoanMapper.toDto(bookItemLoan));
+        publisher.publishBookItemReturnedEvent(bookItemLoan);
     }
 }

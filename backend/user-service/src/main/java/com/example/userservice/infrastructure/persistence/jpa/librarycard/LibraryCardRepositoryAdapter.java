@@ -1,12 +1,12 @@
 package com.example.userservice.infrastructure.persistence.jpa.librarycard;
 
-import com.example.userservice.domain.model.librarycard.*;
+import com.example.userservice.domain.model.librarycard.LibraryCard;
 import com.example.userservice.domain.model.librarycard.values.IssuedDate;
 import com.example.userservice.domain.model.librarycard.values.LibraryCardBarcode;
 import com.example.userservice.domain.model.librarycard.values.LibraryCardId;
 import com.example.userservice.domain.model.librarycard.values.LibraryCardStatus;
-import com.example.userservice.domain.ports.out.LibraryCardRepositoryPort;
 import com.example.userservice.domain.model.user.values.UserId;
+import com.example.userservice.domain.ports.out.LibraryCardRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

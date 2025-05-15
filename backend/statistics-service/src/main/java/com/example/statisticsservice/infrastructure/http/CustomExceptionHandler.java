@@ -1,7 +1,5 @@
 package com.example.statisticsservice.infrastructure.http;
 
-import com.example.statisticsservice.domain.exception.LibraryAppException;
-import com.example.statisticsservice.domain.exception.LibraryAppNotFoundException;
 import com.example.statisticsservice.domain.i18n.MessageKey;
 import com.example.statisticsservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;

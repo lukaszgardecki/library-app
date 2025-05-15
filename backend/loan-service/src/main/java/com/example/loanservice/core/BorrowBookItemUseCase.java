@@ -1,9 +1,8 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.integration.catalog.BookId;
-import com.example.loanservice.domain.integration.catalog.dto.BookItemDto;
-import com.example.loanservice.domain.integration.request.RequestId;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.integration.catalogservice.bookitem.BookItem;
+import com.example.loanservice.domain.integration.requestservice.RequestId;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.UserId;
 import com.example.loanservice.domain.ports.out.*;
@@ -21,10 +20,10 @@ class BorrowBookItemUseCase {
     BookItemLoan execute(BookItemId bookItemId, UserId userId) {
         userService.verifyUserForBookItemLoan(userId);
         fineService.verifyUserForFines(userId);
-        BookItemDto bookItem = catalogService.verifyAndGetBookItemForLoan(bookItemId);
+        BookItem bookItem = catalogService.verifyAndGetBookItemForLoan(bookItemId);
         RequestId requestId = bookItemRequestService.checkIfBookItemRequestStatusIsReady(bookItemId, userId);
-        BookItemLoan bookItemLoan = bookItemLoanService.saveLoan(bookItemId, userId, new BookId(bookItem.getBookId()));
-        publisher.publishLoanCreatedEvent(BookItemLoanMapper.toDto(bookItemLoan), requestId, bookItem.getIsReferenceOnly());
+        BookItemLoan bookItemLoan = bookItemLoanService.saveLoan(bookItemId, userId, bookItem.getBookId());
+        publisher.publishLoanCreatedEvent(bookItemLoan, requestId, bookItem.getIsReferenceOnly());
         return bookItemLoan;
     }
 }

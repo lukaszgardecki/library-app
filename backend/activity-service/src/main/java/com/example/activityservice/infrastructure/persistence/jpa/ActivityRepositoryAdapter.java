@@ -1,6 +1,6 @@
 package com.example.activityservice.infrastructure.persistence.jpa;
 
-import com.example.activityservice.domain.model.*;
+import com.example.activityservice.domain.model.Activity;
 import com.example.activityservice.domain.model.values.ActivityCreationDate;
 import com.example.activityservice.domain.model.values.ActivityId;
 import com.example.activityservice.domain.model.values.ActivityMessage;

@@ -1,11 +1,10 @@
 package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.core.book.BookFacade;
-import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
 import com.example.catalogservice.domain.ports.in.EventListenerPort;
+import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
 import com.example.catalogservice.domain.ports.out.BookItemRequestServicePort;
 import com.example.catalogservice.domain.ports.out.EventPublisherPort;
-import com.example.catalogservice.domain.ports.out.WarehouseServicePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,11 +32,10 @@ public class BookItemConfiguration {
     @Bean
     BookItemService bookItemService(
             BookItemRepositoryPort repository,
-            BookFacade bookFacade,
-            WarehouseServicePort warehouseService
+            BookFacade bookFacade
     ) {
         return new BookItemService(
-                repository, warehouseService, new BookItemBarcodeGenerator(), bookFacade
+                repository, new BookItemBarcodeGenerator(), bookFacade
         );
     }
 

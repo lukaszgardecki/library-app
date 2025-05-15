@@ -1,13 +1,12 @@
 package com.example.catalogservice.core.bookitem;
 
-import com.example.catalogservice.domain.integration.loan.LoanReturnDate;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
 import com.example.catalogservice.domain.model.bookitem.values.LoanCreationDate;
 import com.example.catalogservice.domain.model.bookitem.values.LoanDueDate;
+import com.example.catalogservice.domain.ports.in.EventListenerPort;
 import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
 import com.example.catalogservice.domain.ports.out.BookItemRequestServicePort;
-import com.example.catalogservice.domain.ports.in.EventListenerPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -57,7 +56,7 @@ class EventListenerService implements EventListenerPort {
     }
 
     @Override
-    public void handleBookItemReturnedEvent(BookItemId bookItemId, LoanReturnDate dueDate) {
+    public void handleBookItemReturnedEvent(BookItemId bookItemId, LoanDueDate dueDate) {
         bookItemService.findBookItemById(bookItemId).ifPresent(bookItem -> {
             boolean bookIsReserved = bookItemRequestService.isBookItemRequested(bookItemId);
 
@@ -67,7 +66,7 @@ class EventListenerService implements EventListenerPort {
                 bookItem.setStatus(BookItemStatus.AVAILABLE);
             }
 
-            bookItem.setDueDate(new LoanDueDate(dueDate.value()));
+            bookItem.setDueDate(dueDate);
             bookItemService.save(bookItem);
         });
     }

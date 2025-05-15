@@ -1,8 +1,8 @@
 package com.example.libraryapp.infrastructure.persistence.inmemory;
 
 import com.example.libraryapp.domain.bookitem.model.BookItemId;
-import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 import com.example.libraryapp.domain.bookitemloan.model.BookItemLoan;
+import com.example.libraryapp.domain.bookitemloan.model.BookItemLoanListPreviewProjection;
 import com.example.libraryapp.domain.bookitemloan.model.LoanId;
 import com.example.libraryapp.domain.bookitemloan.model.LoanStatus;
 import com.example.libraryapp.domain.bookitemloan.ports.BookItemLoanRepositoryPort;

@@ -1,10 +1,8 @@
 package com.example.paymentservice.core;
 
-import com.example.paymentservice.domain.dto.PaymentDto;
-import com.example.paymentservice.domain.dto.PaymentProcessRequestDto;
 import com.example.paymentservice.domain.model.Payment;
-import com.example.paymentservice.domain.model.values.PaymentId;
 import com.example.paymentservice.domain.model.PaymentProcessRequest;
+import com.example.paymentservice.domain.model.values.PaymentId;
 import com.example.paymentservice.domain.model.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,19 +14,15 @@ public class PaymentFacade {
     private final GetPaymentUseCase getPaymentUseCase;
     private final GetAllUserPaymentsUseCase getAllUserPaymentsUseCase;
 
-    public Page<PaymentDto> getAllByUserId(UserId userId, Pageable pageable) {
-        return getAllUserPaymentsUseCase.execute(userId, pageable)
-                .map(PaymentMapper::toDto);
+    public Page<Payment> getAllByUserId(UserId userId, Pageable pageable) {
+        return getAllUserPaymentsUseCase.execute(userId, pageable);
     }
 
-    public PaymentDto getPayment(PaymentId id) {
-        Payment payment = getPaymentUseCase.execute(id);
-        return PaymentMapper.toDto(payment);
+    public Payment getPayment(PaymentId id) {
+        return getPaymentUseCase.execute(id);
     }
 
-    public PaymentDto processPayment(PaymentProcessRequestDto requestDto) {
-        PaymentProcessRequest paymentRequest = PaymentMapper.toModel(requestDto);
-        Payment payment = processPaymentUseCase.execute(paymentRequest);
-        return PaymentMapper.toDto(payment);
+    public Payment processPayment(PaymentProcessRequest paymentRequest) {
+        return processPaymentUseCase.execute(paymentRequest);
     }
 }

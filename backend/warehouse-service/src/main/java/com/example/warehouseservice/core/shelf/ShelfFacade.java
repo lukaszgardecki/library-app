@@ -1,8 +1,6 @@
 package com.example.warehouseservice.core.shelf;
 
 import com.example.warehouseservice.domain.model.rack.values.RackId;
-import com.example.warehouseservice.domain.dto.ShelfDto;
-import com.example.warehouseservice.domain.dto.ShelfToSaveDto;
 import com.example.warehouseservice.domain.model.shelf.Shelf;
 import com.example.warehouseservice.domain.model.shelf.values.ShelfId;
 import jakarta.annotation.Nullable;
@@ -20,41 +18,32 @@ public class ShelfFacade {
     private final UpdateShelfUseCase updateShelfUseCase;
     private final DeleteShelfUseCase deleteShelfUseCase;
 
-    public Page<ShelfDto> getAllShelvesPaged(
+    public Page<Shelf> getAllShelvesPaged(
             @Nullable RackId rackId,
             @Nullable String query,
             Pageable pageable
     ) {
-        return getAllShelvesUseCase.execute(rackId, query, pageable)
-                .map(ShelfMapper::toDto);
+        return getAllShelvesUseCase.execute(rackId, query, pageable);
     }
 
-    public List<ShelfDto> getAllShelvesList(
+    public List<Shelf> getAllShelvesList(
             @Nullable RackId rackId,
             @Nullable String query
     ) {
-        return getAllShelvesUseCase.execute(rackId, query)
-                .stream()
-                .map(ShelfMapper::toDto)
-                .toList();
+        return getAllShelvesUseCase.execute(rackId, query);
     }
 
-    public ShelfDto getShelfById(ShelfId id) {
-        Shelf shelf = getShelfUseCase.execute(id);
-        return ShelfMapper.toDto(shelf);
+    public Shelf getShelfById(ShelfId id) {
+        return getShelfUseCase.execute(id);
     }
 
 
-    public ShelfDto addShelf(ShelfToSaveDto dto) {
-        Shelf shelf = ShelfMapper.toModel(dto);
-        Shelf savedShelf = addShelfUseCase.execute(shelf);
-        return ShelfMapper.toDto(savedShelf);
+    public Shelf addShelf(Shelf shelf) {
+        return addShelfUseCase.execute(shelf);
     }
 
-    public ShelfDto updateShelf(ShelfId shelfId, ShelfToSaveDto dto) {
-        Shelf shelf = ShelfMapper.toModel(dto);
-        Shelf updatedShelf = updateShelfUseCase.execute(shelfId, shelf);
-        return ShelfMapper.toDto(updatedShelf);
+    public Shelf updateShelf(ShelfId shelfId, Shelf shelf) {
+        return updateShelfUseCase.execute(shelfId, shelf);
     }
 
     public void deleteShelf(ShelfId id) {

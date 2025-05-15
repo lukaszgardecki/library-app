@@ -20,6 +20,10 @@ class PersonService {
         return personRepository.findAllByQuery(query);
     }
 
+    Person save(Person person) {
+        return personRepository.save(person);
+    }
+
     long countByAgeBetween(int min, int max) {
         return personRepository.countByAgeBetween(min, max);
     }

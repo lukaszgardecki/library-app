@@ -1,9 +1,7 @@
 package com.example.authservice.core.authdetails;
 
-import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
 import com.example.authservice.domain.model.authdetails.AuthDetails;
+import com.example.authservice.domain.model.authdetails.AuthDetailsUpdate;
 import com.example.authservice.domain.model.authdetails.values.Email;
 import com.example.authservice.domain.model.authdetails.values.Password;
 import com.example.authservice.domain.model.authdetails.values.UserId;
@@ -20,21 +18,19 @@ public class AuthDetailsFacade {
         createNewAuthDetailsUseCase.execute(email, password, userId);
     }
 
-    public AuthDetailsDto getAuthDetailsByEmail(Email username) {
-        AuthDetails authDetails = getAuthDetailsUseCase.execute(username);
-        return AuthDetailsMapper.toDto(authDetails);
+    public AuthDetails getAuthDetailsByEmail(Email username) {
+        return getAuthDetailsUseCase.execute(username);
     }
 
-    public AuthDetailsDto getAuthDetailsByUserId(UserId userId) {
-        AuthDetails authDetails = getAuthDetailsUseCase.execute(userId);
-        return AuthDetailsMapper.toDto(authDetails);
+    public AuthDetails getAuthDetailsByUserId(UserId userId) {
+        return getAuthDetailsUseCase.execute(userId);
     }
 
-    public void updateAuthDetails(UserId userId, CredentialsUpdateDto fieldsToUpdate) {
-        updateAuthDetailsUseCase.execute(userId, fieldsToUpdate);
+    public void updateUserCredentials(UserId userId, Email email, Password password) {
+        updateAuthDetailsUseCase.execute(userId, email, password);
     }
 
-    public void updateAuthDetails(UserId userId, AuthDetailsUpdateDto fieldsToUpdate) {
+    public void updateAuthDetails(UserId userId, AuthDetailsUpdate fieldsToUpdate) {
         updateAuthDetailsUseCase.execute(userId, fieldsToUpdate);
     }
 

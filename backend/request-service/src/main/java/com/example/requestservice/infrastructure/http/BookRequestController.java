@@ -1,14 +1,16 @@
 package com.example.requestservice.infrastructure.http;
 
 import com.example.requestservice.core.BookItemRequestFacade;
-import com.example.requestservice.domain.dto.BookItemRequestDto;
 import com.example.requestservice.domain.model.values.BookItemId;
 import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import com.example.requestservice.domain.model.values.RequestId;
 import com.example.requestservice.domain.model.values.UserId;
+import com.example.requestservice.infrastructure.http.dto.BookItemRequestDto;
+import com.example.requestservice.infrastructure.http.dto.WarehouseBookItemRequestListViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 class BookRequestController {
     private final BookItemRequestFacade bookItemRequestFacade;
+    private final BookItemRequestMapper mapper;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
@@ -30,13 +33,24 @@ class BookRequestController {
             @RequestParam(required = false) BookItemRequestStatus status,
             Pageable pageable
     ) {
-        Page<BookItemRequestDto> page = bookItemRequestFacade.getPageOfBookRequestsByStatus(status, pageable);
+        Page<BookItemRequestDto> page = bookItemRequestFacade.getPageOfBookRequestsByStatus(status, pageable)
+                .map(mapper::toDto);
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/warehouse/list")
+    ResponseEntity<Page<WarehouseBookItemRequestListViewDto>> getBookItemRequestListView(
+            @RequestParam(required = false) BookItemRequestStatus status, Pageable pageable
+    ) {
+        Page<WarehouseBookItemRequestListViewDto> page = bookItemRequestFacade
+                .getPageOfBookRequestsByStatus(status, pageable)
+                .map(mapper::toWarehouseDto);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<BookItemRequestDto> getBookItemRequestById(@PathVariable Long id) {
-        BookItemRequestDto request = bookItemRequestFacade.getBookItemRequestById(new RequestId(id));
+        BookItemRequestDto request = mapper.toDto(bookItemRequestFacade.getBookItemRequestById(new RequestId(id)));
         return ResponseEntity.ok(request);
     }
 
@@ -51,11 +65,12 @@ class BookRequestController {
     ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(
             @RequestParam("user_id") Long userId
     ) {
-        List<BookItemRequestDto> list = bookItemRequestFacade.getUserCurrentBookItemRequests(new UserId(userId));
+        List<BookItemRequestDto> list = bookItemRequestFacade.getUserCurrentBookItemRequests(new UserId(userId)).stream()
+                .map(mapper::toDto).toList();
         return ResponseEntity.ok(list);
     }
 
-    @PatchMapping("/{requestId}/{status}")
+    @PutMapping("/{requestId}/{status}")
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
     ResponseEntity<Void> changeBookItemRequestStatus(
             @PathVariable Long requestId,
@@ -65,7 +80,7 @@ class BookRequestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{requestId}")
+    @PutMapping ("/{requestId}/ready")
     @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE')")
     ResponseEntity<Void> changeBookRequestStatusToReady(@PathVariable Long requestId) {
         bookItemRequestFacade.changeBookRequestStatusToReady(new RequestId(requestId));
@@ -78,7 +93,7 @@ class BookRequestController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        BookItemRequestDto savedBookRequest = bookItemRequestFacade.requestBookItem(new BookItemId(bookItemId), new UserId(userId));
+        BookItemRequestDto savedBookRequest = mapper.toDto(bookItemRequestFacade.requestBookItem(new BookItemId(bookItemId), new UserId(userId)));
         URI savedLoanURI = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedBookRequest.getId())

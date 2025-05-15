@@ -1,7 +1,5 @@
 package com.example.catalogservice.core.book;
 
-import com.example.catalogservice.domain.dto.BookDto;
-import com.example.catalogservice.domain.dto.BookToSaveDto;
 import com.example.catalogservice.domain.model.book.Book;
 import com.example.catalogservice.domain.model.book.values.BookId;
 import lombok.RequiredArgsConstructor;
@@ -16,25 +14,20 @@ public class BookFacade {
     private final UpdateBookUseCase updateBookUseCase;
     private final DeleteBookUseCase deleteBookUseCase;
 
-    public List<BookDto> getBooksByIds(List<BookId> ids) {
-        return getAllBooksUseCase.execute(ids).stream()
-                .map(BookMapper::toDto)
-                .toList();
+    public List<Book> getBooksByIds(List<BookId> ids) {
+        return getAllBooksUseCase.execute(ids);
     }
 
-    public BookDto getBook(BookId id) {
-        Book book = getBookUseCase.execute(id);
-        return BookMapper.toDto(book);
+    public Book getBook(BookId id) {
+        return getBookUseCase.execute(id);
     }
 
-    public BookDto addBook(BookToSaveDto bookToSave) {
-        Book addedBook = addBookUseCase.execute(BookMapper.toModel(bookToSave));
-        return BookMapper.toDto(addedBook);
+    public Book addBook(Book bookToSave) {
+        return addBookUseCase.execute(bookToSave);
     }
 
-    public BookDto updateBook(BookId id, BookToSaveDto bookToSave) {
-        Book updatedBook = updateBookUseCase.execute(id, BookMapper.toModel(bookToSave));
-        return BookMapper.toDto(updatedBook);
+    public Book updateBook(BookId id, Book bookToSave) {
+        return updateBookUseCase.execute(id, bookToSave);
     }
 
     public void deleteBook(BookId id) {

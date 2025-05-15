@@ -1,6 +1,6 @@
 package com.example.statisticsservice.core;
 
-import com.example.statisticsservice.domain.model.city.City;
+import com.example.statisticsservice.domain.model.city.CityStats;
 import com.example.statisticsservice.domain.ports.out.CityRepositoryPort;
 import lombok.RequiredArgsConstructor;
 
@@ -14,8 +14,8 @@ class GetTopCitiesUseCase {
     Map<String, Integer> execute(int limit) {
         return citiesRepository.findAllOrderByUsersDesc(limit).stream()
                 .collect(Collectors.toMap(
-                        City::getName,
-                        City::getUsers
+                        CityStats::getName,
+                        CityStats::getUsers
                 ));
     }
 }

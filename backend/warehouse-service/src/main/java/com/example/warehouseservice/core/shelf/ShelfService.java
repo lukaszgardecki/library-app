@@ -1,9 +1,9 @@
 package com.example.warehouseservice.core.shelf;
 
-import com.example.warehouseservice.domain.i18n.MessageKey;
-import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.exception.ShelfException;
 import com.example.warehouseservice.domain.exception.ShelfNotFoundException;
+import com.example.warehouseservice.domain.i18n.MessageKey;
+import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.model.shelf.Shelf;
 import com.example.warehouseservice.domain.model.shelf.values.ShelfId;
 import com.example.warehouseservice.domain.ports.out.CatalogServicePort;

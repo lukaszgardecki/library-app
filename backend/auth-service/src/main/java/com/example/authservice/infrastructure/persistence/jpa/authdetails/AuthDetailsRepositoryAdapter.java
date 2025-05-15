@@ -1,6 +1,6 @@
 package com.example.authservice.infrastructure.persistence.jpa.authdetails;
 
-import com.example.authservice.domain.model.authdetails.*;
+import com.example.authservice.domain.model.authdetails.AuthDetails;
 import com.example.authservice.domain.model.authdetails.values.AuthDetailsId;
 import com.example.authservice.domain.model.authdetails.values.Email;
 import com.example.authservice.domain.model.authdetails.values.Password;

@@ -1,12 +1,11 @@
 package com.example.loanservice.infrastructure.http;
 
 import com.example.loanservice.core.BookItemLoanFacade;
-import com.example.loanservice.domain.dto.BookItemLoanDto;
-import com.example.loanservice.domain.dto.BookItemLoanListPreviewDto;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.LoanId;
 import com.example.loanservice.domain.model.values.LoanStatus;
 import com.example.loanservice.domain.model.values.UserId;
+import com.example.loanservice.infrastructure.http.dto.BookItemLoanDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,9 +31,9 @@ class LoanController {
             @RequestParam(required = false) Boolean renewable,
             Pageable pageable
     ) {
-        Page<BookItemLoanDto> page = bookItemLoanFacade.getPageOfBookLoansByParams(
-                new UserId(userId), status, renewable, pageable
-        );
+        Page<BookItemLoanDto> page = bookItemLoanFacade
+                .getPageOfBookLoansByParams(new UserId(userId), status, renewable, pageable)
+                .map(BookItemLoanMapper::toDto);
         return ResponseEntity.ok(page);
     }
 
@@ -43,7 +42,9 @@ class LoanController {
     ResponseEntity<List<BookItemLoanDto>> getAllLoansByUserId(
             @RequestParam("user_id") Long userId
     ) {
-        List<BookItemLoanDto> list = bookItemLoanFacade.getAllLoansByUserId(new UserId(userId));
+        List<BookItemLoanDto> list = bookItemLoanFacade.getAllLoansByUserId(new UserId(userId)).stream()
+                .map(BookItemLoanMapper::toDto)
+                .toList();
         return ResponseEntity.ok(list);
     }
 
@@ -52,29 +53,16 @@ class LoanController {
     ResponseEntity<List<BookItemLoanDto>> getCurrentLoansByUserId(
             @RequestParam("user_id") Long userId
     ) {
-        List<BookItemLoanDto> list = bookItemLoanFacade.getCurrentLoansByUserId(new UserId(userId));
+        List<BookItemLoanDto> list = bookItemLoanFacade.getCurrentLoansByUserId(new UserId(userId)).stream()
+                .map(BookItemLoanMapper::toDto)
+                .toList();
         return ResponseEntity.ok(list);
-    }
-
-    @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
-    ResponseEntity<Page<BookItemLoanListPreviewDto>> getLoanListPreviews(
-            @RequestParam(name = "user_id", required = false) Long userId,
-            @RequestParam(required = false) LoanStatus status,
-            @RequestParam(required = false) Boolean renewable,
-            @RequestParam(name = "q", required = false) String query,
-            Pageable pageable
-    ) {
-        Page<BookItemLoanListPreviewDto> page = bookItemLoanFacade.getPageOfBookLoanListPreviewsByParams(
-                new UserId(userId), query, status, renewable, pageable
-        );
-        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or isAuthenticated()")
     ResponseEntity<BookItemLoanDto> getBookLoanById(@PathVariable Long id) {
-        BookItemLoanDto loan = bookItemLoanFacade.getBookLoan(new LoanId(id));
+        BookItemLoanDto loan = BookItemLoanMapper.toDto(bookItemLoanFacade.getBookLoan(new LoanId(id)));
         return ResponseEntity.ok(loan);
     }
 
@@ -84,7 +72,10 @@ class LoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        BookItemLoanDto savedBookItemLoan = bookItemLoanFacade.borrowBookItem(new BookItemId(bookItemId), new UserId(userId));
+        BookItemLoanDto savedBookItemLoan =
+                BookItemLoanMapper.toDto(
+                        bookItemLoanFacade.borrowBookItem(new BookItemId(bookItemId), new UserId(userId))
+                );
         URI savedCheckoutUri = createURI(savedBookItemLoan.id());
         return ResponseEntity.created(savedCheckoutUri).body(savedBookItemLoan);
     }
@@ -95,7 +86,9 @@ class LoanController {
             @RequestParam("bi_id") Long bookItemId,
             @RequestParam("user_id") Long userId
     ) {
-        BookItemLoanDto renewedLoan = bookItemLoanFacade.renewBookItemLoan(new BookItemId(bookItemId), new UserId(userId));
+        BookItemLoanDto renewedLoan = BookItemLoanMapper.toDto(
+                bookItemLoanFacade.renewBookItemLoan(new BookItemId(bookItemId), new UserId(userId))
+        );
         return ResponseEntity.ok(renewedLoan);
     }
 

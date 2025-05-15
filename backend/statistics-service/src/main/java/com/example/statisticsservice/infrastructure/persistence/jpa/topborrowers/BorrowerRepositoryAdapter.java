@@ -1,5 +1,6 @@
 package com.example.statisticsservice.infrastructure.persistence.jpa.topborrowers;
 
+import com.example.statisticsservice.domain.integration.BirthDate;
 import com.example.statisticsservice.domain.integration.LoanCreationDate;
 import com.example.statisticsservice.domain.model.borrower.Borrower;
 import com.example.statisticsservice.domain.model.borrower.values.*;
@@ -63,7 +64,7 @@ class BorrowerRepositoryAdapter implements BorrowerRepositoryPort {
                 model.getUserId().value(),
                 model.getFirstName().value(),
                 model.getLastName().value(),
-                model.getBirthday(),
+                model.getBirthday().value(),
                 model.getLoans().value(),
                 model.getLastLoanDate() != null ? model.getLastLoanDate() : null
         );
@@ -75,7 +76,7 @@ class BorrowerRepositoryAdapter implements BorrowerRepositoryPort {
                 new UserId(entity.getUserId()),
                 new PersonFirstName(entity.getFirstName()),
                 new PersonLastName(entity.getLastName()),
-                entity.getBirthday(),
+                new BirthDate(entity.getBirthday()),
                 new LoansCount(entity.getLoansCount()),
                 entity.getLastLoanDate()
         );

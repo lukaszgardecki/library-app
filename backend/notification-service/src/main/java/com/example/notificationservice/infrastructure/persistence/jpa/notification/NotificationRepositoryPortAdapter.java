@@ -1,6 +1,6 @@
 package com.example.notificationservice.infrastructure.persistence.jpa.notification;
 
-import com.example.notificationservice.domain.model.*;
+import com.example.notificationservice.domain.model.Notification;
 import com.example.notificationservice.domain.model.values.*;
 import com.example.notificationservice.domain.ports.out.NotificationRepositoryPort;
 import lombok.RequiredArgsConstructor;

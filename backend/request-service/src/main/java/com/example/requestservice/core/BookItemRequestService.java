@@ -1,9 +1,9 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.exceptions.BookItemRequestException;
 import com.example.requestservice.domain.exceptions.BookItemRequestNotFoundException;
-import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.i18n.MessageKey;
+import com.example.requestservice.domain.model.BookItemRequest;
 import com.example.requestservice.domain.model.values.*;
 import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;

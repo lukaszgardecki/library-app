@@ -1,8 +1,9 @@
 package com.example.userservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.userservice.domain.integration.request.dto.BookItemRequestDto;
+import com.example.userservice.domain.integration.request.BookItemRequest;
 import com.example.userservice.domain.model.user.values.UserId;
 import com.example.userservice.domain.ports.out.BookItemRequestServicePort;
+import com.example.userservice.infrastructure.integration.bookitemrequestservice.dto.BookItemRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -21,10 +22,10 @@ class BookItemRequestServiceAdapter implements BookItemRequestServicePort {
     }
 
     @Override
-    public List<BookItemRequestDto> getUserCurrentBookItemRequests(UserId id) {
+    public List<BookItemRequest> getUserCurrentBookItemRequests(UserId id) {
         ResponseEntity<List<BookItemRequestDto>> response = client.getUserCurrentBookItemRequests(id.value());
         if (response.getStatusCode().is2xxSuccessful()) {
-            return response.getBody();
+            return response.getBody().stream().map(BookItemRequestMapper::toModel).toList() ;
         }
         return null;
     }

@@ -1,6 +1,6 @@
 package com.example.requestservice.domain.ports.out;
 
-import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.BookItemRequest;
 import com.example.requestservice.domain.model.values.BookItemId;
 import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import com.example.requestservice.domain.model.values.RequestId;

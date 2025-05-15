@@ -1,14 +1,15 @@
 package com.example.statisticsservice.domain.ports.out;
 
-import com.example.statisticsservice.domain.model.city.City;
+import com.example.statisticsservice.domain.integration.City;
+import com.example.statisticsservice.domain.model.city.CityStats;
 
 import java.util.List;
 
 public interface CityRepositoryPort {
 
-    List<City> findAllOrderByUsersDesc(int limit);
+    List<CityStats> findAllOrderByUsersDesc(int limit);
 
-    void incrementUsersCount(String city);
+    void incrementUsersCount(City city);
 
-    void decrementUsersCount(String city);
+    void decrementUsersCount(City city);
 }

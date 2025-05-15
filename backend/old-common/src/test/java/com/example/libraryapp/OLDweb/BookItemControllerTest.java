@@ -1,7 +1,5 @@
 package com.example.libraryapp.OLDweb;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class BookItemControllerTest extends BaseTest {
 
 //    @Test

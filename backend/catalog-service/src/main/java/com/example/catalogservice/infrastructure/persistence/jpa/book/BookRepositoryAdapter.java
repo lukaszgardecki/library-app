@@ -1,8 +1,8 @@
 package com.example.catalogservice.infrastructure.persistence.jpa.book;
 
+import com.example.catalogservice.domain.model.book.Book;
 import com.example.catalogservice.domain.model.book.values.*;
 import com.example.catalogservice.domain.ports.out.BookRepositoryPort;
-import com.example.catalogservice.domain.model.book.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

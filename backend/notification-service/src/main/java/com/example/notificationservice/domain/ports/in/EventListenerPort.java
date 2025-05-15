@@ -1,28 +1,29 @@
 package com.example.notificationservice.domain.ports.in;
 
-import com.example.notificationservice.domain.event.incoming.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public interface EventListenerPort {
 
-    void handleUserCreatedEvent(UserCreatedEvent event);
+    void handleUserCreatedEvent(Long userId, String firstname);
 
-    void handleRequestCreatedEvent(RequestCreatedEvent event);
+    void handleRequestCreatedEvent(Long userId, String bookTitle);
 
-    void handleRequestReadyEvent(RequestReadyEvent event);
+    void handleRequestReadyEvent(Long userId, String bookTitle);
 
-    void handleRequestCanceledEvent(RequestCanceledEvent event);
+    void handleRequestCanceledEvent(Long userId, String bookTitle, Long bookItemId);
 
-    void handleReservationCreatedEvent(ReservationCreatedEvent event);
+    void handleReservationCreatedEvent(Long userId, String bookTitle, int queue, LocalDate loanDueDate);
 
-    void handleRequestAvailableToLoanEvent(RequestAvailableToLoanEvent event);
+    void handleRequestAvailableToLoanEvent(Long userId, String bookTitle);
 
-    void handleLoanCreatedEvent(LoanCreatedEvent event);
+    void handleLoanCreatedEvent(Long userId, String bookTitle);
 
-    void handleLoanProlongedEvent(LoanProlongedEvent event);
+    void handleLoanProlongedEvent(Long userId, String bookTitle, LocalDate loanDueDate);
 
-    void handleLoanProlongationNotAllowedEvent(LoanProlongationNotAllowed event);
+    void handleLoanProlongationNotAllowedEvent(Long userId, String bookTitle);
 
-    void handleBookItemReturnedEvent(BookItemReturnedEvent event);
+    void handleBookItemReturnedEvent(Long userId, String bookTitle);
 
-    void handleBookItemLostEvent(BookItemLostEvent event);
+    void handleBookItemLostEvent(Long userId, String bookTitle, BigDecimal charge);
 }

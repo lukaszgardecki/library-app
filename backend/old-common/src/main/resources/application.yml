@@ -7,12 +7,7 @@ spring:
     hibernate:
       ddl-auto: update
   profiles:
-    default: prod
+    active: prod
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
-
-
-app:
-  version: '@project.version@'

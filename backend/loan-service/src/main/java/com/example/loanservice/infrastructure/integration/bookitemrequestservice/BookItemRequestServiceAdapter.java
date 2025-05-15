@@ -1,7 +1,7 @@
 package com.example.loanservice.infrastructure.integration.bookitemrequestservice;
 
+import com.example.loanservice.domain.integration.requestservice.RequestId;
 import com.example.loanservice.domain.model.values.BookItemId;
-import com.example.loanservice.domain.integration.request.RequestId;
 import com.example.loanservice.domain.model.values.UserId;
 import com.example.loanservice.domain.ports.out.BookItemRequestServicePort;
 import lombok.RequiredArgsConstructor;

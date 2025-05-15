@@ -1,7 +1,7 @@
 package com.example.warehouseservice.infrastructure.persistence.jpa.shelf;
 
 import com.example.warehouseservice.domain.model.rack.values.RackId;
-import com.example.warehouseservice.domain.model.shelf.*;
+import com.example.warehouseservice.domain.model.shelf.Shelf;
 import com.example.warehouseservice.domain.model.shelf.values.*;
 import com.example.warehouseservice.domain.ports.out.ShelfRepositoryPort;
 import lombok.RequiredArgsConstructor;

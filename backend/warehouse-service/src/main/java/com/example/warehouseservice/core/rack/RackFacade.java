@@ -1,7 +1,5 @@
 package com.example.warehouseservice.core.rack;
 
-import com.example.warehouseservice.domain.dto.RackDto;
-import com.example.warehouseservice.domain.dto.RackToSaveDto;
 import com.example.warehouseservice.domain.model.rack.Rack;
 import com.example.warehouseservice.domain.model.rack.values.RackId;
 import jakarta.annotation.Nullable;
@@ -19,32 +17,24 @@ public class RackFacade {
     private final UpdateRackUseCase updateRackUseCase;
     private final DeleteRackUseCase deleteRackUseCase;
 
-    public Page<RackDto> getAllRacksPaged(@Nullable String query, Pageable pageable) {
-        return getAllRacksUseCase.execute(query, pageable)
-                .map(RackMapper::toDto);
+    public Page<Rack> getAllRacksPaged(@Nullable String query, Pageable pageable) {
+        return getAllRacksUseCase.execute(query, pageable);
     }
 
-    public List<RackDto> getAllRacksList(String query) {
-        return getAllRacksUseCase.execute(query).stream()
-                .map(RackMapper::toDto)
-                .toList();
+    public List<Rack> getAllRacksList(String query) {
+        return getAllRacksUseCase.execute(query);
     }
 
-    public RackDto getRackById(RackId id) {
-        Rack rack = getRackUseCase.execute(id);
-        return RackMapper.toDto(rack);
+    public Rack getRackById(RackId id) {
+        return getRackUseCase.execute(id);
     }
 
-    public RackDto addRack(RackToSaveDto dto) {
-        Rack rack = RackMapper.toModel(dto);
-        Rack savedRack = addRackUseCase.execute(rack);
-        return RackMapper.toDto(savedRack);
+    public Rack addRack(Rack rack) {
+        return addRackUseCase.execute(rack);
     }
 
-    public RackDto updateRack(RackId rackId, RackToSaveDto dto) {
-        Rack rack = RackMapper.toModel(dto);
-        Rack updatedRack = updateRackUseCase.execute(rackId, rack);
-        return RackMapper.toDto(updatedRack);
+    public Rack updateRack(RackId rackId, Rack rack) {
+        return updateRackUseCase.execute(rackId, rack);
     }
 
     public void deleteRack(RackId id) {

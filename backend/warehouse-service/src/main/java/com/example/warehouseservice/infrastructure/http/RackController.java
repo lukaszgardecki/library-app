@@ -1,9 +1,9 @@
 package com.example.warehouseservice.infrastructure.http;
 
 import com.example.warehouseservice.core.rack.RackFacade;
-import com.example.warehouseservice.domain.dto.RackDto;
-import com.example.warehouseservice.domain.dto.RackToSaveDto;
 import com.example.warehouseservice.domain.model.rack.values.RackId;
+import com.example.warehouseservice.infrastructure.http.dto.RackDto;
+import com.example.warehouseservice.infrastructure.http.dto.RackToSaveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,29 +23,29 @@ class RackController {
     private final RackFacade rackFacade;
 
     @GetMapping
-    public ResponseEntity<?> getAllRacks(
+    ResponseEntity<?> getAllRacks(
             @RequestParam(name = "q", required = false) String query,
             @RequestParam(name = "paged", required = false, defaultValue = "true") boolean paged,
             Pageable pageable
     ) {
         if (paged) {
-            Page<RackDto> page = rackFacade.getAllRacksPaged(query, pageable);
+            Page<RackDto> page = rackFacade.getAllRacksPaged(query, pageable).map(RackMapper::toDto);
             return ResponseEntity.ok(page);
         } else {
-            List<RackDto> list = rackFacade.getAllRacksList(query);
+            List<RackDto> list = rackFacade.getAllRacksList(query).stream().map(RackMapper::toDto).toList();
             return ResponseEntity.ok(list);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RackDto> getRackById(@PathVariable Long id) {
-        RackDto rackDto = rackFacade.getRackById(new RackId(id));
+    ResponseEntity<RackDto> getRackById(@PathVariable Long id) {
+        RackDto rackDto = RackMapper.toDto(rackFacade.getRackById(new RackId(id)));
         return ResponseEntity.ok(rackDto);
     }
 
     @PostMapping
-    public ResponseEntity<RackDto> addRack(@RequestBody RackToSaveDto rackToSave) {
-        RackDto savedRack = rackFacade.addRack(rackToSave);
+    ResponseEntity<RackDto> addRack(@RequestBody RackToSaveDto rackToSave) {
+        RackDto savedRack = RackMapper.toDto(rackFacade.addRack(RackMapper.toModel(rackToSave)));
 
         URI savedRackUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -55,13 +55,13 @@ class RackController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<RackDto> updateRack(@RequestBody RackToSaveDto fields, @PathVariable Long id) {
-        RackDto updatedRack = rackFacade.updateRack(new RackId(id), fields);
+    ResponseEntity<RackDto> updateRack(@RequestBody RackToSaveDto fields, @PathVariable Long id) {
+        RackDto updatedRack = RackMapper.toDto(rackFacade.updateRack(new RackId(id), RackMapper.toModel(fields)));
         return ResponseEntity.ok(updatedRack);
     }
 
     @DeleteMapping("/racks/{id}")
-    public ResponseEntity<Void> deleteRackById(@PathVariable Long id) {
+    ResponseEntity<Void> deleteRackById(@PathVariable Long id) {
         rackFacade.deleteRack(new RackId(id));
         return ResponseEntity.noContent().build();
     }

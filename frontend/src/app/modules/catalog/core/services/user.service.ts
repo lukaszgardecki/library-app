@@ -23,7 +23,7 @@ export class UserService {
     this.baseURL = `${baseURL}/users`;
     this.fakeUserURL = `${baseURL}/fu`;
     this.registerURL = `${baseURL}/register`;
-    this.baseAdminURL = `${baseURL}/admin`;
+    this.baseAdminURL = `${baseURL}/stats`;
   }
 
   getUsersPage(query: string = "", pageable: Pageable = new Pageable()): Observable<Page<UserListPreviewAdmin>> {
@@ -32,7 +32,7 @@ export class UserService {
   }
 
   getUsersStatsAdmin(): Observable<Statistics> {
-    return this.http.get<Statistics>(`${this.baseAdminURL}/stats`, { withCredentials: true }).pipe(
+    return this.http.get<Statistics>(`${this.baseAdminURL}`, { withCredentials: true }).pipe(
       map(stats => {
         if (stats.favGenres) {
           stats.favGenres = new Map<string, number>(Object.entries(stats.favGenres));

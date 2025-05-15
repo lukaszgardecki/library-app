@@ -1,5 +1,6 @@
 package com.example.statisticsservice.domain.model.borrower;
 
+import com.example.statisticsservice.domain.integration.BirthDate;
 import com.example.statisticsservice.domain.model.borrower.values.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class Borrower {
     private UserId userId;
     private PersonFirstName firstName;
     private PersonLastName lastName;
-    private LocalDate birthday;
+    private BirthDate birthday;
     private LoansCount loans;
     private LocalDate lastLoanDate;
 }

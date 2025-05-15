@@ -1,21 +1,19 @@
 package com.example.userservice.infrastructure.integration.authservice;
 
-import com.example.userservice.domain.dto.user.UserAuthDto;
 import com.example.userservice.domain.model.user.values.UserId;
-import com.example.userservice.domain.ports.out.AuthenticationServicePort;
+import com.example.userservice.infrastructure.integration.authservice.dto.AuthDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class AuthServiceAdapter implements AuthenticationServicePort {
+public class AuthServiceAdapter {
     private final AuthServiceFeignClient client;
 
 
-    @Override
-    public UserAuthDto getUserAuthByUserId(UserId userId) {
-        ResponseEntity<UserAuthDto> response = client.getUserAuthByUserId(userId.value());
+    public AuthDetailsDto getUserAuthByUserId(UserId userId) {
+        ResponseEntity<AuthDetailsDto> response = client.getAuthDetailsByUserId(userId.value());
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }

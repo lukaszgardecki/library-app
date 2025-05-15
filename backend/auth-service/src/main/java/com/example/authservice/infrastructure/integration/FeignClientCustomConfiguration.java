@@ -1,7 +1,7 @@
 package com.example.authservice.infrastructure.integration;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
+import com.example.authservice.domain.model.authdetails.AuthDetails;
 import com.example.authservice.domain.model.authdetails.values.UserId;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -45,9 +45,9 @@ public class FeignClientCustomConfiguration {
     }
 
     private void applyUserSpecificHeaders(RequestTemplate template, Long userId) {
-        AuthDetailsDto authDetails = authDetailsFacade.getAuthDetailsByUserId(new UserId(userId));
+        AuthDetails authDetails = authDetailsFacade.getAuthDetailsByUserId(new UserId(userId));
         template.header("X-User-Id-Encoded", encode(String.valueOf(userId)));
-        template.header("X-User-Role-Encoded", encode(authDetails.role().name()));
+        template.header("X-User-Role-Encoded", encode(authDetails.getRole().name()));
     }
 
     private void applyDefaultAuthenticationHeaders(RequestTemplate template) {

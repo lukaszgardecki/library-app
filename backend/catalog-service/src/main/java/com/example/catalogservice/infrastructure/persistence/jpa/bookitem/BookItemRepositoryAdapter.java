@@ -1,9 +1,9 @@
 package com.example.catalogservice.infrastructure.persistence.jpa.bookitem;
 
 import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.model.bookitem.BookItem;
 import com.example.catalogservice.domain.model.bookitem.values.*;
 import com.example.catalogservice.domain.ports.out.BookItemRepositoryPort;
-import com.example.catalogservice.domain.model.bookitem.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +65,7 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .barcode(model.getBarcode() != null && model.getBarcode().value() != null ? model.getBarcode().value() : null)
                 .isReferenceOnly(model.getIsReferenceOnly() != null && model.getIsReferenceOnly().value() != null ? model.getIsReferenceOnly().value() : null)
                 .borrowed(model.getBorrowedDate() != null && model.getBorrowedDate().value() != null ? model.getBorrowedDate().value().toLocalDate() : null)
-                .dueDate(model.getDueDate() != null && model.getDueDate().value() != null ? model.getDueDate().value().toLocalDate() : null)
+                .dueDate(model.getDueDate() != null && model.getDueDate().value() != null ? model.getDueDate().value() : null)
                 .price(model.getPrice() != null && model.getPrice().value() != null ? model.getPrice().value() : null)
                 .status(model.getStatus())
                 .dateOfPurchase(model.getDateOfPurchase().value())
@@ -81,7 +81,7 @@ class BookItemRepositoryAdapter implements BookItemRepositoryPort {
                 .barcode(new BookItemBarcode(entity.getBarcode()))
                 .isReferenceOnly(new IsReferenceOnly(entity.getIsReferenceOnly()))
                 .borrowedDate(new LoanCreationDate(entity.getBorrowed() != null ? entity.getBorrowed().atStartOfDay() : null ))
-                .dueDate(new LoanDueDate(entity.getDueDate() != null ? entity.getDueDate().atStartOfDay() : null ))
+                .dueDate(new LoanDueDate(entity.getDueDate() != null ? entity.getDueDate() : null ))
                 .price(new Price(entity.getPrice()))
                 .status(entity.getStatus())
                 .dateOfPurchase(new PurchaseDate(entity.getDateOfPurchase()))

@@ -1,8 +1,6 @@
 package com.example.statisticsservice.core;
 
-import com.example.statisticsservice.domain.integration.LoanCreationDate;
-import com.example.statisticsservice.domain.integration.LoanReturnDate;
-import com.example.statisticsservice.domain.integration.Subject;
+import com.example.statisticsservice.domain.integration.*;
 import com.example.statisticsservice.domain.model.borrower.Borrower;
 import com.example.statisticsservice.domain.model.borrower.values.LoansCount;
 import com.example.statisticsservice.domain.model.borrower.values.PersonFirstName;
@@ -24,7 +22,7 @@ class EventListenerService implements EventListenerPort {
 
     @Override
     public void handleUserCreated(
-            UserId userId, PersonFirstName firstName, PersonLastName lastName, LocalDate birthday, String cityName
+            UserId userId, PersonFirstName firstName, PersonLastName lastName, BirthDate birthday, City cityName
     ) {
         Borrower newBorrower = createNewBorrower(userId, firstName, lastName, birthday);
         borrowerRepository.saveNewBorrower(newBorrower);
@@ -46,7 +44,7 @@ class EventListenerService implements EventListenerPort {
         dailyStatsRepository.incrementReturnedLoansCount(returnDate);
     }
 
-    private Borrower createNewBorrower(UserId userId, PersonFirstName firstName, PersonLastName lastName, LocalDate birthday) {
+    private Borrower createNewBorrower(UserId userId, PersonFirstName firstName, PersonLastName lastName, BirthDate birthday) {
         return Borrower.builder()
                 .userId(userId)
                 .firstName(firstName)

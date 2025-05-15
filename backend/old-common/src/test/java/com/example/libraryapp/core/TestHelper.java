@@ -1,11 +1,11 @@
 package com.example.libraryapp.core;
 
-import com.example.libraryapp.domain.user.model.AccountStatus;
-import com.example.libraryapp.domain.user.dto.RegisterUserDto;
-import com.example.libraryapp.domain.user.model.Role;
-import com.example.libraryapp.domain.user.dto.UserDto;
-import com.example.libraryapp.domain.user.model.User;
 import com.example.libraryapp.domain.person.model.Gender;
+import com.example.libraryapp.domain.user.dto.RegisterUserDto;
+import com.example.libraryapp.domain.user.dto.UserDto;
+import com.example.libraryapp.domain.user.model.AccountStatus;
+import com.example.libraryapp.domain.user.model.Role;
+import com.example.libraryapp.domain.user.model.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

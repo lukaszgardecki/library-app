@@ -1,9 +1,9 @@
 package com.example.catalogservice.infrastructure.http;
 
 import com.example.catalogservice.core.book.BookFacade;
-import com.example.catalogservice.domain.dto.BookDto;
-import com.example.catalogservice.domain.dto.BookToSaveDto;
 import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.infrastructure.http.dto.BookDto;
+import com.example.catalogservice.infrastructure.http.dto.BookToSaveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +21,14 @@ class BookController {
 
     @GetMapping("/{id}")
     ResponseEntity<BookDto> getBookById(@PathVariable Long id) {
-        BookDto book = bookFacade.getBook(new BookId(id));
+        BookDto book = BookMapper.toDto(bookFacade.getBook(new BookId(id)));
         return ResponseEntity.ok(book);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookDto> addBook(@RequestBody BookToSaveDto book) {
-        BookDto savedBook = bookFacade.addBook(book);
+        BookDto savedBook = BookMapper.toDto(bookFacade.addBook(BookMapper.toModel(book)));
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedBook.getId())
@@ -39,7 +39,7 @@ class BookController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookDto> updateBook(@PathVariable Long id, @RequestBody BookToSaveDto book) {
-        BookDto updatedBook = bookFacade.updateBook(new BookId(id), book);
+        BookDto updatedBook = BookMapper.toDto(bookFacade.updateBook(new BookId(id), BookMapper.toModel(book)));
         return ResponseEntity.ok(updatedBook);
     }
 

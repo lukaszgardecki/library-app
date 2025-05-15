@@ -15,11 +15,11 @@ spring:
         spring:
           json:
             trusted:
-              packages: com.example.loanservice.domain.event.outgoing,com.example.authservice.domain.event.outgoing
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing,com.example.authservice.infrastructure.kafka.event.outgoing
             type:
-              mapping: 'bookItemReturnedEvent:com.example.statisticsservice.domain.event.incoming.BookItemReturnedEvent,
-                        loanCreatedEvent:com.example.statisticsservice.domain.event.incoming.LoanCreatedEvent,
-                        userCreatedEvent:com.example.statisticsservice.domain.event.incoming.UserCreatedEvent'
+              mapping: 'bookItemReturnedEvent:com.example.statisticsservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.statisticsservice.infrastructure.kafka.event.incoming.LoanCreatedEvent,
+                        userCreatedEvent:com.example.statisticsservice.infrastructure.kafka.event.incoming.UserCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

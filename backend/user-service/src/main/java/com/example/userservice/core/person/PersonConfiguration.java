@@ -15,7 +15,8 @@ public class PersonConfiguration {
         return new PersonFacade(
                 new GetAllPersonsByQueryUseCase(personService),
                 new GetPersonUseCase(personRepository),
-                new SavePersonUseCase(personRepository),
+                new SavePersonUseCase(personService),
+                new UpdatePersonUseCase(personService),
                 new DeletePersonUseCase(personRepository),
                 new CountByAgeBetweenUseCase(personService),
                 new GetCitiesByUserCountDescUseCase(personService)

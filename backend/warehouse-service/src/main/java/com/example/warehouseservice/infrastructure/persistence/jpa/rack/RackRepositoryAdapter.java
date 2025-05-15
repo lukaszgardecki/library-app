@@ -1,6 +1,6 @@
 package com.example.warehouseservice.infrastructure.persistence.jpa.rack;
 
-import com.example.warehouseservice.domain.model.rack.*;
+import com.example.warehouseservice.domain.model.rack.Rack;
 import com.example.warehouseservice.domain.model.rack.values.*;
 import com.example.warehouseservice.domain.ports.out.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;

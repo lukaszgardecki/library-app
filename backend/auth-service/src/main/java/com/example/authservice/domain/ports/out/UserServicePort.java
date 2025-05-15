@@ -1,12 +1,11 @@
 package com.example.authservice.domain.ports.out;
 
-import com.example.authservice.domain.dto.PersonDto;
-import com.example.authservice.domain.dto.auth.RegisterUserDto;
 import com.example.authservice.domain.model.authdetails.values.UserId;
+import com.example.authservice.domain.model.person.Person;
 
 public interface UserServicePort {
 
-    UserId register(RegisterUserDto userData);
+    UserId register(Person userData);
 
-    PersonDto getPersonByUser(Long userId);
+    Person getPersonByUser(Long userId);
 }

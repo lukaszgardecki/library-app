@@ -1,6 +1,6 @@
 package com.example.fineservice.infrastructure.persistence.jpa;
 
-import com.example.fineservice.domain.model.*;
+import com.example.fineservice.domain.model.Fine;
 import com.example.fineservice.domain.model.values.*;
 import com.example.fineservice.domain.ports.out.FineRepositoryPort;
 import lombok.RequiredArgsConstructor;

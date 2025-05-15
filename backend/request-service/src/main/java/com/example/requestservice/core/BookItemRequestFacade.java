@@ -1,7 +1,6 @@
 package com.example.requestservice.core;
 
-import com.example.requestservice.domain.dto.BookItemRequestDto;
-import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.BookItemRequest;
 import com.example.requestservice.domain.model.values.BookItemId;
 import com.example.requestservice.domain.model.values.BookItemRequestStatus;
 import com.example.requestservice.domain.model.values.RequestId;
@@ -27,31 +26,26 @@ public class BookItemRequestFacade {
     private final EnsureBookItemNotRequestedUseCase ensureBookItemNotRequestedUseCase;
     private final IsBookItemRequestedUseCase isBookItemRequestedUseCase;
 
-    public BookItemRequestDto getBookItemRequestById(RequestId requestId) {
-        BookItemRequest request = getBookItemRequestUseCase.execute(requestId);
-        return BookItemRequestMapper.toDto(request);
+    public BookItemRequest getBookItemRequestById(RequestId requestId) {
+        return getBookItemRequestUseCase.execute(requestId);
     }
 
-    public BookItemRequestDto getCurrentBookItemRequest(BookItemId bookItemId, UserId userId) {
-        BookItemRequest bookItemRequest = getCurrentBookItemRequestUseCase.execute(bookItemId, userId);
-        return BookItemRequestMapper.toDto(bookItemRequest);
+    public BookItemRequest getCurrentBookItemRequest(BookItemId bookItemId, UserId userId) {
+        return getCurrentBookItemRequestUseCase.execute(bookItemId, userId);
     }
 
-    public List<BookItemRequestDto> getUserCurrentBookItemRequests(UserId userId) {
+    public List<BookItemRequest> getUserCurrentBookItemRequests(UserId userId) {
         return getUserCurrentBookItemRequestsUseCase.execute(userId)
                 .stream()
-                .map(BookItemRequestMapper::toDto)
                 .toList();
     }
 
-    public Page<BookItemRequestDto> getPageOfBookRequestsByStatus(@Nullable BookItemRequestStatus status, Pageable pageable) {
-        return getPageOfBookItemRequestsByStatusUseCase.execute(status, pageable)
-                .map(BookItemRequestMapper::toDto);
+    public Page<BookItemRequest> getPageOfBookRequestsByStatus(@Nullable BookItemRequestStatus status, Pageable pageable) {
+        return getPageOfBookItemRequestsByStatusUseCase.execute(status, pageable);
     }
 
-    public BookItemRequestDto requestBookItem(BookItemId bookItemId, UserId userId) {
-        BookItemRequest bookItemRequest = createBookItemRequestUseCase.execute(bookItemId, userId);
-        return BookItemRequestMapper.toDto(bookItemRequest);
+    public BookItemRequest requestBookItem(BookItemId bookItemId, UserId userId) {
+        return createBookItemRequestUseCase.execute(bookItemId, userId);
     }
 
     public void cancelAllBookItemRequestsByUserId(UserId userId) {

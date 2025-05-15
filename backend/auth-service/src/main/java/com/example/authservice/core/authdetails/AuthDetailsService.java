@@ -1,13 +1,12 @@
 package com.example.authservice.core.authdetails;
 
-import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
-import com.example.authservice.domain.exception.UserAuthNotFoundException;
 import com.example.authservice.domain.exception.EmailAlreadyExistsException;
+import com.example.authservice.domain.exception.UserAuthNotFoundException;
+import com.example.authservice.domain.model.authdetails.AuthDetails;
+import com.example.authservice.domain.model.authdetails.AuthDetailsUpdate;
 import com.example.authservice.domain.model.authdetails.values.*;
-import com.example.authservice.domain.ports.out.PasswordEncoderPort;
 import com.example.authservice.domain.ports.out.AuthDetailsRepositoryPort;
-import com.example.authservice.domain.model.authdetails.*;
+import com.example.authservice.domain.ports.out.PasswordEncoderPort;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,15 +26,15 @@ class AuthDetailsService {
         return userAuthRepository.findByEmail(email).orElseThrow(() -> new UserAuthNotFoundException(email));
     }
 
-    void updateAuthDetails(UserId userId, AuthDetailsUpdateDto fieldsToUpdate) {
+    void updateAuthDetails(UserId userId, AuthDetailsUpdate fieldsToUpdate) {
         AuthDetails authDetails = getAuthDetailsByUserId(userId);
         updateAuthDetailsModel(authDetails, fieldsToUpdate);
         userAuthRepository.save(authDetails);
     }
 
-    void updateUserCredentials(UserId userId, CredentialsUpdateDto fieldsToUpdate) {
+    void updateUserCredentials(UserId userId, Email email, Password password) {
         AuthDetails authDetails = getAuthDetailsByUserId(userId);
-        updateCredentials(authDetails, fieldsToUpdate.username(), fieldsToUpdate.password());
+        updateCredentials(authDetails, email, password);
         userAuthRepository.save(authDetails);
     }
 
@@ -58,20 +57,19 @@ class AuthDetailsService {
         }
     }
 
-    private void updateAuthDetailsModel(AuthDetails authDetails, AuthDetailsUpdateDto fieldsToUpdate) {
-        updateCredentials(authDetails, fieldsToUpdate.username(), fieldsToUpdate.password());
+    private void updateAuthDetailsModel(AuthDetails authDetails, AuthDetailsUpdate fieldsToUpdate) {
+        updateCredentials(authDetails, fieldsToUpdate.email(), fieldsToUpdate.psswrd());
         if (fieldsToUpdate.role() != null) authDetails.setRole(fieldsToUpdate.role());
         if (fieldsToUpdate.status() != null) authDetails.setStatus(fieldsToUpdate.status());
     }
 
-    private void updateCredentials(AuthDetails authDetails, String username, String password) {
-        if (username != null && !authDetails.getEmail().value().equals(username)) {
-            Email email = new Email(username);
+    private void updateCredentials(AuthDetails authDetails, Email email, Password password) {
+        if (email != null && !authDetails.getEmail().equals(email)) {
             validateEmail(email);
             authDetails.setEmail(email);
         }
         if (password != null) {
-            authDetails.setPsswrd(new Password(passwordEncoder.encode(password)));
+            authDetails.setPsswrd(new Password(passwordEncoder.encode(password.value())));
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.userservice.infrastructure.integration.bookitemloanservice;
 
-import com.example.userservice.domain.integration.loan.dto.BookItemLoanDto;
 import com.example.userservice.infrastructure.integration.FeignClientCustomConfiguration;
+import com.example.userservice.infrastructure.integration.bookitemloanservice.dto.BookItemLoanDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

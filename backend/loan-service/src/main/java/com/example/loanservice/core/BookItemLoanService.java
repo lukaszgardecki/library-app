@@ -1,11 +1,11 @@
 package com.example.loanservice.core;
 
 import com.example.loanservice.domain.constants.Constants;
-import com.example.loanservice.domain.i18n.MessageKey;
 import com.example.loanservice.domain.exception.BookItemLoanException;
 import com.example.loanservice.domain.exception.BookItemLoanNotFoundException;
-import com.example.loanservice.domain.integration.catalog.BookId;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.i18n.MessageKey;
+import com.example.loanservice.domain.integration.catalogservice.book.values.BookId;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.*;
 import com.example.loanservice.domain.ports.out.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ class BookItemLoanService {
     }
 
     void validateBookItemLoanForRenewal(BookItemLoan loanToUpdate) {
-        if (loanToUpdate.getDueDate().value().isBefore(LocalDateTime.now())) {
+        if (loanToUpdate.getDueDate().value().isBefore(LocalDate.now())) {
             throw new BookItemLoanException(MessageKey.LOAN_RENEWAL_FAILED_RETURN_DATE);
         }
     }
@@ -74,7 +74,7 @@ class BookItemLoanService {
 
     private BookItemLoan createBookItemLoanToSave(BookItemId bookItemId, UserId userId, BookId bookId) {
         LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusDays(Constants.MAX_LENDING_DAYS);
+        LocalDate endTime = startTime.plusDays(Constants.MAX_LENDING_DAYS).toLocalDate();
         return BookItemLoan.builder()
                 .bookItemId(bookItemId)
                 .userId(userId)

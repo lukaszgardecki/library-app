@@ -1,6 +1,5 @@
 package com.example.loanservice.infrastructure.persistence.jpa;
 
-import com.example.loanservice.domain.model.BookItemLoanListPreviewProjection;
 import com.example.loanservice.domain.model.values.LoanStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,49 +23,6 @@ interface JpaBookItemLoanRepository extends JpaRepository<BookItemLoanEntity, Lo
         AND (:status IS NULL OR b.status = :status)
     """)
     Page<BookItemLoanEntity> findAllByParams(Long userId, @Param("status") LoanStatus status, Pageable pageable);
-
-    @Query(
-            value = """
-                SELECT
-                    bl.id AS id,
-                    CAST(bl.creation_date AS DATE) AS creationDate,
-                    CAST(bl.due_date AS DATE) AS dueDate,
-                    bl.status AS status,
-                    bl.book_item_id AS bookItemId,
-                    b.title AS bookTitle
-                FROM book_loan bl
-                JOIN book_item bi ON bl.book_item_id = bi.id
-                JOIN book b ON bi.book_id = b.id
-                WHERE (:userId IS NULL OR bl.user_id = :userId)
-                AND (:status IS NULL OR bl.status = :status)
-                AND (
-                    LOWER(CAST(bl.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(bl.creation_date) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(bl.due_date) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))
-                )
-                """,
-            countQuery = """
-                SELECT COUNT(*)
-                FROM book_loan bl
-                JOIN book_item bi ON bl.book_item_id = bi.id
-                JOIN book b ON bi.book_id = b.id
-                WHERE (:userId IS NULL OR bl.user_id = :userId)
-                AND (:status IS NULL OR bl.status = :status)
-                AND (
-                    LOWER(CAST(bl.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(bl.creation_date) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(bl.due_date) LIKE LOWER(CONCAT('%', :query, '%'))
-                    OR LOWER(b.title) LIKE LOWER(CONCAT('%', :query, '%'))
-                )
-                """,
-            nativeQuery = true)
-    Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(
-            @Param("userId") Long userId,
-            @Param("query") String query,
-            @Param("status") String status,
-            Pageable pageable
-    );
 
     @Query("""
         SELECT b

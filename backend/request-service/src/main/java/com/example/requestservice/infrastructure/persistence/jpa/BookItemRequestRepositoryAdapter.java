@@ -1,6 +1,6 @@
 package com.example.requestservice.infrastructure.persistence.jpa;
 
-import com.example.requestservice.domain.model.*;
+import com.example.requestservice.domain.model.BookItemRequest;
 import com.example.requestservice.domain.model.values.*;
 import com.example.requestservice.domain.ports.out.BookItemRequestRepositoryPort;
 import lombok.RequiredArgsConstructor;

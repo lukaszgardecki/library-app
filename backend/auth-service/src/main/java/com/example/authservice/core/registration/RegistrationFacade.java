@@ -1,19 +1,19 @@
 package com.example.authservice.core.registration;
 
-import com.example.authservice.domain.dto.auth.RegisterToSaveDto;
+import com.example.authservice.domain.model.user.RegisterToSave;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RegistrationFacade {
     private final RegisterUserUseCase registerUserUseCase;
 
-    public void registerUser(RegisterToSaveDto request) {
+    public void registerUser(RegisterToSave request) {
         registerUserUseCase.execute(request);
     }
 
     public void generateFakeUsers(int limit) {
         for (int i = 0; i < limit; i++) {
-            RegisterToSaveDto user = FakeUserGenerator.generate();
+            RegisterToSave user = FakeUserGenerator.generate();
             registerUserUseCase.execute(user);
         }
     }

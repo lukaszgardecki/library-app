@@ -1,8 +1,8 @@
 package com.example.catalogservice.infrastructure.integration.warehouseservice;
 
-import com.example.catalogservice.domain.integration.warehouse.dto.RackDto;
-import com.example.catalogservice.domain.integration.warehouse.dto.ShelfDto;
 import com.example.catalogservice.infrastructure.integration.FeignClientCustomConfiguration;
+import com.example.catalogservice.infrastructure.integration.warehouseservice.dto.RackDto;
+import com.example.catalogservice.infrastructure.integration.warehouseservice.dto.ShelfDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

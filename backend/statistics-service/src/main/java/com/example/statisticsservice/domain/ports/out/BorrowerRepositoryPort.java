@@ -4,7 +4,6 @@ import com.example.statisticsservice.domain.integration.LoanCreationDate;
 import com.example.statisticsservice.domain.model.borrower.Borrower;
 import com.example.statisticsservice.domain.model.borrower.values.UserId;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface BorrowerRepositoryPort {

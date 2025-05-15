@@ -1,6 +1,5 @@
 package com.example.notificationservice.core;
 
-import com.example.notificationservice.domain.dto.NotificationDto;
 import com.example.notificationservice.domain.model.Notification;
 import com.example.notificationservice.domain.model.values.NotificationId;
 import com.example.notificationservice.domain.model.values.UserId;
@@ -17,14 +16,12 @@ public class NotificationFacade {
     private final MarkAsReadUseCase markAsReadUseCase;
     private final DeleteNotificationUseCase deleteNotificationUseCase;
 
-    public Page<NotificationDto> getPageOfNotificationsByUserId(UserId userId, Pageable pageable) {
-        return getPageOfNotificationsByUserIdUseCase.execute(userId, pageable)
-                .map(NotificationMapper::toDto);
+    public Page<Notification> getPageOfNotificationsByUserId(UserId userId, Pageable pageable) {
+        return getPageOfNotificationsByUserIdUseCase.execute(userId, pageable);
     }
 
-    public NotificationDto getNotification(NotificationId id) {
-        Notification notification = getNotificationUseCase.execute(id);
-        return NotificationMapper.toDto(notification);
+    public Notification getNotification(NotificationId id) {
+        return getNotificationUseCase.execute(id);
     }
 
     public void markAsRead(NotificationId id) {

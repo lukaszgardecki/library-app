@@ -1,9 +1,9 @@
 package com.example.fineservice.core;
 
+import com.example.fineservice.domain.integration.catalog.Price;
 import com.example.fineservice.domain.integration.loan.LoanDueDate;
 import com.example.fineservice.domain.integration.loan.LoanReturnDate;
-import com.example.fineservice.domain.integration.catalog.Price;
-import com.example.fineservice.domain.model.*;
+import com.example.fineservice.domain.model.Fine;
 import com.example.fineservice.domain.model.values.FineAmount;
 import com.example.fineservice.domain.model.values.FineStatus;
 import com.example.fineservice.domain.model.values.LoanId;

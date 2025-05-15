@@ -1,6 +1,6 @@
 package com.example.warehouseservice.core.shelf;
 
-import com.example.warehouseservice.domain.model.shelf.*;
+import com.example.warehouseservice.domain.model.shelf.Shelf;
 import com.example.warehouseservice.domain.model.shelf.values.BookItemsCount;
 import com.example.warehouseservice.domain.model.shelf.values.ShelfCreatedDate;
 import com.example.warehouseservice.domain.model.shelf.values.ShelfPosition;

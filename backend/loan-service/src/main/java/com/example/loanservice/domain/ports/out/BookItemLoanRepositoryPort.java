@@ -1,6 +1,6 @@
 package com.example.loanservice.domain.ports.out;
 
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.LoanId;
 import com.example.loanservice.domain.model.values.LoanStatus;
@@ -25,8 +25,6 @@ public interface BookItemLoanRepositoryPort {
     List<BookItemLoan> findAllCurrentLoansByUserId(UserId userId);
 
     Page<BookItemLoan> findPageOfBookLoansByParams(UserId userId, LoanStatus status, Pageable pageable);
-
-    Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(UserId userId, String query, LoanStatus status, Pageable pageable);
 
     List<Object[]> findTopSubjectsWithLoansCount(int limit);
 

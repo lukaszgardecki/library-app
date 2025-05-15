@@ -1,5 +1,7 @@
 spring:
   application:
     name: request-service
+  profiles:
+    default: prod
   config:
     import: optional:configserver:http://localhost:8079

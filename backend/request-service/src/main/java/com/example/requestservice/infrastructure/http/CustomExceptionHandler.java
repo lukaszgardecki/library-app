@@ -1,10 +1,10 @@
 package com.example.requestservice.infrastructure.http;
 
-import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.exceptions.BookItemRequestException;
 import com.example.requestservice.domain.exceptions.BookItemRequestNotFoundException;
 import com.example.requestservice.domain.exceptions.LibraryAppException;
 import com.example.requestservice.domain.exceptions.LibraryAppNotFoundException;
+import com.example.requestservice.domain.i18n.MessageKey;
 import com.example.requestservice.domain.ports.out.MessageProviderPort;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

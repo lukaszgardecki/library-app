@@ -4,6 +4,7 @@ import com.example.loanservice.domain.model.values.LoanStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +19,7 @@ class BookItemLoanEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime creationDate;
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
     private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)

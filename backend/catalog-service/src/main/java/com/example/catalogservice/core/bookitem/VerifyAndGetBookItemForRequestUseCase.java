@@ -1,10 +1,10 @@
 package com.example.catalogservice.core.bookitem;
 
 import com.example.catalogservice.domain.exception.BookItemException;
+import com.example.catalogservice.domain.i18n.MessageKey;
 import com.example.catalogservice.domain.model.bookitem.BookItem;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemStatus;
-import com.example.catalogservice.domain.i18n.MessageKey;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

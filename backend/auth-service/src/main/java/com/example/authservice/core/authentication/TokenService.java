@@ -1,12 +1,12 @@
 package com.example.authservice.core.authentication;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
-import com.example.authservice.domain.dto.token.TokenInfoDto;
+import com.example.authservice.domain.model.authdetails.AuthDetails;
 import com.example.authservice.domain.model.authdetails.values.UserId;
 import com.example.authservice.domain.model.token.Auth;
 import com.example.authservice.domain.model.token.CookieValues;
 import com.example.authservice.domain.model.token.Token;
+import com.example.authservice.domain.model.token.TokenInfo;
 import com.example.authservice.domain.ports.out.AccessTokenRepositoryPort;
 import com.example.authservice.domain.ports.out.RefreshTokenRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ class TokenService {
     private final AuthDetailsFacade authDetailsFacade;
     private final TokenGenerator generator;
 
-    Optional<Token> findTokenByHash(TokenInfoDto tokenInfo) {
+    Optional<Token> findTokenByHash(TokenInfo tokenInfo) {
         return switch (tokenInfo.type()) {
             case ACCESS -> accessTokenRepository.findByToken(tokenInfo.hash());
             case REFRESH -> refreshTokenRepository.findByToken(tokenInfo.hash());
@@ -30,10 +30,10 @@ class TokenService {
 
     Auth generateNewAuth(UserId userId) {
         CookieValues cookieValues = CookieValueGenerator.generate();
-        AuthDetailsDto authDetails = authDetailsFacade.getAuthDetailsByUserId(userId);
+        AuthDetails authDetails = authDetailsFacade.getAuthDetailsByUserId(userId);
         Token accessToken = generator.generateAccessToken(authDetails, cookieValues);
         Token refreshToken = generator.generateRefreshToken(authDetails, cookieValues);
-        revokeUserTokens(new UserId(authDetails.userId()));
+        revokeUserTokens(authDetails.getUserId());
         saveTokens(accessToken, refreshToken);
         return new Auth(accessToken, refreshToken, cookieValues);
     }

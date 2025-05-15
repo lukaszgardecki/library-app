@@ -1,11 +1,7 @@
 package com.example.authservice.core.authentication;
 
 import com.example.authservice.core.authdetails.AuthDetailsFacade;
-import com.example.authservice.domain.ports.out.AuthenticationManagerPort;
-import com.example.authservice.domain.ports.out.AccessTokenRepositoryPort;
-import com.example.authservice.domain.ports.out.EventPublisherPort;
-import com.example.authservice.domain.ports.out.MessageProviderPort;
-import com.example.authservice.domain.ports.out.RefreshTokenRepositoryPort;
+import com.example.authservice.domain.ports.out.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

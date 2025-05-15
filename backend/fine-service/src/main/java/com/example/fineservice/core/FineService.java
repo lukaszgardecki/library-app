@@ -1,13 +1,13 @@
 package com.example.fineservice.core;
 
-import com.example.fineservice.domain.dto.FinePaymentResult;
+import com.example.fineservice.domain.exceptions.FineAlreadyPaidException;
+import com.example.fineservice.domain.exceptions.FineNotFoundException;
 import com.example.fineservice.domain.integration.payment.PaymentMethod;
 import com.example.fineservice.domain.integration.payment.PaymentStatus;
 import com.example.fineservice.domain.integration.payment.dto.PaymentCardDetailsDto;
 import com.example.fineservice.domain.integration.payment.dto.PaymentProcessRequestDto;
-import com.example.fineservice.domain.exceptions.FineAlreadyPaidException;
-import com.example.fineservice.domain.exceptions.FineNotFoundException;
-import com.example.fineservice.domain.model.*;
+import com.example.fineservice.domain.model.Fine;
+import com.example.fineservice.domain.model.FinePaymentResult;
 import com.example.fineservice.domain.model.values.FineId;
 import com.example.fineservice.domain.model.values.FineStatus;
 import com.example.fineservice.domain.model.values.UserId;

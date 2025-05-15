@@ -3,6 +3,9 @@ server:
 
 api-prefix: /api/v1
 
+app:
+  version: 0.4.0
+
 spring:
   application:
     name: api-gateway
@@ -74,6 +77,11 @@ spring:
             - Path=${api-prefix}/book-requests/**
           filters:
             - name: TokenAndFingerprintValidationFilter
+
+        - id: websocket-request-route
+          uri: lb://request-service
+          predicates:
+            - Path=${api-prefix}/ws
 
         - id: user-service-route
           uri: lb://user-service

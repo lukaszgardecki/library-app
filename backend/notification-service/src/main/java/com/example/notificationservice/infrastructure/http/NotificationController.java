@@ -1,9 +1,9 @@
 package com.example.notificationservice.infrastructure.http;
 
 import com.example.notificationservice.core.NotificationFacade;
-import com.example.notificationservice.domain.dto.NotificationDto;
 import com.example.notificationservice.domain.model.values.NotificationId;
 import com.example.notificationservice.domain.model.values.UserId;
+import com.example.notificationservice.infrastructure.http.dto.NotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,34 +22,37 @@ class NotificationController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or #userId == principal")
-    public ResponseEntity<Page<NotificationDto>> getAllNotifications(
+    ResponseEntity<Page<NotificationDto>> getAllNotifications(
             @RequestParam(name = "user_id", required = false) Long userId,
             Pageable pageable
     ) {
-        Page<NotificationDto> page = notificationFacade.getPageOfNotificationsByUserId(new UserId(userId), pageable);
+        Page<NotificationDto> page = notificationFacade.getPageOfNotificationsByUserId(new UserId(userId), pageable)
+                .map(NotificationMapper::toDto);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<NotificationDto> getNotificationById(@PathVariable Long id) {
-        NotificationDto notification = notificationFacade.getNotification(new NotificationId(id));
+    ResponseEntity<NotificationDto> getNotificationById(@PathVariable Long id) {
+        NotificationDto notification = NotificationMapper.toDto(
+                notificationFacade.getNotification(new NotificationId(id))
+        );
         return ResponseEntity.ok(notification);
     }
 
     @PatchMapping("/{id}/read")
-    public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
+    ResponseEntity<Void> markAsRead(@PathVariable Long id) {
         notificationFacade.markAsRead(new NotificationId(id));
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+    ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
         notificationFacade.deleteNotification(new NotificationId(id));
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteNotifications(@RequestBody List<Long> ids) {
+    ResponseEntity<Void> deleteNotifications(@RequestBody List<Long> ids) {
         notificationFacade.deleteNotifications(ids.stream().map(NotificationId::new).toList());
         return ResponseEntity.noContent().build();
     }

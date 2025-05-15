@@ -22,7 +22,6 @@ public class BookItemLoanConfiguration {
         return new BookItemLoanFacade(
                 new GetBookItemLoanUseCase(loanService, sourceValidator),
                 new GetPageOfBookItemLoansByParamsUseCase(loanRepository, bookItemRequestService),
-                new GetPageOfBookItemLoanListPreviewsUseCase(loanRepository, bookItemRequestService),
                 new GetAllUserLoansUseCase(loanService),
                 new GetUserCurrentLoansUseCase(loanRepository),
                 new GetTopSubjectsWithLoansCountUseCase(loanService),

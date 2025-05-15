@@ -2,22 +2,25 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, IMessage, StompHeaders } from '@stomp/stompjs';
 import { AuthenticationService } from './authentication.service';
-import { BookItemRequest } from '../../shared/models/book-item-request';
 import { WarehouseBookItemRequestListView } from "../../../../shared/models/rack";
 import { StorageService } from './storage.service';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
-  private serverUrl = 'http://localhost:8080/ws';
+  private baseURL;
   private stompClient: Client;
   private connectionStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(
     private authService: AuthenticationService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private configService: ConfigService
   ) {
+    let baseURL = configService.getApiUrl();
+    this.baseURL = `${baseURL}/ws`;
     this.authService.isLoggedIn$.subscribe({
       next: isLoggedIn => {
         if (isLoggedIn) {
@@ -48,10 +51,10 @@ export class WebsocketService {
     };
 
     return new Client({
-      brokerURL: this.serverUrl,
+      brokerURL: this.baseURL,
       connectHeaders: headers,
       debug: function (str) {
-        // console.log(str);
+        console.log(str);
       },
       reconnectDelay: 200,
       heartbeatIncoming: 0,
@@ -99,6 +102,10 @@ export class WebsocketService {
   }
 
   sendToTopic(topic: string, item: WarehouseBookItemRequestListView) {
-    this.stompClient.publish({ destination: topic, body: JSON.stringify(item) });
+    const headers: StompHeaders = {
+      Authorization: `Bearer ${this.storageService.getAccessToken()}`,
+      'X-User-Id-Encoded': btoa(this.authService.currentUserId.toString())
+    };
+    this.stompClient.publish({ destination: topic, body: JSON.stringify(item), headers: headers });
   }
 }

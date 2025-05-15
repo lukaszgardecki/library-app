@@ -13,6 +13,7 @@ public enum MessageKey {
     // USER
     USER_NOT_FOUND("user.not-found"),
     USER_NOT_FOUND_ID("user.not-found.id"),
+    USER_NOT_FOUND_PERSON_ID("user.not-found.person.id"),
     USER_NOT_RETURNED_BOOKS("user.not-returned-books"),
     USER_UNSETTLED_CHARGES("user.unsettled-charges"),
 

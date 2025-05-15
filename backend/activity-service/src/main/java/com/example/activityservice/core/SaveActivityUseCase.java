@@ -1,6 +1,5 @@
 package com.example.activityservice.core;
 
-import com.example.activityservice.domain.dto.UserActivityDto;
 import com.example.activityservice.domain.model.Activity;
 import com.example.activityservice.domain.ports.out.ActivityRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 class SaveActivityUseCase {
     private final ActivityRepositoryPort userActivityRepository;
 
-    Activity execute(UserActivityDto activity) {
-        return userActivityRepository.save(UserActivityMapper.toModel(activity));
+    Activity execute(Activity activity) {
+        return userActivityRepository.save(activity);
     }
 }

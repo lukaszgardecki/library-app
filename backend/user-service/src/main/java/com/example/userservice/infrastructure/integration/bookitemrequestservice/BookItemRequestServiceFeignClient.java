@@ -1,7 +1,7 @@
 package com.example.userservice.infrastructure.integration.bookitemrequestservice;
 
-import com.example.userservice.domain.integration.request.dto.BookItemRequestDto;
 import com.example.userservice.infrastructure.integration.FeignClientCustomConfiguration;
+import com.example.userservice.infrastructure.integration.bookitemrequestservice.dto.BookItemRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -15,7 +15,8 @@ public class BookItemRequestConfiguration {
             UserServicePort userService,
             CatalogServicePort catalogService,
             EventPublisherPort publisher,
-            SourceValidatorPort sourceValidator
+            SourceValidatorPort sourceValidator,
+            WebSocketSenderPort webSocketSender
     ) {
         return new BookItemRequestFacade(
                 new GetBookItemRequestUseCase(bookItemRequestService, sourceValidator),
@@ -23,7 +24,7 @@ public class BookItemRequestConfiguration {
                 new GetUserCurrentBookItemRequestsUseCase(bookItemRequestService),
                 new GetPageOfBookItemRequestsByStatusUseCase(bookItemRequestRepository),
                 new CreateBookItemRequestUseCase(
-                        userService, catalogService, bookItemRequestService, publisher
+                        userService, catalogService, bookItemRequestService, webSocketSender, publisher
                 ),
                 new CancelAllBookItemRequestsUseCase(
                         bookItemRequestService, catalogService, publisher

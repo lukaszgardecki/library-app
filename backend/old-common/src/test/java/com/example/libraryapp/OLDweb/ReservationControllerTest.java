@@ -1,13 +1,13 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
-import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
 import com.example.libraryapp.OLDdomain.exception.ErrorMessage;
 import com.example.libraryapp.OLDdomain.member.dto.MemberDto;
 import com.example.libraryapp.OLDdomain.reservation.ReservationStatus;
 import com.example.libraryapp.OLDdomain.reservation.dto.ReservationResponse;
 import com.example.libraryapp.OLDmanagement.ActionRequest;
 import com.example.libraryapp.OLDmanagement.Constants;
+import com.example.libraryapp.domain.bookitem.dto.BookItemDto;
+import com.example.libraryapp.domain.bookitem.model.BookItemStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 

@@ -1,6 +1,5 @@
 package com.example.userservice.infrastructure.persistence.jpa.user;
 
-import com.example.userservice.domain.model.user.UserListPreviewProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,29 +13,15 @@ import java.util.Optional;
 
 interface JpaUserRepository extends JpaRepository<UserEntity, Long> {
 
-    @Query(
-            value = """
-                    SELECT
-                        u.id AS id,
-                        u.registration_date AS registrationDate,
-                        p.first_name AS firstName,
-                        p.last_name AS lastName
-                    FROM users u
-                    JOIN person p ON u.person_id = p.id
-                       OR LOWER(p.first_name) LIKE LOWER(CONCAT('%', :query, '%'))
-                       OR LOWER(p.last_name) LIKE LOWER(CONCAT('%', :query, '%'))
-                       OR LOWER(CAST(u.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
-            """,
-            countQuery = """
-                    SELECT COUNT(*)
-                    FROM users u
-                    JOIN person p ON u.person_id = p.id
-                       OR LOWER(p.first_name) LIKE LOWER(CONCAT('%', :query, '%'))
-                       OR LOWER(p.last_name) LIKE LOWER(CONCAT('%', :query, '%'))
-                       OR LOWER(CAST(u.id AS CHAR)) LIKE LOWER(CONCAT('%', :query, '%'))
-                    """,
-            nativeQuery = true)
-    Page<UserListPreviewProjection> findAllByQuery(@Param("query") String query, Pageable pageable);
+    @Query("""
+        SELECT u
+        FROM UserEntity u
+        WHERE
+            :query IS NULL
+            OR :query = ''
+            OR LOWER(CAST(u.id AS string)) LIKE LOWER(CONCAT('%', :query, '%'))
+    """)
+    Page<UserEntity> findAllByQuery(@Param("query") String query, Pageable pageable);
 
     // TODO: 12.02.2025 ta metoda jest źle liczy nie to co powinna
     @Query(value = """

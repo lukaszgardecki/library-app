@@ -1,9 +1,9 @@
 package com.example.libraryapp.OLDweb;
 
-import com.example.libraryapp.domain.user.dto.RegisterUserDto;
 import com.example.libraryapp.domain.auth.dto.LoginRequest;
 import com.example.libraryapp.domain.auth.dto.LoginResponse;
 import com.example.libraryapp.domain.person.model.Gender;
+import com.example.libraryapp.domain.user.dto.RegisterUserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,8 +15,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthenticationControllerTest extends BaseTest {
 

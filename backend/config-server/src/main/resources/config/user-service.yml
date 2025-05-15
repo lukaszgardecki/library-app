@@ -15,15 +15,15 @@ spring:
         spring:
           json:
             trusted:
-              packages: com.example.loanservice.domain.event.outgoing,com.example.fineservice.domain.event.outgoing,com.example.requestservice.domain.event.outgoing
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing,com.example.fineservice.infrastructure.kafka.event.outgoing,com.example.requestservice.infrastructure.kafka.event.outgoing
             type:
-              mapping: 'bookItemLostEvent:com.example.userservice.domain.event.incoming.BookItemLostEvent,
-                        bookItemReturnedEvent:com.example.userservice.domain.event.incoming.BookItemReturnedEvent,
-                        finePaidEvent:com.example.userservice.domain.event.incoming.FinePaidEvent,
-                        loanCreatedEvent:com.example.userservice.domain.event.incoming.LoanCreatedEvent,
-                        loanProlongedEvent:com.example.userservice.domain.event.incoming.LoanProlongedEvent,
-                        requestCanceledEvent:com.example.userservice.domain.event.incoming.RequestCanceledEvent,
-                        requestCreatedEvent:com.example.userservice.domain.event.incoming.RequestCreatedEvent'
+              mapping: 'bookItemLostEvent:com.example.userservice.infrastructure.kafka.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.userservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent,
+                        finePaidEvent:com.example.userservice.infrastructure.kafka.event.incoming.FinePaidEvent,
+                        loanCreatedEvent:com.example.userservice.infrastructure.kafka.event.incoming.LoanCreatedEvent,
+                        loanProlongedEvent:com.example.userservice.infrastructure.kafka.event.incoming.LoanProlongedEvent,
+                        requestCanceledEvent:com.example.userservice.infrastructure.kafka.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.userservice.infrastructure.kafka.event.incoming.RequestCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

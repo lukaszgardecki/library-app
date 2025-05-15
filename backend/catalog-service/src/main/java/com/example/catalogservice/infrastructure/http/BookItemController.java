@@ -1,14 +1,15 @@
 package com.example.catalogservice.infrastructure.http;
 
 import com.example.catalogservice.core.bookitem.BookItemFacade;
-import com.example.catalogservice.domain.dto.BookItemDto;
-import com.example.catalogservice.domain.dto.BookItemToSaveDto;
-import com.example.catalogservice.domain.dto.BookItemToUpdateDto;
-import com.example.catalogservice.domain.dto.BookItemWithBookDto;
 import com.example.catalogservice.domain.model.book.values.BookId;
+import com.example.catalogservice.domain.model.bookitem.BookItem;
 import com.example.catalogservice.domain.model.bookitem.values.BookItemId;
 import com.example.catalogservice.domain.model.bookitem.values.RackId;
 import com.example.catalogservice.domain.model.bookitem.values.ShelfId;
+import com.example.catalogservice.infrastructure.http.dto.BookItemDto;
+import com.example.catalogservice.infrastructure.http.dto.BookItemToSaveDto;
+import com.example.catalogservice.infrastructure.http.dto.BookItemToUpdateDto;
+import com.example.catalogservice.infrastructure.http.dto.BookItemWithBookDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 class BookItemController {
     private final BookItemFacade bookItemFacade;
+    private final DetailsAggregator detailsAggregator;
 
     @GetMapping
     ResponseEntity<Page<BookItemWithBookDto>> getPageOfBookItems(
@@ -35,15 +37,16 @@ class BookItemController {
             @RequestParam(name = "q", required = false) String query,
             Pageable pageable
     ) {
-        Page<BookItemWithBookDto> page = bookItemFacade.getPageOfBookItems(
+        Page<BookItem> page = bookItemFacade.getPageOfBookItems(
                 new BookId(bookId), new RackId(rackId), new ShelfId(shelfId), query, pageable
         );
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        Page<BookItemWithBookDto> bookItemWithDetails = detailsAggregator.getBookItemWithDetails(page);
+        return new ResponseEntity<>(bookItemWithDetails, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<BookItemDto> getBookItem(@PathVariable Long id) {
-        BookItemDto bookItem = bookItemFacade.getBookItem(new BookItemId(id));
+        BookItemDto bookItem = BookItemMapper.toDto(bookItemFacade.getBookItem(new BookItemId(id)));
         return ResponseEntity.ok(bookItem);
     }
 
@@ -58,8 +61,9 @@ class BookItemController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    ResponseEntity<BookItemDto> addBookItem(@RequestBody BookItemToSaveDto bookItem) {
-        BookItemDto savedBook = bookItemFacade.addBookItem(bookItem);
+    ResponseEntity<BookItemDto> addBookItem(@RequestBody BookItemToSaveDto bookItemToSave) {
+        BookItem model = BookItemMapper.toModel(bookItemToSave);
+        BookItemDto savedBook = BookItemMapper.toDto(bookItemFacade.addBookItem(model));
 
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -71,7 +75,10 @@ class BookItemController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<BookItemDto> updateBookItem(@PathVariable Long id, @RequestBody BookItemToUpdateDto bookItem) {
-        BookItemDto updatedBookItem = bookItemFacade.updateBookItem(new BookItemId(id), bookItem);
+        BookItem model = BookItemMapper.toModel(bookItem);
+        BookItemDto updatedBookItem = BookItemMapper.toDto(
+                bookItemFacade.updateBookItem(new BookItemId(id), model)
+        );
         return ResponseEntity.ok(updatedBookItem);
     }
 
@@ -84,13 +91,13 @@ class BookItemController {
 
     @GetMapping("/{id}/verify/loan")
     ResponseEntity<BookItemDto> verifyAndGetBookItemForLoan(@PathVariable Long id) {
-        BookItemDto bookItem = bookItemFacade.verifyAndGetBookItemForLoan(new BookItemId(id));
+        BookItemDto bookItem = BookItemMapper.toDto(bookItemFacade.verifyAndGetBookItemForLoan(new BookItemId(id)));
         return ResponseEntity.ok(bookItem);
     }
 
     @GetMapping("/{id}/verify/request")
     ResponseEntity<BookItemDto> verifyAndGetBookItemForRequest(@PathVariable Long id) {
-        BookItemDto bookItem = bookItemFacade.verifyAndGetBookItemForRequest(new BookItemId(id));
+        BookItemDto bookItem = BookItemMapper.toDto(bookItemFacade.verifyAndGetBookItemForRequest(new BookItemId(id)));
         return ResponseEntity.ok(bookItem);
     }
 }

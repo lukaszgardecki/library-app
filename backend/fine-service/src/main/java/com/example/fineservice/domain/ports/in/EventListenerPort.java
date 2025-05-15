@@ -1,8 +1,8 @@
 package com.example.fineservice.domain.ports.in;
 
+import com.example.fineservice.domain.integration.catalog.Price;
 import com.example.fineservice.domain.integration.loan.LoanDueDate;
 import com.example.fineservice.domain.integration.loan.LoanReturnDate;
-import com.example.fineservice.domain.integration.catalog.Price;
 import com.example.fineservice.domain.model.values.LoanId;
 import com.example.fineservice.domain.model.values.UserId;
 

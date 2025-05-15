@@ -1,7 +1,7 @@
 package com.example.loanservice.core;
 
 import com.example.loanservice.domain.constants.Constants;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.LoanDueDate;
 import com.example.loanservice.domain.model.values.LoanStatus;
@@ -12,7 +12,7 @@ import com.example.loanservice.domain.ports.out.FineServicePort;
 import com.example.loanservice.domain.ports.out.UserServicePort;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 class RenewBookItemLoanUseCase {
@@ -28,9 +28,9 @@ class RenewBookItemLoanUseCase {
         bookItemRequestService.ensureBookItemNotRequested(bookItemId);
         BookItemLoan loanToUpdate = bookItemLoanService.getBookItemLoan(bookItemId, userId, LoanStatus.CURRENT);
         bookItemLoanService.validateBookItemLoanForRenewal(loanToUpdate);
-        loanToUpdate.setDueDate(new LoanDueDate(LocalDateTime.now().plusDays(Constants.MAX_LENDING_DAYS)));
+        loanToUpdate.setDueDate(new LoanDueDate(LocalDate.now().plusDays(Constants.MAX_LENDING_DAYS)));
         BookItemLoan savedLoan = bookItemLoanService.save(loanToUpdate);
-        publisher.publishLoanProlongedEvent(BookItemLoanMapper.toDto(savedLoan));
+        publisher.publishLoanProlongedEvent(savedLoan);
         return savedLoan;
     }
 }

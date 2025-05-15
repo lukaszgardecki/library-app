@@ -12,4 +12,8 @@ class GetAllUsersUseCase {
     Page<User> execute(Pageable pageable) {
         return userService.getAllUsers(pageable);
     }
+
+    Page<User> execute(String query, Pageable pageable) {
+        return userService.getAllUsersByQuery(query, pageable);
+    }
 }

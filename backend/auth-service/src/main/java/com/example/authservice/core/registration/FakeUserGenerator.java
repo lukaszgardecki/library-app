@@ -1,7 +1,10 @@
 package com.example.authservice.core.registration;
 
-import com.example.authservice.domain.dto.auth.RegisterToSaveDto;
-import com.example.authservice.domain.integration.user.Gender;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
+import com.example.authservice.domain.model.person.Person;
+import com.example.authservice.domain.model.person.values.*;
+import com.example.authservice.domain.model.user.RegisterToSave;
 import com.github.javafaker.Faker;
 
 import java.time.LocalDate;
@@ -16,27 +19,32 @@ class FakeUserGenerator {
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL_CHARACTERS = "@#$%^&*()-_=+<>?";
 
-    static RegisterToSaveDto generate() {
+    static RegisterToSave generate() {
         LocalDate dateOfBirth = faker.date().birthday(12, 80).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        RegisterToSaveDto registerRequest = new RegisterToSaveDto(
-                faker.internet().emailAddress(),
-                generateStrongPassword(),
-                faker.name().firstName(),
-                faker.name().lastName(),
-                generatePesel(dateOfBirth),
-                dateOfBirth,
-                Gender.values()[faker.random().nextInt(Gender.values().length)].name(),
-                faker.country().name(),
-                faker.name().firstName(),
-                faker.name().firstName(),
-                faker.address().streetAddress(),
-                faker.address().zipCode(),
-                faker.address().city(),
-                faker.address().state(),
-                faker.address().country(),
-                faker.phoneNumber().cellPhone()
+        return new RegisterToSave(
+                new Email(faker.internet().emailAddress()),
+                new Password(generateStrongPassword()),
+                new Person(
+                        null,
+                        new PersonFirstName(faker.name().firstName()),
+                        new PersonLastName(faker.name().lastName()),
+                        Gender.values()[faker.random().nextInt(Gender.values().length)],
+                        new Pesel(generatePesel(dateOfBirth)),
+                        new BirthDate(dateOfBirth),
+                        new Nationality(faker.country().name()),
+                        new FatherName(faker.name().firstName()),
+                        new MotherName(faker.name().firstName()),
+                        new Address(
+                                new StreetAddress(faker.address().streetAddress()),
+                                new City(faker.address().city()),
+                                new State(faker.address().state()),
+                                new ZipCode(faker.address().zipCode()),
+                                new Country(faker.address().country())
+
+                        ),
+                        new PhoneNumber(faker.phoneNumber().cellPhone() )
+                )
         );
-        return registerRequest;
     }
 
     public static String generatePesel(LocalDate dateOfBirth) {

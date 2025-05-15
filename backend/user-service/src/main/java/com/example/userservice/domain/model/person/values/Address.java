@@ -3,8 +3,10 @@ package com.example.userservice.domain.model.person.values;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class Address {
@@ -13,10 +15,4 @@ public class Address {
     private State state;
     private ZipCode zipCode;
     private Country country;
-
-    public record StreetAddress(String value) { }
-    public record City(String value) { }
-    public record State(String value) { }
-    public record ZipCode(String value) { }
-    public record Country(String value) { }
 }

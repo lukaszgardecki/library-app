@@ -1,9 +1,9 @@
 package com.example.apigateway.infrastructure.spring.security;
 
-import com.example.apigateway.domain.dto.UserAuthDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
 
             WebClient.RequestBodySpec requestBodySpec = webClientBuilder.build()
                     .post()
-                    .uri("http://auth-service/auth/validate")
+                    .uri("http://auth-service/auth/validate/token-cookie")
                     .header(HttpHeaders.AUTHORIZATION, token)
                     .header("X-Source", "API-Gateway");
 
@@ -46,7 +46,7 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
                     .filter(value -> !value.isEmpty())
                     .ifPresent(value -> requestBodySpec.cookie(AUTH_COOKIE_NAME, value));
 
-            return requestBodySpec.exchangeToMono(clientResponse -> {
+            Mono<Void> responseHandling = requestBodySpec.exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
                             return clientResponse.bodyToMono(UserAuthDto.class)
                                     .flatMap(authResponse -> {
@@ -62,15 +62,23 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
                                 exchange.getResponse().getHeaders().addAll(name, values);
                             });
 
-                            return clientResponse.body(BodyExtractors.toDataBuffers())
-                                    .flatMap(buffer -> exchange.getResponse().writeWith(Mono.just(buffer)))
+                            return DataBufferUtils.join(clientResponse.body(BodyExtractors.toDataBuffers()))
+                                    .flatMap(joinedBuffer -> {
+                                        try {
+                                            return exchange.getResponse().writeWith(Mono.just(joinedBuffer))
+                                                    .doFinally(signalType -> DataBufferUtils.release(joinedBuffer));
+                                        } catch (Exception e) {
+                                            DataBufferUtils.release(joinedBuffer);
+                                            return Mono.error(e);
+                                        }
+                                    })
                                     .then(chain.filter(exchange));
                         }
-                    })
-                    .onErrorResume(e -> {
-                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                        return exchange.getResponse().setComplete();
                     });
+            return responseHandling.onErrorResume(e -> {
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            });
         };
     }
 
@@ -88,5 +96,13 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
 
     private String encode(String value) {
         return Base64.getEncoder().encodeToString(value.getBytes());
+    }
+
+    private record UserAuthDto(
+            String username,
+            String role,
+            String status,
+            Long userId
+    ) {
     }
 }

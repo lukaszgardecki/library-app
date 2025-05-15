@@ -1,6 +1,6 @@
 package com.example.loanservice.infrastructure.persistence.jpa;
 
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.*;
 import com.example.loanservice.domain.ports.out.BookItemLoanRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -53,11 +53,6 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     @Override
     public Page<BookItemLoan> findPageOfBookLoansByParams(UserId userId, LoanStatus status, Pageable pageable) {
         return repository.findAllByParams(userId.value(), status, pageable).map(this::toModel);
-    }
-
-    @Override
-    public Page<BookItemLoanListPreviewProjection> findPageOfBookLoanListPreviews(UserId userId, String query, LoanStatus status, Pageable pageable) {
-        return repository.findPageOfBookLoanListPreviews(userId.value(), query, status.name(), pageable);
     }
 
     @Override

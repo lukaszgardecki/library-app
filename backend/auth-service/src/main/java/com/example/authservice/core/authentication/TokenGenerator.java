@@ -1,6 +1,6 @@
 package com.example.authservice.core.authentication;
 
-import com.example.authservice.domain.dto.authdetails.AuthDetailsDto;
+import com.example.authservice.domain.model.authdetails.AuthDetails;
 import com.example.authservice.domain.model.authdetails.values.Role;
 import com.example.authservice.domain.model.token.CookieValues;
 import com.example.authservice.domain.model.token.Token;
@@ -24,21 +24,21 @@ class TokenGenerator {
     private final long accessTokenExpTime;
     private final long refreshTokenExpTime;
 
-    Token generateAccessToken(AuthDetailsDto authDetails, CookieValues cookieValues) {
+    Token generateAccessToken(AuthDetails authDetails, CookieValues cookieValues) {
         return generate(authDetails, cookieValues, accessTokenExpTime, ACCESS);
     }
 
-    Token generateRefreshToken(AuthDetailsDto authDetails, CookieValues cookieValues) {
+    Token generateRefreshToken(AuthDetails authDetails, CookieValues cookieValues) {
         return generate(authDetails, cookieValues, refreshTokenExpTime, REFRESH);
     }
 
-    private Token generate(AuthDetailsDto authDetails, CookieValues cookieValues, long expTime, TokenType tokenType) {
+    private Token generate(AuthDetails authDetails, CookieValues cookieValues, long expTime, TokenType tokenType) {
         Map<String, Object> claims = new TokenClaimsBuilder()
                 .addFingerprint(cookieValues.hash())
-                .addUserDetails(authDetails.userId(), authDetails.role())
+                .addUserDetails(authDetails.getUserId().value(), authDetails.getRole())
                 .build();
-        String token = buildToken(claims, authDetails.username(), expTime);
-        return new Token(authDetails.userId(), token, tokenType);
+        String token = buildToken(claims, authDetails.getEmail().value(), expTime);
+        return new Token(authDetails.getUserId().value(), token, tokenType);
     }
 
     private String buildToken(

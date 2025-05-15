@@ -1,9 +1,9 @@
 package com.example.loanservice.core;
 
-import com.example.loanservice.domain.integration.catalog.BookId;
-import com.example.loanservice.domain.integration.catalog.Price;
-import com.example.loanservice.domain.integration.catalog.dto.BookItemDto;
-import com.example.loanservice.domain.model.*;
+import com.example.loanservice.domain.integration.catalogservice.book.values.BookId;
+import com.example.loanservice.domain.integration.catalogservice.bookitem.BookItem;
+import com.example.loanservice.domain.integration.catalogservice.bookitem.values.Price;
+import com.example.loanservice.domain.model.BookItemLoan;
 import com.example.loanservice.domain.model.values.BookItemId;
 import com.example.loanservice.domain.model.values.LoanReturnDate;
 import com.example.loanservice.domain.model.values.LoanStatus;
@@ -25,9 +25,9 @@ class ProcessLostBookItemUseCase {
         bookItemLoan.setReturnDate(new LoanReturnDate(LocalDateTime.now()));
         bookItemLoan.setStatus(LoanStatus.COMPLETED);
         bookItemLoanService.save(bookItemLoan);
-        BookItemDto bookItem = catalogService.getBookItemById(bookItemId);
-        Price bookItemPrice = new Price(bookItem.getPrice());
+        BookItem bookItem = catalogService.getBookItemById(bookItemId);
+        Price bookItemPrice = bookItem.getPrice();
         BookId bookId = catalogService.getBookIdByBookItemId(bookItemId);
-        publisher.publishBookItemLostEvent(BookItemLoanMapper.toDto(bookItemLoan), bookId, bookItemPrice);
+        publisher.publishBookItemLostEvent(bookItemLoan, bookId, bookItemPrice);
     }
 }

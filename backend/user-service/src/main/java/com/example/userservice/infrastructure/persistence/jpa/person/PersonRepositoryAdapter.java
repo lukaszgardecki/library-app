@@ -1,6 +1,6 @@
 package com.example.userservice.infrastructure.persistence.jpa.person;
 
-import com.example.userservice.domain.model.person.*;
+import com.example.userservice.domain.model.person.Person;
 import com.example.userservice.domain.model.person.values.*;
 import com.example.userservice.domain.ports.out.PersonRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -103,11 +103,11 @@ class PersonRepositoryAdapter implements PersonRepositoryPort {
 
     private Address toModel(AddressEntity address) {
         return new Address(
-                new Address.StreetAddress(address.getStreetAddress()),
-                new Address.City(address.getCity()),
-                new Address.State(address.getState()),
-                new Address.ZipCode(address.getZipCode()),
-                new Address.Country(address.getCountry())
+                new StreetAddress(address.getStreetAddress()),
+                new City(address.getCity()),
+                new State(address.getState()),
+                new ZipCode(address.getZipCode()),
+                new Country(address.getCountry())
         );
     }
 }

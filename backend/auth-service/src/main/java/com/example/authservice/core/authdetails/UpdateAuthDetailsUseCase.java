@@ -1,7 +1,8 @@
 package com.example.authservice.core.authdetails;
 
-import com.example.authservice.domain.dto.auth.CredentialsUpdateDto;
-import com.example.authservice.domain.dto.authdetails.AuthDetailsUpdateDto;
+import com.example.authservice.domain.model.authdetails.AuthDetailsUpdate;
+import com.example.authservice.domain.model.authdetails.values.Email;
+import com.example.authservice.domain.model.authdetails.values.Password;
 import com.example.authservice.domain.model.authdetails.values.UserId;
 import lombok.RequiredArgsConstructor;
 
@@ -9,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 class UpdateAuthDetailsUseCase {
     private final AuthDetailsService authService;
 
-    void execute(UserId userId, CredentialsUpdateDto fieldsToUpdate) {
-        authService.updateUserCredentials(userId, fieldsToUpdate);
+    void execute(UserId userId, Email email, Password password) {
+        authService.updateUserCredentials(userId, email, password);
     }
 
-    void execute(UserId userId, AuthDetailsUpdateDto fieldsToUpdate) {
+    void execute(UserId userId, AuthDetailsUpdate fieldsToUpdate) {
         authService.updateAuthDetails(userId, fieldsToUpdate);
     }
 }

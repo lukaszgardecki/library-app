@@ -1,6 +1,5 @@
 package com.example.fineservice.domain.integration.payment.dto;
 
-import com.example.fineservice.domain.integration.payment.dto.PaymentCardDetailsDto;
 import com.example.fineservice.domain.integration.payment.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

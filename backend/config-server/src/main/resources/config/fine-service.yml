@@ -12,7 +12,7 @@ spring:
         spring:
           json:
             type:
-              mapping: 'finePaidEvent:com.example.fineservice.domain.event.outgoing.FinePaidEvent'
+              mapping: 'finePaidEvent:com.example.fineservice.infrastructure.kafka.event.outgoing.FinePaidEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -20,10 +20,10 @@ spring:
         spring:
           json:
             trusted:
-              packages: com.example.loanservice.domain.event.outgoing
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing
             type:
-              mapping: 'bookItemLostEvent:com.example.fineservice.domain.event.incoming.BookItemLostEvent,
-                        bookItemReturnedEvent:com.example.fineservice.domain.event.incoming.BookItemReturnedEvent'
+              mapping: 'bookItemLostEvent:com.example.fineservice.infrastructure.kafka.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.fineservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent'
 jwt:
   expirationTime: 360000000 #100h
   #  expirationTime: 900000 #15 min

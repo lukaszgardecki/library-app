@@ -2,7 +2,6 @@ package com.example.statisticsservice.infrastructure.http;
 
 import com.example.statisticsservice.core.StatisticsFacade;
 import com.example.statisticsservice.infrastructure.http.dto.BorrowerDto;
-import com.example.statisticsservice.infrastructure.http.mapper.BorrowerMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

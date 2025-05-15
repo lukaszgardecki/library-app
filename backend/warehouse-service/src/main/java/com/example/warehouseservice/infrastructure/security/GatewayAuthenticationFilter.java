@@ -55,8 +55,7 @@ class GatewayAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.startsWith("/h2-console")
-            || path.startsWith("/ws");
+        return path.startsWith("/h2-console");
     }
 
     private void validateGatewayHeader(HttpServletRequest request) {

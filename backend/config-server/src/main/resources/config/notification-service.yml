@@ -12,9 +12,9 @@ spring:
       spring:
         json:
           type:
-            mapping: 'emailNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.EmailNotificationSentEvent,
-                      smsNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.SmsNotificationSentEvent,
-                      systemNotificationSentEvent:com.example.notificationservice.domain.event.outgoing.SystemNotificationSentEvent'
+            mapping: 'emailNotificationSentEvent:com.example.notificationservice.infrastructure.kafka.event.outgoing.EmailNotificationSentEvent,
+                      smsNotificationSentEvent:com.example.notificationservice.infrastructure.kafka.event.outgoing.SmsNotificationSentEvent,
+                      systemNotificationSentEvent:com.example.notificationservice.infrastructure.kafka.event.outgoing.SystemNotificationSentEvent'
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -22,19 +22,19 @@ spring:
         spring:
           json:
             trusted:
-              packages: com.example.loanservice.domain.event.outgoing,com.example.requestservice.domain.event.outgoing,com.example.authservice.domain.event.outgoing
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing,com.example.requestservice.infrastructure.kafka.event.outgoing,com.example.authservice.infrastructure.kafka.event.outgoing
             type:
-              mapping: 'bookItemLostEvent:com.example.notificationservice.domain.event.incoming.BookItemLostEvent,
-                        bookItemReturnedEvent:com.example.notificationservice.domain.event.incoming.BookItemReturnedEvent,
-                        loanCreatedEvent:com.example.notificationservice.domain.event.incoming.LoanCreatedEvent,
-                        loanProlongationNotAllowed:com.example.notificationservice.domain.event.incoming.LoanProlongationNotAllowed,
-                        loanProlongedEvent:com.example.notificationservice.domain.event.incoming.LoanProlongedEvent,
-                        requestAvailableToLoanEvent:com.example.notificationservice.domain.event.incoming.RequestAvailableToLoanEvent,
-                        requestCanceledEvent:com.example.notificationservice.domain.event.incoming.RequestCanceledEvent,
-                        requestCreatedEvent:com.example.notificationservice.domain.event.incoming.RequestCreatedEvent,
-                        requestReadyEvent:com.example.notificationservice.domain.event.incoming.RequestReadyEvent,
-                        reservationCreatedEvent:com.example.notificationservice.domain.event.incoming.ReservationCreatedEvent,
-                        userCreatedEvent:com.example.notificationservice.domain.event.incoming.UserCreatedEvent'
+              mapping: 'bookItemLostEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.LoanCreatedEvent,
+                        loanProlongationNotAllowed:com.example.notificationservice.infrastructure.kafka.event.incoming.LoanProlongationNotAllowed,
+                        loanProlongedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.LoanProlongedEvent,
+                        requestAvailableToLoanEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.RequestAvailableToLoanEvent,
+                        requestCanceledEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.RequestCreatedEvent,
+                        requestReadyEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.RequestReadyEvent,
+                        reservationCreatedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.ReservationCreatedEvent,
+                        userCreatedEvent:com.example.notificationservice.infrastructure.kafka.event.incoming.UserCreatedEvent'
 eureka:
   instance:
     prefer-ip-address: true

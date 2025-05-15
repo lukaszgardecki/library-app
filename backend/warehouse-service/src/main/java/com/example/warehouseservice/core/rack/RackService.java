@@ -1,12 +1,12 @@
 package com.example.warehouseservice.core.rack;
 
-import com.example.warehouseservice.domain.i18n.MessageKey;
 import com.example.warehouseservice.domain.exception.RackNotFoundException;
+import com.example.warehouseservice.domain.exception.ShelfException;
+import com.example.warehouseservice.domain.i18n.MessageKey;
 import com.example.warehouseservice.domain.model.rack.Rack;
 import com.example.warehouseservice.domain.model.rack.values.RackId;
 import com.example.warehouseservice.domain.ports.out.CatalogServicePort;
 import com.example.warehouseservice.domain.ports.out.RackRepositoryPort;
-import com.example.warehouseservice.domain.exception.ShelfException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

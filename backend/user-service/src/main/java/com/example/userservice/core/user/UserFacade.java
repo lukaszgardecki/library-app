@@ -1,8 +1,9 @@
 package com.example.userservice.core.user;
 
-import com.example.userservice.domain.dto.user.*;
+import com.example.userservice.domain.model.person.values.PersonId;
 import com.example.userservice.domain.model.user.User;
-import com.example.userservice.domain.model.user.*;
+import com.example.userservice.domain.model.user.UserUpdate;
+import com.example.userservice.domain.model.user.UserUpdateAdmin;
 import com.example.userservice.domain.model.user.values.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,13 +15,8 @@ import java.util.List;
 public class UserFacade {
     private final CreateUserUseCase createUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
-    private final GetUserListUseCase getUserListUseCase;
     private final GetUserUseCase getUserUseCase;
-    private final GetUserPreviewUseCase getUserPreviewUseCase;
-    private final GetUserDetailsUseCase getUserDetailsUseCase;
-    private final GetUserDetailsAdminUseCase getUserDetailsAdminUseCase;
     private final UpdateUserUseCase updateUserUseCase;
-    private final UpdateUserByAdminUseCase updateUserByAdminUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final VerifyUserForBookItemRequestUseCase verifyUserForBookItemRequestUseCase;
     private final VerifyUserForBookItemLoanUseCase verifyUserForBookItemLoanUseCase;
@@ -29,60 +25,36 @@ public class UserFacade {
     private final CountNewRegisteredUsersByMonthUseCase countNewRegisteredUsersByMonthUseCase;
     private final GetUsersByLoanCountDescendingUseCase getUsersByLoanCountDescendingUseCase;
 
-    public Page<UserDto> getAllUsers(Pageable pageable) {
-        return getAllUsersUseCase.execute(pageable)
-                .map(UserMapper::toDto);
+    public Page<User> getAllUsers(Pageable pageable) {
+        return getAllUsersUseCase.execute(pageable);
     }
 
-    public List<UserDto> getAllByLoanCountDesc(int limit) {
-        return getUsersByLoanCountDescendingUseCase.execute(limit)
-                .stream()
-                .map(UserMapper::toDto)
-                .toList();
+    public Page<User> getAllUsersByQuery(String query, Pageable pageable) {
+        return getAllUsersUseCase.execute(query, pageable);
     }
 
-    public Page<UserListPreviewDto> getUserList(String query, Pageable pageable) {
-        return getUserListUseCase.execute(query, pageable)
-                .map(UserMapper::toDto);
+    public List<User> getAllByLoanCountDesc(int limit) {
+        return getUsersByLoanCountDescendingUseCase.execute(limit);
     }
 
-    public UserDto getUserById(UserId id) {
-        User user = getUserUseCase.execute(id);
-        return UserMapper.toDto(user);
+    public User getUserById(UserId id) {
+        return getUserUseCase.execute(id);
     }
 
-//    public UserDto getUserByEmail(Email email) {
-//        User user = getUserUseCase.execute(email);
-//        return UserMapper.toDto(user);
-//    }
-
-    public UserDetailsDto getUserDetails(UserId id) {
-        UserDetails user = getUserDetailsUseCase.execute(id);
-        return UserMapper.toDto(user);
+    public User getUserByPersonId(PersonId personId) {
+        return getUserUseCase.execute(personId);
     }
 
-    public UserDetailsAdminDto getUserDetailsAdmin(UserId id) {
-        UserDetailsAdmin user = getUserDetailsAdminUseCase.execute(id);
-        return UserMapper.toDto(user);
+    public UserId createNewUser(PersonId personId) {
+        return createUserUseCase.execute(personId);
     }
 
-    public UserPreviewDto getUserPreview(UserId id) {
-        UserPreview userPreview = getUserPreviewUseCase.execute(id);
-        return UserMapper.toDto(userPreview);
+    public User updateUser(UserId id, UserUpdate userData) {
+        return updateUserUseCase.execute(id, userData);
     }
 
-    public UserId createNewUser(RegisterUserDto request) {
-        return createUserUseCase.execute(request);
-    }
-
-    public UserDto updateUser(UserId id, UserUpdateDto userData) {
-        User updatedUser = updateUserUseCase.execute(id, userData);
-        return UserMapper.toDto(updatedUser);
-    }
-
-    public UserDto updateUserByAdmin(UserId id, UserUpdateAdminDto userData) {
-        User updatedUser = updateUserByAdminUseCase.execute(id, userData);
-        return UserMapper.toDto(updatedUser);
+    public User updateUserByAdmin(UserId id, UserUpdateAdmin userData) {
+        return updateUserUseCase.execute(id, userData);
     }
 
     public void deleteUserById(UserId userId) {
