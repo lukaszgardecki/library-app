@@ -11,21 +11,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/admin/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 class AdminController {
     private final UserFacade userFacade;
     private final DetailsAggregator detailsAggregator;
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDetailsAdminDto> getUserById(@PathVariable Long id) {
         UserDetailsAdminDto userDetailsAdmin = detailsAggregator.getUserDetailsAdmin(new UserId(id));
         return ResponseEntity.ok(userDetailsAdmin);
     }
 
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserUpdateAdmin userData) {
         UserDto user = UserMapper.toDto(userFacade.updateUserByAdmin(new UserId(id), userData));
         return ResponseEntity.ok(user);

@@ -86,7 +86,7 @@ spring:
         - id: user-service-route
           uri: lb://user-service
           predicates:
-            - Path=${api-prefix}/users/**,${api-prefix}/cards/**
+            - Path=${api-prefix}/users/**,${api-prefix}/admin/users/**,${api-prefix}/cards/**
           filters:
             - name: TokenAndFingerprintValidationFilter
 

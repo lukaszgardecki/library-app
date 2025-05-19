@@ -8,25 +8,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
-class CountDailyNewLoansByDateBetweenUseCase {
+class CountDailyReturnedLoansLastWeekUseCase {
     private final DailyStatsRepositoryPort dailyStatsRepository;
 
     Map<Integer, Integer> execute() {
-        Map<Integer, Integer> newLoans = new HashMap<>();
+        Map<Integer, Integer> returnedLoans = new HashMap<>();
         LocalDate now = LocalDate.now();
         LocalDate from = now.minusDays(6);
         LocalDate counter = from;
 
         while (!counter.isAfter(now)) {
-            newLoans.put(counter.getDayOfWeek().getValue(), 0);
+            returnedLoans.put(counter.getDayOfWeek().getValue(), 0);
             counter = counter.plusDays(1);
         }
 
         dailyStatsRepository.findAllByDateBetween(from, now)
                 .forEach(dailyStat -> {
                     int day = dailyStat.getDate().getDayOfWeek().getValue();
-                    newLoans.put(day, newLoans.get(day) + dailyStat.getNewLoans());
+                    returnedLoans.put(day, returnedLoans.get(day) + dailyStat.getReturnedLoans());
                 });
-        return newLoans;
+        return returnedLoans;
     }
 }

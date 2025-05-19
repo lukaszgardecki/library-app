@@ -18,5 +18,5 @@ interface BookItemRequestServiceFeignClient {
     ResponseEntity<Void> cancelAllItemRequestsByUserId(@PathVariable Long userId);
 
     @GetMapping("/current")
-    ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(@RequestParam("userId") Long id);
+    ResponseEntity<List<BookItemRequestDto>> getUserCurrentBookItemRequests(@RequestParam("user_id") Long id);
 }

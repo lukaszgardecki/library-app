@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "catalog-service", path = "/catalog", configuration = FeignClientCustomConfiguration.class)
 interface BookCatalogServiceFeignClient {
 
-    @GetMapping("/{bookItemId}/book")
+    @GetMapping("/book-items/{bookItemId}/book")
     ResponseEntity<BookDto> getBookByBookItemId(@PathVariable Long bookItemId);
 }

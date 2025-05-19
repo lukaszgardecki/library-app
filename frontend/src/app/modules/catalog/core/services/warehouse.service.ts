@@ -10,6 +10,7 @@ import { BookItemRequestStatus } from '../../shared/enums/book-item-request-stat
 import { AuthenticationService } from './authentication.service';
 import { BookItemService } from './book-item.service';
 import { BookItemWithBook } from '../../../../shared/models/book-item';
+import { BookItemRequestService } from './book-item-request.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class WarehouseService {
     private configService: ConfigService,
     private authService: AuthenticationService,
     private bookItemService: BookItemService,
+    private bookItemRequestServcie: BookItemRequestService,
     private websocketService: WebsocketService,
   ) {
     let baseURL = configService.getApiUrl();
@@ -62,7 +64,7 @@ export class WarehouseService {
   }
 
   loadPageOfRequests(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable } = {}) {
-    this.getRequestsPage(options).subscribe({
+    this.bookItemRequestServcie.getWarehouseRequestsPage(options).subscribe({
       next: page => {
         switch (options.status) {
           case BookItemRequestStatus.PENDING: this.pendingRequestsSubject.next(page); break;
@@ -99,7 +101,7 @@ export class WarehouseService {
 
   addNextPageToPendingRequests(): Subscription | undefined {
     return this.addNextPageTo(this.pendingRequestsSubject, (pageable) => 
-      this.getRequestsPage({ status: BookItemRequestStatus.PENDING, pageable })
+      this.bookItemRequestServcie.getWarehouseRequestsPage({ status: BookItemRequestStatus.PENDING, pageable })
     );
   }
   
@@ -215,11 +217,11 @@ export class WarehouseService {
     });
   }
 
-  private getRequestsPage(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable}): Observable<Page<WarehouseBookItemRequestListView>> {
-    let params = this.createParams(options.query, options.pageable);
-    if (options.status) { params = params.set("status", options.status)}
-    return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/book-requests/list`, { params: params, withCredentials: true });
-  }
+  // private getRequestsPage(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable}): Observable<Page<WarehouseBookItemRequestListView>> {
+  //   let params = this.createParams(options.query, options.pageable);
+  //   if (options.status) { params = params.set("status", options.status)}
+  //   return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/book-requests/list`, { params: params, withCredentials: true });
+  // }
 
   private getRacksPage(options: { query?: string, pageable?: Pageable }): Observable<Page<Rack>> {
     let params = this.createParams(options.query, options.pageable);

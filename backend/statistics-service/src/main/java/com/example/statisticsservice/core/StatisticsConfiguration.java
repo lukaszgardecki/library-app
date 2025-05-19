@@ -26,7 +26,7 @@ public class StatisticsConfiguration {
                 new CountNewUsersByMonthUseCase(dailyStatsRepository),
                 new CountLoansByDateUseCase(dailyStatsRepository),
                 new CountDailyNewLoansByDateBetweenUseCase(dailyStatsRepository),
-                new CountDailyReturnedLoansByDateBetweenUseCase(dailyStatsRepository),
+                new CountDailyReturnedLoansLastWeekUseCase(dailyStatsRepository),
                 new CountMonthlyLoansByDateBetweenUseCase(dailyStatsRepository),
                 new CountMonthlyUserLoansByDateUseCase(userMonthlyLoansRepository),
                 new CountActiveBorrowersByMonthUseCase(borrowerRepository),

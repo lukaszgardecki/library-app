@@ -54,7 +54,7 @@ export class WebsocketService {
       brokerURL: this.baseURL,
       connectHeaders: headers,
       debug: function (str) {
-        console.log(str);
+        // console.log(str);
       },
       reconnectDelay: 200,
       heartbeatIncoming: 0,

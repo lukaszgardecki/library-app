@@ -2,9 +2,9 @@ package com.example.userservice.domain.ports.out;
 
 import com.example.userservice.domain.model.user.values.UserId;
 
-import java.util.List;
+import java.util.Map;
 
 public interface StatisticsServicePort {
 
-    List<Integer> countUserLoansPerMonth(UserId id);
+    Map<Integer, Integer> countUserLoansPerMonth(UserId id);
 }

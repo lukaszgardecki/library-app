@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "warehouse-service", path = "/warehouse", configuration = FeignClientCustomConfiguration.class)
 interface WarehouseServiceFeignClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/racks/{id}")
     ResponseEntity<RackDto> getRackById(@PathVariable Long id);
 
-    @GetMapping("/{id}")
+    @GetMapping("/shelves/{id}")
     ResponseEntity<ShelfDto> getShelfById(@PathVariable Long id);
 }

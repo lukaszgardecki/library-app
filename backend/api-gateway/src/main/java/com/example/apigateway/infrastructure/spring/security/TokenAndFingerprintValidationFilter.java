@@ -52,7 +52,7 @@ class TokenAndFingerprintValidationFilter implements GatewayFilterFactory<TokenA
                                     .flatMap(authResponse -> {
                                         ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
                                                 .header("X-User-Id-Encoded", encode(authResponse.userId().toString()))
-                                                .header("X-User-Role-Encoded", encode(authResponse.role().toString()))
+                                                .header("X-User-Role-Encoded", encode(authResponse.role()))
                                                 .build();
                                         return chain.filter(exchange.mutate().request(modifiedRequest).build());
                                     });

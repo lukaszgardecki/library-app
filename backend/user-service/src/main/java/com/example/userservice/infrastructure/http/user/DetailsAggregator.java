@@ -3,6 +3,7 @@ package com.example.userservice.infrastructure.http.user;
 import com.example.userservice.core.librarycard.LibraryCardFacade;
 import com.example.userservice.core.person.PersonFacade;
 import com.example.userservice.core.user.UserFacade;
+import com.example.userservice.domain.integration.loan.BookItemLoan;
 import com.example.userservice.domain.model.person.Person;
 import com.example.userservice.domain.model.person.values.PersonId;
 import com.example.userservice.domain.model.user.User;
@@ -89,10 +90,12 @@ class DetailsAggregator {
         Person person = personFacade.getPersonById(user.getPersonId());
         AuthDetailsDto auth = authService.getUserAuthByUserId(user.getId());
         LibraryCardDto card = LibraryCardMapper.toDto(libraryCardFacade.getLibraryCard(user.getCardId()));
-        Map<String, Integer> topGenres = bookItemLoanService.getAllLoansByUserId(user.getId()).stream()
+        List<BookItemLoan> allUserLoans = bookItemLoanService.getAllLoansByUserId(user.getId());
+
+        Map<String, Integer> topGenres = allUserLoans.stream()
                 .collect(Collectors.groupingBy(loan ->
                                 catalogService.getBookByBookItemId(loan.getBookItemId()).getSubject().value(),
-                        Collectors.summingInt(lending -> 1)
+                        Collectors.summingInt(loan -> 1)
                 ))
                 .entrySet()
                 .stream()
@@ -111,6 +114,7 @@ class DetailsAggregator {
                 .map(request -> request.getBookItemId().value())
                 .toList();
 
+        Map<Integer, Integer> loansPerMonth = statisticsService.countUserLoansPerMonth(user.getId());
         return new UserDetailsAdminDto(
                 user.getId().value(),
                 person.getFirstName().value(),
@@ -138,7 +142,7 @@ class DetailsAggregator {
                 requestedItemsIds,
                 auth.role(),
                 topGenres,
-                statisticsService.countUserLoansPerMonth(user.getId())
+                loansPerMonth
         );
     }
 

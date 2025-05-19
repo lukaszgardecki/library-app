@@ -32,5 +32,6 @@ export const AUTHORIZED_ENDPOINTS = [
   "/book-items",
   "/activities",
   "/notifications",
-  "/warehouse"
+  "/warehouse",
+  "/admin"
 ];

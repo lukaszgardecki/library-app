@@ -11,8 +11,9 @@ import { Page, Pageable } from '../../../../shared/models/page';
 })
 export class UserService {
   private baseURL;
+  private adminURL;
   private fakeUserURL;
-  private baseAdminURL;
+  private statsURL;
   private registerURL;
 
   constructor(
@@ -21,9 +22,10 @@ export class UserService {
   ) {
     let baseURL = configService.getApiUrl();
     this.baseURL = `${baseURL}/users`;
+    this.adminURL = `${baseURL}/admin/users`;
     this.fakeUserURL = `${baseURL}/fu`;
     this.registerURL = `${baseURL}/register`;
-    this.baseAdminURL = `${baseURL}/stats`;
+    this.statsURL = `${baseURL}/stats`;
   }
 
   getUsersPage(query: string = "", pageable: Pageable = new Pageable()): Observable<Page<UserListPreviewAdmin>> {
@@ -32,7 +34,7 @@ export class UserService {
   }
 
   getUsersStatsAdmin(): Observable<Statistics> {
-    return this.http.get<Statistics>(`${this.baseAdminURL}`, { withCredentials: true }).pipe(
+    return this.http.get<Statistics>(`${this.statsURL}`, { withCredentials: true }).pipe(
       map(stats => {
         if (stats.favGenres) {
           stats.favGenres = new Map<string, number>(Object.entries(stats.favGenres));
@@ -42,6 +44,15 @@ export class UserService {
         }
         if (stats.topCities) {
           stats.topCities = new Map<string, number>(Object.entries(stats.topCities));
+        }
+        if (stats.loansLastYearByMonth) {
+          stats.loansLastYearByMonth = new Map<string, number>(Object.entries(stats.loansLastYearByMonth));
+        }
+        if (stats.newLoansLastWeekByDay) {
+          stats.newLoansLastWeekByDay = new Map<string, number>(Object.entries(stats.newLoansLastWeekByDay));
+        }
+        if (stats.returnedLoansLastWeekByDay) {
+          stats.returnedLoansLastWeekByDay = new Map<string, number>(Object.entries(stats.returnedLoansLastWeekByDay));
         }
         return stats;
       })
@@ -53,7 +64,7 @@ export class UserService {
   }
 
   getUserDetailsByIdAdmin(id: number): Observable<UserDetailsAdmin> {
-    return this.http.get<UserDetailsAdmin>(`${this.baseAdminURL}/users/${id}`, { withCredentials: true });
+    return this.http.get<UserDetailsAdmin>(`${this.adminURL}/${id}`, { withCredentials: true });
   }
 
   getUserPreviewInfo(id: number): Observable<UserPreview> {
@@ -73,7 +84,7 @@ export class UserService {
   }
 
   updateUserByAdmin(userId: number, user: UserUpdateAdmin): Observable<UserDetails> {
-    return this.http.patch<UserDetails>(`${this.baseAdminURL}/users/${userId}`, user, { withCredentials: true });
+    return this.http.patch<UserDetails>(`${this.statsURL}/users/${userId}`, user, { withCredentials: true });
   }
 
   private createParams(query: string | null, pageable: Pageable): HttpParams {

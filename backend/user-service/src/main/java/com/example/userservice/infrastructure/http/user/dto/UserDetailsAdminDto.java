@@ -45,5 +45,5 @@ public class UserDetailsAdminDto {
     private String role;
 
     private Map<String, Integer> genresStats;
-    private List<Integer> loansPerMonth;
+    private Map<Integer, Integer> loansPerMonth;
 }

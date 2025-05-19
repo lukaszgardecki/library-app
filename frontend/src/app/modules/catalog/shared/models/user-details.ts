@@ -130,8 +130,10 @@ export class UserUpdateAdmin {
 
 export class UserTopBorrowersAdmin {
     id: number;
-    fullName: string;
-    totalBooksBorrowed: number;
+    userId: number;
+    firstName: string;
+    lastName: string;
+    loans: number;
 }
 
 

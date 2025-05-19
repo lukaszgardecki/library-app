@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient(name = "statistics-service", path = "/stats", configuration = FeignClientCustomConfiguration.class)
 interface StatisticsServiceFeignClient {
 
     @GetMapping("/users/{id}")
-    ResponseEntity<List<Integer>> countUserLoansPerMonth(@PathVariable Long id);
+    ResponseEntity<Map<Integer, Integer>> countUserLoansPerMonth(@PathVariable Long id);
 }

@@ -11,6 +11,10 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="0004_create_table_genres.xml" relativeToChangelogFile="true"/>
     <include file="0005_create_table_user_monthly_loans.xml" relativeToChangelogFile="true"/>
 
-<!--    <include file="../testdata/" relativeToChangelogFile="true" context="dev, test"/>-->
+    <include file="../testdata/0001_borrowers.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0002_daily_stats.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0003_cities.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0004_genres.sql" relativeToChangelogFile="true" context="dev, test"/>
+    <include file="../testdata/0005_user_monthly_loans.sql" relativeToChangelogFile="true" context="dev, test"/>
 
 </databaseChangeLog>

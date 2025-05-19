@@ -17,7 +17,7 @@ public class StatisticsFacade {
     private final CountNewUsersByMonthUseCase countNewUsersByMonthUseCase;
     private final CountLoansByDateUseCase countLoansByDateUseCase;
     private final CountDailyNewLoansByDateBetweenUseCase countDailyNewLoansByDateBetweenUseCase;
-    private final CountDailyReturnedLoansByDateBetweenUseCase countDailyReturnedLoansByDateBetweenUseCase;
+    private final CountDailyReturnedLoansLastWeekUseCase countDailyReturnedLoansLastWeekUseCase;
     private final CountMonthlyLoansByDateBetweenUseCase countMonthlyLoansByDateBetweenUseCase;
     private final CountMonthlyUserLoansByDateUseCase countMonthlyUserLoansByDateUseCase;
     private final CountActiveBorrowersByMonthUseCase countActiveBorrowersByMonthUseCase;
@@ -40,18 +40,16 @@ public class StatisticsFacade {
     }
 
     public Map<Integer, Integer> countDailyNewLoansLast7days() {
-        LocalDate now = LocalDate.now();
-        return countDailyNewLoansByDateBetweenUseCase.execute(now.minusDays(7), now);
+        return countDailyNewLoansByDateBetweenUseCase.execute();
     }
 
     public Map<Integer, Integer> countDailyReturnedLoansLast7days() {
-        LocalDate now = LocalDate.now();
-        return countDailyReturnedLoansByDateBetweenUseCase.execute(now.minusDays(7), now);
+        return countDailyReturnedLoansLastWeekUseCase.execute();
     }
 
     public Map<Integer, Integer> countMonthlyLoansLast12Months() {
         LocalDate now = LocalDate.now();
-        return countMonthlyLoansByDateBetweenUseCase.execute(now.minusMonths(12), now);
+        return countMonthlyLoansByDateBetweenUseCase.execute(now.minusMonths(11), now);
     }
 
     public long countAllUsers() {

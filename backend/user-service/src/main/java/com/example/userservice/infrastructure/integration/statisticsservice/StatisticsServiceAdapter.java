@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -14,8 +15,8 @@ class StatisticsServiceAdapter implements StatisticsServicePort {
     private final StatisticsServiceFeignClient client;
 
     @Override
-    public List<Integer> countUserLoansPerMonth(UserId id) {
-        ResponseEntity<List<Integer>> response = client.countUserLoansPerMonth(id.value());
+    public Map<Integer, Integer> countUserLoansPerMonth(UserId id) {
+        ResponseEntity<Map<Integer, Integer>> response = client.countUserLoansPerMonth(id.value());
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }

@@ -13,7 +13,7 @@ import { TranslationService } from '../../../../../shared/services/translation.s
 })
 export class AnnualActivityChartComponent {
   chart: any;
-  @Input() data: Array<number>;
+  @Input() data: Map<string, number>;
   private langChangeSubscription: Subscription;
 
   constructor(private translationService: TranslationService) { }
@@ -35,8 +35,10 @@ export class AnnualActivityChartComponent {
   }
 
   createChart() {
+    const order = this.getOrder();
+    const dataOrdered = this.getOrderedValuesFromMap(this.data, order);
     let chartLabel = this.translationService.translate('CAT.USER.ACCOUNT.LENDINGS_ANNUAL')
-    let monthLabels = this.getMonthLabels();
+    let monthLabels = order.map(month => this.getMonthShort(month));
 
     if (this.chart) {
       this.chart.destroy();
@@ -48,7 +50,7 @@ export class AnnualActivityChartComponent {
         labels: monthLabels,
         datasets: [{
           label: chartLabel,
-          data: this.data,
+          data: dataOrdered,
           backgroundColor: (context: any) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
@@ -99,10 +101,6 @@ export class AnnualActivityChartComponent {
     });
   }
 
-  private getMonthLabels(): string[] {
-    return this.getLast12MonthsNums().map(month => this.getMonthShort(month));
-  }
-
   private getMonthName(monthNum: number): string {
     let monthName = '';
     switch (monthNum) {
@@ -143,12 +141,24 @@ export class AnnualActivityChartComponent {
     return monthShort;
   }
 
-  private getLast12MonthsNums(): number[] {
+  private getOrder(): number[] {
     const now = new Date().getMonth() + 1; // 0-indexed
     const months: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     let firstPart = months.slice(now)
     let secondPart = months.slice(0, now)
     return firstPart.concat(secondPart);
+  }
+
+  private getOrderedValuesFromMap(data: Map<string, number>, order: number[]): (number | undefined)[] {
+    const orderedValues: (number | undefined)[] = [];
+
+    for (const orderValue of order) {
+      const monthString = String(orderValue);
+      const value = data.get(monthString);
+      orderedValues.push(value);
+    }
+
+    return orderedValues;
   }
 
   @HostListener('window:resize')
