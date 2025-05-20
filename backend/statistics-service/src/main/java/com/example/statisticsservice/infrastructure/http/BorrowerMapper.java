@@ -10,8 +10,8 @@ public class BorrowerMapper {
         return Borrower.builder()
                 .id(new BorrowerId(dto.getId()))
                 .userId(new UserId(dto.getUserId()))
-                .firstName(new PersonFirstName(dto.getFirstName()))
-                .lastName(new PersonLastName(dto.getLastName()))
+                .firstName(new PersonFirstName(dto.getFullName().split(" ")[0]))
+                .lastName(new PersonLastName(dto.getFullName().split(" ")[1]))
                 .loans(new LoansCount(dto.getLoans()))
                 .build();
     }
@@ -20,8 +20,7 @@ public class BorrowerMapper {
         return BorrowerDto.builder()
                 .id(model.getId().value())
                 .userId(model.getUserId().value())
-                .firstName(model.getFirstName().value())
-                .lastName(model.getLastName().value())
+                .fullName("%s %s".formatted(model.getFirstName().value(), model.getLastName().value()))
                 .loans(model.getLoans().value())
                 .build();
     }

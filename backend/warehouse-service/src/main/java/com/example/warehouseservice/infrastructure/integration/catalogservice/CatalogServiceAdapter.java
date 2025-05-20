@@ -14,7 +14,10 @@ class CatalogServiceAdapter implements CatalogServicePort {
 
     @Override
     public Long countBookItemsByParams(RackId rackId, ShelfId shelfId) {
-        ResponseEntity<Long> response = client.countByParams(rackId.value(), shelfId.value());
+        ResponseEntity<Long> response = client.countBookItemsByParams(
+                rackId != null ? rackId.value() : null,
+                shelfId != null ? shelfId.value() : null
+        );
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }

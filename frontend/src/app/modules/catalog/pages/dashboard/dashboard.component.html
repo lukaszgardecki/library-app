@@ -87,9 +87,9 @@
           *ngIf="usersStats$ | async as stats; else lack"
           [tableName]="'top-users-list'"
           [columns]="[
-              { key: 'rank', label: 'CAT.STATS.RANK' },
+              { key: 'rank', label: 'CAT.STATS.RANK', type: 'position'},
               { key: 'fullName', label: 'CAT.USER.BORROWER' },
-              { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
+              { key: 'loans', label: 'CAT.USER.ACCOUNT.LENDINGS' },
           ]"
           [data]="stats.topBorrowers || []"
           (onRowClick)="showDetails($event)"

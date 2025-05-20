@@ -28,9 +28,9 @@ class StatisticsControllerTest {
     @Test
     void shouldReturnBorrowersList() throws Exception {
         // given
-        given(statisticsFacade.getTop10Borrowers()).willReturn(Stream.of(
-                new BorrowerDto(1L, 123L, "Jan", "Kowalski", 3),
-                new BorrowerDto(2L, 234L, "Anna", "Nowak", 2)
+        given(statisticsFacade.getTop10BorrowersDesc()).willReturn(Stream.of(
+                new BorrowerDto(1L, 123L, "Jan Kowalski", 3),
+                new BorrowerDto(2L, 234L, "Anna Nowak", 2)
         ).map(BorrowerMapper::toModel).toList());
 
         // when & then

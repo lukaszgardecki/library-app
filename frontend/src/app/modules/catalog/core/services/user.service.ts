@@ -84,7 +84,7 @@ export class UserService {
   }
 
   updateUserByAdmin(userId: number, user: UserUpdateAdmin): Observable<UserDetails> {
-    return this.http.patch<UserDetails>(`${this.statsURL}/users/${userId}`, user, { withCredentials: true });
+    return this.http.patch<UserDetails>(`${this.baseURL}/${userId}`, user, { withCredentials: true });
   }
 
   private createParams(query: string | null, pageable: Pageable): HttpParams {

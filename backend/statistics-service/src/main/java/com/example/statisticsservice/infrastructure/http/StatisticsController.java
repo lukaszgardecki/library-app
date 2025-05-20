@@ -29,7 +29,7 @@ class StatisticsController {
                 statisticsFacade.countMonthlyLoansLast12Months(),
                 statisticsFacade.countDailyNewLoansLast7days(),
                 statisticsFacade.countDailyReturnedLoansLast7days(),
-                statisticsFacade.getTop10Borrowers().stream().map(BorrowerMapper::toDto).toList(),
+                statisticsFacade.getTop10BorrowersDesc().stream().map(BorrowerMapper::toDto).toList(),
                 statisticsFacade.countUsersByAgeGroups(),
                 statisticsFacade.getTop10Cities()
         );

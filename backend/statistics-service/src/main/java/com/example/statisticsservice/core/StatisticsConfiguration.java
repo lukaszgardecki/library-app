@@ -19,7 +19,7 @@ public class StatisticsConfiguration {
             UserMonthlyLoansRepositoryPort userMonthlyLoansRepository
     ) {
         return new StatisticsFacade(
-                new GetBorrowersUseCase(borrowerRepository),
+                new GetTopBorrowersUseCase(borrowerRepository),
                 new GetTopCitiesUseCase(cityRepository),
                 new GetTopGenresUseCase(genreRepository),
                 new CountAllUsersUseCase(borrowerRepository),

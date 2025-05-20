@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class StatisticsFacade {
-    private final GetBorrowersUseCase getBorrowersUseCase;
+    private final GetTopBorrowersUseCase getTopBorrowersUseCase;
     private final GetTopCitiesUseCase getTopCitiesUseCase;
     private final GetTopGenresUseCase getTopGenresUseCase;
     private final CountAllUsersUseCase countAllUsersUseCase;
@@ -23,8 +23,8 @@ public class StatisticsFacade {
     private final CountActiveBorrowersByMonthUseCase countActiveBorrowersByMonthUseCase;
     private final CountUsersByAgeGroupsUseCase countUsersByAgeGroupsUseCase;
 
-    public List<Borrower> getTop10Borrowers() {
-        return getBorrowersUseCase.execute(10);
+    public List<Borrower> getTop10BorrowersDesc() {
+        return getTopBorrowersUseCase.execute(10);
     }
 
     public Map<String, Integer> getTop5Genres() {

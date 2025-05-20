@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 interface CatalogServiceFeignClient {
 
     @GetMapping("/book-items/count")
-    ResponseEntity<Long> countByParams(
+    ResponseEntity<Long> countBookItemsByParams(
             @RequestParam(name = "rack_id", required = false) Long rackId,
             @RequestParam(name = "shelf_id", required = false) Long shelfId
     );

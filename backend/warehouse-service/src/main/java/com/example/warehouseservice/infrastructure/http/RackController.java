@@ -60,7 +60,7 @@ class RackController {
         return ResponseEntity.ok(updatedRack);
     }
 
-    @DeleteMapping("/racks/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteRackById(@PathVariable Long id) {
         rackFacade.deleteRack(new RackId(id));
         return ResponseEntity.noContent().build();

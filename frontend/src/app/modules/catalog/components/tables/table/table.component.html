@@ -48,7 +48,7 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let row of data">
+        <ng-container *ngFor="let row of data; let i = index">
           <ng-container *ngIf="rowTemplate; else defaultRow">
               <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: row }"></ng-container>
           </ng-container>
@@ -57,6 +57,7 @@
               <td *ngFor="let column of columns" (click)="onClick(row)">
                   <ng-container [ngSwitch]="column.type">
                     <span *ngSwitchCase="'date'">{{ getValue(row, column.key) | date: 'dd.MM.yyyy' }}</span>
+                    <span *ngSwitchCase="'position'">{{ i + 1 }}</span>
                     <span *ngSwitchDefault>{{ getValue(row, column.key) | enumName: column.type | translate }}</span>
                   </ng-container>
               </td>

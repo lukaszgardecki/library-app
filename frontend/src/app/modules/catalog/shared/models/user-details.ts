@@ -75,7 +75,7 @@ export class UserDetailsAdmin {
     requestedItemsIds: Array<number> = [];
     role: Role;
     genresStats: Map<string, number> = new Map<string, number>();
-    loansPerMonth: Array<number> = [];
+    loansPerMonth: Map<string, number> = new Map<string, number>();
 }
 
 export class UserUpdate {
@@ -131,8 +131,7 @@ export class UserUpdateAdmin {
 export class UserTopBorrowersAdmin {
     id: number;
     userId: number;
-    firstName: string;
-    lastName: string;
+    fullName: string;
     loans: number;
 }
 

@@ -31,22 +31,6 @@ export class BookItemRequestService {
     return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/warehouse/list`, { params: params, withCredentials: true });
   }
 
-  // private createParams(status?: BookItemRequestStatus | null, query?: string | null, pageable?: Pageable): HttpParams {
-  //   let params = new HttpParams();
-  //   const page = pageable.page;
-  //   const size = pageable.size;
-  //   const sort = pageable.sort;
-  //   if (page !== null) { params = params.set("page", page); }
-  //   if (size !== null) { params = params.set("size", size); }
-  //   if (status !== null) { params = params.set("status", status)}
-  //   if (sort?.direction) {
-  //       const sortParam = sort.columnKey;
-  //       const sortValue = `${sortParam},${sort.direction}`;
-  //       params = params.set("sort", sortValue);
-  //   }
-  //   return params;
-  // }
-
   private createParams(status?: BookItemRequestStatus, query?: string, pageable?: Pageable): HttpParams {
     let params = new HttpParams();
     if (query) { params = params.set("q", query); }
