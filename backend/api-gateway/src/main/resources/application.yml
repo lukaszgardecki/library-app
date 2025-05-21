@@ -1,0 +1,111 @@
+server:
+  port: 8080
+
+api-prefix: /api/v1
+
+app:
+  version: 0.4.0
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      default-filters:
+        - StripPrefix=2
+        - AddRequestHeader=X-Source, API-Gateway
+      routes:
+        - id: activity-service-route
+          uri: lb://activity-service
+          predicates:
+            - Path=${api-prefix}/activities/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: auth-service-route
+          uri: lb://auth-service
+          predicates:
+            - Path=${api-prefix}/auth/**
+
+        - id: catalog-service-route
+          uri: lb://catalog-service
+          predicates:
+            - Path=${api-prefix}/catalog/books/**
+            - Method=GET
+
+        - id: catalog-service-route
+          uri: lb://catalog-service
+          predicates:
+            - Path=${api-prefix}/catalog/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: fine-service-route
+          uri: lb://fine-service
+          predicates:
+            - Path=${api-prefix}/fines/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: loan-service-route
+          uri: lb://loan-service
+          predicates:
+            - Path=${api-prefix}/loans/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: notification-service-route
+          uri: lb://notification-service
+          predicates:
+            - Path=${api-prefix}/notifications/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: payment-service-route
+          uri: lb://payment-service
+          predicates:
+            - Path=${api-prefix}/payments/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: request-service-route
+          uri: lb://request-service
+          predicates:
+            - Path=${api-prefix}/book-requests/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: websocket-request-route
+          uri: lb://request-service
+          predicates:
+            - Path=${api-prefix}/ws
+
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=${api-prefix}/users/**,${api-prefix}/admin/users/**,${api-prefix}/cards/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: warehouse-service-route
+          uri: lb://warehouse-service
+          predicates:
+            - Path=${api-prefix}/warehouse/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+
+        - id: statistics-service-route
+          uri: lb://statistics-service
+          predicates:
+            - Path=${api-prefix}/stats/**
+          filters:
+            - name: TokenAndFingerprintValidationFilter
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

@@ -45,8 +45,8 @@
       <app-basic-section class="col-12 col-md-6 col-xxl-3 p-2" [name]="'CAT.USER.ACCOUNT.LENDINGS_WEEKLY' | translate">
         <app-weekly-activity-chart
           *ngIf="usersStats$ | async as stats; else lack"
-          [data1]="stats.newLoansLastWeekByDay"
-          [data2]="stats.returnedLoansLastWeekByDay"
+          [newLoans]="stats.newLoansLastWeekByDay"
+          [returns]="stats.returnedLoansLastWeekByDay"
         ></app-weekly-activity-chart>
       </app-basic-section>
   
@@ -87,9 +87,9 @@
           *ngIf="usersStats$ | async as stats; else lack"
           [tableName]="'top-users-list'"
           [columns]="[
-              { key: 'rank', label: 'CAT.STATS.RANK' },
+              { key: 'rank', label: 'CAT.STATS.RANK', type: 'position'},
               { key: 'fullName', label: 'CAT.USER.BORROWER' },
-              { key: 'totalBooksBorrowed', label: 'CAT.USER.ACCOUNT.LENDINGS' },
+              { key: 'loans', label: 'CAT.USER.ACCOUNT.LENDINGS' },
           ]"
           [data]="stats.topBorrowers || []"
           (onRowClick)="showDetails($event)"

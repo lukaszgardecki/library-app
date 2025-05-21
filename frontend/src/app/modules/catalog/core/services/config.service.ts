@@ -18,18 +18,20 @@ export class ConfigService {
   }
 
   getAppVersion(): Observable<string> {
-    return this.http.get("http://localhost:8080/api/version",  { responseType: 'text' });
+    return this.http.get("http://localhost:8080/version",  { responseType: 'text' });
   }
 }
 
 export const AUTHORIZED_ENDPOINTS = [
-  "/refresh-token",
+  "/auth/refresh",
+  "/auth/logout",
+  "/stats",
   "/users",
   "/loans",
   "/book-requests",
   "/book-items",
-  "/authenticate/logout",
   "/activities",
   "/notifications",
-  "/warehouse"
+  "/warehouse",
+  "/admin"
 ];

@@ -59,6 +59,9 @@ export class UserDetailsComponent {
         if (user.genresStats) {
           this.user.genresStats = new Map<string, number>(Object.entries(user.genresStats));
         }
+        if (user.loansPerMonth) {
+          this.user.loansPerMonth = new Map<string, number>(Object.entries(user.loansPerMonth));
+        }
         this.favGenre = this.findFavouriteGenre();
       }
     });
@@ -104,7 +107,7 @@ export class UserDetailsComponent {
   }
 
   areAnnualLendingsDataAvailble(): boolean {
-    return !this.user.loansPerMonth.every(value => value === 0);
+    return Array.from(this.user.loansPerMonth.values()).some(value => value !== 0);
   }
 
   updateTable(event: TableUpdateEvent) {

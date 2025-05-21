@@ -14,8 +14,8 @@ import { Chart, registerables, Tooltip, TooltipItem } from 'chart.js';
 })
 export class WeeklyActivityChartComponent {
   chart: any;
-  @Input() data1: Array< number>;
-  @Input() data2: Array< number>;
+  @Input() newLoans: Map<string, number>;
+  @Input() returns: Map<string, number>;
   private langChangeSubscription: Subscription;
 
   constructor(private translationService: TranslationService) { }
@@ -41,8 +41,11 @@ export class WeeklyActivityChartComponent {
       this.chart.destroy();
     }
 
-    let dayLabels = this.getDayLabels();
-    let dayNames = this.getDayNames();
+    const order = this.getOrder();
+    const loans = this.getOrderedValuesFromMap(this.newLoans, order);
+    const returns = this.getOrderedValuesFromMap(this.returns, order);
+    let dayLabels = order.map(day => this.getDayShort(day));
+    let dayNames = order.map(day => this.getDayName(day));
 
     this.chart = new Chart('weeklyActivityChart', {
       type: 'line',
@@ -51,7 +54,7 @@ export class WeeklyActivityChartComponent {
         datasets: [
           {
             label: this.translationService.translate('CAT.USER.ACCOUNT.LENDINGS'),
-            data: this.data1,
+            data: loans,
             tension: 0.4,
             borderColor: '#0d6efd',
             backgroundColor: 'rgba(13, 110, 253, 0.25)',
@@ -60,7 +63,7 @@ export class WeeklyActivityChartComponent {
           },
           {
             label: this.translationService.translate('CAT.USER.ACCOUNT.RETURNS'),
-            data: this.data2,
+            data: returns,
             tension: 0.4,
             borderColor: '#198754',
             backgroundColor: 'rgba(25, 135, 84, 0.25)',
@@ -124,34 +127,36 @@ export class WeeklyActivityChartComponent {
     });
   }
 
-  private getDayLabels(): string[] {
-    // 0 == Sunday
-    return this.getLast6DaysNums().map(day => this.getDayShort(day));
-  }
-
-  private getDayNames(): string[] {
-    // 0 == Sunday
-    return this.getLast6DaysNums().map(day => this.getDayName(day));
-  }
-
-  private getLast6DaysNums(): number[] {
-    const now = new Date().getDay() + 1; // 0-indexed
-    const days: number[] = [0, 1, 2, 3, 4, 5, 6];
+  private getOrder(): number[] {
+    const now = new Date().getDay();
+    const days: number[] = [1, 2, 3, 4, 5, 6, 7];
     let firstPart = days.slice(now)
     let secondPart = days.slice(0, now)
     return firstPart.concat(secondPart);
   }
 
+  private getOrderedValuesFromMap(data: Map<string, number>, order: number[]): number[] {
+    const orderedValues: number[] = [];
+
+    for (const orderValue of order) {
+      const keyAsString = orderValue.toString();
+      const value = data.get(keyAsString);
+      orderedValues.push(value ?? -1);
+    }
+
+    return orderedValues;
+  }
+
   private getDayName(day: number): string {
     let dayName = '';
     switch (day) {
-      case 0: dayName = this.translationService.translate('DATA.DAY.SUN.NAME'); break;
       case 1: dayName = this.translationService.translate('DATA.DAY.MON.NAME'); break;
       case 2: dayName = this.translationService.translate('DATA.DAY.TUE.NAME'); break;
       case 3: dayName = this.translationService.translate('DATA.DAY.WED.NAME'); break;
       case 4: dayName = this.translationService.translate('DATA.DAY.THU.NAME'); break;
       case 5: dayName = this.translationService.translate('DATA.DAY.FRI.NAME'); break;
       case 6: dayName = this.translationService.translate('DATA.DAY.SAT.NAME'); break;
+      case 7: dayName = this.translationService.translate('DATA.DAY.SUN.NAME'); break;
       default: dayName = ''; break;
     }
     return dayName;
@@ -160,13 +165,13 @@ export class WeeklyActivityChartComponent {
   private getDayShort(day: number): string {
     let dayShort = '';
     switch (day) {
-      case 0: dayShort = this.translationService.translate('DATA.DAY.SUN.SHORT'); break;
       case 1: dayShort = this.translationService.translate('DATA.DAY.MON.SHORT'); break;
       case 2: dayShort = this.translationService.translate('DATA.DAY.TUE.SHORT'); break;
       case 3: dayShort = this.translationService.translate('DATA.DAY.WED.SHORT'); break;
       case 4: dayShort = this.translationService.translate('DATA.DAY.THU.SHORT'); break;
       case 5: dayShort = this.translationService.translate('DATA.DAY.FRI.SHORT'); break;
       case 6: dayShort = this.translationService.translate('DATA.DAY.SAT.SHORT'); break;
+      case 7: dayShort = this.translationService.translate('DATA.DAY.SUN.SHORT'); break;
       default: dayShort = ''; break;
     }
     return dayShort;
