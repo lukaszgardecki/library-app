@@ -42,6 +42,12 @@ class BookItemLoanRepositoryAdapter implements BookItemLoanRepositoryPort {
     }
 
     @Override
+    public Page<BookItemLoan> findAllCurrentLoansByUserId(UserId userId, Pageable pageable) {
+        LoanStatus statusToFind = LoanStatus.CURRENT;
+        return repository.findAllByParams(userId.value(), statusToFind, pageable).map(this::toModel);
+    }
+
+    @Override
     public List<BookItemLoan> findAllCurrentLoansByUserId(UserId userId) {
         LoanStatus statusToFind = LoanStatus.CURRENT;
         return repository.findAllCurrentLoansByUserId(userId.value(), statusToFind)

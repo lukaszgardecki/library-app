@@ -50,6 +50,17 @@ class LoanController {
 
     @GetMapping("/current")
     @PreAuthorize("hasRole('ADMIN') or #userId == principal")
+    ResponseEntity<Page<BookItemLoanDto>> getCurrentLoansByUserId(
+            @RequestParam("user_id") Long userId,
+            Pageable pageable
+    ) {
+        Page<BookItemLoanDto> page = bookItemLoanFacade.getCurrentLoansByUserId(new UserId(userId), pageable)
+                .map(BookItemLoanMapper::toDto);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/current/list")
+    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
     ResponseEntity<List<BookItemLoanDto>> getCurrentLoansByUserId(
             @RequestParam("user_id") Long userId
     ) {

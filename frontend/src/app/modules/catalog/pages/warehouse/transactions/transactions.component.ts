@@ -87,7 +87,6 @@ export class TransactionsComponent implements OnInit {
   }
 
   private completeSelectedRequest() {
-    console.log("dupa")
     if (this.selectedInProgressEl) {
       this.warehouseService.completeRequest(this.selectedInProgressEl).subscribe({
         next: () => this.toastService.showSuccess('CAT.TOAST.WAREHOUSE.REQUEST.COMPLETE.SUCCESS'),

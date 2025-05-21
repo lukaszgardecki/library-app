@@ -15,7 +15,7 @@ interface BookItemLoanServiceFeignClient {
     @GetMapping("/all/list")
     ResponseEntity<List<BookItemLoanDto>> getAllLoansByUserId(@RequestParam("user_id") Long userId);
 
-    @GetMapping("/current")
+    @GetMapping("/current/list")
     ResponseEntity<List<BookItemLoanDto>> getCurrentLoansByUserId(@RequestParam("user_id") Long userId);
 
 }

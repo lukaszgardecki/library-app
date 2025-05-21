@@ -22,6 +22,8 @@ public interface BookItemLoanRepositoryPort {
 
     List<BookItemLoan> findAllByUserId(UserId userId);
 
+    Page<BookItemLoan> findAllCurrentLoansByUserId(UserId userId, Pageable pageable);
+
     List<BookItemLoan> findAllCurrentLoansByUserId(UserId userId);
 
     Page<BookItemLoan> findPageOfBookLoansByParams(UserId userId, LoanStatus status, Pageable pageable);

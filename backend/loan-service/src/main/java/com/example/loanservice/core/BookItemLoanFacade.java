@@ -38,6 +38,10 @@ public class BookItemLoanFacade {
         return getAllUserLoansUseCase.execute(userId);
     }
 
+    public Page<BookItemLoan> getCurrentLoansByUserId(UserId userId, Pageable pageable) {
+        return getUserCurrentLoansUseCase.execute(userId, pageable);
+    }
+
     public List<BookItemLoan> getCurrentLoansByUserId(UserId userId) {
         return getUserCurrentLoansUseCase.execute(userId);
     }

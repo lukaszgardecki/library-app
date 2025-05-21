@@ -31,6 +31,10 @@ export class BookItemRequestService {
     return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/warehouse/list`, { params: params, withCredentials: true });
   }
 
+  completeRequest(bookItemRequest: WarehouseBookItemRequestListView): Observable<void> { 
+    return this.http.put<void>(`${this.baseURL}/${bookItemRequest.id}/ready`, {}, { withCredentials: true });
+  }
+
   private createParams(status?: BookItemRequestStatus, query?: string, pageable?: Pageable): HttpParams {
     let params = new HttpParams();
     if (query) { params = params.set("q", query); }

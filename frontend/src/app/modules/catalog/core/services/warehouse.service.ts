@@ -131,8 +131,8 @@ export class WarehouseService {
     this.websocketService.sendToTopic('/app/warehouse/move_to_pending', bookItemRequest);
   }
 
-  completeRequest(bookItemRequest: WarehouseBookItemRequestListView): Observable<BookItemRequest | null> { 
-    return this.http.post<BookItemRequest>(`${this.baseURL}/book-requests/${bookItemRequest.id}/ready`, {}, { withCredentials: true }).pipe(
+  completeRequest(bookItemRequest: WarehouseBookItemRequestListView): Observable<void> { 
+    return this.bookItemRequestServcie.completeRequest(bookItemRequest).pipe(
       tap(() => this.removeFrom(this.inProgressRequestsSubject, bookItemRequest)),
       catchError(err => {
         console.error('Błąd podczas oznaczania książki jako gotowej:', err);
@@ -216,12 +216,6 @@ export class WarehouseService {
       error: err => console.error("Błąd pobierania danych:", err)
     });
   }
-
-  // private getRequestsPage(options: { status?: BookItemRequestStatus, query?: string, pageable?: Pageable}): Observable<Page<WarehouseBookItemRequestListView>> {
-  //   let params = this.createParams(options.query, options.pageable);
-  //   if (options.status) { params = params.set("status", options.status)}
-  //   return this.http.get<Page<WarehouseBookItemRequestListView>>(`${this.baseURL}/book-requests/list`, { params: params, withCredentials: true });
-  // }
 
   private getRacksPage(options: { query?: string, pageable?: Pageable }): Observable<Page<Rack>> {
     let params = this.createParams(options.query, options.pageable);
