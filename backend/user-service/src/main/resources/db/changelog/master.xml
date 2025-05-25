@@ -13,4 +13,6 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="../testdata/0003_library_card.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0001_users.sql" relativeToChangelogFile="true" context="dev, test"/>
 
+    <include file="../testdata/0004_admin_data_prod.sql" relativeToChangelogFile="true" context="prod"/>
+
 </databaseChangeLog>

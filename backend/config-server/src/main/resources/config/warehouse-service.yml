@@ -4,7 +4,6 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/master.xml
   kafka:
-    bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -17,5 +16,3 @@ eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka

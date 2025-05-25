@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS `activity-service-db`;
+CREATE DATABASE IF NOT EXISTS `auth-service-db`;
+CREATE DATABASE IF NOT EXISTS `catalog-service-db`;
+CREATE DATABASE IF NOT EXISTS `fine-service-db`;
+CREATE DATABASE IF NOT EXISTS `loan-service-db`;
+CREATE DATABASE IF NOT EXISTS `notification-service-db`;
+CREATE DATABASE IF NOT EXISTS `payment-service-db`;
+CREATE DATABASE IF NOT EXISTS `request-service-db`;
+CREATE DATABASE IF NOT EXISTS `statistics-service-db`;
+CREATE DATABASE IF NOT EXISTS `user-service-db`;
+CREATE DATABASE IF NOT EXISTS `warehouse-service-db`;

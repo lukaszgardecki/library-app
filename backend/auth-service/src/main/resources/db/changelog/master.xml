@@ -11,4 +11,6 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
     <include file="../testdata/0001_auth_details.sql" relativeToChangelogFile="true" context="dev, test"/>
     <include file="../testdata/0002_token.sql" relativeToChangelogFile="true" context="dev, test"/>
 
+    <include file="../testdata/0003_admin_data_prod.sql" relativeToChangelogFile="true" context="prod"/>
+
 </databaseChangeLog>

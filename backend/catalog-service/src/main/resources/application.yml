@@ -3,5 +3,3 @@ spring:
     name: catalog-service
   profiles:
     default: prod
-  config:
-    import: optional:configserver:http://localhost:8079

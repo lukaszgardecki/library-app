@@ -20,7 +20,6 @@
     <modules>
         <module>config-server</module>
         <module>api-gateway</module>
-        <module>old-common</module>
         <module>eureka-server</module>
         <module>user-service</module>
         <module>auth-service</module>

@@ -3,6 +3,3 @@ spring:
     url: jdbc:mysql://mysqldb:3306/request-service-db
     username: root
     password: admin
-
-  liquibase:
-    contexts: prod

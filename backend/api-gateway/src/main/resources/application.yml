@@ -9,6 +9,8 @@ app:
 spring:
   application:
     name: api-gateway
+  profiles:
+    default: prod
   cloud:
     gateway:
       discovery:
@@ -103,9 +105,3 @@ spring:
             - Path=${api-prefix}/stats/**
           filters:
             - name: TokenAndFingerprintValidationFilter
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka

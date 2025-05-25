@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://mysqldb:3306/libraryapp
-    username: root
-    password: admin
-
-  liquibase:
-    contexts: prod

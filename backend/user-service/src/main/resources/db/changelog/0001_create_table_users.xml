@@ -16,13 +16,7 @@ https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
             <column name="charge" type="DECIMAL(10,2)"/>
             <column name="card_id" type="BIGINT"/>
             <column name="person_id" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="fk_users_person_id"
-                             referencedTableName="person"
-                             referencedColumnNames="id"
-                             primaryKey="true"
-                             primaryKeyName="pk_users"
-                />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 

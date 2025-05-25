@@ -1,0 +1,3 @@
+spring:
+  config:
+    import: optional:configserver:http://condig-server:8079
