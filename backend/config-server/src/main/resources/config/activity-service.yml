@@ -1,0 +1,42 @@
+server:
+  port: 8090
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing,com.example.requestservice.infrastructure.kafka.event.outgoing
+            type:
+              mapping: 'bookItemLostEvent:com.example.activityservice.infrastructure.kafka.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent,
+                        emailNotificationSentEvent:com.example.activityservice.infrastructure.kafka.event.incoming.EmailNotificationSentEvent,
+                        finePaidEvent:com.example.activityservice.infrastructure.kafka.event.incoming.FinePaidEvent,
+                        loanCreatedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.LoanCreatedEvent,
+                        loanProlongationNotAllowed:com.example.activityservice.infrastructure.kafka.event.incoming.LoanProlongationNotAllowed,
+                        loanProlongedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.LoanProlongedEvent,
+                        loginFailureEvent:com.example.activityservice.infrastructure.kafka.event.incoming.LoginFailureEvent,
+                        loginSuccessEvent:com.example.activityservice.infrastructure.kafka.event.incoming.LoginSuccessEvent,
+                        logoutSuccessEvent:com.example.activityservice.infrastructure.kafka.event.incoming.LogoutSuccessEvent,
+                        requestAvailableToLoanEvent:com.example.activityservice.infrastructure.kafka.event.incoming.RequestAvailableToLoanEvent,
+                        requestCanceledEvent:com.example.activityservice.infrastructure.kafka.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.RequestCreatedEvent,
+                        requestReadyEvent:com.example.activityservice.infrastructure.kafka.event.incoming.RequestReadyEvent,
+                        reservationCreatedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.ReservationCreatedEvent,
+                        smsNotificationSentEvent:com.example.activityservice.infrastructure.kafka.event.incoming.SmsNotificationSentEvent,
+                        systemNotificationSentEvent:com.example.activityservice.infrastructure.kafka.event.incoming.SystemNotificationSentEvent,
+                        userCreatedEvent:com.example.activityservice.infrastructure.kafka.event.incoming.UserCreatedEvent'
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true

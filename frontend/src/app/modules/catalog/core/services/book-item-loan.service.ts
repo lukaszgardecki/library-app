@@ -22,13 +22,13 @@ export class LoanService {
 
   getCurrentLoanListPreviewsByUserId(id: number, query: string = "", pageable: Pageable = new Pageable()): Observable<Page<BookItemLoan>> {
     let params = this.createParams(query, pageable);
-    params = params.set("userId", id)
+    params = params.set("user_id", id)
     params = params.set("status", "CURRENT")
-    return this.http.get<Page<BookItemLoan>>(`${this.baseURL}/list`, { params: params, withCredentials: true });
+    return this.http.get<Page<BookItemLoan>>(`${this.baseURL}/current`, { params: params, withCredentials: true });
   }
 
   getCurrentRenewableLoansByUserId(id: number): Observable<Page<BookItemLoan>> {
-    return this.http.get<Page<BookItemLoan>>(`${this.baseURL}?userId=${id}&status=CURRENT&renewable=true`, { withCredentials: true });
+    return this.http.get<Page<BookItemLoan>>(`${this.baseURL}?user_id=${id}&status=CURRENT&renewable=true`, { withCredentials: true });
   }
 
   renewABook(requestBody: RequestBody): Observable<BookItemLoan> {

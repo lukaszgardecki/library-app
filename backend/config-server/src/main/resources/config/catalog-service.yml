@@ -1,0 +1,35 @@
+server:
+  port: 8082
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: 'bookItemDeletedEvent:com.example.catalogservice.infrastructure.kafka.event.outgoing.BookItemDeletedEvent'
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.loanservice.infrastructure.kafka.event.outgoing,com.example.requestservice.infrastructure.kafka.event.outgoing
+            type:
+              mapping: 'bookItemLostEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.LoanCreatedEvent,
+                        loanProlongedEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.LoanProlongedEvent,
+                        requestCanceledEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.RequestCanceledEvent,
+                        requestCreatedEvent:com.example.catalogservice.infrastructure.kafka.event.incoming.RequestCreatedEvent'
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true

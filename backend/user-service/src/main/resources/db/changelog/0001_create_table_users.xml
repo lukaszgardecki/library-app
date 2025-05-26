@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0001" author="lukas">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="registration_date" type="DATE"/>
+            <column name="total_books_borrowed" type="INT"/>
+            <column name="total_books_requested" type="INT"/>
+            <column name="charge" type="DECIMAL(10,2)"/>
+            <column name="card_id" type="BIGINT"/>
+            <column name="person_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <modifySql dbms="mysql">
+            <append value="ENGINE=INNODB CHARSET=UTF8MB4 COLLATE utf8mb4_polish_ci"/>
+        </modifySql>
+    </changeSet>
+
+</databaseChangeLog>

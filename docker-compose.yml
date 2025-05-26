@@ -1,47 +1,251 @@
-version: '3'
 services:
+  eureka-server:
+    build: ./backend/eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+      
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 2181 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  broker:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server=localhost:9092 --list || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    volumes:
+      - ./mysql-init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "mysqldb", '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3307:3306"
+    restart: always
+
   frontend:
     container_name: library_app_frontend
     build: ./frontend
     ports:
       - "4200:4200"
-    networks:
-      - springboot-net
     depends_on:
-      - api
-    links:
-      - api
-  api:
-    container_name: web
-    build: ./backend
+      api-gateway:
+        condition: service_healthy
+
+  api-gateway:
+    container_name: api-gateway
+    build: ./backend/api-gateway
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/libraryapp
-      SPRING_DATASOURCE_PASSWORD: admin
-      SPRING_DATASOURCE_USER: root
-    networks:
-      - springboot-net
     depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
       mysqldb:
         condition: service_healthy
-    links:
-      - mysqldb
-  mysqldb:
-    container_name: mysqldb
-    image: mysql:5.7
-    environment:
-      MYSQL_DATABASE: libraryapp
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/libraryapp
-      MYSQL_ROOT_PASSWORD: admin
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "mysqldb", '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD']
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
       timeout: 5s
-      retries: 10
-    networks:
-      - springboot-net
-    ports:
-      - "3307:3306"
-    restart: always
-networks:
-  springboot-net:
+      retries: 5
+      start_period: 45s
+
+  config-server:
+    container_name: config-server
+    build: ./backend/config-server
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8079/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  activity-service:
+    container_name: activity-service
+    build: ./backend/activity-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  auth-service:
+    container_name: auth-service
+    build: ./backend/auth-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  catalog-service:
+    container_name: catalog-service
+    build: ./backend/catalog-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  fine-service:
+    container_name: fine-service
+    build: ./backend/fine-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  loan-service:
+    container_name: loan-service
+    build: ./backend/loan-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  notification-service:
+    container_name: notification-service
+    build: ./backend/notification-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  payment-service:
+    container_name: payment-service
+    build: ./backend/payment-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  request-service:
+    container_name: request-service
+    build: ./backend/request-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  statistics-service:
+    container_name: statistics-service
+    build: ./backend/statistics-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  user-service:
+    container_name: user-service
+    build: ./backend/user-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+
+  warehouse-service:
+    container_name: warehouse-service
+    build: ./backend/warehouse-service
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+      mysqldb:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy

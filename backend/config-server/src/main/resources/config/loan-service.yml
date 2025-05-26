@@ -1,0 +1,34 @@
+server:
+  port: 8084
+spring:
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: 'bookItemLostEvent:com.example.loanservice.infrastructure.kafka.event.outgoing.BookItemLostEvent,
+                        bookItemReturnedEvent:com.example.loanservice.infrastructure.kafka.event.outgoing.BookItemReturnedEvent,
+                        loanCreatedEvent:com.example.loanservice.infrastructure.kafka.event.outgoing.LoanCreatedEvent,
+                        loanProlongationNotAllowed:com.example.loanservice.infrastructure.kafka.event.outgoing.LoanProlongationNotAllowed,
+                        loanProlongedEvent:com.example.loanservice.infrastructure.kafka.event.outgoing.LoanProlongedEvent'
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.example.requestservice.infrastructure.kafka.event.outgoing
+            type:
+              mapping: 'reservationCreatedEvent:com.example.loanservice.infrastructure.kafka.event.incoming.ReservationCreatedEvent'
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true

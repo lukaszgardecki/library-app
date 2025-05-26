@@ -1,0 +1,9 @@
+spring:
+  liquibase:
+    contexts: prod
+  kafka:
+    bootstrap-servers: broker:29092
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka

@@ -7,6 +7,5 @@ export class BookItemLoan {
     returnDate: Date;
     status: LoanStatus;
     userId: number;
-    bookId: number;
     bookItemId: number;
 }

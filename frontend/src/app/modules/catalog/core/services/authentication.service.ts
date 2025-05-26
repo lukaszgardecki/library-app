@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, combineLatest, map, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { ConfigService } from './config.service';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
@@ -8,7 +8,6 @@ import { StorageService } from './storage.service';
 import { Login } from '../../pages/login/login.component';
 import { UserPreview } from '../../shared/models/user-details';
 import { Role } from '../../shared/enums/role.enum';
-import { BookItem } from '../../../../shared/models/book-item';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +42,8 @@ export class AuthenticationService {
     private userService: UserService,
     private router: Router
   ) {
-    this.baseURL = configService.getApiUrl();
+    let baseURL = configService.getApiUrl();
+    this.baseURL = `${baseURL}/auth`;
     this.accessTokenSubject = new BehaviorSubject<string | null>(this.storageService.getAccessToken());
     this.refreshTokenSubject = new BehaviorSubject<string | null>(this.storageService.getRefreshToken());
     // this.loanedItemsIdsSubject.next(this.storageService.getLoanedIds());
@@ -71,7 +71,7 @@ export class AuthenticationService {
   }
 
   authenticate(login: Login): Observable<any> {
-    return this.http.post<Token>(`${this.baseURL}/authenticate`, login, { withCredentials: true }).pipe(
+    return this.http.post<Token>(`${this.baseURL}/login`, login, { withCredentials: true }).pipe(
       tap(response => {
         this.initializeUserData(response);
         this.startRefreshTokenTimer();
@@ -84,7 +84,7 @@ export class AuthenticationService {
       return throwError(() => 'No refresh token available');
     }
 
-    return this.http.post<Token>(`${this.baseURL}/refresh-token`, {}, { withCredentials: true }).pipe(
+    return this.http.post<Token>(`${this.baseURL}/refresh`, {}, { withCredentials: true }).pipe(
       tap(response => {
         this.initializeUserData(response)
         this.startRefreshTokenTimer();
@@ -97,7 +97,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    this.http.post(`${this.baseURL}/authenticate/logout`, {}).subscribe({
+    this.http.post(`${this.baseURL}/logout/${this.currentUserId}`, {}).subscribe({
       next: () => {
         this.clearUserData();
         this.stopRefreshTokenTimer();

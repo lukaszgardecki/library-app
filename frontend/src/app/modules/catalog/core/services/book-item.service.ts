@@ -15,7 +15,7 @@ export class BookItemService {
     private configService: ConfigService
   ) { 
     let baseURL = configService.getApiUrl();
-    this.baseURL = `${baseURL}/book-items`;
+    this.baseURL = `${baseURL}/catalog/book-items`;
   }
 
   getBookItems(options: { rackId?: number, shelfId?: number, query?: string, pageable?: Pageable }) {
