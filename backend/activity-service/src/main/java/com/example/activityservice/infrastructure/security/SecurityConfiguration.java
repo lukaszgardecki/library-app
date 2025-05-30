@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-class SecurityConfiguration {
+public class SecurityConfiguration {
     private final GatewayAuthenticationFilter gatewayAuthenticationFilter;
 
     @Bean

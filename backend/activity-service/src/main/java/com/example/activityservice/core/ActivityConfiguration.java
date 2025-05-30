@@ -14,13 +14,13 @@ class ActivityConfiguration {
 
     @Bean
     ActivityFacade activityFacade(
-            ActivityRepositoryPort userActivityRepository,
+            ActivityRepositoryPort activityRepository,
             SourceValidatorPort sourceValidator
     ) {
         return new ActivityFacade(
-                new GetPageOfActivitiesByParamsUseCase(userActivityRepository),
-                new GetActivityUseCase(userActivityRepository, sourceValidator),
-                new SaveActivityUseCase(userActivityRepository)
+                new GetPageOfActivitiesByParamsUseCase(activityRepository),
+                new GetActivityUseCase(activityRepository, sourceValidator),
+                new SaveActivityUseCase(activityRepository)
         );
     }
 

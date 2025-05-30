@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class GetActivityUseCase {
-    private final ActivityRepositoryPort userActivityRepository;
+    private final ActivityRepositoryPort activityRepository;
     private final SourceValidatorPort sourceValidator;
 
     Activity execute(ActivityId id) {
-        Activity activity = userActivityRepository.findById(id)
+        Activity activity = activityRepository.findById(id)
                 .orElseThrow(() -> new UserActivityNotFoundException(id));
         sourceValidator.validateUserIsOwner(activity.getUserId());
         return activity;

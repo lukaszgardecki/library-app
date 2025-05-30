@@ -33,7 +33,6 @@ class ActivityController {
     @GetMapping("/{id}")
     ResponseEntity<ActivityDto> getActionById(@PathVariable Long id) {
         ActivityDto activity = ActivityMapper.toDto(activityFacade.getActivity(new ActivityId(id)));
-//        authFacade.validateOwnerOrAdminAccess(new UserId(activity.getUserId()));
         return ResponseEntity.ok(activity);
     }
 }
