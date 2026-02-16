@@ -12,7 +12,7 @@ export class TranslationService {
   
   onLangChange$: Observable<any> = this.translateService.onLangChange;
   private readonly LANGUAGES: UserLang[] = [
-    { name: "English (GB)", short: "en-gb", icon: "gb.svg" },
+    { name: "English (GB)", short: "en", icon: "gb.svg" },
     { name: "English (US)", short: "en-us", icon: "us.svg" },
     { name: "Polski", short: "pl", icon: "pl.svg" },
     { name: "Українська", short: "uk", icon: "uk.svg" },
