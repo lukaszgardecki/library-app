@@ -16,12 +16,9 @@ pipeline {
         stage('Build Backend') {
             steps {
                 script {
-                    def toolHome = tool 'jdk24'
-                    def realJdkHome = "${toolHome}/jdk-24.0.2" 
-                    
-                    withEnv(["JAVA_HOME=${realJdkHome}", "PATH=${realJdkHome}/bin:${env.PATH}"]) {
-                        sh 'java -version'
-                        sh 'mvn install -N -f backend/pom.xml'
+                    withEnv(["JAVA_HOME=/opt/jdk24", "PATH=/opt/jdk24/bin:${env.PATH}"]) {
+                        sh 'java -version' // To teraz pokaże 24
+                        sh 'mvn clean install -DskipTests -f backend/pom.xml'
                     }
                 }
             }
