@@ -77,7 +77,6 @@ services:
     container_name: jenkins
     build: 
       context: ./jenkins
-    platform: ${DOCKER_DEFAULT_PLATFORM:-linux/arm64} 
     restart: always
     ports:
       - "9090:8080"
