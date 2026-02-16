@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     withEnv(["JAVA_HOME=/opt/jdk24", "PATH=/opt/jdk24/bin:${env.PATH}"]) {
-                        sh 'java -version' // To teraz pokaże 24
+                        sh 'java -version'
                         sh 'mvn clean install -DskipTests -f backend/pom.xml'
                     }
                 }
