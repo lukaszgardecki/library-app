@@ -4,7 +4,7 @@ server:
 api-prefix: /api/v1
 
 app:
-  version: 0.4.0
+  version: 0.5.0
 
 spring:
   application:
